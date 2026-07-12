@@ -9,8 +9,24 @@ const initialPlayers = [];
 const initialMatches = [];
 
 const initializeStorage = () => {
+  const defaultYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
   if (!localStorage.getItem('minifootball_years')) {
-    localStorage.setItem('minifootball_years', JSON.stringify(["2025-2026", "2024-2025"]));
+    localStorage.setItem('minifootball_years', JSON.stringify(defaultYears));
+  } else {
+    // Migration: make sure new default years are present in the list
+    let existingYears = JSON.parse(localStorage.getItem('minifootball_years') || '[]');
+    let updated = false;
+    defaultYears.forEach(y => {
+      if (!existingYears.includes(y)) {
+        existingYears.push(y);
+        updated = true;
+      }
+    });
+    if (updated) {
+      // Sort years in descending order to keep newest first
+      existingYears.sort((a, b) => b.localeCompare(a));
+      localStorage.setItem('minifootball_years', JSON.stringify(existingYears));
+    }
   }
   if (!localStorage.getItem('minifootball_classes')) {
     localStorage.setItem('minifootball_classes', JSON.stringify(initialClasses));
@@ -24,7 +40,7 @@ export const recalculateData = () => {
   const classesList = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
   const players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
   const matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
-  const years = JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025"]');
+  const years = JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025", "2023-2024", "2022-2023"]');
   const defaultYear = years[0] || "2025-2026";
 
   // Ensure every class has a year
