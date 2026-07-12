@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <title>TDV BTL Futbol - Arxiv Parser</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-purple-950 text-white font-sans min-h-screen flex items-center justify-center p-6">
+  <div class="max-w-md w-full bg-purple-900 border border-purple-800 p-8 rounded-3xl shadow-2xl text-center">
+    <div class="w-16 h-16 bg-green-500 text-purple-950 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-bounce">
+      <i class="fas fa-file-code text-2xl"></i>
+    </div>
+    <h1 class="text-2xl font-black mb-2 uppercase tracking-wider">Arxiv Məlumat Parseri</h1>
+    <p class="text-xs text-purple-200 mb-6 leading-relaxed">
+      Bu alət `arxiv datalari` qovluğundakı köhnə veb-sayt fayllarını avtomatik oxuyaraq 2022-2023 turnir məlumatlarını `archive_2022_2023.json` faylına çevirəcək.
+    </p>
+
+    <div class="space-y-4">
+      <button id="btnParse" class="w-full bg-green-500 hover:bg-green-600 text-purple-950 font-black py-4 rounded-2xl text-sm transition transform hover:scale-105 shadow-md flex items-center justify-center space-x-2">
+        <i class="fas fa-play"></i>
+        <span>Faylları Oxu və JSON Yarat</span>
+      </button>
+
+      <div id="status" class="text-xs text-green-400 font-bold hidden">
+        <i class="fas fa-spinner animate-spin mr-2"></i> Emal edilir...
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // Helper to parse divisions
+    function getDivision(className) {
+      if (className.startsWith("6")) return "6";
+      if (className.startsWith("7") || className.startsWith("8")) return "7-8";
+      if (className.startsWith("9") || className.startsWith("10")) return "9-10";
+      return "11";
+    }
+
+    // Helper to clean player names
+    function cleanName(name) {
+      return name.replace(/[🟨🟥🟩🟦🟧⬛⬜⚽🏆]/g, "").replace(/\s+/g, " ").trim();
+    }
+
+    document.getElementById("btnParse").addEventListener("click", async () => {
+      const btn = document.getElementById("btnParse");
+      const status = document.getElementById("status");
+      btn.disabled = true;
+      status.classList.remove("hidden");
+      status.innerHTML = `<i class="fas fa-spinner animate-spin mr-2"></i> Fayllar yüklənir...`;
+
+      try {
+        const classes = [];
+        const players = [];
+        const matches = [];
+        const classesMap = new Set();
+        const playersMap = {}; // key: name_class
+
+        // 1. Fetch and parse komandalar
+        const komandalarPaths = [
+          "arxiv datalari/football/komandalar/komandalar6.html",
+          "arxiv datalari/football/komandalar/komandalar7.html",
+          "arxiv datalari/football/komandalar/komandalar8.html",
+          "arxiv datalari/football/komandalar/komandalar9.html",
+          "arxiv datalari/football/komandalar/komandalar1011.html"
+        ];
+
+        for (let path of komandalarPaths) {
+          status.innerText = `Komandalar oxunur: ${path.split("/").pop()}...`;
+          const response = await fetch(path);
+          if (!response.ok) continue;
+          const html = await response.text();
+          const doc = new DOMParser().parseFromString(html, "text/html");
+          
+          const classDivs = doc.querySelectorAll(".sinif");
+          classDivs.forEach(div => {
+            const baslik = div.querySelector(".sinif-baslik")?.textContent || "";
+            const className = baslik.replace(/\s*sinif.*/i, "").trim();
+            if (!className) return;
+
+            const division = getDivision(className);
+            const classId = "c_22_" + className.toLowerCase().replace(/[\/\-]/g, "_");
+
+            if (!classesMap.has(className)) {
+              classes.push({
+                id: classId,
+                name: className,
+                division: division,
+                year: "2022-2023"
+              });
+              classesMap.add(className);
+            }
+
+            const playersLis = div.querySelectorAll(".oyuncular li");
+            playersLis.forEach(li => {
+              const playerName = cleanName(li.textContent || "");
+              if (!playerName || playerName === "--------" || playerName.includes("---")) return;
+
+              const key = `${playerName}_${className}`;
+              if (!playersMap[key]) {
+                const playerId = "p_22_" + playerName.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "") + "_" + className.toLowerCase().replace(/[\/\-]/g, "_");
+                const playerObj = {
+                  id: playerId,
+                  name: playerName,
+                  class: className,
+                  division: division,
+                  year: "2022-2023",
+                  position: "Hücumçu",
+                  goals: 0,
+                  assists: 0,
+                  matchesPlayed: 0,
+                  overallRating: 6.0
+                };
+                players.push(playerObj);
+                playersMap[key] = playerObj;
+              }
+            });
+          });
+        }
+
+        // 2. Fetch and parse bombardir
+        const bombardirPaths = [
+          "arxiv datalari/football/bombardir/bombardir6.html",
+          "arxiv datalari/football/bombardir/bombardir7.html",
+          "arxiv datalari/football/bombardir/bombardir8.html",
+          "arxiv datalari/football/bombardir/bombardir9.html",
+          "arxiv datalari/football/bombardir/bombardir1011.html"
+        ];
+
+        for (let path of bombardirPaths) {
+          status.innerText = `Bombardirlər oxunur: ${path.split("/").pop()}...`;
+          const response = await fetch(path);
+          if (!response.ok) continue;
+          const html = await response.text();
+          const doc = new DOMParser().parseFromString(html, "text/html");
+
+          const rows = doc.querySelectorAll("table tr");
+          rows.forEach((row, index) => {
+            if (index === 0) return; // skip header
+            const tds = row.querySelectorAll("td");
+            if (tds.length < 4) return;
+
+            const playerName = cleanName(tds[1].textContent || "");
+            const className = tds[2].textContent.trim();
+            const goals = parseInt(tds[3].textContent.trim()) || 0;
+
+            const key = `${playerName}_${className}`;
+            if (playersMap[key]) {
+              playersMap[key].goals = goals;
+            } else {
+              // Add missing player
+              const division = getDivision(className);
+              const playerId = "p_22_" + playerName.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "") + "_" + className.toLowerCase().replace(/[\/\-]/g, "_");
+              const playerObj = {
+                id: playerId,
+                name: playerName,
+                class: className,
+                division: division,
+                year: "2022-2023",
+                position: "Hücumçu",
+                goals: goals,
+                assists: 0,
+                matchesPlayed: 0,
+                overallRating: 6.0
+              };
+              players.push(playerObj);
+              playersMap[key] = playerObj;
+
+              if (!classesMap.has(className)) {
+                const classId = "c_22_" + className.toLowerCase().replace(/[\/\-]/g, "_");
+                classes.push({
+                  id: classId,
+                  name: className,
+                  division: division,
+                  year: "2022-2023"
+                });
+                classesMap.add(className);
+              }
+            }
+          });
+        }
+
+        // 3. Fetch and parse oyunlar.html
+        status.innerText = "Oyun cədvəli oxunur...";
+        const responseMatches = await fetch("arxiv datalari/football/oyunlar.html");
+        if (responseMatches.ok) {
+          const html = await responseMatches.text();
+          const doc = new DOMParser().parseFromString(html, "text/html");
+          const tables = doc.querySelectorAll("table");
+
+          let matchIdCount = 1;
+          tables.forEach(table => {
+            const th = table.querySelector("th");
+            if (!th) return;
+
+            const dateRaw = th.textContent.trim();
+            let date = dateRaw;
+            const dateParts = dateRaw.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+            if (dateParts) {
+              date = `${dateParts[3]}-${dateParts[2]}-${dateParts[1]}`;
+            }
+
+            const rows = table.querySelectorAll("tr");
+            rows.forEach(row => {
+              const tds = row.querySelectorAll("td");
+              if (tds.length < 3) return;
+
+              const teamA = tds[0].textContent.trim();
+              const scoreRaw = tds[1].textContent.trim();
+              const teamB = tds[2].textContent.trim();
+
+              if (teamA === "Yer" || teamA === "Sinif" || teamA === "Komanda") return;
+
+              const division = getDivision(teamA);
+              let scoreA = 0, scoreB = 0;
+              let penaltyScoreA = null, penaltyScoreB = null;
+
+              if (scoreRaw.includes("Texniki")) {
+                if (scoreRaw.includes(teamA)) {
+                  scoreA = 0; scoreB = 3;
+                } else {
+                  scoreA = 3; scoreB = 0;
+                }
+              } else {
+                const penParts = scoreRaw.match(/^(\d+)\((\d+)\)\s*-\s*(\d+)\((\d+)\)$/);
+                if (penParts) {
+                  scoreA = parseInt(penParts[1]);
+                  penaltyScoreA = parseInt(penParts[2]);
+                  scoreB = parseInt(penParts[3]);
+                  penaltyScoreB = parseInt(penParts[4]);
+                } else {
+                  const parts = scoreRaw.split("-");
+                  if (parts.length === 2) {
+                    scoreA = parseInt(parts[0]) || 0;
+                    scoreB = parseInt(parts[1]) || 0;
+                  } else {
+                    return; // skip invalid row
+                  }
+                }
+              }
+
+              // Deduce stage
+              let stage = "Qrup Mərhələsi";
+              if (penaltyScoreA !== null || date === "2023-06-09" || date === "2023-06-07" || date === "2023-06-06") {
+                if (date === "2023-06-09" || date === "2023-06-23") {
+                  stage = "Final";
+                } else if (date === "2023-06-07" || date === "2023-06-06") {
+                  stage = "Yarımfinal";
+                } else {
+                  stage = "4/1 Final";
+                }
+              }
+
+              const matchId = `m_22_${matchIdCount++}`;
+              matches.push({
+                id: matchId,
+                stage: stage,
+                division: division,
+                year: "2022-2023",
+                teamA: teamA,
+                teamB: teamB,
+                scoreA: scoreA,
+                scoreB: scoreB,
+                penaltyScoreA: penaltyScoreA,
+                penaltyScoreB: penaltyScoreB,
+                date: date,
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                playerStats: []
+              });
+
+              // Add class if missing
+              if (!classesMap.has(teamA)) {
+                classes.push({
+                  id: `c_22_${teamA.toLowerCase().replace(/[\/\-]/g, "_")}`,
+                  name: teamA,
+                  division: division,
+                  year: "2022-2023"
+                });
+                classesMap.add(teamA);
+              }
+              if (!classesMap.has(teamB)) {
+                classes.push({
+                  id: `c_22_${teamB.toLowerCase().replace(/[\/\-]/g, "_")}`,
+                  name: teamB,
+                  division: getDivision(teamB),
+                  year: "2022-2023"
+                });
+                classesMap.add(teamB);
+              }
+            });
+          });
+        }
+
+        // Export JSON
+        const archiveData = { classes, players, matches };
+        const blob = new Blob([JSON.stringify(archiveData, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "archive_2022_2023.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        status.innerHTML = `<i class="fas fa-check-circle text-green-500 mr-2"></i> Uğurla tamamlandı! archive_2022_2023.json faylı kompüterinizə yükləndi.`;
+      } catch (err) {
+        status.innerHTML = `<i class="fas fa-times-circle text-red-500 mr-2"></i> Xəta baş verdi: ${err.message}`;
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

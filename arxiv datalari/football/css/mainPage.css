@@ -1,0 +1,276 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    list-style: none;
+    text-decoration: none;
+}
+
+header{
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    height: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 33px 9%;
+    background:#133917 75.52%;
+}
+
+.navlist{
+    display: flex;
+}
+.navlist a{
+    color: white;
+    margin-left: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: all .55s ease
+}
+.navlist a:hover{
+    border-bottom: 2px solid white;
+}
+.navlist button{
+    background-color: transparent;
+    color: white;
+    margin-left: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    border: transparent;
+    border-bottom: 2px solid transparent;
+    transition: all .55s ease;
+}
+.navlist button:hover{
+    border-bottom: 2px solid white;
+}
+
+.dropdown .dropbtn{
+    background-color: transparent;
+    color: white;
+    margin-left: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    border: transparent;
+    border-bottom: 2px solid transparent;
+    transition: all .55s ease;
+}
+.dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: #38703d;
+    min-width: 220px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 101;
+    border-radius: 30px;
+}
+.dropdown-content a {
+    color: white;
+    margin-left: 0px;
+    padding: 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    transition-duration: 0s;
+}
+  
+.dropdown-content a:hover {
+    background-color: white;
+    color: #38703d;
+    border-radius: 30px;
+    border-bottom: 2px solid transparent;
+}
+  
+.dropdown:hover .dropdown-content {
+    display: block;
+
+}
+#menu-icon{
+    color: white;
+    font-size: 35px;
+    z-index: 101;
+    cursor: pointer;
+    display: none;
+}
+.cempionat{
+    height: 100%;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(250deg, #4d9559 0%, #38703d 28.53%, #133917 75.52%);
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 2rem;
+}
+section{
+    padding: 0 19%;
+}
+.cempionat-yazisi h2{
+    font-size: 40px;
+    font-weight: 400;
+    color: white;
+    margin-bottom: 40px;
+}
+.cempionat-yazisi p{
+    color: white;
+    font-size: 20px;
+    line-height: 1.9;
+    margin-bottom: 40px;
+}
+.cempionat-sekil img{
+    width: 350px;
+    height: auto;
+}
+.cempionat-yazisi a{
+    display: inline-block;
+    color: white;
+    background: #4d9559;
+    border: 1px solid transparent;
+    padding: 12px 30px;
+    line-height: 1.4;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 30px;
+    text-transform: uppercase;
+    transition: all .55s ease;
+}
+.cempionat-yazisi a:hover{
+    background: transparent;
+    border: 1px solid white;
+    transform: translateX(8px);
+}
+.cempionat-yazisi a.oyun-icmal{
+    background: transparent;
+    border: 1px solid white;
+    margin-left: 20px;
+}
+.cempionat-yazisi a.oyun-icmal i{
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.icons{
+    position: absolute;
+    top: 50%;
+    padding: 0 9%;
+    transform: translateY(-50%);
+}
+
+.icons i{
+    display: block;
+    margin: 26px 0;
+    font-size: 24px;
+    color: white;
+    transition: all .50s ease;
+}
+.icons i:hover{
+    color: #4d9559;
+    transform: translateY(-5px);
+}
+
+@media (max-width: 1535px){
+    header{
+        padding: 15px 3%;
+        transition: .2s;
+    }
+    .icons{
+        padding: 0 3%;
+        transition: .2s;
+    }
+    .cempionat-yazisi h2{
+        font-size: 75px;
+        margin: 0 0 30px;
+    }
+}
+@media (max-width: 1460px){
+    section{
+        padding: 0 12%;
+        transition: .2s;
+    }
+    .cempionat-yazisi h2{
+        font-size: 75px;
+        margin: 0 0 30px;
+    }
+}
+@media (max-width: 1340px){
+    .cempionat-sekil img{
+        width: 60%;
+        height: auto;
+    }
+    .cempionat-yazisi h2{
+        font-size: 75px;
+        margin: 0 0 30px;
+    }
+}
+@media (max-width: 1195px){
+    section{
+        padding: 0 3%;
+        transition: .2s;
+    }
+    .cempionat-yazisi{
+        padding-top: 115px;
+    }
+    .cempionat-sekil{
+        text-align: center;
+    }
+    .cempionat-sekil img{
+        width: 560px;
+        height: 100%;
+    }
+    .cempionat{
+        height: 100%;
+        gap: 1rem;
+        grid-template-columns: 1fr;
+    }
+    .icons{
+        display: none;
+    }
+}
+@media (max-width: 1010px){
+    #menu-icon{
+        display: block;
+    }
+    .navlist{
+        position: absolute;
+        top: 100%;
+        right: -100%;
+        width: 300px;
+        height: 38vh;
+        background: #4d9559;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+        padding: 50px 20px;
+        transition: all .55s ease;
+    }
+    .navlist a{
+        margin-left: 0;
+        display: block;
+        margin: 10px 0px;
+    }
+    .navlist .dropbtn{
+        margin-left: 0;
+    }
+    .navlist.open{
+        right: 0;
+    }
+}
+@media (max-width: 680px){
+    .cempionat-sekil img{
+        width: 60%;
+        height: auto;
+    }
+    .cempionat-yazisi a.oyun-icmal{
+        margin-top: 10px;
+        margin-left: 0px;
+    }
+    .cempionat-yazisi h2{
+        font-size: 40px;
+    }
+}
