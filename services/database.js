@@ -1,12 +1,12 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
-import { initializeApp } from 'https://esm.sh/firebase@10.8.0/app';
+import { initializeApp, getApps, getApp } from 'https://esm.sh/firebase@10.8.0/app';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://esm.sh/firebase@10.8.0/firestore';
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;
 if (useRealFirebase) {
   try {
-    const app = initializeApp(firebaseConfig);
+    const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
     firestore = getFirestore(app);
   } catch (error) {
     console.error("Firebase initialization failed:", error);
