@@ -1,6 +1,43 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
+  <script>
+    window.addEventListener('error', function(e) {
+      const root = document.getElementById('root');
+      if (root) {
+        root.innerHTML = `
+          <div class="min-h-screen flex flex-col items-center justify-center bg-red-950 text-white p-6 text-center" style="font-family: sans-serif;">
+            <i class="fas fa-exclamation-triangle text-5xl text-red-500 mb-4 animate-bounce"></i>
+            <h1 class="text-xl font-black mb-2">Sistem Yüklənmə Xətası</h1>
+            <p class="text-xs text-red-300 max-w-lg mb-4 font-mono bg-red-900/50 p-4 rounded-2xl border border-red-800 text-left overflow-auto max-h-60" style="white-space: pre-wrap; word-break: break-all;">
+              ${e.message || 'Bilinməyən Xəta'}<br/>
+              Fayl: ${e.filename || 'Bilinmir'}<br/>
+              Sətir: ${e.lineno || '0'}:${e.colno || '0'}<br/>
+              ${e.error && e.error.stack ? e.error.stack : ''}
+            </p>
+            <p class="text-[10px] text-red-400">Zəhmət olmasa bu xətanın nə olduğunu bizə bildirin.</p>
+          </div>
+        `;
+      }
+    });
+
+    window.addEventListener('unhandledrejection', function(e) {
+      const root = document.getElementById('root');
+      if (root) {
+        root.innerHTML = `
+          <div class="min-h-screen flex flex-col items-center justify-center bg-red-950 text-white p-6 text-center" style="font-family: sans-serif;">
+            <i class="fas fa-exclamation-triangle text-5xl text-red-500 mb-4 animate-bounce"></i>
+            <h1 class="text-xl font-black mb-2">Sistem (Promise) Xətası</h1>
+            <p class="text-xs text-red-300 max-w-lg mb-4 font-mono bg-red-900/50 p-4 rounded-2xl border border-red-800 text-left overflow-auto max-h-60" style="white-space: pre-wrap; word-break: break-all;">
+              ${e.reason && e.reason.message ? e.reason.message : e.reason || 'Unhandled Promise Rejection'}<br/>
+              ${e.reason && e.reason.stack ? e.reason.stack : ''}
+            </p>
+            <p class="text-[10px] text-red-400">Zəhmət olmasa bu xətanın nə olduğunu bizə bildirin.</p>
+          </div>
+        `;
+      }
+    });
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TDV BTL Futbol</title>
