@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TDV BTL Futbol</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="TDV BTL Futbol Turniri - Canlı turnir cədvəli, oyunların arxiv videoları və Sofascore tipli fərdi oyunçu reytinqləri.">
+  <meta name="keywords" content="futbol, minifutbol, məktəb turniri, reytinqlər, turnir cədvəli, matçlar">
+  <meta name="author" content="Antigravity Agent">
+
+  <!-- FontAwesome for Football & System Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Inter (Sporty & Modern) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            // Vibrant Purple & Electric Green Custom Theme
+            purple: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+              950: '#2e1065',
+            },
+            green: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- ESM Import Maps for compile-free React & HTM -->
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom": "https://esm.sh/react-dom@18.2.0/client",
+        "htm": "https://esm.sh/htm@3.1.1"
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+  <div id="root">
+    <!-- Initial Loader -->
+    <div class="min-h-screen flex flex-col items-center justify-center bg-purple-950 text-white">
+      <div class="relative flex items-center justify-center mb-4">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
+        <i class="fas fa-futbol absolute text-2xl text-white"></i>
+      </div>
+      <p class="font-black tracking-widest text-xs uppercase text-purple-200">Turnir Məlumatları Yüklənir...</p>
+    </div>
+  </div>
+
+  <!-- Bootstrapping Module -->
+  <script type="module">
+    import React from 'react';
+    import { createRoot } from 'react-dom';
+    import htm from 'htm';
+    import App from './app.js';
+
+    const html = htm.bind(React.createElement);
+    const container = document.getElementById('root');
+    const root = createRoot(container);
+    root.render(html`<${App} />`);
+  </script>
+</body>
+</html>

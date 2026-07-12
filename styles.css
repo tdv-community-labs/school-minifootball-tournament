@@ -1,0 +1,85 @@
+/* Custom Styles for School Minifootball Tournament Platform */
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Glassmorphism Effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.glass-nav {
+  background: rgba(59, 7, 100, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Sofascore Rating Badge Colors */
+.rating-sofascore-legendary {
+  background-color: #15803d; /* Dark Green */
+  color: #ffffff;
+}
+
+.rating-sofascore-excellent {
+  background-color: #22c55e; /* Electric Green */
+  color: #0c0a09;
+}
+
+.rating-sofascore-good {
+  background-color: #eab308; /* Yellow */
+  color: #0c0a09;
+}
+
+.rating-sofascore-average {
+  background-color: #f97316; /* Orange */
+  color: #ffffff;
+}
+
+.rating-sofascore-bad {
+  background-color: #ef4444; /* Red */
+  color: #ffffff;
+}
+
+/* Sport Card Hover Transition */
+.sport-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sport-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px -8px rgba(59, 7, 100, 0.15);
+}
