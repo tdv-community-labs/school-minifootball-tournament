@@ -18,6 +18,8 @@ export default function App() {
   const [isAdminAuthorized, setIsAdminAuthorized] = useState(
     localStorage.getItem('minifootball_admin_authorized') === 'true'
   );
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+  const [inputPassword, setInputPassword] = useState('');
 
   const fetchYearsList = async () => {
     const allYears = await db.getYears();
@@ -41,14 +43,34 @@ export default function App() {
       pathname === '/admin-secret-gate' ||
       pathname.endsWith('/admin-secret-gate')
     ) {
-      localStorage.setItem('minifootball_admin_authorized', 'true');
-      setIsAdminAuthorized(true);
-      setActiveTab('admin');
-      
-      // Clean URL: redirect browser to root path
+      // Clean URL: redirect browser to root path immediately
       window.history.replaceState({}, document.title, '/');
+      
+      // If already authorized, go straight to admin tab
+      if (localStorage.getItem('minifootball_admin_authorized') === 'true') {
+        setActiveTab('admin');
+      } else {
+        // Otherwise trigger password modal prompt
+        setShowPasswordPrompt(true);
+      }
     }
   }, []);
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (inputPassword === 'btl2026') {
+      localStorage.setItem('minifootball_admin_authorized', 'true');
+      setIsAdminAuthorized(true);
+      setShowPasswordPrompt(false);
+      setInputPassword('');
+      setActiveTab('admin');
+    } else {
+      alert('Xəta: Yanlış şifrə!');
+      setShowPasswordPrompt(false);
+      setInputPassword('');
+      setActiveTab('dashboard');
+    }
+  };
 
   const handleReloadYears = async () => {
     await fetchYearsList();
@@ -231,6 +253,49 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      <!-- Password Prompt Overlay Modal -->
+      ${showPasswordPrompt && html`
+        <div className="fixed inset-0 z-50 bg-purple-950/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-purple-100 text-center animate-fadeIn" style="font-family: sans-serif;">
+            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 text-purple-900">
+              <i className="fas fa-lock text-xl"></i>
+            </div>
+            <h3 className="text-lg font-black text-purple-950 mb-2">Admin Girişi</h3>
+            <p className="text-xs text-gray-500 mb-4">İdarəetmə panelinə daxil olmaq üçün təhlükəsizlik şifrəsini yazın.</p>
+            
+            <form onSubmit=${handlePasswordSubmit} className="space-y-4">
+              <input
+                type="password"
+                required
+                placeholder="Şifrə"
+                value=${inputPassword}
+                onChange=${(e) => setInputPassword(e.target.value)}
+                className="w-full bg-gray-50 border border-gray-200 text-center text-sm rounded-xl p-3 font-bold focus:outline-none focus:border-purple-900 transition"
+              />
+              <div className="flex space-x-2">
+                <button
+                  type="submit"
+                  className="flex-1 bg-purple-900 text-white font-bold py-3 rounded-xl text-xs hover:bg-purple-800 transition"
+                >
+                  Daxil Ol
+                </button>
+                <button
+                  type="button"
+                  onClick=${() => {
+                    setShowPasswordPrompt(false);
+                    setInputPassword('');
+                    setActiveTab('dashboard');
+                  }}
+                  className="bg-gray-150 text-gray-700 font-bold py-3 px-4 rounded-xl text-xs hover:bg-gray-200 transition"
+                >
+                  Ləğv Et
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `}
     </div>
   `;
 }
