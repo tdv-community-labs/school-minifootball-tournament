@@ -5,7 +5,7 @@ $outputPath = "C:\Users\user\.gemini\antigravity\scratch\school-minifootball-tou
 
 $classes = [System.Collections.Generic.List[PSObject]]::new()
 $players = [System.Collections.Generic.List[PSObject]]::new()
-$matches = [System.Collections.Generic.List[PSObject]]::new()
+$matchList = [System.Collections.Generic.List[PSObject]]::new()
 
 $classesMap = @{}
 $playersMap = @{} # keyed by "name_class"
@@ -252,7 +252,7 @@ foreach ($t in $tableMatches) {
             videoUrl = "https://www.youtube.com/embed/dQw4w9WgXcQ"
             playerStats = $matchStats
         }
-        $matches.Add($matchObj)
+        $matchList.Add($matchObj)
         
         # Add classes to mapping if they are missing
         if (-not $classesMap.ContainsKey($teamA)) {
@@ -274,10 +274,10 @@ foreach ($t in $tableMatches) {
 $archiveData = [PSCustomObject]@{
     classes = $classes
     players = $players
-    matches = $matches
+    matches = $matchList
 }
 
 $jsonText = $archiveData | ConvertTo-Json -Depth 100
 [System.IO.File]::WriteAllText($outputPath, $jsonText, [System.Text.Encoding]::UTF8)
 
-Write-Host "Archive generated successfully with $($classes.Count) classes, $($players.Count) players, and $($matches.Count) matches!"
+Write-Host "Archive generated successfully with $($classes.Count) classes, $($players.Count) players, and $($matchList.Count) matches!"
