@@ -1,5 +1,5 @@
 // Firebase Configuration and Toggle for Real/Mock Database
-export const firebaseConfig = {
+let config = {
   apiKey: "AIzaSyAIV2lXg-4ZjZcUW9lp_-QV3hwBLZsmUs",
   authDomain: "tdv-football.firebaseapp.com",
   projectId: "tdv-football",
@@ -9,6 +9,13 @@ export const firebaseConfig = {
   measurementId: "G-85XEEMZYGC"
 };
 
-// Set to true when you want to connect to a real Firebase Firestore instance
-// Ensure you have initialized Firebase in your project before setting to true.
+try {
+  if (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_FIREBASE_CONFIG) {
+    config = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG);
+  }
+} catch (error) {
+  console.error("Error parsing NEXT_PUBLIC_FIREBASE_CONFIG:", error);
+}
+
+export const firebaseConfig = config;
 export const useRealFirebase = true;
