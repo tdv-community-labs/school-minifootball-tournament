@@ -257,7 +257,7 @@ export default function App() {
       <!-- Password Prompt Overlay Modal -->
       ${showPasswordPrompt && html`
         <div className="fixed inset-0 z-50 bg-purple-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-purple-100 text-center animate-fadeIn" style="font-family: sans-serif;">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-purple-100 text-center animate-fadeIn">
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 text-purple-900">
               <i className="fas fa-lock text-xl"></i>
             </div>
