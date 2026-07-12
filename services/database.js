@@ -1,6 +1,6 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { initializeApp } from 'https://esm.sh/firebase@10.8.0/app';
+import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://esm.sh/firebase@10.8.0/firestore';
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;
