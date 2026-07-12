@@ -533,11 +533,10 @@ export const db = {
   getPlayers: async (year) => {
     if (useRealFirebase && firestore) {
       try {
-        const [cSnap, pSnap, mSnap, ySnap] = await Promise.all([
+        const [cSnap, pSnap, mSnap] = await Promise.all([
           getDocs(collection(firestore, "classes")),
           getDocs(collection(firestore, "players")),
-          getDocs(collection(firestore, "matches")),
-          getDocs(collection(firestore, "years"))
+          getDocs(collection(firestore, "matches"))
         ]);
         const classes = [];
         cSnap.forEach(d => classes.push(d.data()));
@@ -545,9 +544,7 @@ export const db = {
         pSnap.forEach(d => players.push(d.data()));
         const matches = [];
         mSnap.forEach(d => matches.push(d.data()));
-        const years = [];
-        ySnap.forEach(d => years.push(d.id));
-        if (years.length === 0) years.push("2025-2026", "2024-2025", "2023-2024", "2022-2023");
+        const years = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
 
         const computed = recalculateInMemoryData(classes, players, matches, years);
         if (year) {
@@ -737,11 +734,10 @@ export const db = {
   getStandings: async (division = "11", year = "2025-2026") => {
     if (useRealFirebase && firestore) {
       try {
-        const [cSnap, pSnap, mSnap, ySnap] = await Promise.all([
+        const [cSnap, pSnap, mSnap] = await Promise.all([
           getDocs(collection(firestore, "classes")),
           getDocs(collection(firestore, "players")),
-          getDocs(collection(firestore, "matches")),
-          getDocs(collection(firestore, "years"))
+          getDocs(collection(firestore, "matches"))
         ]);
         const classes = [];
         cSnap.forEach(d => classes.push(d.data()));
@@ -749,9 +745,7 @@ export const db = {
         pSnap.forEach(d => players.push(d.data()));
         const matches = [];
         mSnap.forEach(d => matches.push(d.data()));
-        const years = [];
-        ySnap.forEach(d => years.push(d.id));
-        if (years.length === 0) years.push("2025-2026", "2024-2025", "2023-2024", "2022-2023");
+        const years = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
 
         const computed = recalculateInMemoryData(classes, players, matches, years);
         return computed.standings[year]?.[division] || [];
