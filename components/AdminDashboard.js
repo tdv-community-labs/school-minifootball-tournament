@@ -906,7 +906,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <i className="fas fa-file-import mr-2 text-base"></i> Arxiv / JSON Məlumat Yüklə
                 </h4>
                 <p className="text-[11px] leading-relaxed text-slate-600">
-                  Hazırladığımız `archive_2022_2023.json` və ya hər hansı digər arxiv JSON faylını bura yükləyərək toplu şəkildə bazaya (və ya aktivləşdirdikdə Firebase-ə) ötürə bilərsiniz.
+                  Hazırladığımız 'archive_2022_2023.json' və ya hər hansı digər arxiv JSON faylını bura yükləyərək toplu şəkildə bazaya (və ya aktivləşdirdikdə Firebase-ə) ötürə bilərsiniz.
                 </p>
                 <input
                   type="file"
