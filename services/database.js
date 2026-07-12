@@ -210,6 +210,164 @@ export const recalculateData = () => {
   localStorage.setItem('minifootball_standings_divided', JSON.stringify(finalStandings));
 };
 
+export const recalculateInMemoryData = (classes, players, matches, yearsList) => {
+  const defaultYear = yearsList[0] || "2025-2026";
+
+  // Ensure every class has a year
+  const updatedClassesList = classes.map(c => {
+    if (!c.year) c.year = defaultYear;
+    return c;
+  });
+
+  // Reset player stats accumulator
+  const playerStatsMap = {};
+  players.forEach(p => {
+    playerStatsMap[p.id] = {
+      goals: 0,
+      assists: 0,
+      matchesPlayed: 0,
+      ratingSum: 0,
+      ratingCount: 0
+    };
+  });
+
+  // Calculate Standing Points Map: standingsMap[year][division][class]
+  const standingsMap = {};
+  yearsList.forEach(yr => {
+    standingsMap[yr] = {};
+    const divisions = ['6', '7-8', '9-10', '11'];
+    divisions.forEach(div => {
+      standingsMap[yr][div] = {};
+      
+      // Initialize classes for this year and division
+      const filteredClasses = updatedClassesList.filter(c => c.year === yr && c.division === div);
+      filteredClasses.forEach(c => {
+        standingsMap[yr][div][c.name] = {
+          class: c.name,
+          played: 0,
+          won: 0,
+          drawn: 0,
+          lost: 0,
+          goalsFor: 0,
+          goalsAgainst: 0,
+          points: 0
+        };
+      });
+    });
+  });
+
+  // Process Matches
+  matches.forEach(m => {
+    const yr = m.year || defaultYear;
+    const div = m.division || "11";
+    
+    // Accumulate player match stats
+    if (m.playerStats && Array.isArray(m.playerStats)) {
+      m.playerStats.forEach(stat => {
+        if (playerStatsMap[stat.playerId]) {
+          playerStatsMap[stat.playerId].goals += Number(stat.goals || 0);
+          playerStatsMap[stat.playerId].assists += Number(stat.assists || 0);
+          playerStatsMap[stat.playerId].matchesPlayed += 1;
+          if (stat.rating) {
+            playerStatsMap[stat.playerId].ratingSum += Number(stat.rating);
+            playerStatsMap[stat.playerId].ratingCount += 1;
+          }
+        }
+      });
+    }
+
+    // Process team points only for group stage matches
+    if (m.stage === 'Qrup Mərhələsi') {
+      const yearDivMap = standingsMap[yr]?.[div];
+      if (yearDivMap) {
+        // Ensure teams exist in mapping
+        if (!yearDivMap[m.teamA]) {
+          yearDivMap[m.teamA] = { class: m.teamA, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+        }
+        if (!yearDivMap[m.teamB]) {
+          yearDivMap[m.teamB] = { class: m.teamB, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+        }
+
+        const teamA = yearDivMap[m.teamA];
+        const teamB = yearDivMap[m.teamB];
+
+        teamA.played += 1;
+        teamB.played += 1;
+
+        teamA.goalsFor += m.scoreA;
+        teamA.goalsAgainst += m.scoreB;
+        teamB.goalsFor += m.scoreB;
+        teamB.goalsAgainst += m.scoreA;
+
+        if (m.scoreA > m.scoreB) {
+          teamA.won += 1;
+          teamA.points += 3;
+          teamB.lost += 1;
+        } else if (m.scoreA < m.scoreB) {
+          teamB.won += 1;
+          teamB.points += 3;
+          teamA.lost += 1;
+        } else {
+          teamA.drawn += 1;
+          teamA.points += 1;
+          teamB.drawn += 1;
+          teamB.points += 1;
+        }
+      }
+    }
+  });
+
+  // Calculate Standing order list
+  const finalStandings = {};
+  yearsList.forEach(yr => {
+    finalStandings[yr] = {};
+    const divisions = ['6', '7-8', '9-10', '11'];
+    divisions.forEach(div => {
+      if (!standingsMap[yr]?.[div]) {
+        finalStandings[yr][div] = [];
+        return;
+      }
+      const list = Object.values(standingsMap[yr][div]).map(team => {
+        team.goalDifference = team.goalsFor - team.goalsAgainst;
+        return team;
+      });
+
+      // Sort
+      list.sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points;
+        if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference;
+        if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+        return a.class.localeCompare(b.class);
+      });
+
+      finalStandings[yr][div] = list;
+    });
+  });
+
+  // Update players list with calculated values, division, and year
+  const updatedPlayers = players.map(p => {
+    const stats = playerStatsMap[p.id] || { goals: 0, assists: 0, matchesPlayed: 0, ratingSum: 0, ratingCount: 0 };
+    const classInfo = updatedClassesList.find(c => c.name === p.class);
+    const division = classInfo ? classInfo.division : p.division || "11";
+    const year = classInfo ? classInfo.year : p.year || defaultYear;
+
+    return {
+      ...p,
+      division,
+      year,
+      goals: stats.goals > 0 ? stats.goals : p.goals || 0,
+      assists: stats.assists > 0 ? stats.assists : p.assists || 0,
+      matchesPlayed: stats.matchesPlayed > 0 ? stats.matchesPlayed : p.matchesPlayed || 0,
+      overallRating: stats.ratingCount > 0 ? Number((stats.ratingSum / stats.ratingCount).toFixed(1)) : p.overallRating || 6.0
+    };
+  });
+
+  return {
+    players: updatedPlayers,
+    standings: finalStandings
+  };
+};
+
 // Initialize Mock Storage
 if (!useRealFirebase) {
   initializeStorage();
@@ -229,8 +387,10 @@ export const db = {
           list.sort((a, b) => b.localeCompare(a));
           return list;
         }
+        return ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
       } catch (err) {
-        console.error("Firebase getYears failed, using localStorage:", err);
+        console.error("Firebase getYears failed:", err);
+        return ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
       }
     }
     return JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025", "2023-2024", "2022-2023"]');
@@ -303,13 +463,13 @@ export const db = {
         querySnapshot.forEach(docSnap => {
           list.push(docSnap.data());
         });
-        localStorage.setItem('minifootball_classes', JSON.stringify(list));
         if (year) {
           return list.filter(c => c.year === year);
         }
         return list;
       } catch (err) {
-        console.error("Firebase getClasses failed, using localStorage:", err);
+        console.error("Firebase getClasses failed:", err);
+        return [];
       }
     }
     const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
@@ -373,18 +533,30 @@ export const db = {
   getPlayers: async (year) => {
     if (useRealFirebase && firestore) {
       try {
-        const querySnapshot = await getDocs(collection(firestore, "players"));
-        const list = [];
-        querySnapshot.forEach(docSnap => {
-          list.push(docSnap.data());
-        });
-        localStorage.setItem('minifootball_players', JSON.stringify(list));
+        const [cSnap, pSnap, mSnap, ySnap] = await Promise.all([
+          getDocs(collection(firestore, "classes")),
+          getDocs(collection(firestore, "players")),
+          getDocs(collection(firestore, "matches")),
+          getDocs(collection(firestore, "years"))
+        ]);
+        const classes = [];
+        cSnap.forEach(d => classes.push(d.data()));
+        const players = [];
+        pSnap.forEach(d => players.push(d.data()));
+        const matches = [];
+        mSnap.forEach(d => matches.push(d.data()));
+        const years = [];
+        ySnap.forEach(d => years.push(d.id));
+        if (years.length === 0) years.push("2025-2026", "2024-2025", "2023-2024", "2022-2023");
+
+        const computed = recalculateInMemoryData(classes, players, matches, years);
         if (year) {
-          return list.filter(p => p.year === year);
+          return computed.players.filter(p => p.year === year);
         }
-        return list;
+        return computed.players;
       } catch (err) {
-        console.error("Firebase getPlayers failed, using localStorage:", err);
+        console.error("Firebase getPlayers failed:", err);
+        return [];
       }
     }
     const players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
@@ -481,13 +653,13 @@ export const db = {
         querySnapshot.forEach(docSnap => {
           list.push(docSnap.data());
         });
-        localStorage.setItem('minifootball_matches', JSON.stringify(list));
         if (year) {
           return list.filter(m => m.year === year);
         }
         return list;
       } catch (err) {
-        console.error("Firebase getMatches failed, using localStorage:", err);
+        console.error("Firebase getMatches failed:", err);
+        return [];
       }
     }
     const matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
@@ -565,10 +737,11 @@ export const db = {
   getStandings: async (division = "11", year = "2025-2026") => {
     if (useRealFirebase && firestore) {
       try {
-        const [cSnap, pSnap, mSnap] = await Promise.all([
+        const [cSnap, pSnap, mSnap, ySnap] = await Promise.all([
           getDocs(collection(firestore, "classes")),
           getDocs(collection(firestore, "players")),
-          getDocs(collection(firestore, "matches"))
+          getDocs(collection(firestore, "matches")),
+          getDocs(collection(firestore, "years"))
         ]);
         const classes = [];
         cSnap.forEach(d => classes.push(d.data()));
@@ -576,12 +749,15 @@ export const db = {
         pSnap.forEach(d => players.push(d.data()));
         const matches = [];
         mSnap.forEach(d => matches.push(d.data()));
+        const years = [];
+        ySnap.forEach(d => years.push(d.id));
+        if (years.length === 0) years.push("2025-2026", "2024-2025", "2023-2024", "2022-2023");
 
-        if (classes.length > 0) localStorage.setItem('minifootball_classes', JSON.stringify(classes));
-        if (players.length > 0) localStorage.setItem('minifootball_players', JSON.stringify(players));
-        if (matches.length > 0) localStorage.setItem('minifootball_matches', JSON.stringify(matches));
+        const computed = recalculateInMemoryData(classes, players, matches, years);
+        return computed.standings[year]?.[division] || [];
       } catch (e) {
-        console.error("Firebase getStandings sync failed:", e);
+        console.error("Firebase getStandings failed:", e);
+        return [];
       }
     }
     recalculateData(); // refresh
