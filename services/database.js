@@ -303,13 +303,11 @@ export const db = {
         querySnapshot.forEach(docSnap => {
           list.push(docSnap.data());
         });
-        if (list.length > 0) {
-          localStorage.setItem('minifootball_classes', JSON.stringify(list));
-          if (year) {
-            return list.filter(c => c.year === year);
-          }
-          return list;
+        localStorage.setItem('minifootball_classes', JSON.stringify(list));
+        if (year) {
+          return list.filter(c => c.year === year);
         }
+        return list;
       } catch (err) {
         console.error("Firebase getClasses failed, using localStorage:", err);
       }
@@ -380,13 +378,11 @@ export const db = {
         querySnapshot.forEach(docSnap => {
           list.push(docSnap.data());
         });
-        if (list.length > 0) {
-          localStorage.setItem('minifootball_players', JSON.stringify(list));
-          if (year) {
-            return list.filter(p => p.year === year);
-          }
-          return list;
+        localStorage.setItem('minifootball_players', JSON.stringify(list));
+        if (year) {
+          return list.filter(p => p.year === year);
         }
+        return list;
       } catch (err) {
         console.error("Firebase getPlayers failed, using localStorage:", err);
       }
@@ -485,13 +481,11 @@ export const db = {
         querySnapshot.forEach(docSnap => {
           list.push(docSnap.data());
         });
-        if (list.length > 0) {
-          localStorage.setItem('minifootball_matches', JSON.stringify(list));
-          if (year) {
-            return list.filter(m => m.year === year);
-          }
-          return list;
+        localStorage.setItem('minifootball_matches', JSON.stringify(list));
+        if (year) {
+          return list.filter(m => m.year === year);
         }
+        return list;
       } catch (err) {
         console.error("Firebase getMatches failed, using localStorage:", err);
       }
