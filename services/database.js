@@ -1,4 +1,17 @@
-import { useRealFirebase } from './firebase-config.js';
+import { useRealFirebase, firebaseConfig } from './firebase-config.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+// Initialize Firebase if useRealFirebase toggle is true
+let firestore = null;
+if (useRealFirebase) {
+  try {
+    const app = initializeApp(firebaseConfig);
+    firestore = getFirestore(app);
+  } catch (error) {
+    console.error("Firebase initialization failed:", error);
+  }
+}
 
 // Seed Initial Classes (Empty for custom entry)
 const initialClasses = [];
@@ -62,27 +75,25 @@ export const recalculateData = () => {
     };
   });
 
-  // Unique divisions
-  const divisions = ["6", "7-8", "9-10", "11"];
+  // Calculate Standing Points Map: standingsMap[year][division][class]
   const standingsMap = {};
-
-  // Initialize standings per year and division
   years.forEach(yr => {
     standingsMap[yr] = {};
+    const divisions = ['6', '7-8', '9-10', '11'];
     divisions.forEach(div => {
       standingsMap[yr][div] = {};
-      updatedClassesList.filter(c => c.year === yr && c.division === div).forEach(c => {
+      
+      // Initialize classes for this year and division
+      const filteredClasses = updatedClassesList.filter(c => c.year === yr && c.division === div);
+      filteredClasses.forEach(c => {
         standingsMap[yr][div][c.name] = {
           class: c.name,
-          division: div,
-          year: yr,
           played: 0,
           won: 0,
           drawn: 0,
           lost: 0,
           goalsFor: 0,
           goalsAgainst: 0,
-          goalDifference: 0,
           points: 0
         };
       });
@@ -91,61 +102,72 @@ export const recalculateData = () => {
 
   // Process Matches
   matches.forEach(m => {
-    const scoreA = Number(m.scoreA);
-    const scoreB = Number(m.scoreB);
-    const div = m.division;
     const yr = m.year || defaultYear;
-
-    // Only "Qrup Mərhələsi" matches count towards league standings
-    const isGroupStage = m.stage === "Qrup Mərhələsi";
-
-    if (isGroupStage && standingsMap[yr] && standingsMap[yr][div] && standingsMap[yr][div][m.teamA] && standingsMap[yr][div][m.teamB]) {
-      standingsMap[yr][div][m.teamA].played += 1;
-      standingsMap[yr][div][m.teamB].played += 1;
-      standingsMap[yr][div][m.teamA].goalsFor += scoreA;
-      standingsMap[yr][div][m.teamA].goalsAgainst += scoreB;
-      standingsMap[yr][div][m.teamB].goalsFor += scoreB;
-      standingsMap[yr][div][m.teamB].goalsAgainst += scoreA;
-
-      if (scoreA > scoreB) {
-        standingsMap[yr][div][m.teamA].won += 1;
-        standingsMap[yr][div][m.teamA].points += 3;
-        standingsMap[yr][div][m.teamB].lost += 1;
-      } else if (scoreA < scoreB) {
-        standingsMap[yr][div][m.teamB].won += 1;
-        standingsMap[yr][div][m.teamB].points += 3;
-        standingsMap[yr][div][m.teamA].lost += 1;
-      } else {
-        standingsMap[yr][div][m.teamA].drawn += 1;
-        standingsMap[yr][div][m.teamA].points += 1;
-        standingsMap[yr][div][m.teamB].drawn += 1;
-        standingsMap[yr][div][m.teamB].points += 1;
-      }
-    }
-
-    // Accumulate player statistics
+    const div = m.division || "11";
+    
+    // Accumulate player match stats
     if (m.playerStats && Array.isArray(m.playerStats)) {
       m.playerStats.forEach(stat => {
-        if (!playerStatsMap[stat.playerId]) {
-          playerStatsMap[stat.playerId] = { goals: 0, assists: 0, matchesPlayed: 0, ratingSum: 0, ratingCount: 0 };
-        }
-        playerStatsMap[stat.playerId].goals += Number(stat.goals || 0);
-        playerStatsMap[stat.playerId].assists += Number(stat.assists || 0);
-        playerStatsMap[stat.playerId].matchesPlayed += 1;
-        if (stat.rating) {
-          playerStatsMap[stat.playerId].ratingSum += Number(stat.rating);
-          playerStatsMap[stat.playerId].ratingCount += 1;
+        if (playerStatsMap[stat.playerId]) {
+          playerStatsMap[stat.playerId].goals += Number(stat.goals || 0);
+          playerStatsMap[stat.playerId].assists += Number(stat.assists || 0);
+          playerStatsMap[stat.playerId].matchesPlayed += 1;
+          if (stat.rating) {
+            playerStatsMap[stat.playerId].ratingSum += Number(stat.rating);
+            playerStatsMap[stat.playerId].ratingCount += 1;
+          }
         }
       });
     }
+
+    // Process team points only for group stage matches
+    if (m.stage === 'Qrup Mərhələsi') {
+      const yearDivMap = standingsMap[yr]?.[div];
+      if (yearDivMap) {
+        // Ensure teams exist in mapping
+        if (!yearDivMap[m.teamA]) {
+          yearDivMap[m.teamA] = { class: m.teamA, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+        }
+        if (!yearDivMap[m.teamB]) {
+          yearDivMap[m.teamB] = { class: m.teamB, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+        }
+
+        const teamA = yearDivMap[m.teamA];
+        const teamB = yearDivMap[m.teamB];
+
+        teamA.played += 1;
+        teamB.played += 1;
+
+        teamA.goalsFor += m.scoreA;
+        teamA.goalsAgainst += m.scoreB;
+        teamB.goalsFor += m.scoreB;
+        teamB.goalsAgainst += m.scoreA;
+
+        if (m.scoreA > m.scoreB) {
+          teamA.won += 1;
+          teamA.points += 3;
+          teamB.lost += 1;
+        } else if (m.scoreA < m.scoreB) {
+          teamB.won += 1;
+          teamB.points += 3;
+          teamA.lost += 1;
+        } else {
+          teamA.drawn += 1;
+          teamA.points += 1;
+          teamB.drawn += 1;
+          teamB.points += 1;
+        }
+      }
+    }
   });
 
-  // Calculate goal differences and sort standings per year and division
+  // Calculate Standing order list
   const finalStandings = {};
   years.forEach(yr => {
     finalStandings[yr] = {};
+    const divisions = ['6', '7-8', '9-10', '11'];
     divisions.forEach(div => {
-      if (!standingsMap[yr] || !standingsMap[yr][div]) {
+      if (!standingsMap[yr]?.[div]) {
         finalStandings[yr][div] = [];
         return;
       }
@@ -196,13 +218,35 @@ if (!useRealFirebase) {
 export const db = {
   // Years CRUD
   getYears: async () => {
-    return JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025"]');
+    if (useRealFirebase && firestore) {
+      try {
+        const querySnapshot = await getDocs(collection(firestore, "years"));
+        const list = [];
+        querySnapshot.forEach(docSnap => {
+          list.push(docSnap.id);
+        });
+        if (list.length > 0) {
+          list.sort((a, b) => b.localeCompare(a));
+          return list;
+        }
+      } catch (err) {
+        console.error("Firebase getYears failed, using localStorage:", err);
+      }
+    }
+    return JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025", "2023-2024", "2022-2023"]');
   },
 
   addYear: async (year) => {
-    const years = JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025"]');
+    if (useRealFirebase && firestore) {
+      try {
+        await setDoc(doc(firestore, "years", year), {});
+      } catch (err) {
+        console.error("Firebase addYear failed:", err);
+      }
+    }
+    const years = JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025", "2023-2024", "2022-2023"]');
     if (!years.includes(year)) {
-      years.unshift(year); // add to beginning
+      years.unshift(year);
       localStorage.setItem('minifootball_years', JSON.stringify(years));
     }
     recalculateData();
@@ -210,28 +254,66 @@ export const db = {
   },
 
   deleteYear: async (year) => {
-    let years = JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025"]');
+    if (useRealFirebase && firestore) {
+      try {
+        await deleteDoc(doc(firestore, "years", year));
+      } catch (err) {
+        console.error("Firebase deleteYear failed:", err);
+      }
+    }
+    
+    let years = JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025", "2023-2024", "2022-2023"]');
     years = years.filter(y => y !== year);
     localStorage.setItem('minifootball_years', JSON.stringify(years));
 
-    // Delete all classes, players, matches for this year
     let classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
+    const classesToDelete = classes.filter(c => c.year === year);
     classes = classes.filter(c => c.year !== year);
     localStorage.setItem('minifootball_classes', JSON.stringify(classes));
 
     let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+    const playersToDelete = players.filter(p => p.year === year);
     players = players.filter(p => p.year !== year);
     localStorage.setItem('minifootball_players', JSON.stringify(players));
 
     let matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
+    const matchesToDelete = matches.filter(m => m.year === year);
     matches = matches.filter(m => m.year !== year);
     localStorage.setItem('minifootball_matches', JSON.stringify(matches));
+
+    if (useRealFirebase && firestore) {
+      try {
+        for (let c of classesToDelete) { await deleteDoc(doc(firestore, "classes", c.id)); }
+        for (let p of playersToDelete) { await deleteDoc(doc(firestore, "players", p.id)); }
+        for (let m of matchesToDelete) { await deleteDoc(doc(firestore, "matches", m.id)); }
+      } catch (err) {
+        console.error("Firebase cascade deletes failed:", err);
+      }
+    }
 
     recalculateData();
   },
 
   // Classes CRUD
   getClasses: async (year) => {
+    if (useRealFirebase && firestore) {
+      try {
+        const querySnapshot = await getDocs(collection(firestore, "classes"));
+        const list = [];
+        querySnapshot.forEach(docSnap => {
+          list.push(docSnap.data());
+        });
+        if (list.length > 0) {
+          localStorage.setItem('minifootball_classes', JSON.stringify(list));
+          if (year) {
+            return list.filter(c => c.year === year);
+          }
+          return list;
+        }
+      } catch (err) {
+        console.error("Firebase getClasses failed, using localStorage:", err);
+      }
+    }
     const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     if (year) {
       return classes.filter(c => c.year === year);
@@ -240,12 +322,19 @@ export const db = {
   },
 
   addClass: async (cls) => {
-    const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     const newClass = {
-      id: "c_" + Date.now(),
+      id: cls.id || "c_" + Date.now(),
       year: cls.year || "2025-2026",
       ...cls
     };
+    if (useRealFirebase && firestore) {
+      try {
+        await setDoc(doc(firestore, "classes", newClass.id), newClass);
+      } catch (err) {
+        console.error("Firebase addClass failed:", err);
+      }
+    }
+    const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     classes.push(newClass);
     localStorage.setItem('minifootball_classes', JSON.stringify(classes));
     recalculateData();
@@ -253,22 +342,55 @@ export const db = {
   },
 
   deleteClass: async (id) => {
+    if (useRealFirebase && firestore) {
+      try {
+        await deleteDoc(doc(firestore, "classes", id));
+      } catch (err) {
+        console.error("Firebase deleteClass failed:", err);
+      }
+    }
     let classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     const classToDelete = classes.find(c => c.id === id);
     classes = classes.filter(c => c.id !== id);
     localStorage.setItem('minifootball_classes', JSON.stringify(classes));
     
-    // Delete players belonging to deleted class
     if (classToDelete) {
       let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+      const playersToDelete = players.filter(p => p.class === classToDelete.name && p.year === classToDelete.year);
       players = players.filter(p => p.class !== classToDelete.name || p.year !== classToDelete.year);
       localStorage.setItem('minifootball_players', JSON.stringify(players));
+
+      if (useRealFirebase && firestore) {
+        try {
+          for (let p of playersToDelete) { await deleteDoc(doc(firestore, "players", p.id)); }
+        } catch (err) {
+          console.error("Firebase cascade delete players failed:", err);
+        }
+      }
     }
     recalculateData();
   },
 
   // Players CRUD
   getPlayers: async (year) => {
+    if (useRealFirebase && firestore) {
+      try {
+        const querySnapshot = await getDocs(collection(firestore, "players"));
+        const list = [];
+        querySnapshot.forEach(docSnap => {
+          list.push(docSnap.data());
+        });
+        if (list.length > 0) {
+          localStorage.setItem('minifootball_players', JSON.stringify(list));
+          if (year) {
+            return list.filter(p => p.year === year);
+          }
+          return list;
+        }
+      } catch (err) {
+        console.error("Firebase getPlayers failed, using localStorage:", err);
+      }
+    }
     const players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
     if (year) {
       return players.filter(p => p.year === year);
@@ -277,14 +399,13 @@ export const db = {
   },
   
   addPlayer: async (player) => {
-    const players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
     const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     const classInfo = classes.find(c => c.name === player.class && c.year === player.year);
     const division = classInfo ? classInfo.division : "11";
     const year = player.year || (classInfo ? classInfo.year : "2025-2026");
 
     const newPlayer = {
-      id: "p_" + Date.now(),
+      id: player.id || "p_" + Date.now(),
       goals: 0,
       assists: 0,
       matchesPlayed: 0,
@@ -293,6 +414,14 @@ export const db = {
       year,
       ...player
     };
+    if (useRealFirebase && firestore) {
+      try {
+        await setDoc(doc(firestore, "players", newPlayer.id), newPlayer);
+      } catch (err) {
+        console.error("Firebase addPlayer failed:", err);
+      }
+    }
+    const players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
     players.push(newPlayer);
     localStorage.setItem('minifootball_players', JSON.stringify(players));
     recalculateData();
@@ -300,36 +429,73 @@ export const db = {
   },
 
   updatePlayer: async (updatedPlayer) => {
-    let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
     const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     const classInfo = classes.find(c => c.name === updatedPlayer.class && c.year === updatedPlayer.year);
     const division = classInfo ? classInfo.division : updatedPlayer.division || "11";
     const year = updatedPlayer.year || (classInfo ? classInfo.year : "2025-2026");
 
-    players = players.map(p => p.id === updatedPlayer.id ? { ...p, ...updatedPlayer, division, year } : p);
+    const fullPlayer = { ...updatedPlayer, division, year };
+
+    if (useRealFirebase && firestore) {
+      try {
+        await setDoc(doc(firestore, "players", fullPlayer.id), fullPlayer);
+      } catch (err) {
+        console.error("Firebase updatePlayer failed:", err);
+      }
+    }
+    let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+    players = players.map(p => p.id === fullPlayer.id ? fullPlayer : p);
     localStorage.setItem('minifootball_players', JSON.stringify(players));
     recalculateData();
-    return updatedPlayer;
+    return fullPlayer;
   },
 
   deletePlayer: async (id) => {
+    if (useRealFirebase && firestore) {
+      try {
+        await deleteDoc(doc(firestore, "players", id));
+      } catch (err) {
+        console.error("Firebase deletePlayer failed:", err);
+      }
+    }
     let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
     players = players.filter(p => p.id !== id);
     localStorage.setItem('minifootball_players', JSON.stringify(players));
     
-    // Remove stats from matches
     let matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
-    matches = matches.map(m => ({
-      ...m,
-      playerStats: (m.playerStats || []).filter(stat => stat.playerId !== id)
-    }));
+    matches = matches.map(m => {
+      const filteredStats = (m.playerStats || []).filter(stat => stat.playerId !== id);
+      const isChanged = (m.playerStats || []).length !== filteredStats.length;
+      const updatedMatch = { ...m, playerStats: filteredStats };
+      if (isChanged && useRealFirebase && firestore) {
+        setDoc(doc(firestore, "matches", m.id), updatedMatch).catch(e => console.error(e));
+      }
+      return updatedMatch;
+    });
     localStorage.setItem('minifootball_matches', JSON.stringify(matches));
-    
     recalculateData();
   },
 
   // Matches CRUD
   getMatches: async (year) => {
+    if (useRealFirebase && firestore) {
+      try {
+        const querySnapshot = await getDocs(collection(firestore, "matches"));
+        const list = [];
+        querySnapshot.forEach(docSnap => {
+          list.push(docSnap.data());
+        });
+        if (list.length > 0) {
+          localStorage.setItem('minifootball_matches', JSON.stringify(list));
+          if (year) {
+            return list.filter(m => m.year === year);
+          }
+          return list;
+        }
+      } catch (err) {
+        console.error("Firebase getMatches failed, using localStorage:", err);
+      }
+    }
     const matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     if (year) {
       return matches.filter(m => m.year === year);
@@ -338,19 +504,27 @@ export const db = {
   },
 
   addMatch: async (match) => {
-    const matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     const classInfo = classes.find(c => c.name === match.teamA && c.year === match.year);
     const division = classInfo ? classInfo.division : "11";
     const year = match.year || (classInfo ? classInfo.year : "2025-2026");
 
     const newMatch = {
-      id: "m_" + Date.now(),
+      id: match.id || "m_" + Date.now(),
       playerStats: [],
       division,
       year,
       ...match
     };
+
+    if (useRealFirebase && firestore) {
+      try {
+        await setDoc(doc(firestore, "matches", newMatch.id), newMatch);
+      } catch (err) {
+        console.error("Firebase addMatch failed:", err);
+      }
+    }
+    const matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     matches.push(newMatch);
     localStorage.setItem('minifootball_matches', JSON.stringify(matches));
     recalculateData();
@@ -358,19 +532,35 @@ export const db = {
   },
 
   updateMatch: async (updatedMatch) => {
-    let matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     const classInfo = classes.find(c => c.name === updatedMatch.teamA && c.year === updatedMatch.year);
     const division = classInfo ? classInfo.division : updatedMatch.division || "11";
     const year = updatedMatch.year || (classInfo ? classInfo.year : "2025-2026");
 
-    matches = matches.map(m => m.id === updatedMatch.id ? { ...m, ...updatedMatch, division, year } : m);
+    const fullMatch = { ...updatedMatch, division, year };
+
+    if (useRealFirebase && firestore) {
+      try {
+        await setDoc(doc(firestore, "matches", fullMatch.id), fullMatch);
+      } catch (err) {
+        console.error("Firebase updateMatch failed:", err);
+      }
+    }
+    let matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
+    matches = matches.map(m => m.id === fullMatch.id ? fullMatch : m);
     localStorage.setItem('minifootball_matches', JSON.stringify(matches));
     recalculateData();
-    return updatedMatch;
+    return fullMatch;
   },
 
   deleteMatch: async (id) => {
+    if (useRealFirebase && firestore) {
+      try {
+        await deleteDoc(doc(firestore, "matches", id));
+      } catch (err) {
+        console.error("Firebase deleteMatch failed:", err);
+      }
+    }
     let matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     matches = matches.filter(m => m.id !== id);
     localStorage.setItem('minifootball_matches', JSON.stringify(matches));
@@ -379,6 +569,27 @@ export const db = {
 
   // Standings Read (Divided by active division & year)
   getStandings: async (division = "11", year = "2025-2026") => {
+    if (useRealFirebase && firestore) {
+      try {
+        const [cSnap, pSnap, mSnap] = await Promise.all([
+          getDocs(collection(firestore, "classes")),
+          getDocs(collection(firestore, "players")),
+          getDocs(collection(firestore, "matches"))
+        ]);
+        const classes = [];
+        cSnap.forEach(d => classes.push(d.data()));
+        const players = [];
+        pSnap.forEach(d => players.push(d.data()));
+        const matches = [];
+        mSnap.forEach(d => matches.push(d.data()));
+
+        if (classes.length > 0) localStorage.setItem('minifootball_classes', JSON.stringify(classes));
+        if (players.length > 0) localStorage.setItem('minifootball_players', JSON.stringify(players));
+        if (matches.length > 0) localStorage.setItem('minifootball_matches', JSON.stringify(matches));
+      } catch (e) {
+        console.error("Firebase getStandings sync failed:", e);
+      }
+    }
     recalculateData(); // refresh
     const allStandings = JSON.parse(localStorage.getItem('minifootball_standings_divided') || '{}');
     return allStandings[year]?.[division] || [];
@@ -386,9 +597,108 @@ export const db = {
 
   // Reset Database
   resetDatabase: async () => {
+    if (useRealFirebase && firestore) {
+      try {
+        const [cSnap, pSnap, mSnap] = await Promise.all([
+          getDocs(collection(firestore, "classes")),
+          getDocs(collection(firestore, "players")),
+          getDocs(collection(firestore, "matches"))
+        ]);
+        cSnap.forEach(d => deleteDoc(doc(firestore, "classes", d.id)));
+        pSnap.forEach(d => deleteDoc(doc(firestore, "players", d.id)));
+        mSnap.forEach(d => deleteDoc(doc(firestore, "matches", d.id)));
+      } catch (e) {
+        console.error("Firebase resetDatabase failed:", e);
+      }
+    }
     localStorage.setItem('minifootball_classes', JSON.stringify(initialClasses));
     localStorage.setItem('minifootball_players', JSON.stringify(initialPlayers));
     localStorage.setItem('minifootball_matches', JSON.stringify(initialMatches));
+    recalculateData();
+  },
+
+  importData: async (data) => {
+    // 1. Years
+    const years = JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025", "2023-2024", "2022-2023"]');
+    let yearsUpdated = false;
+    
+    const allItems = [...(data.classes || []), ...(data.players || []), ...(data.matches || [])];
+    allItems.forEach(item => {
+      if (item.year && !years.includes(item.year)) {
+        years.push(item.year);
+        yearsUpdated = true;
+      }
+    });
+    if (yearsUpdated) {
+      years.sort((a, b) => b.localeCompare(a));
+      localStorage.setItem('minifootball_years', JSON.stringify(years));
+      if (useRealFirebase && firestore) {
+        try {
+          for (let y of years) { await setDoc(doc(firestore, "years", y), {}); }
+        } catch (e) {
+          console.error("Firebase importing years failed:", e);
+        }
+      }
+    }
+
+    // 2. Classes
+    if (data.classes && data.classes.length > 0) {
+      let classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
+      for (let c of data.classes) {
+        if (!classes.some(existing => existing.name === c.name && existing.year === c.year)) {
+          const newClass = {
+            id: c.id || "c_" + Math.random().toString(36).substr(2, 9),
+            ...c
+          };
+          classes.push(newClass);
+          if (useRealFirebase && firestore) {
+            await setDoc(doc(firestore, "classes", newClass.id), newClass).catch(e => console.error(e));
+          }
+        }
+      }
+      localStorage.setItem('minifootball_classes', JSON.stringify(classes));
+    }
+
+    // 3. Players
+    if (data.players && data.players.length > 0) {
+      let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+      for (let p of data.players) {
+        if (!players.some(existing => existing.name === p.name && existing.class === p.class && existing.year === p.year)) {
+          const newPlayer = {
+            id: p.id || "p_" + Math.random().toString(36).substr(2, 9),
+            goals: p.goals || 0,
+            assists: p.assists || 0,
+            matchesPlayed: p.matchesPlayed || 0,
+            overallRating: p.overallRating || 6.0,
+            ...p
+          };
+          players.push(newPlayer);
+          if (useRealFirebase && firestore) {
+            await setDoc(doc(firestore, "players", newPlayer.id), newPlayer).catch(e => console.error(e));
+          }
+        }
+      }
+      localStorage.setItem('minifootball_players', JSON.stringify(players));
+    }
+
+    // 4. Matches
+    if (data.matches && data.matches.length > 0) {
+      let matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
+      for (let m of data.matches) {
+        if (!matches.some(existing => existing.teamA === m.teamA && existing.teamB === m.teamB && existing.year === m.year && existing.date === m.date)) {
+          const newMatch = {
+            id: m.id || "m_" + Math.random().toString(36).substr(2, 9),
+            ...m
+          };
+          matches.push(newMatch);
+          if (useRealFirebase && firestore) {
+            await setDoc(doc(firestore, "matches", newMatch.id), newMatch).catch(e => console.error(e));
+          }
+        }
+      }
+      localStorage.setItem('minifootball_matches', JSON.stringify(matches));
+    }
+
     recalculateData();
   }
 };

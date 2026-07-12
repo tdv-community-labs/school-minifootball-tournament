@@ -284,6 +284,28 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
     }
   };
 
+  const handleImportJSON = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (evt) => {
+      try {
+        const data = JSON.parse(evt.target.result);
+        if (confirm("Bu fayldakı bütün sinif, oyunçu və matç məlumatlarını bazaya yükləmək istəyirsiniz?")) {
+          await db.importData(data);
+          loadAdminData();
+          alert("Məlumatlar uğurla idxal olundu!");
+          if (onYearsChanged) onYearsChanged();
+        }
+      } catch (err) {
+        alert("Fayl oxunarkən xəta baş verib. Düzgün JSON formatı seçdiyinizdən əmin olun.");
+        console.error(err);
+      }
+    };
+    reader.readAsText(file);
+  };
+
   // Dynamic lists based on form choices
   const classesForSelectedMatchDivision = classes.filter(c => c.division === matchForm.division).sort((a,b)=>a.name.localeCompare(b.name));
   
@@ -876,6 +898,24 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 Qeyd: Sıfırlanma nəticəsində əvvəlki mock turnir məlumatları (20+ oyunçu, 14+ sinif və 8 oyun) bərpa olunacaqdır.
               </p>
               
+              
+              <div className="border-t border-gray-200 my-2"></div>
+              
+              <div className="bg-green-50 text-green-950 border border-green-100 rounded-2xl p-4 space-y-2">
+                <h4 className="font-extrabold text-sm text-green-900 flex items-center">
+                  <i className="fas fa-file-import mr-2 text-base"></i> Arxiv / JSON Məlumat Yüklə
+                </h4>
+                <p className="text-[11px] leading-relaxed text-slate-600">
+                  Hazırladığımız `archive_2022_2023.json` və ya hər hansı digər arxiv JSON faylını bura yükləyərək toplu şəkildə bazaya (və ya aktivləşdirdikdə Firebase-ə) ötürə bilərsiniz.
+                </p>
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange=${handleImportJSON}
+                  className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-black file:bg-green-100 file:text-green-800 hover:file:bg-green-200 cursor-pointer pt-1"
+                />
+              </div>
+
               <div className="border-t border-gray-200 my-2"></div>
               
               <button
