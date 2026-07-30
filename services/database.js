@@ -52,6 +52,107 @@ export const sanitizeObject = (obj) => {
   return obj;
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// SOFASCORE RATING ENGINE
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * calculateSofascoreRating(stat, playerRole, matchContext)
+ *
+ * @param {Object} stat          – Per-match player stat object
+ *   { goals, assists, yellowCards, redCards, ownGoals, saves }
+ * @param {Object} playerRole    – { isKeeper: boolean }
+ * @param {Object} matchContext  – { isFinal: boolean, teamWon: boolean,
+ *                                   goalDiff: number, goalsAgainst: number }
+ * @returns {number}             – Rating clamped to [1.0 – 10.0]
+ */
+export const calculateSofascoreRating = (stat = {}, playerRole = {}, matchContext = {}) => {
+  const BASE = 6.50;
+  let rating = BASE;
+
+  const goals      = Number(stat.goals      || 0);
+  const assists    = Number(stat.assists     || 0);
+  const yellow     = Number(stat.yellowCards || 0);
+  const red        = Number(stat.redCards    || 0);
+  const ownGoals   = Number(stat.ownGoals    || 0);
+  const saves      = Number(stat.saves       || 0);
+
+  const isKeeper     = playerRole.isKeeper    === true;
+  const isFinal      = matchContext.isFinal   === true;
+  const teamWon      = matchContext.teamWon    === true;
+  const goalDiff     = Number(matchContext.goalDiff     || 0);
+  const goalsAgainst = Number(matchContext.goalsAgainst || 0);
+
+  // xG/xA forward-compat: add only when present and > 0, so existing data is unaffected
+  const xG  = Number(stat.xG  || 0);
+  const xA  = Number(stat.xA  || 0);
+
+  if (isKeeper) {
+    // ── Goalkeeper scoring ──────────────────────────────────────────────
+    const cleanSheet = goalsAgainst === 0;
+
+    if (cleanSheet) {
+      rating += 1.00;
+      if (isFinal) rating += 0.20; // Final bonus
+    } else {
+      rating -= goalsAgainst * 0.30; // -0.30 per goal conceded
+    }
+
+    if (saves > 0) rating += saves * 0.20; // +0.20 per save
+
+    // xG forward-compat
+    if (xG > 0) rating += xG * 0.10; // modest bonus for high-xG saves
+
+    if (yellow > 0) rating -= yellow * 0.40;
+    if (red    > 0) rating -= red    * 2.00;
+  } else {
+    // ── Outfield player scoring ─────────────────────────────────────────
+    if (goals   > 0) {
+      rating += goals   * 0.80;
+      if (isFinal) rating += goals * 0.20; // Final bonus per goal
+    }
+    if (assists > 0) {
+      rating += assists * 0.50;
+      if (isFinal) rating += assists * 0.20; // Final bonus per assist
+    }
+
+    // xG/xA forward-compat
+    if (xG > 0) rating += xG * 0.15;
+    if (xA > 0) rating += xA * 0.10;
+
+    if (yellow  > 0) rating -= yellow  * 0.40;
+    if (red     > 0) rating -= red     * 2.00;
+    if (ownGoals > 0) rating -= ownGoals * 1.00;
+
+    // Team result modifiers
+    if (teamWon) {
+      rating += 0.30;
+    } else if (goalDiff <= -3) {
+      rating -= 0.40; // Darmadağın məğlubiyyət (>= 3 qol fərqi)
+    }
+  }
+
+  // Clamp to [1.0, 10.0]
+  return Number(Math.min(10.0, Math.max(1.0, rating)).toFixed(1));
+};
+
+/**
+ * getSofascoreBadgeStyle(rating)
+ * Returns Tailwind class string for rating badge colouring.
+ * @param {number} rating
+ * @returns {string}
+ */
+export const getSofascoreBadgeStyle = (rating) => {
+  const r = Number(rating) || 0;
+  if (r >= 9.0) return 'bg-indigo-600 text-white font-black shadow-lg shadow-indigo-500/40 animate-pulse';
+  if (r >= 8.0) return 'bg-sky-500 text-white font-black shadow-md shadow-sky-500/30';
+  if (r >= 7.0) return 'bg-emerald-500 text-white font-bold';
+  if (r >= 6.0) return 'bg-amber-500 text-white font-bold';
+  return 'bg-red-500 text-white font-bold';
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Seed Initial Classes (Empty for custom entry)
 const initialClasses = [];
 
@@ -143,18 +244,36 @@ export const recalculateData = () => {
   matches.forEach(m => {
     const yr = m.year || defaultYear;
     const div = m.division || "11";
-    
-    // Accumulate player match stats
+
+    // Match result context
+    const isFinal    = m.stage === 'Final';
+    const scoreA     = Number(m.scoreA || 0);
+    const scoreB     = Number(m.scoreB || 0);
+    const goalDiffAB = scoreA - scoreB;
+
+    // Accumulate player match stats with Sofascore rating
     if (m.playerStats && Array.isArray(m.playerStats)) {
       m.playerStats.forEach(stat => {
         if (playerStatsMap[stat.playerId]) {
-          playerStatsMap[stat.playerId].goals += Number(stat.goals || 0);
-          playerStatsMap[stat.playerId].assists += Number(stat.assists || 0);
+          playerStatsMap[stat.playerId].goals        += Number(stat.goals   || 0);
+          playerStatsMap[stat.playerId].assists      += Number(stat.assists || 0);
           playerStatsMap[stat.playerId].matchesPlayed += 1;
-          if (stat.rating) {
-            playerStatsMap[stat.playerId].ratingSum += Number(stat.rating);
-            playerStatsMap[stat.playerId].ratingCount += 1;
-          }
+
+          const playerInfo   = players.find(p => p.id === stat.playerId) || {};
+          const playerTeam   = playerInfo.class || '';
+          const teamWon      = playerTeam === m.teamA ? scoreA > scoreB
+                             : playerTeam === m.teamB ? scoreB > scoreA : false;
+          const myGoalDiff   = playerTeam === m.teamA ? goalDiffAB : -goalDiffAB;
+          const goalsAgainst = playerTeam === m.teamA ? scoreB : scoreA;
+          const isKeeper     = stat.isKeeper === true ||
+            (playerInfo.position || '').toLowerCase().includes('qapı');
+
+          const computedRating = stat.rating
+            ? Number(stat.rating)
+            : calculateSofascoreRating(stat, { isKeeper }, { isFinal, teamWon, goalDiff: myGoalDiff, goalsAgainst });
+
+          playerStatsMap[stat.playerId].ratingSum   += computedRating;
+          playerStatsMap[stat.playerId].ratingCount += 1;
         }
       });
     }
@@ -233,15 +352,17 @@ export const recalculateData = () => {
     const classInfo = updatedClassesList.find(c => c.name === p.class);
     const division = classInfo ? classInfo.division : p.division || "11";
     const year = classInfo ? classInfo.year : p.year || defaultYear;
+    const isKeeper = (p.position || '').toLowerCase().includes('qapı');
 
     return {
       ...p,
       division,
       year,
-      goals: stats.goals,
-      assists: stats.assists,
+      isKeeper,
+      goals:         stats.goals,
+      assists:       stats.assists,
       matchesPlayed: stats.matchesPlayed,
-      overallRating: stats.ratingCount > 0 ? Number((stats.ratingSum / stats.ratingCount).toFixed(1)) : 6.0
+      overallRating: stats.ratingCount > 0 ? Number((stats.ratingSum / stats.ratingCount).toFixed(1)) : 6.5
     };
   });
 
@@ -389,15 +510,19 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     const classInfo = updatedClassesList.find(c => c.name === p.class);
     const division = classInfo ? classInfo.division : p.division || "11";
     const year = classInfo ? classInfo.year : p.year || defaultYear;
+    const isKeeper = (p.position || '').toLowerCase().includes('qapı');
 
     return {
       ...p,
       division,
       year,
-      goals: stats.goals > 0 ? stats.goals : p.goals || 0,
-      assists: stats.assists > 0 ? stats.assists : p.assists || 0,
+      isKeeper,
+      goals:         stats.goals         > 0 ? stats.goals         : p.goals         || 0,
+      assists:       stats.assists       > 0 ? stats.assists       : p.assists       || 0,
       matchesPlayed: stats.matchesPlayed > 0 ? stats.matchesPlayed : p.matchesPlayed || 0,
-      overallRating: stats.ratingCount > 0 ? Number((stats.ratingSum / stats.ratingCount).toFixed(1)) : p.overallRating || 6.0
+      overallRating: stats.ratingCount   > 0
+        ? Number((stats.ratingSum / stats.ratingCount).toFixed(1))
+        : p.overallRating || 6.5
     };
   });
 

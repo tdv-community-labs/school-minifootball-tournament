@@ -1,17 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import { db } from '../services/database.js';
+import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 
 const html = htm.bind(React.createElement);
-
-// Helper for rating colors
-const getRatingClass = (rating) => {
-  if (rating >= 8.5) return 'rating-sofascore-legendary';
-  if (rating >= 7.5) return 'rating-sofascore-excellent';
-  if (rating >= 6.5) return 'rating-sofascore-good';
-  if (rating >= 5.5) return 'rating-sofascore-average';
-  return 'rating-sofascore-bad';
-};
 
 export default function Matches({ activeDivision, activeYear }) {
   const [matches, setMatches] = useState([]);
@@ -38,24 +29,50 @@ export default function Matches({ activeDivision, activeYear }) {
     loadMatchesData();
   }, [activeDivision, activeYear]);
 
-  // Filter matches by active division and selected stage
   const filteredMatches = matches.filter(m => m.division === activeDivision && m.stage === selectedStage);
 
+  /**
+   * Returns enriched per-player stats for a given match,
+   * including auto-computed Sofascore rating when not manually stored.
+   */
   const getMatchPlayerDetails = (match) => {
     if (!match || !match.playerStats) return [];
-    
+
+    const isFinal  = match.stage === 'Final';
+    const scoreA   = Number(match.scoreA || 0);
+    const scoreB   = Number(match.scoreB || 0);
+    const diffAB   = scoreA - scoreB;
+
     return match.playerStats.map(stat => {
       const playerInfo = players.find(p => p.id === stat.playerId) || {};
+      const playerTeam   = playerInfo.class || '';
+      const teamWon      = playerTeam === match.teamA ? scoreA > scoreB
+                         : playerTeam === match.teamB ? scoreB > scoreA : false;
+      const myGoalDiff   = playerTeam === match.teamA ? diffAB : -diffAB;
+      const goalsAgainst = playerTeam === match.teamA ? scoreB : scoreA;
+      const isKeeper     = stat.isKeeper === true ||
+        (playerInfo.position || '').toLowerCase().includes('qap');
+
+      const rating = stat.rating
+        ? Number(stat.rating)
+        : calculateSofascoreRating(
+            stat,
+            { isKeeper },
+            { isFinal, teamWon, goalDiff: myGoalDiff, goalsAgainst }
+          );
+
       return {
         ...stat,
-        name: playerInfo.name || "Naməlum Oyunçu",
-        class: playerInfo.class || "",
-        position: playerInfo.position || ""
+        name:     playerInfo.name     || 'Naməlum Oyunçu',
+        class:    playerInfo.class    || '',
+        position: playerInfo.position || '',
+        isKeeper,
+        rating
       };
     });
   };
 
-  const matchStats = selectedMatch ? getMatchPlayerDetails(selectedMatch) : [];
+  const matchStats  = selectedMatch ? getMatchPlayerDetails(selectedMatch) : [];
   const teamAPlayers = matchStats.filter(p => p.class === selectedMatch?.teamA);
   const teamBPlayers = matchStats.filter(p => p.class === selectedMatch?.teamB);
 
@@ -70,17 +87,47 @@ export default function Matches({ activeDivision, activeYear }) {
     return '11-ci Siniflər';
   };
 
+  /** Render a single player row inside the match detail modal */
+  const renderPlayerRow = (player) => {
+    const badge = getSofascoreBadgeStyle(player.rating);
+    return html`
+      <div key=${player.playerId} className="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <h6 className="font-bold text-purple-950 text-xs truncate">${player.name}</h6>
+            ${player.isKeeper ? html`<span className="text-[9px] bg-sky-100 text-sky-700 font-black px-1.5 py-0.5 rounded uppercase">🧤 Qapıçı</span>` : null}
+          </div>
+          <p className="text-[10px] text-gray-400">${player.position || '—'}</p>
+          <div className="flex flex-wrap gap-2 text-[10px] text-gray-500 font-semibold mt-1">
+            ${player.isKeeper
+              ? html`<span>🧤 Qurtarış: ${player.saves || 0}</span>`
+              : html`<span>⚽ Qol: ${player.goals || 0}</span>`
+            }
+            <span>👟 Asist: ${player.assists || 0}</span>
+            ${(player.yellowCards || 0) > 0 ? html`<span className="text-yellow-500">🟡 ×${player.yellowCards}</span>` : null}
+            ${(player.redCards    || 0) > 0 ? html`<span className="text-red-600">🔴 ×${player.redCards}</span>`    : null}
+          </div>
+        </div>
+        <!-- Rating badge -->
+        <span className=${"min-w-[2.75rem] h-11 rounded-xl flex flex-col items-center justify-center font-black text-xs ml-3 px-1 " + badge}>
+          <span className="text-sm leading-none">${player.rating}</span>
+          <span className="text-[8px] opacity-75 mt-0.5">Rating</span>
+        </span>
+      </div>
+    `;
+  };
+
   return html`
     <div className="space-y-6 animate-fadeIn">
       <!-- Title & Filters -->
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-black text-purple-950 font-sans">Matçlar & Video - ${getDivisionLabel(activeDivision)}</h2>
+          <h2 className="text-2xl font-black text-purple-950 font-sans">Matçlar & Video — ${getDivisionLabel(activeDivision)}</h2>
           <p className="text-sm text-gray-500">Mərhələlər üzrə oyunlar, arxiv videolar və Sofascore reytinqləri</p>
         </div>
         
         <!-- Stage Tabs -->
-        <div className="flex bg-purple-50 p-1.5 rounded-2xl border border-purple-100 overflow-x-auto max-w-full">
+        <div className="flex bg-purple-50 p-1.5 rounded-2xl border border-purple-100 overflow-x-auto max-w-full no-scrollbar">
           ${stages.map(st => html`
             <button
               key=${st.id}
@@ -171,17 +218,18 @@ export default function Matches({ activeDivision, activeYear }) {
               <div>
                 <span className="text-xs font-bold text-green-400 bg-purple-950/50 px-2.5 py-1 rounded-full uppercase tracking-wider">
                   ${selectedMatch.stage} • Match Details
+                  ${selectedMatch.stage === 'Final' ? ' 🏆' : ''}
                 </span>
                 <h3 className="text-2xl font-black mt-2">
                   ${selectedMatch.teamA} ${selectedMatch.scoreA} - ${selectedMatch.scoreB} ${selectedMatch.teamB}
                   ${(selectedMatch.penaltyScoreA !== null && selectedMatch.penaltyScoreA !== undefined && selectedMatch.penaltyScoreA !== '') && html`
-                    <span className="text-green-400 text-lg font-extrabold ml-2"> (pen. ${selectedMatch.penaltyScoreA} - ${selectedMatch.penaltyScoreB})</span>
+                    <span className="text-green-400 text-lg font-extrabold ml-2">(pen. ${selectedMatch.penaltyScoreA} - ${selectedMatch.penaltyScoreB})</span>
                   `}
                 </h3>
               </div>
               <button 
                 onClick=${() => setSelectedMatch(null)}
-                className="bg-purple-950 text-white hover:bg-red-600 transition w-8 h-8 rounded-full flex items-center justify-center font-bold"
+                className="bg-purple-950 text-white hover:bg-red-600 transition w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0"
               >
                 <i className="fas fa-times"></i>
               </button>
@@ -212,20 +260,20 @@ export default function Matches({ activeDivision, activeYear }) {
                 <div>
                   <h5 className="font-extrabold text-purple-950 text-base mb-2">${selectedMatch.teamA}</h5>
                   <div className="space-y-1 text-xs text-gray-500 font-semibold">
-                    ${teamAPlayers.filter(p => p.goals > 0).map(p => html`
+                    ${teamAPlayers.filter(p => (p.goals || 0) > 0).map(p => html`
                       <div key=${p.playerId}>⚽ ${p.name} (${p.goals}')</div>
                     `)}
-                    ${teamAPlayers.filter(p => p.goals === 0).length === 0 && teamAPlayers.filter(p => p.goals > 0).length === 0 ? '-' : ''}
+                    ${teamAPlayers.filter(p => (p.goals || 0) > 0).length === 0 ? html`<span>—</span>` : null}
                   </div>
                 </div>
                 <div className="border-r border-gray-200 h-12 my-auto"></div>
                 <div>
                   <h5 className="font-extrabold text-purple-950 text-base mb-2">${selectedMatch.teamB}</h5>
                   <div className="space-y-1 text-xs text-gray-500 font-semibold">
-                    ${teamBPlayers.filter(p => p.goals > 0).map(p => html`
+                    ${teamBPlayers.filter(p => (p.goals || 0) > 0).map(p => html`
                       <div key=${p.playerId}>⚽ ${p.name} (${p.goals}')</div>
                     `)}
-                    ${teamBPlayers.filter(p => p.goals === 0).length === 0 && teamBPlayers.filter(p => p.goals > 0).length === 0 ? '-' : ''}
+                    ${teamBPlayers.filter(p => (p.goals || 0) > 0).length === 0 ? html`<span>—</span>` : null}
                   </div>
                 </div>
               </div>
@@ -233,8 +281,18 @@ export default function Matches({ activeDivision, activeYear }) {
               <!-- Sofascore Ratings -->
               <div className="space-y-4">
                 <h4 className="text-base font-bold text-purple-950 flex items-center border-l-4 border-green-500 pl-2">
-                  Oyunçu Performansı və Sofascore Reytinqləri
+                  Oyunçu Performansı — Sofascore Reytinqləri
+                  ${selectedMatch.stage === 'Final' ? html`<span className="ml-2 text-amber-500 text-sm">🏆 Final Bonusu aktiv</span>` : null}
                 </h4>
+
+                <!-- Rating legend -->
+                <div className="flex flex-wrap gap-2 text-[10px] font-bold">
+                  <span className="bg-indigo-600 text-white px-2 py-0.5 rounded">9.0+ Əfsanəvi</span>
+                  <span className="bg-sky-500 text-white px-2 py-0.5 rounded">8.0+ Əla</span>
+                  <span className="bg-emerald-500 text-white px-2 py-0.5 rounded">7.0+ Yaxşı</span>
+                  <span className="bg-amber-500 text-white px-2 py-0.5 rounded">6.0+ Orta</span>
+                  <span className="bg-red-500 text-white px-2 py-0.5 rounded">< 6.0 Zəif</span>
+                </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <!-- Team A Ratings -->
@@ -243,22 +301,10 @@ export default function Matches({ activeDivision, activeYear }) {
                     <div className="space-y-3">
                       ${teamAPlayers.length === 0 
                         ? html`<p className="text-xs text-gray-400 text-center py-4">Oyunçu statistikası qeyd edilməyib.</p>`
-                        : teamAPlayers.map(player => html`
-                            <div key=${player.playerId} className="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
-                              <div>
-                                <h6 className="font-bold text-purple-950 text-xs">${player.name}</h6>
-                                <p className="text-[10px] text-gray-500">${player.position}</p>
-                                <div className="flex gap-3 text-[10px] text-gray-500 font-semibold mt-1">
-                                  <span>⚽ Qol: ${player.goals}</span>
-                                  <span>👟 Asist: ${player.assists}</span>
-                                  <span>⚙️ Ötürmə: ${player.passes}</span>
-                                </div>
-                              </div>
-                              <span className=${`w-10 h-10 rounded-full flex items-center justify-center font-black text-xs ${getRatingClass(player.rating)}`}>
-                                ${player.rating}
-                              </span>
-                            </div>
-                          `)}
+                        : teamAPlayers
+                            .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+                            .map(renderPlayerRow)
+                      }
                     </div>
                   </div>
 
@@ -268,22 +314,10 @@ export default function Matches({ activeDivision, activeYear }) {
                     <div className="space-y-3">
                       ${teamBPlayers.length === 0 
                         ? html`<p className="text-xs text-gray-400 text-center py-4">Oyunçu statistikası qeyd edilməyib.</p>`
-                        : teamBPlayers.map(player => html`
-                            <div key=${player.playerId} className="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
-                              <div>
-                                <h6 className="font-bold text-purple-950 text-xs">${player.name}</h6>
-                                <p className="text-[10px] text-gray-500">${player.position}</p>
-                                <div className="flex gap-3 text-[10px] text-gray-500 font-semibold mt-1">
-                                  <span>⚽ Qol: ${player.goals}</span>
-                                  <span>👟 Asist: ${player.assists}</span>
-                                  <span>⚙️ Ötürmə: ${player.passes}</span>
-                                </div>
-                              </div>
-                              <span className=${`w-10 h-10 rounded-full flex items-center justify-center font-black text-xs ${getRatingClass(player.rating)}`}>
-                                ${player.rating}
-                              </span>
-                            </div>
-                          `)}
+                        : teamBPlayers
+                            .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+                            .map(renderPlayerRow)
+                      }
                     </div>
                   </div>
                 </div>
