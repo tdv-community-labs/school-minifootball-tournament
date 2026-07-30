@@ -29,9 +29,11 @@ body {
 }
 
 .glass-nav {
-  background: rgba(59, 7, 100, 0.85);
+  background: #2e0249;
+  background: linear-gradient(135deg, #1e0036 0%, #3b0764 50%, #2e0249 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.3);
 }
 
 /* Scrollbar Customization */

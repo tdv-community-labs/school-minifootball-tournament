@@ -156,17 +156,17 @@ export default function App() {
             </div>
 
             <!-- Desktop Nav Items -->
-            <nav className="hidden md:flex space-x-1">
+            <nav className="hidden md:flex space-x-1.5">
               ${navItems.map(item => {
                 const isActive = activeTab === item.id;
                 return html`
                   <button
                     key=${item.id}
                     onClick=${() => setActiveTab(item.id)}
-                    className=${`px-4 py-2 rounded-full font-bold text-xs uppercase tracking-wider transition-all flex items-center space-x-2 ${
+                    className=${`px-4 py-2 rounded-full font-black text-xs uppercase tracking-wider transition-all flex items-center space-x-2 ${
                       isActive 
-                        ? 'bg-green-500 text-purple-950 shadow-md transform scale-105' 
-                        : 'text-purple-100 hover:bg-purple-800/50 hover:text-white'
+                        ? 'bg-green-500 text-purple-950 shadow-lg transform scale-105 border border-green-400' 
+                        : 'text-purple-100 hover:bg-purple-800/80 hover:text-white border border-transparent'
                     }`}
                   >
                     <i className=${item.icon}></i>
