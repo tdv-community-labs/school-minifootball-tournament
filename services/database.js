@@ -13,6 +13,45 @@ if (useRealFirebase) {
   }
 }
 
+// Real-time Mojibake Sanitizer for Azerbaijani Characters
+export const sanitizeText = (text) => {
+  if (typeof text !== 'string') return text;
+  if (/[ÃÅÄÉ]/.test(text)) {
+    try {
+      const bytes = new Uint8Array([...text].map(c => c.charCodeAt(0) & 0xFF));
+      const decoded = new TextDecoder('utf-8').decode(bytes);
+      if (decoded && !decoded.includes('\uFFFD')) return decoded;
+    } catch (e) {}
+    return text
+      .replace(/HÃ¼cumÃ§u/g, 'Hücumçu')
+      .replace(/Ã¼/g, 'ü')
+      .replace(/Ã§/g, 'ç')
+      .replace(/Ã¶/g, 'ö')
+      .replace(/É™/g, 'ə')
+      .replace(/É˜/g, 'Ə')
+      .replace(/ÅŸ/g, 'ş')
+      .replace(/Åž/g, 'Ş')
+      .replace(/ÄŸ/g, 'ğ')
+      .replace(/Ä±/g, 'ı')
+      .replace(/Ä°/g, 'İ')
+      .replace(/Ã‡/g, 'Ç');
+  }
+  return text;
+};
+
+export const sanitizeObject = (obj) => {
+  if (typeof obj === 'string') return sanitizeText(obj);
+  if (Array.isArray(obj)) return obj.map(sanitizeObject);
+  if (obj && typeof obj === 'object') {
+    const res = {};
+    for (const key in obj) {
+      res[key] = sanitizeObject(obj[key]);
+    }
+    return res;
+  }
+  return obj;
+};
+
 // Seed Initial Classes (Empty for custom entry)
 const initialClasses = [];
 
@@ -464,7 +503,7 @@ export const db = {
         const querySnapshot = await getDocs(collection(firestore, "classes"));
         const list = [];
         querySnapshot.forEach(docSnap => {
-          list.push(docSnap.data());
+          list.push(sanitizeObject(docSnap.data()));
         });
         console.log(`Firebase: Classes fetched: ${list.length} records. Filtering by year: ${year || 'all'}`);
         if (year) {
@@ -544,11 +583,11 @@ export const db = {
           getDocs(collection(firestore, "matches"))
         ]);
         const classes = [];
-        cSnap.forEach(d => classes.push(d.data()));
+        cSnap.forEach(d => classes.push(sanitizeObject(d.data())));
         const players = [];
-        pSnap.forEach(d => players.push(d.data()));
+        pSnap.forEach(d => players.push(sanitizeObject(d.data())));
         const matches = [];
-        mSnap.forEach(d => matches.push(d.data()));
+        mSnap.forEach(d => matches.push(sanitizeObject(d.data())));
         const years = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
 
         console.log(`Firebase: Raw loaded stats - Classes: ${classes.length}, Players: ${players.length}, Matches: ${matches.length}`);
@@ -659,7 +698,7 @@ export const db = {
         const querySnapshot = await getDocs(collection(firestore, "matches"));
         const list = [];
         querySnapshot.forEach(docSnap => {
-          list.push(docSnap.data());
+          list.push(sanitizeObject(docSnap.data()));
         });
         console.log(`Firebase: Matches fetched: ${list.length} records. Filtering by year: ${year || 'all'}`);
         if (year) {
