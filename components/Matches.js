@@ -61,6 +61,10 @@ export default function Matches({ activeDivision, activeYear }) {
 
   const getDivisionLabel = (div) => {
     if (div === '6') return '6-cı Siniflər';
+    if (div === '7') return '7-ci Siniflər';
+    if (div === '8') return '8-ci Siniflər';
+    if (div === '9') return '9-cu Siniflər';
+    if (div === '10-11') return '10-11-ci Siniflər';
     if (div === '7-8') return '7-8-ci Siniflər';
     if (div === '9-10') return '9-10-cu Siniflər';
     return '11-ci Siniflər';

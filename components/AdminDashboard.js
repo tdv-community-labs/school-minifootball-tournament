@@ -311,6 +311,10 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
   
   const getDivisionLabel = (div) => {
     if (div === '6') return '6-cı Siniflər';
+    if (div === '7') return '7-ci Siniflər';
+    if (div === '8') return '8-ci Siniflər';
+    if (div === '9') return '9-cu Siniflər';
+    if (div === '10-11') return '10-11-ci Siniflər';
     if (div === '7-8') return '7-8-ci Siniflər';
     if (div === '9-10') return '9-10-cu Siniflər';
     return '11-ci Siniflər';
@@ -395,6 +399,10 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold"
                 >
                   <option value="6">6-cı Siniflər</option>
+                  <option value="7">7-ci Siniflər</option>
+                  <option value="8">8-ci Siniflər</option>
+                  <option value="9">9-cu Siniflər</option>
+                  <option value="10-11">10-11-ci Siniflər</option>
                   <option value="7-8">7-8-ci Siniflər</option>
                   <option value="9-10">9-10-cu Siniflər</option>
                   <option value="11">11-ci Siniflər</option>
@@ -752,6 +760,10 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-purple-950"
                 >
                   <option value="6">6-cı Siniflər</option>
+                  <option value="7">7-ci Siniflər</option>
+                  <option value="8">8-ci Siniflər</option>
+                  <option value="9">9-cu Siniflər</option>
+                  <option value="10-11">10-11-ci Siniflər</option>
                   <option value="7-8">7-8-ci Siniflər</option>
                   <option value="9-10">9-10-cu Siniflər</option>
                   <option value="11">11-ci Siniflər</option>

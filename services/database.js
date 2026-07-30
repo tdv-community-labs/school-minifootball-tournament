@@ -235,7 +235,7 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
   const standingsMap = {};
   yearsList.forEach(yr => {
     standingsMap[yr] = {};
-    const divisions = ['6', '7-8', '9-10', '11'];
+    const divisions = ['6', '7', '8', '9', '10-11', '7-8', '9-10', '11'];
     divisions.forEach(div => {
       standingsMap[yr][div] = {};
       
