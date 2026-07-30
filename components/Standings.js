@@ -74,6 +74,38 @@ export default function Standings({ activeDivision, activeYear }) {
   const slots4 = Array.from({ length: 2 }).map((_, idx) => m4[idx] || null);
   const slots2 = Array.from({ length: 1 }).map((_, idx) => m2[idx] || null);
 
+  // Calculations for Champion & Team of Tournament (Dream Team)
+  const getChampion = () => {
+    const finalM = divisionMatches.find(m => m.stage === "Final");
+    if (!finalM) return null;
+    const sA = Number(finalM.scoreA || 0);
+    const sB = Number(finalM.scoreB || 0);
+    if (sA > sB) return finalM.teamA;
+    if (sB > sA) return finalM.teamB;
+    if (finalM.penaltyScoreA !== null && finalM.penaltyScoreB !== null && finalM.penaltyScoreA !== undefined && finalM.penaltyScoreB !== undefined && finalM.penaltyScoreA !== '') {
+      return Number(finalM.penaltyScoreA) > Number(finalM.penaltyScoreB) ? finalM.teamA : finalM.teamB;
+    }
+    return null;
+  };
+
+  const championTeam = getChampion();
+
+  // Filter players by active division & year
+  const currentDivPlayers = players.filter(p => p.division === activeDivision && p.year === activeYear);
+  
+  // Dream Team (Top 5 players by Sofascore overall rating & goals)
+  const dreamTeam = [...currentDivPlayers]
+    .sort((a, b) => (b.overallRating - a.overallRating) || (b.goals - a.goals))
+    .slice(0, 5);
+
+  // MVP Player
+  const mvpPlayer = [...currentDivPlayers]
+    .sort((a, b) => (b.overallRating - a.overallRating) || (b.goals - a.goals))[0];
+
+  // Top Scorer
+  const topScorer = [...currentDivPlayers]
+    .sort((a, b) => (b.goals - a.goals) || (b.overallRating - a.overallRating))[0];
+
   const getMatchPlayerDetails = (match) => {
     if (!match || !match.playerStats) return [];
     return match.playerStats.map(stat => {
@@ -288,7 +320,7 @@ export default function Standings({ activeDivision, activeYear }) {
       <!-- VIEW MODE 2: PLAYOFF BRACKET -->
       ${viewMode === 'bracket' && html`
         <div className="overflow-x-auto pb-4">
-          <div className="flex gap-8 justify-start p-6 bg-slate-50 border border-slate-100 rounded-3xl min-w-max">
+          <div className="flex gap-8 justify-start p-6 bg-slate-50 border border-slate-100 rounded-3xl min-w-max items-stretch">
             
             <!-- Round of 16 -->
             ${has16 && html`
@@ -316,6 +348,81 @@ export default function Standings({ activeDivision, activeYear }) {
             <div className="flex flex-col justify-center py-2">
               <div className="text-[10px] font-black text-purple-900 bg-purple-100 px-2.5 py-1 rounded-full uppercase tracking-wider text-center mb-2">Final</div>
               ${slots2.map((match, idx) => renderBracketMatch(match, 'Final', idx))}
+            </div>
+
+            <!-- Column 5: Tournament Champion & Team of the Tournament (Dream Team) -->
+            <div className="flex flex-col justify-between py-2 ml-4 border-l-2 border-dashed border-purple-200/80 pl-8 w-80">
+              
+              <!-- Champion Badge Card -->
+              <div className="bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 text-purple-950 p-5 rounded-3xl shadow-md border border-amber-300 relative overflow-hidden">
+                <div className="absolute -right-4 -bottom-4 text-amber-300/30 text-7xl font-black select-none">
+                  <i className="fas fa-trophy"></i>
+                </div>
+                <div className="relative z-10">
+                  <span className="text-[10px] font-black uppercase tracking-widest bg-purple-950 text-amber-300 px-2.5 py-1 rounded-full inline-block mb-2 shadow-sm">
+                    🏆 TURNİR QALİBİ
+                  </span>
+                  <h4 className="text-xl font-black tracking-tight text-purple-950 uppercase">
+                    ${championTeam ? `${championTeam} Sinfi` : 'Müəyyənləşdirilir'}
+                  </h4>
+                  <p className="text-[11px] font-bold text-purple-900/80 mt-1">
+                    ${activeYear} Mövsümü Çempionu
+                  </p>
+                </div>
+              </div>
+
+              <!-- Dream Team (Rəmzi 5-lik) Widget -->
+              <div className="bg-white border border-purple-100 p-4 rounded-3xl shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-black text-purple-950 uppercase tracking-wider flex items-center">
+                    <i className="fas fa-star text-amber-400 mr-1.5 text-sm"></i> Rəmzi Komanda (TOP 5)
+                  </h4>
+                  <span className="text-[9px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">Sofascore</span>
+                </div>
+                
+                <div className="space-y-2 pt-1">
+                  ${dreamTeam.length === 0 
+                    ? html`<div className="text-[11px] text-gray-400 font-bold text-center py-2">Məlumat yoxdur</div>`
+                    : dreamTeam.map((player, i) => html`
+                      <div key=${player.id || i} className="flex items-center justify-between bg-purple-50/50 hover:bg-purple-100/50 p-2 rounded-xl transition border border-purple-100/40">
+                        <div className="flex items-center space-x-2">
+                          <span className=${`w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center ${
+                            i === 0 ? 'bg-amber-400 text-purple-950' : i === 1 ? 'bg-slate-300 text-purple-950' : i === 2 ? 'bg-amber-700 text-white' : 'bg-purple-200 text-purple-900'
+                          }`}>
+                            ${i + 1}
+                          </span>
+                          <div>
+                            <div className="text-xs font-extrabold text-purple-950 leading-tight">${player.name}</div>
+                            <div className="text-[9px] font-semibold text-gray-500">${player.class} • ${player.position || 'Oyunçu'}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-[10px] font-black text-green-600 bg-green-50 px-1.5 py-0.5 rounded-md">⚽ ${player.goals || 0}</span>
+                          <span className=${`text-xs font-black px-2 py-0.5 rounded-lg ${getRatingClass(player.overallRating || 6.0)}`}>
+                            ${player.overallRating || 6.0}
+                          </span>
+                        </div>
+                      </div>
+                    `)
+                  }
+                </div>
+              </div>
+
+              <!-- MVP & Golden Boot Awards -->
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-gradient-to-br from-purple-900 to-purple-950 text-white p-3 rounded-2xl border border-purple-800">
+                  <span className="text-[9px] font-black text-amber-400 uppercase tracking-wider block">⭐ MVP Oyunçu</span>
+                  <div className="text-xs font-extrabold truncate mt-1">${mvpPlayer ? mvpPlayer.name : '-'}</div>
+                  <div className="text-[9px] text-purple-200 mt-0.5">${mvpPlayer ? `${mvpPlayer.class} (${mvpPlayer.overallRating})` : '-'}</div>
+                </div>
+
+                <div className="bg-gradient-to-br from-purple-900 to-purple-950 text-white p-3 rounded-2xl border border-purple-800">
+                  <span className="text-[9px] font-black text-amber-400 uppercase tracking-wider block">👟 Qızıl Butsa</span>
+                  <div className="text-xs font-extrabold truncate mt-1">${topScorer ? topScorer.name : '-'}</div>
+                  <div className="text-[9px] text-purple-200 mt-0.5">${topScorer ? `${topScorer.class} (${topScorer.goals} Qol)` : '-'}</div>
+                </div>
+              </div>
+
             </div>
 
           </div>

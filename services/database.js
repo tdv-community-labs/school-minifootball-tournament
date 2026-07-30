@@ -1,6 +1,6 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
-import { initializeApp, getApps, getApp } from 'https://esm.sh/firebase@10.8.0/app';
-import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://esm.sh/firebase@10.8.0/firestore';
+import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;
@@ -377,19 +377,21 @@ export const db = {
   // Years CRUD
   getYears: async () => {
     if (useRealFirebase && firestore) {
+      console.log("Firebase: Fetching years...");
       try {
         const querySnapshot = await getDocs(collection(firestore, "years"));
         const list = [];
         querySnapshot.forEach(docSnap => {
           list.push(docSnap.id);
         });
+        console.log("Firebase: Years fetched: ", list);
         if (list.length > 0) {
           list.sort((a, b) => b.localeCompare(a));
           return list;
         }
         return ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
       } catch (err) {
-        console.error("Firebase getYears failed:", err);
+        console.error("Firebase: getYears failed with error: ", err);
         return ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
       }
     }
@@ -457,18 +459,20 @@ export const db = {
   // Classes CRUD
   getClasses: async (year) => {
     if (useRealFirebase && firestore) {
+      console.log("Firebase: Fetching classes...");
       try {
         const querySnapshot = await getDocs(collection(firestore, "classes"));
         const list = [];
         querySnapshot.forEach(docSnap => {
           list.push(docSnap.data());
         });
+        console.log(`Firebase: Classes fetched: ${list.length} records. Filtering by year: ${year || 'all'}`);
         if (year) {
           return list.filter(c => c.year === year);
         }
         return list;
       } catch (err) {
-        console.error("Firebase getClasses failed:", err);
+        console.error("Firebase: getClasses failed with error: ", err);
         return [];
       }
     }
@@ -532,6 +536,7 @@ export const db = {
   // Players CRUD
   getPlayers: async (year) => {
     if (useRealFirebase && firestore) {
+      console.log(`Firebase: Fetching players, classes, and matches for year: ${year || 'all'}...`);
       try {
         const [cSnap, pSnap, mSnap] = await Promise.all([
           getDocs(collection(firestore, "classes")),
@@ -546,13 +551,18 @@ export const db = {
         mSnap.forEach(d => matches.push(d.data()));
         const years = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
 
+        console.log(`Firebase: Raw loaded stats - Classes: ${classes.length}, Players: ${players.length}, Matches: ${matches.length}`);
         const computed = recalculateInMemoryData(classes, players, matches, years);
+        console.log(`Firebase: In-memory stats computed. Total computed players: ${computed.players.length}`);
+        
+        let filtered = computed.players;
         if (year) {
-          return computed.players.filter(p => p.year === year);
+          filtered = computed.players.filter(p => p.year === year);
         }
-        return computed.players;
+        console.log(`Firebase: Returning ${filtered.length} players for year ${year || 'all'}.`);
+        return filtered;
       } catch (err) {
-        console.error("Firebase getPlayers failed:", err);
+        console.error("Firebase: getPlayers failed with error: ", err);
         return [];
       }
     }
@@ -644,18 +654,20 @@ export const db = {
   // Matches CRUD
   getMatches: async (year) => {
     if (useRealFirebase && firestore) {
+      console.log("Firebase: Fetching matches...");
       try {
         const querySnapshot = await getDocs(collection(firestore, "matches"));
         const list = [];
         querySnapshot.forEach(docSnap => {
           list.push(docSnap.data());
         });
+        console.log(`Firebase: Matches fetched: ${list.length} records. Filtering by year: ${year || 'all'}`);
         if (year) {
           return list.filter(m => m.year === year);
         }
         return list;
       } catch (err) {
-        console.error("Firebase getMatches failed:", err);
+        console.error("Firebase: getMatches failed with error: ", err);
         return [];
       }
     }
@@ -733,6 +745,7 @@ export const db = {
   // Standings Read (Divided by active division & year)
   getStandings: async (division = "11", year = "2025-2026") => {
     if (useRealFirebase && firestore) {
+      console.log(`Firebase: Fetching standings for division: ${division}, year: ${year}...`);
       try {
         const [cSnap, pSnap, mSnap] = await Promise.all([
           getDocs(collection(firestore, "classes")),
@@ -748,9 +761,11 @@ export const db = {
         const years = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
 
         const computed = recalculateInMemoryData(classes, players, matches, years);
-        return computed.standings[year]?.[division] || [];
+        const standings = computed.standings[year]?.[division] || [];
+        console.log(`Firebase: Computed standings size: ${standings.length} classes for division ${division}, year ${year}`);
+        return standings;
       } catch (e) {
-        console.error("Firebase getStandings failed:", e);
+        console.error("Firebase: getStandings failed with error: ", e);
         return [];
       }
     }
