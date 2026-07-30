@@ -6,7 +6,7 @@ if (-not (Test-Path $jsonPath)) {
     exit 1
 }
 
-$archiveData = Get-Content $jsonPath -Raw | ConvertFrom-Json
+$archiveData = [System.IO.File]::ReadAllText($jsonPath, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
 
 Write-Host "Starting upload to Firestore..."
 $projectId = "tdv-football"
@@ -23,10 +23,11 @@ foreach ($c in $classes) {
     $fields["year"] = @{ "stringValue" = [string]$c.year }
     
     $body = @{ "fields" = $fields } | ConvertTo-Json -Depth 10 -Compress
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($body)
     $url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/classes/$($c.id)"
     
     try {
-        Invoke-RestMethod -Method Patch -Uri $url -Body $body -ContentType "application/json" > $null
+        Invoke-RestMethod -Method Patch -Uri $url -Body $bytes -ContentType "application/json; charset=utf-8" > $null
         $cCount++
     } catch {
         Write-Warning "Failed to upload class $($c.name): $_"
@@ -52,10 +53,11 @@ foreach ($p in $players) {
     $fields["overallRating"] = @{ "doubleValue" = [double]$p.overallRating }
     
     $body = @{ "fields" = $fields } | ConvertTo-Json -Depth 10 -Compress
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($body)
     $url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/players/$($p.id)"
     
     try {
-        Invoke-RestMethod -Method Patch -Uri $url -Body $body -ContentType "application/json" > $null
+        Invoke-RestMethod -Method Patch -Uri $url -Body $bytes -ContentType "application/json; charset=utf-8" > $null
         $pCount++
     } catch {
         Write-Warning "Failed to upload player $($p.name): $_"
@@ -95,10 +97,11 @@ foreach ($m in $matches) {
     $fields["playerStats"] = @{ "arrayValue" = @{} }
     
     $body = @{ "fields" = $fields } | ConvertTo-Json -Depth 10 -Compress
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($body)
     $url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/matches/$($m.id)"
     
     try {
-        Invoke-RestMethod -Method Patch -Uri $url -Body $body -ContentType "application/json" > $null
+        Invoke-RestMethod -Method Patch -Uri $url -Body $bytes -ContentType "application/json; charset=utf-8" > $null
         $mCount++
     } catch {
         Write-Warning "Failed to upload match $($m.id): $_"

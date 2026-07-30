@@ -28,7 +28,7 @@ function Clean-Name($name) {
 Write-Host "Parsing rosters..."
 $komandalarFiles = Get-ChildItem (Join-Path $rootPath "komandalar\*.html")
 foreach ($file in $komandalarFiles) {
-    $content = Get-Content $file.FullName -Raw
+    $content = [System.IO.File]::ReadAllText($file.FullName, [System.Text.Encoding]::UTF8)
     
     # Matches class divs: <div class="sinif"> ... <h2 class="sinif-baslik">Class Name</h2> ... </ul>
     # Use regex to find all class divs
@@ -92,7 +92,7 @@ foreach ($file in $komandalarFiles) {
 Write-Host "Parsing scorers..."
 $bombardirFiles = Get-ChildItem (Join-Path $rootPath "bombardir\*.html")
 foreach ($file in $bombardirFiles) {
-    $content = Get-Content $file.FullName -Raw
+    $content = [System.IO.File]::ReadAllText($file.FullName, [System.Text.Encoding]::UTF8)
     
     # Parse table rows: <tr> <td>Yer</td> <td>Oyunçu</td> <td>Sinif</td> <td>Qol</td> </tr>
     $pattern = '(?s)<tr>\s*<td><strong>.*?</strong></td>\s*<td>([^<]+)</td>\s*<td>([^<]+)</td>\s*<td>([^<]+)</td>\s*</tr>'
@@ -145,7 +145,7 @@ foreach ($file in $bombardirFiles) {
 
 # 3. Parse Matches (oyunlar.html)
 Write-Host "Parsing matches..."
-$oyunlarHtml = Get-Content (Join-Path $rootPath "oyunlar.html") -Raw
+$oyunlarHtml = [System.IO.File]::ReadAllText((Join-Path $rootPath "oyunlar.html"), [System.Text.Encoding]::UTF8)
 
 # Tables are split by date or group
 $tablePattern = '(?s)<table>([\s\S]*?)</table>'
