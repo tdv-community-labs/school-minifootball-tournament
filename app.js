@@ -107,29 +107,15 @@ export default function App() {
     ...(isAdminAuthorized ? [{ id: 'admin', label: 'Admin Panel', icon: 'fas fa-user-cog' }] : [])
   ];
 
-  const divisions = activeYear === '2022-2023' 
-    ? [
-        { id: '6', label: '6-cı Siniflər' },
-        { id: '7', label: '7-ci Siniflər' },
-        { id: '8', label: '8-ci Siniflər' },
-        { id: '9', label: '9-cu Siniflər' },
-        { id: '10-11', label: '10-11-ci Siniflər' }
-      ]
-    : [
-        { id: '6', label: '6-cı Siniflər' },
-        { id: '7-8', label: '7-8-ci Siniflər' },
-        { id: '9-10', label: '9-10-cu Siniflər' },
-        { id: '11', label: '11-ci Siniflər' }
-      ];
+  const divisions = [
+    { id: '6', label: '6-cı Siniflər' },
+    { id: '7-8', label: '7-8-ci Siniflər' },
+    { id: '9-10', label: '9-10-cu Siniflər' },
+    { id: '11', label: '11-ci Siniflər' }
+  ];
 
   const handleYearChange = (newYear) => {
     setActiveYear(newYear);
-    const validDivs = newYear === '2022-2023' 
-      ? ['6', '7', '8', '9', '10-11'] 
-      : ['6', '7-8', '9-10', '11'];
-    if (!validDivs.includes(activeDivision)) {
-      setActiveDivision(validDivs[validDivs.length - 1]);
-    }
   };
 
   return html`
