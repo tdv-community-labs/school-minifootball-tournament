@@ -121,8 +121,8 @@ export default function App() {
   return html`
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col">
       <!-- Top Premium Navbar (Branded TDV BTL Futbol) -->
-      <header className="bg-purple-950 sticky top-0 z-40 text-white shadow-xl border-b border-purple-800/40 flex flex-col" style=${{ backgroundColor: '#2e0249' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <header className="bg-purple-950 sticky top-0 z-40 text-white shadow-xl border-b border-purple-800/40 flex flex-col no-scrollbar" style=${{ backgroundColor: '#2e0249' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full no-scrollbar">
           <div className="flex items-center justify-between h-16">
             
             <!-- Left Logo & Year Selector Section -->

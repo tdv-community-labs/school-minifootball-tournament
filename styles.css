@@ -34,15 +34,31 @@ body {
   border-bottom: 1px solid rgba(168, 85, 247, 0.3);
 }
 
-/* Hide scrollbar for Chrome, Safari, Edge and Firefox */
-.no-scrollbar::-webkit-scrollbar {
+/* Hide all scrollbar elements, arrows, and buttons for Windows Chrome/Edge */
+.no-scrollbar,
+.no-scrollbar * {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar,
+.no-scrollbar *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+.no-scrollbar::-webkit-scrollbar-button,
+.no-scrollbar *::-webkit-scrollbar-button {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
 }
-.no-scrollbar {
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
+
+.no-scrollbar::-webkit-scrollbar-thumb,
+.no-scrollbar *::-webkit-scrollbar-thumb {
+  display: none !important;
 }
 
 /* Scrollbar Customization */
