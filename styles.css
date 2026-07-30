@@ -1,5 +1,9 @@
 /* Custom Styles for School Minifootball Tournament Platform */
 
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
