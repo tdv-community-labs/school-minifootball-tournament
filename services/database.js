@@ -266,7 +266,7 @@ export const recalculateData = () => {
           const myGoalDiff   = playerTeam === m.teamA ? goalDiffAB : -goalDiffAB;
           const goalsAgainst = playerTeam === m.teamA ? scoreB : scoreA;
           const isKeeper     = stat.isKeeper === true ||
-            (playerInfo.position || '').toLowerCase().includes('qapı');
+            (playerInfo.position || '').toLowerCase().includes('qap');
 
           const computedRating = stat.rating
             ? Number(stat.rating)
@@ -352,7 +352,7 @@ export const recalculateData = () => {
     const classInfo = updatedClassesList.find(c => c.name === p.class);
     const division = classInfo ? classInfo.division : p.division || "11";
     const year = classInfo ? classInfo.year : p.year || defaultYear;
-    const isKeeper = (p.position || '').toLowerCase().includes('qapı');
+    const isKeeper = (p.position || '').toLowerCase().includes('qap');
 
     return {
       ...p,
@@ -416,22 +416,42 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     });
   });
 
-  // Process Matches
+  // Process Matches (recalculateInMemoryData — Firebase path)
   matches.forEach(m => {
     const yr = m.year || defaultYear;
     const div = m.division || "11";
-    
-    // Accumulate player match stats
+
+    const isFinal    = m.stage === 'Final';
+    const scoreA     = Number(m.scoreA || 0);
+    const scoreB     = Number(m.scoreB || 0);
+    const goalDiffAB = scoreA - scoreB;
+
     if (m.playerStats && Array.isArray(m.playerStats)) {
       m.playerStats.forEach(stat => {
         if (playerStatsMap[stat.playerId]) {
-          playerStatsMap[stat.playerId].goals += Number(stat.goals || 0);
-          playerStatsMap[stat.playerId].assists += Number(stat.assists || 0);
+          playerStatsMap[stat.playerId].goals         += Number(stat.goals   || 0);
+          playerStatsMap[stat.playerId].assists       += Number(stat.assists || 0);
           playerStatsMap[stat.playerId].matchesPlayed += 1;
-          if (stat.rating) {
-            playerStatsMap[stat.playerId].ratingSum += Number(stat.rating);
-            playerStatsMap[stat.playerId].ratingCount += 1;
-          }
+
+          const playerInfo   = players.find(p => p.id === stat.playerId) || {};
+          const playerTeam   = playerInfo.class || '';
+          const teamWon      = playerTeam === m.teamA ? scoreA > scoreB
+                             : playerTeam === m.teamB ? scoreB > scoreA : false;
+          const myGoalDiff   = playerTeam === m.teamA ? goalDiffAB : -goalDiffAB;
+          const goalsAgainst = playerTeam === m.teamA ? scoreB : scoreA;
+          const isKeeper     = stat.isKeeper === true ||
+            (playerInfo.position || '').toLowerCase().includes('qap');
+
+          const computedRating = stat.rating
+            ? Number(stat.rating)
+            : calculateSofascoreRating(
+                stat,
+                { isKeeper },
+                { isFinal, teamWon, goalDiff: myGoalDiff, goalsAgainst }
+              );
+
+          playerStatsMap[stat.playerId].ratingSum   += computedRating;
+          playerStatsMap[stat.playerId].ratingCount += 1;
         }
       });
     }
@@ -510,7 +530,7 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     const classInfo = updatedClassesList.find(c => c.name === p.class);
     const division = classInfo ? classInfo.division : p.division || "11";
     const year = classInfo ? classInfo.year : p.year || defaultYear;
-    const isKeeper = (p.position || '').toLowerCase().includes('qapı');
+    const isKeeper = (p.position || '').toLowerCase().includes('qap');
 
     return {
       ...p,

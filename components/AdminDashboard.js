@@ -233,10 +233,15 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
         playerId: p.id,
         name: p.name,
         class: p.class,
-        rating: existingStat ? existingStat.rating : 6.0,
-        goals: existingStat ? existingStat.goals : 0,
-        assists: existingStat ? existingStat.assists : 0,
-        passes: existingStat ? existingStat.passes : 0
+        position: p.position || '',
+        // null = auto-calculate via Sofascore engine; a number = manual override
+        rating:      existingStat?.rating      ?? null,
+        goals:       existingStat?.goals        ?? 0,
+        assists:     existingStat?.assists      ?? 0,
+        yellowCards: existingStat?.yellowCards  ?? 0,
+        redCards:    existingStat?.redCards     ?? 0,
+        saves:       existingStat?.saves        ?? 0,
+        passes:      existingStat?.passes       ?? 0
       };
     });
     setMatchPlayerStats(initialStats);
@@ -251,13 +256,23 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
   const handleSaveRatings = async () => {
     if (!selectedMatchForRatings) return;
     
-    const formattedStats = matchPlayerStats.map(stat => ({
-      playerId: stat.playerId,
-      rating: Number(stat.rating),
-      goals: Number(stat.goals),
-      assists: Number(stat.assists),
-      passes: Number(stat.passes)
-    }));
+    const formattedStats = matchPlayerStats.map(stat => {
+      const obj = {
+        playerId:    stat.playerId,
+        goals:       Number(stat.goals       || 0),
+        assists:     Number(stat.assists     || 0),
+        passes:      Number(stat.passes      || 0),
+        yellowCards: Number(stat.yellowCards || 0),
+        redCards:    Number(stat.redCards    || 0),
+        saves:       Number(stat.saves       || 0)
+      };
+      // Only persist rating if admin explicitly set it (non-null, non-empty)
+      // Leaving it out lets calculateSofascoreRating auto-run on next load
+      if (stat.rating !== null && stat.rating !== '' && stat.rating !== undefined) {
+        obj.rating = Number(stat.rating);
+      }
+      return obj;
+    });
 
     const updatedMatch = {
       ...selectedMatchForRatings,
@@ -267,7 +282,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
     await db.updateMatch(updatedMatch);
     setSelectedMatchForRatings(null);
     loadAdminData();
-    alert("Oyunçu reytinqləri uğurla yadda saxlanıldı!");
+    alert("Oyunçu statistikası uğurla yadda saxlanıldı!");
   };
 
   const handleResetSystem = async () => {
@@ -975,56 +990,60 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-purple-50 text-[10px] font-black text-purple-950 uppercase tracking-wider border-b border-purple-100">
-                      <th className="py-2.5 px-4">Oyunçu</th>
-                      <th className="py-2.5 px-4 text-center">Sinif</th>
-                      <th className="py-2.5 px-4 text-center w-24">Reytinq (0-10)</th>
-                      <th className="py-2.5 px-4 text-center w-16">Qol</th>
-                      <th className="py-2.5 px-4 text-center w-16">Asist</th>
-                      <th className="py-2.5 px-4 text-center w-20">Ötürmə</th>
+                      <th className="py-2.5 px-3">Oyunçu / Mövqe</th>
+                      <th className="py-2.5 px-2 text-center">Sinif</th>
+                      <th className="py-2.5 px-2 text-center w-24">Reytinq (boş=avtomatik)</th>
+                      <th className="py-2.5 px-2 text-center w-14">⚽Qol</th>
+                      <th className="py-2.5 px-2 text-center w-14">👟Asist</th>
+                      <th className="py-2.5 px-2 text-center w-14">🧤Qurt.</th>
+                      <th className="py-2.5 px-2 text-center w-14">🟡Sarı</th>
+                      <th className="py-2.5 px-2 text-center w-14">🔴Qırm.</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-xs">
                     ${matchPlayerStats.map(stat => html`
                       <tr key=${stat.playerId} className="hover:bg-purple-50/20 transition">
-                        <td className="py-3 px-4 font-bold text-purple-950">${stat.name}</td>
-                        <td className="py-3 px-4 text-center text-gray-500 font-bold">${stat.class}</td>
-                        <td className="py-3 px-4 text-center">
+                        <td className="py-2.5 px-3">
+                          <div className="font-bold text-purple-950">${stat.name}</div>
+                          <div className="text-[10px] text-gray-400">${stat.position || '—'}</div>
+                        </td>
+                        <td className="py-2.5 px-2 text-center text-gray-500 font-bold">${stat.class}</td>
+                        <td className="py-2.5 px-2 text-center">
                           <input
                             type="number"
-                            min="0"
+                            min="1"
                             max="10"
                             step="0.1"
-                            value=${stat.rating}
-                            onChange=${(e) => handlePlayerStatChange(stat.playerId, 'rating', e.target.value)}
-                            className="w-16 bg-gray-50 border border-gray-200 text-center font-black rounded-lg p-1 text-purple-900"
+                            placeholder="Auto"
+                            value=${stat.rating ?? ''}
+                            onChange=${(e) => handlePlayerStatChange(stat.playerId, 'rating', e.target.value === '' ? null : e.target.value)}
+                            className="w-16 bg-gray-50 border border-gray-200 text-center font-black rounded-lg p-1 text-purple-900 placeholder-gray-300"
                           />
                         </td>
-                        <td className="py-3 px-4 text-center">
-                          <input
-                            type="number"
-                            min="0"
-                            value=${stat.goals}
+                        <td className="py-2.5 px-2 text-center">
+                          <input type="number" min="0" value=${stat.goals}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'goals', e.target.value)}
-                            className="w-12 bg-gray-50 border border-gray-200 text-center rounded-lg p-1"
-                          />
+                            className="w-12 bg-gray-50 border border-gray-200 text-center rounded-lg p-1" />
                         </td>
-                        <td className="py-3 px-4 text-center">
-                          <input
-                            type="number"
-                            min="0"
-                            value=${stat.assists}
+                        <td className="py-2.5 px-2 text-center">
+                          <input type="number" min="0" value=${stat.assists}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'assists', e.target.value)}
-                            className="w-12 bg-gray-50 border border-gray-200 text-center rounded-lg p-1"
-                          />
+                            className="w-12 bg-gray-50 border border-gray-200 text-center rounded-lg p-1" />
                         </td>
-                        <td className="py-3 px-4 text-center">
-                          <input
-                            type="number"
-                            min="0"
-                            value=${stat.passes}
-                            onChange=${(e) => handlePlayerStatChange(stat.playerId, 'passes', e.target.value)}
-                            className="w-14 bg-gray-50 border border-gray-200 text-center rounded-lg p-1"
-                          />
+                        <td className="py-2.5 px-2 text-center">
+                          <input type="number" min="0" value=${stat.saves}
+                            onChange=${(e) => handlePlayerStatChange(stat.playerId, 'saves', e.target.value)}
+                            className="w-12 bg-sky-50 border border-sky-200 text-center rounded-lg p-1" />
+                        </td>
+                        <td className="py-2.5 px-2 text-center">
+                          <input type="number" min="0" value=${stat.yellowCards}
+                            onChange=${(e) => handlePlayerStatChange(stat.playerId, 'yellowCards', e.target.value)}
+                            className="w-12 bg-yellow-50 border border-yellow-200 text-center rounded-lg p-1" />
+                        </td>
+                        <td className="py-2.5 px-2 text-center">
+                          <input type="number" min="0" value=${stat.redCards}
+                            onChange=${(e) => handlePlayerStatChange(stat.playerId, 'redCards', e.target.value)}
+                            className="w-12 bg-red-50 border border-red-200 text-center rounded-lg p-1" />
                         </td>
                       </tr>
                     `)}
