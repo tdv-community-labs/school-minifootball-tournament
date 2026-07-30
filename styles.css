@@ -29,11 +29,20 @@ body {
 }
 
 .glass-nav {
-  background: #2e0249;
-  background: linear-gradient(135deg, #1e0036 0%, #3b0764 50%, #2e0249 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background-color: #2e0249 !important;
+  background: linear-gradient(135deg, #1e0036 0%, #3b0764 50%, #2e0249 100%) !important;
   border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+/* Hide scrollbar for Chrome, Safari, Edge and Firefox */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
 /* Scrollbar Customization */

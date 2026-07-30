@@ -121,7 +121,7 @@ export default function App() {
   return html`
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col">
       <!-- Top Premium Navbar (Branded TDV BTL Futbol) -->
-      <header className="glass-nav sticky top-0 z-40 text-white shadow-lg border-b border-purple-800/40 flex flex-col">
+      <header className="bg-purple-950 sticky top-0 z-40 text-white shadow-xl border-b border-purple-800/40 flex flex-col" style=${{ backgroundColor: '#2e0249' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex items-center justify-between h-16">
             
@@ -138,7 +138,7 @@ export default function App() {
 
               <!-- Premium Year Selector -->
               ${years.length > 0 && html`
-                <div className="flex items-center space-x-1 bg-purple-950/60 border border-purple-800/60 rounded-xl px-2 py-1 ml-2 md:ml-4 shadow-inner">
+                <div className="flex items-center space-x-1 bg-purple-900/80 border border-purple-700/60 rounded-xl px-2 py-1 ml-2 md:ml-4 shadow-inner">
                   <span className="text-[9px] text-green-400 font-black uppercase tracking-wider hidden sm:inline px-1">
                     <i className="fas fa-calendar-days mr-1"></i> Tədris İli:
                   </span>
@@ -216,8 +216,8 @@ export default function App() {
         `}
 
         <!-- Division Switcher Bar -->
-        <div className="bg-purple-950/80 border-t border-purple-800/30 py-2 w-full">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center space-x-1.5 overflow-x-auto">
+        <div className="bg-purple-950/90 border-t border-purple-800/40 py-2 w-full">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center space-x-1.5 overflow-x-auto no-scrollbar">
             <span className="text-[10px] font-black text-green-400 uppercase tracking-widest mr-2 whitespace-nowrap">
               <i className="fas fa-trophy mr-1"></i> Turnir:
             </span>
