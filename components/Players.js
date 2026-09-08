@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle } from '../services/database.js';
+import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel } from '../services/i18n.js';
 
 const html = htm.bind(React.createElement);
 
-export default function Players({ activeDivision, activeYear }) {
+export default function Players({ activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang) }) {
   const [players, setPlayers] = useState([]);
   const [classes, setClasses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,23 +40,14 @@ export default function Players({ activeDivision, activeYear }) {
     return (b.goals || 0) - (a.goals || 0);
   });
 
-  const getDivisionLabel = (div) => {
-    if (div === '6') return '6-cı Siniflər';
-    if (div === '7') return '7-ci Siniflər';
-    if (div === '8') return '8-ci Siniflər';
-    if (div === '9') return '9-cu Siniflər';
-    if (div === '10-11') return '10-11-ci Siniflər';
-    if (div === '7-8') return '7-8-ci Siniflər';
-    if (div === '9-10') return '9-10-cu Siniflər';
-    return '11-ci Siniflər';
-  };
+  const getDivisionLabel = (div) => fallbackGetDivisionLabel(div, lang);
 
   return html`
     <div className="space-y-6 animate-fadeIn">
       <!-- Title & Header -->
       <div>
-        <h2 className="text-2xl font-black text-purple-950 font-sans">Oyunçular & Reytinqlər — ${getDivisionLabel(activeDivision)}</h2>
-        <p className="text-sm text-gray-500">Sofascore reytinq sistemi ilə hesablanmış performans statistikası</p>
+        <h2 className="text-2xl font-black text-purple-950 font-sans">${t('playersTitle')} — ${getDivisionLabel(activeDivision)}</h2>
+        <p className="text-sm text-gray-500">${lang === 'az' ? 'Sofascore reytinq sistemi ilə hesablanmış performans statistikası' : 'Performance statistics evaluated with the Sofascore rating engine'}</p>
       </div>
 
       <!-- Filters Panel -->
@@ -68,7 +60,7 @@ export default function Players({ activeDivision, activeYear }) {
             type="text"
             value=${searchTerm}
             onChange=${(e) => setSearchTerm(e.target.value)}
-            placeholder="Oyunçu adı axtar..."
+            placeholder=${t('searchPlayerPlaceholder')}
             className="w-full bg-gray-50 border border-gray-200 text-purple-950 text-xs rounded-2xl focus:ring-purple-900 focus:border-purple-900 block pl-10 pr-3 py-3"
           />
         </div>
@@ -78,9 +70,9 @@ export default function Players({ activeDivision, activeYear }) {
             onChange=${(e) => setSelectedClass(e.target.value)}
             className="w-full bg-gray-50 border border-gray-200 text-purple-950 text-xs rounded-2xl focus:ring-purple-900 focus:border-purple-900 block p-3 font-semibold"
           >
-            <option value="All">Bütün Siniflər</option>
+            <option value="All">${t('filterClassAll')}</option>
             ${activeClasses.map(cls => html`
-              <option key=${cls.id} value=${cls.name}>${cls.name} Sinfi</option>
+              <option key=${cls.id} value=${cls.name}>${cls.name} ${lang === 'az' ? 'Sinfi' : 'Grade'}</option>
             `)}
           </select>
         </div>
@@ -91,7 +83,7 @@ export default function Players({ activeDivision, activeYear }) {
         ${sortedPlayers.length === 0 
           ? html`
               <div className="col-span-3 text-center py-12 text-gray-400 bg-white rounded-3xl border border-dashed border-gray-200">
-                Axtarışa uyğun heç bir oyunçu tapılmadı.
+                ${t('noPlayersFound')}
               </div>
             `
           : sortedPlayers.map((player, idx) => {
@@ -130,7 +122,7 @@ export default function Players({ activeDivision, activeYear }) {
                         </span>
                         ${isKeeper ? html`
                           <span className="text-[10px] font-black text-sky-700 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded uppercase tracking-wider">
-                            🧤 Qapıçı
+                            🧤 ${lang === 'az' ? 'Qapıçı' : 'Goalkeeper'}
                           </span>
                         ` : null}
                       </div>
@@ -141,30 +133,30 @@ export default function Players({ activeDivision, activeYear }) {
                     <!-- Sofascore badge -->
                     <div className=${"min-w-[3.5rem] h-14 rounded-2xl flex flex-col items-center justify-center px-2 shadow-md " + badgeClass}>
                       <span className="text-base leading-none">${rating}</span>
-                      <span className="text-[8px] font-semibold opacity-80 mt-0.5">Rating</span>
+                      <span className="text-[8px] font-semibold opacity-80 mt-0.5">${t('rating')}</span>
                     </div>
                   </div>
 
                   <!-- Stats row -->
                   <div className="grid grid-cols-3 gap-2 bg-gray-50 p-3 rounded-2xl border border-gray-100 text-center">
                     <div>
-                      <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">Oyun</span>
+                      <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">${t('matchesPlayed')}</span>
                       <span className="text-base font-extrabold text-purple-950">${player.matchesPlayed || 0}</span>
                     </div>
                     <div className="border-x border-gray-200">
                       ${isKeeper
                         ? html`
-                          <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">Qurtarış</span>
+                          <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">${lang === 'az' ? 'Qurtarış' : 'Saves'}</span>
                           <span className="text-base font-extrabold text-sky-700">🧤 ${player.saves || 0}</span>
                         `
                         : html`
-                          <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">Qol</span>
+                          <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">${t('goals')}</span>
                           <span className="text-base font-extrabold text-green-700">⚽ ${player.goals || 0}</span>
                         `
                       }
                     </div>
                     <div>
-                      <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">Asist</span>
+                      <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">${t('assists')}</span>
                       <span className="text-base font-extrabold text-purple-900">👟 ${player.assists || 0}</span>
                     </div>
                   </div>

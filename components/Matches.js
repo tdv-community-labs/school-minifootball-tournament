@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
+import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel } from '../services/i18n.js';
 
 const html = htm.bind(React.createElement);
 
-export default function Matches({ activeDivision, activeYear }) {
+export default function Matches({ activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang) }) {
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
   const [selectedStage, setSelectedStage] = useState('Qrup Mərhələsi');
   const [selectedMatch, setSelectedMatch] = useState(null);
 
   const stages = [
-    { id: 'Qrup Mərhələsi', label: 'Qrup' },
-    { id: '16/1 Final', label: '16/1 Final' },
-    { id: '8/1 Final', label: '8/1 Final' },
-    { id: '4/1 Final', label: '4/1 Final' },
-    { id: 'Yarımfinal', label: 'Yarımfinal' },
+    { id: 'Qrup Mərhələsi', label: lang === 'az' ? 'Qrup' : 'Group' },
+    { id: '16/1 Final', label: lang === 'az' ? '16/1 Final' : 'Round of 32' },
+    { id: '8/1 Final', label: lang === 'az' ? '8/1 Final' : 'Round of 16' },
+    { id: '4/1 Final', label: lang === 'az' ? '4/1 Final' : 'Quarter-Final' },
+    { id: 'Yarımfinal', label: lang === 'az' ? 'Yarımfinal' : 'Semi-Final' },
     { id: 'Final', label: 'Final' },
-    { id: '3-cü Yer', label: '3-cü Yer' }
+    { id: '3-cü Yer', label: lang === 'az' ? '3-cü Yer' : '3rd Place' }
   ];
 
   useEffect(() => {
@@ -123,8 +124,8 @@ export default function Matches({ activeDivision, activeYear }) {
       <!-- Title & Filters -->
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-black text-purple-950 font-sans">Matçlar & Video — ${getDivisionLabel(activeDivision)}</h2>
-          <p className="text-sm text-gray-500">Mərhələlər üzrə oyunlar, arxiv videolar və Sofascore reytinqləri</p>
+          <h2 className="text-2xl font-black text-purple-950 font-sans">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
+          <p className="text-sm text-gray-500">${lang === 'az' ? 'Mərhələlər üzrə oyunlar, arxiv videolar və Sofascore reytinqləri' : 'Stage fixtures, match highlights, and Sofascore player ratings'}</p>
         </div>
         
         <!-- Stage Tabs -->
@@ -150,7 +151,7 @@ export default function Matches({ activeDivision, activeYear }) {
         ${filteredMatches.length === 0 
           ? html`
               <div className="col-span-2 text-center py-12 text-gray-400 bg-white rounded-3xl border border-dashed border-gray-200">
-                Bu mərhələdə hələ heç bir matç qeydə alınmayıb.
+                ${t('noMatchesFound')}
               </div>
             `
           : filteredMatches.map(match => html`

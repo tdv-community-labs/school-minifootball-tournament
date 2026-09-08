@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
+import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel } from '../services/i18n.js';
 
 const html = htm.bind(React.createElement);
 
@@ -17,7 +18,7 @@ const normalizeStage = (stage) => {
   return s;
 };
 
-export default function Standings({ activeDivision, activeYear }) {
+export default function Standings({ activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang) }) {
   const [table, setTable] = useState([]);
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
@@ -64,16 +65,7 @@ export default function Standings({ activeDivision, activeYear }) {
     return sortAsc ? valA - valB : valB - valA;
   });
 
-  const getDivisionLabel = (div) => {
-    if (div === '6') return '6-cı Siniflər';
-    if (div === '7') return '7-ci Siniflər';
-    if (div === '8') return '8-ci Siniflər';
-    if (div === '9') return '9-cu Siniflər';
-    if (div === '10-11') return '10-11-ci Siniflər';
-    if (div === '7-8') return '7-8-ci Siniflər';
-    if (div === '9-10') return '9-10-cu Siniflər';
-    return '11-ci Siniflər';
-  };
+  const getDivisionLabel = (div) => fallbackGetDivisionLabel(div, lang);
 
   // ─────────────────────────────────────────────────────────────────────────────
   // PLAYOFF BRACKET CALCULATIONS & STAGES
@@ -339,15 +331,15 @@ export default function Standings({ activeDivision, activeYear }) {
               ${getDivisionLabel(activeDivision)}
             </span>
             <span className="text-gray-400 text-xs">•</span>
-            <span className="text-gray-500 text-xs font-bold">${activeYear} Mövsümü</span>
+            <span className="text-gray-500 text-xs font-bold">${activeYear}</span>
           </div>
           <h2 className="text-2xl font-black text-purple-950 mt-1">
-            Turnir Cədvəli & Pley-off Mərhələsi
+            ${t('standingsTitle')}
           </h2>
           <p className="text-sm text-gray-500">
             ${viewMode === 'table' 
-              ? 'Qrup mərhələsi xal sıralaması və top fərqləri' 
-              : 'Dörddəbir, yarımfinal və böyük final pley-off toru'}
+              ? (lang === 'az' ? 'Qrup mərhələsi xal sıralaması və top fərqləri' : 'Group stage points table and goal differences')
+              : (lang === 'az' ? 'Dörddəbir, yarımfinal və böyük final pley-off toru' : 'Playoff bracket tree: quarter-finals, semi-finals and final')}
           </p>
         </div>
         
@@ -362,7 +354,7 @@ export default function Standings({ activeDivision, activeYear }) {
             }`}
           >
             <i className="fas fa-list-ol text-sm"></i>
-            <span>Qrup Mərhələsi</span>
+            <span>${t('tabGroupStage')}</span>
           </button>
           
           <button
@@ -374,7 +366,7 @@ export default function Standings({ activeDivision, activeYear }) {
             }`}
           >
             <i className="fas fa-sitemap text-sm"></i>
-            <span>Pley-off Toru</span>
+            <span>${t('tabPlayoffs')}</span>
           </button>
         </div>
       </div>
@@ -390,31 +382,31 @@ export default function Standings({ activeDivision, activeYear }) {
                 <tr className="bg-purple-950 text-white text-xs font-bold tracking-wider">
                   <th className="py-4 px-6 text-center w-12">#</th>
                   <th className="py-4 px-4 cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('class')}>
-                    Sinif ${sortField === 'class' ? (sortAsc ? '▲' : '▼') : ''}
+                    ${t('colTeam')} ${sortField === 'class' ? (sortAsc ? '▲' : '▼') : ''}
                   </th>
                   <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('played')}>
-                    O ${sortField === 'played' ? (sortAsc ? '▲' : '▼') : ''}
+                    ${t('colPlayed')} ${sortField === 'played' ? (sortAsc ? '▲' : '▼') : ''}
                   </th>
                   <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('won')}>
-                    Q ${sortField === 'won' ? (sortAsc ? '▲' : '▼') : ''}
+                    ${t('colWon')} ${sortField === 'won' ? (sortAsc ? '▲' : '▼') : ''}
                   </th>
                   <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('drawn')}>
-                    H ${sortField === 'drawn' ? (sortAsc ? '▲' : '▼') : ''}
+                    ${t('colDrawn')} ${sortField === 'drawn' ? (sortAsc ? '▲' : '▼') : ''}
                   </th>
                   <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('lost')}>
-                    M ${sortField === 'lost' ? (sortAsc ? '▲' : '▼') : ''}
+                    ${t('colLost')} ${sortField === 'lost' ? (sortAsc ? '▲' : '▼') : ''}
                   </th>
                   <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsFor')}>
-                    QV ${sortField === 'goalsFor' ? (sortAsc ? '▲' : '▼') : ''}
+                    ${t('colGF')} ${sortField === 'goalsFor' ? (sortAsc ? '▲' : '▼') : ''}
                   </th>
                   <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsAgainst')}>
-                    QBur ${sortField === 'goalsAgainst' ? (sortAsc ? '▲' : '▼') : ''}
+                    ${t('colGA')} ${sortField === 'goalsAgainst' ? (sortAsc ? '▲' : '▼') : ''}
                   </th>
                   <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('goalDifference')}>
-                    TF ${sortField === 'goalDifference' ? (sortAsc ? '▲' : '▼') : ''}
+                    ${t('colGD')} ${sortField === 'goalDifference' ? (sortAsc ? '▲' : '▼') : ''}
                   </th>
                   <th className="py-4 px-6 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('points')}>
-                    Xal ${sortField === 'points' ? (sortAsc ? '▲' : '▼') : ''}
+                    ${t('colPoints')} ${sortField === 'points' ? (sortAsc ? '▲' : '▼') : ''}
                   </th>
                 </tr>
               </thead>
@@ -423,7 +415,7 @@ export default function Standings({ activeDivision, activeYear }) {
                   ? html`
                       <tr>
                         <td colSpan="10" className="py-8 text-center text-gray-400">
-                          Bu qrupda qeydiyyatdan keçmiş sinif yoxdur.
+                          ${t('tableEmptyNotice')}
                         </td>
                       </tr>
                     `

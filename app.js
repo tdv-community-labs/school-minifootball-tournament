@@ -6,6 +6,7 @@ import Matches from './components/Matches.js';
 import Players from './components/Players.js';
 import AdminDashboard from './components/AdminDashboard.js';
 import { db } from './services/database.js';
+import { t, getDivisionLabel } from './services/i18n.js';
 
 const html = htm.bind(React.createElement);
 
@@ -24,6 +25,16 @@ export default function App() {
   const [inputPassword, setInputPassword] = useState('');
   const [showRulesModal, setShowRulesModal] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
+
+  // Language state (defaults to English as requested)
+  const [lang, setLang] = useState(() => {
+    return localStorage.getItem('btl_language') || 'en';
+  });
+
+  const handleLangChange = (newLang) => {
+    setLang(newLang);
+    localStorage.setItem('btl_language', newLang);
+  };
 
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('btl_theme') || 'system';
@@ -135,35 +146,36 @@ export default function App() {
   };
 
   const renderContent = () => {
+    const curT = (k) => t(k, lang);
     switch (activeTab) {
       case 'dashboard':
-        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} />`;
+        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
       case 'standings':
-        return html`<${Standings} activeDivision=${activeDivision} activeYear=${activeYear} />`;
+        return html`<${Standings} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
       case 'matches':
-        return html`<${Matches} activeDivision=${activeDivision} activeYear=${activeYear} />`;
+        return html`<${Matches} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
       case 'players':
-        return html`<${Players} activeDivision=${activeDivision} activeYear=${activeYear} />`;
+        return html`<${Players} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
       case 'admin':
-        return html`<${AdminDashboard} activeDivision=${activeDivision} activeYear=${activeYear} onYearsChanged=${handleReloadYears} onLogout=${handleAdminLogout} />`;
+        return html`<${AdminDashboard} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onYearsChanged=${handleReloadYears} onLogout=${handleAdminLogout} />`;
       default:
-        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} />`;
+        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
     }
   };
 
   const navItems = [
-    { id: 'dashboard', label: 'Ana Səhifə', icon: 'fas fa-chart-pie' },
-    { id: 'standings', label: 'Turnir Cədvəli', icon: 'fas fa-list-ol' },
-    { id: 'matches', label: 'Matçlar & Video', icon: 'fas fa-video' },
-    { id: 'players', label: 'Oyunçular', icon: 'fas fa-users' },
-    ...(isAdminAuthorized ? [{ id: 'admin', label: 'Admin Panel', icon: 'fas fa-user-cog' }] : [])
+    { id: 'dashboard', label: t('navHome', lang), icon: 'fas fa-chart-pie' },
+    { id: 'standings', label: t('navStandings', lang), icon: 'fas fa-list-ol' },
+    { id: 'matches', label: t('navMatches', lang), icon: 'fas fa-video' },
+    { id: 'players', label: t('navPlayers', lang), icon: 'fas fa-users' },
+    ...(isAdminAuthorized ? [{ id: 'admin', label: t('navAdmin', lang), icon: 'fas fa-user-cog' }] : [])
   ];
 
   const divisions = [
-    { id: '6', label: '6-cı Siniflər' },
-    { id: '7-8', label: '7-8-ci Siniflər' },
-    { id: '9-10', label: '9-10-cu Siniflər' },
-    { id: '11', label: '11-ci Siniflər' }
+    { id: '6', label: getDivisionLabel('6', lang) },
+    { id: '7-8', label: getDivisionLabel('7-8', lang) },
+    { id: '9-10', label: getDivisionLabel('9-10', lang) },
+    { id: '11', label: getDivisionLabel('11', lang) }
   ];
 
   const handleYearChange = (newYear) => {
@@ -185,7 +197,7 @@ export default function App() {
                   <i className="fas fa-futbol text-lg"></i>
                 </div>
                 <h1 className="text-lg md:text-xl font-black tracking-wider uppercase">
-                  TDV BTL <span className="text-green-400 font-extrabold">FUTBOL</span>
+                  ${t('appTitle', lang)} <span className="text-green-400 font-extrabold">${t('appSubtitle', lang)}</span>
                 </h1>
               </div>
 
@@ -193,7 +205,7 @@ export default function App() {
               ${years.length > 0 && html`
                 <div className="flex items-center space-x-1 bg-purple-900/80 border border-purple-700/60 rounded-xl px-2 py-1 ml-2 md:ml-4 shadow-inner">
                   <span className="text-[9px] text-green-400 font-black uppercase tracking-wider hidden sm:inline px-1">
-                    <i className="fas fa-calendar-days mr-1"></i> Tədris İli:
+                    <i className="fas fa-calendar-days mr-1"></i> ${t('academicYear', lang)}
                   </span>
                   <select
                     value=${activeYear}
@@ -229,54 +241,97 @@ export default function App() {
               })}
             </nav>
 
-            <!-- Theme Switcher (Desktop) -->
-            <div className="hidden md:flex items-center bg-purple-900/80 border border-purple-700/60 rounded-xl p-0.5 shadow-inner space-x-1">
-              <button
-                type="button"
-                title="Sistem Mövzusu (Cihaza uyğun)"
-                onClick=${() => handleThemeChange('system')}
-                className=${`px-2.5 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1.5 ${
-                  theme === 'system'
-                    ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
-                    : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
-                }`}
-              >
-                <i className="fas fa-desktop text-[11px]"></i>
-                <span className="text-[10px] tracking-wider uppercase">Sistem</span>
-              </button>
-              <button
-                type="button"
-                title="Açıq Mövzu"
-                onClick=${() => handleThemeChange('light')}
-                className=${`px-2.5 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1.5 ${
-                  theme === 'light'
-                    ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
-                    : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
-                }`}
-              >
-                <i className="fas fa-sun text-[11px]"></i>
-                <span className="text-[10px] tracking-wider uppercase">Açıq</span>
-              </button>
-              <button
-                type="button"
-                title="Qaranlıq Mövzu"
-                onClick=${() => handleThemeChange('dark')}
-                className=${`px-2.5 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1.5 ${
-                  theme === 'dark'
-                    ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
-                    : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
-                }`}
-              >
-                <i className="fas fa-moon text-[11px]"></i>
-                <span className="text-[10px] tracking-wider uppercase">Qaranlıq</span>
-              </button>
+            <!-- Switchers: Language & Theme (Desktop) -->
+            <div className="hidden md:flex items-center space-x-2">
+              <!-- Language Switcher (EN / AZ) -->
+              <div className="flex items-center bg-purple-900/80 border border-purple-700/60 rounded-xl p-0.5 shadow-inner space-x-1">
+                <button
+                  type="button"
+                  title="English (Primary)"
+                  onClick=${() => handleLangChange('en')}
+                  className=${`px-2 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1 ${
+                    lang === 'en'
+                      ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
+                      : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
+                  }`}
+                >
+                  <span className="text-[11px]">🇬🇧</span>
+                  <span className="text-[10px] tracking-wider uppercase font-extrabold">EN</span>
+                </button>
+                <button
+                  type="button"
+                  title="Azərbaycan dili"
+                  onClick=${() => handleLangChange('az')}
+                  className=${`px-2 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1 ${
+                    lang === 'az'
+                      ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
+                      : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
+                  }`}
+                >
+                  <span className="text-[11px]">🇦🇿</span>
+                  <span className="text-[10px] tracking-wider uppercase font-extrabold">AZ</span>
+                </button>
+              </div>
+
+              <!-- Theme Switcher -->
+              <div className="flex items-center bg-purple-900/80 border border-purple-700/60 rounded-xl p-0.5 shadow-inner space-x-1">
+                <button
+                  type="button"
+                  title=${t('themeSystem', lang)}
+                  onClick=${() => handleThemeChange('system')}
+                  className=${`px-2 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1 ${
+                    theme === 'system'
+                      ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
+                      : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
+                  }`}
+                >
+                  <i className="fas fa-desktop text-[11px]"></i>
+                  <span className="text-[10px] tracking-wider uppercase">${t('themeSystem', lang)}</span>
+                </button>
+                <button
+                  type="button"
+                  title=${t('themeLight', lang)}
+                  onClick=${() => handleThemeChange('light')}
+                  className=${`px-2 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1 ${
+                    theme === 'light'
+                      ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
+                      : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
+                  }`}
+                >
+                  <i className="fas fa-sun text-[11px]"></i>
+                  <span className="text-[10px] tracking-wider uppercase">${t('themeLight', lang)}</span>
+                </button>
+                <button
+                  type="button"
+                  title=${t('themeDark', lang)}
+                  onClick=${() => handleThemeChange('dark')}
+                  className=${`px-2 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1 ${
+                    theme === 'dark'
+                      ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
+                      : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
+                  }`}
+                >
+                  <i className="fas fa-moon text-[11px]"></i>
+                  <span className="text-[10px] tracking-wider uppercase">${t('themeDark', lang)}</span>
+                </button>
+              </div>
             </div>
 
             <!-- Mobile Controls -->
             <div className="md:hidden flex items-center space-x-1">
+              <!-- Mobile Language Toggle -->
+              <button
+                onClick=${() => handleLangChange(lang === 'en' ? 'az' : 'en')}
+                title=${lang === 'en' ? 'Azərbaycan dilinə keç' : 'Switch to English'}
+                className="px-2 py-1 rounded-lg bg-purple-900/80 border border-purple-700/60 text-xs font-black text-white hover:bg-purple-800 transition flex items-center space-x-1 shadow-inner"
+              >
+                <span>${lang === 'en' ? '🇬🇧 EN' : '🇦🇿 AZ'}</span>
+              </button>
+
+              <!-- Mobile Theme Toggle -->
               <button
                 onClick=${() => handleThemeChange(theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark')}
-                title=${`Mövzu: ${theme === 'dark' ? 'Qaranlıq' : theme === 'light' ? 'Açıq' : 'Sistem'}`}
+                title=${`Theme / Mövzu: ${theme}`}
                 className="p-2 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 transition"
               >
                 <i className=${`fas ${theme === 'dark' ? 'fa-moon text-purple-300' : theme === 'light' ? 'fa-sun text-amber-300' : 'fa-desktop text-green-400'} text-base`}></i>
@@ -365,7 +420,7 @@ export default function App() {
         <div className="bg-purple-950/90 border-t border-purple-800/40 py-2 w-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center space-x-1.5 overflow-x-auto no-scrollbar">
             <span className="text-[10px] font-black text-green-400 uppercase tracking-widest mr-2 whitespace-nowrap">
-              <i className="fas fa-trophy mr-1"></i> Turnir:
+              <i className="fas fa-trophy mr-1"></i> ${lang === 'az' ? 'Turnir:' : 'Division:'}
             </span>
             ${divisions.map(div => {
               const isSelected = activeDivision === div.id;
@@ -395,14 +450,14 @@ export default function App() {
       <!-- Premium Footer -->
       <footer className="bg-purple-950 text-purple-200 border-t border-purple-900 py-6 text-center text-xs font-semibold">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p>© 2026 TDV BTL Futbol. Bütün hüquqlar qorunur.</p>
+          <p>© 2026 TDV BTL ${t('appSubtitle', lang)}. ${t('allRightsReserved', lang)}</p>
           <div className="flex items-center space-x-4">
             <button
               onClick=${() => setShowRulesModal(true)}
               className="hover:text-green-400 transition cursor-pointer flex items-center space-x-1.5 py-1 px-2 rounded-lg hover:bg-purple-900/60"
             >
               <i className="fas fa-book-open text-xs text-green-400"></i>
-              <span className="font-bold">Reqlament</span>
+              <span className="font-bold">${t('rulesBtn', lang)}</span>
             </button>
             <span className="text-purple-700">•</span>
             <button
@@ -410,7 +465,7 @@ export default function App() {
               className="hover:text-green-400 transition cursor-pointer flex items-center space-x-1.5 py-1 px-2 rounded-lg hover:bg-purple-900/60"
             >
               <i className="fas fa-envelope text-xs text-green-400"></i>
-              <span className="font-bold">Əlaqə</span>
+              <span className="font-bold">${t('contactBtn', lang)}</span>
             </button>
           </div>
         </div>
@@ -430,8 +485,8 @@ export default function App() {
                   <i className="fas fa-shield-alt"></i>
                 </div>
                 <div>
-                  <h3 className="text-lg font-black text-purple-950 dark:text-white">TDV BTL Futbol Reqlamenti</h3>
-                  <p className="text-[11px] text-gray-500 dark:text-slate-400">Məktəb Mini-Futbol Turnirinin Rəsmi Qaydalar Toplusu</p>
+                  <h3 className="text-lg font-black text-purple-950 dark:text-white">${t('rulesModalTitle', lang)}</h3>
+                  <p className="text-[11px] text-gray-500 dark:text-slate-400">${t('rulesModalSubtitle', lang)}</p>
                 </div>
               </div>
               <button
@@ -447,47 +502,41 @@ export default function App() {
               <!-- Item 1 -->
               <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
                 <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
-                  <span className="mr-2">⏱️</span> 1. Oyun Formatı və Vaxtı
+                  <span className="mr-2">⏱️</span> ${t('rule1Title', lang)}
                 </h4>
-                <p>Turnir minifutbol qaydaları ilə keçirilir (5v5 və ya 6v6). Hər oyun <strong>2 hissədən</strong> (hər hissə 15 dəqiqə) və 5 dəqiqəlik fasilədən ibarətdir.</p>
+                <p>${t('rule1Desc', lang)}</p>
               </div>
 
               <!-- Item 2 -->
               <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
                 <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
-                  <span className="mr-2">📊</span> 2. Qrup Mərhələsi və Xal Hesablanması
+                  <span className="mr-2">📊</span> ${t('rule2Title', lang)}
                 </h4>
-                <p>Qələbə üçün <strong>3 xal</strong>, heç-heçə üçün <strong>1 xal</strong>, məğlubiyyət üçün <strong>0 xal</strong> verilir. Qrupda xallar bərabər olduqda yerlər aşağıdakı ardıcıllıqla müəyyənləşdirilir:</p>
-                <ul className="list-disc list-inside mt-1 space-y-0.5 text-slate-600 dark:text-slate-400">
-                  <li>Top fərqi (vurulan və buraxılan qollar)</li>
-                  <li>Vurulan qolların ümumi sayı</li>
-                  <li>Komandalar arasında şəxsi oyunun nəticəsi</li>
-                  <li>Püşkatma</li>
-                </ul>
+                <p>${t('rule2Desc', lang)}</p>
               </div>
 
               <!-- Item 3 -->
               <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
                 <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
-                  <span className="mr-2">🎯</span> 3. Pley-Off Mərhələsi (16/1, 8/1, 4/1, Yarımfinal və Final)
+                  <span className="mr-2">🎯</span> ${t('rule3Title', lang)}
                 </h4>
-                <p>Pley-off matçlarında məğlub olan komanda turnirlə vidalaşır. Əgər oyunun əsas vaxtı heç-heçə başa çatarsa, əlavə vaxt oynanılmır və <strong>birbaşa penalti zərbələri</strong> (hər komandadan 3 zərbə) seriyasına keçilir.</p>
+                <p>${t('rule3Desc', lang)}</p>
               </div>
 
               <!-- Item 4 -->
               <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
                 <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
-                  <span className="mr-2">🟨</span> 4. İntizam Qaydaları və Fair-Play
+                  <span className="mr-2">🟨</span> ${t('rule4Title', lang)}
                 </h4>
-                <p>Eyni oyunda iki sarı vərəqə və ya birbaşa qırmızı vərəqə alan oyunçu meydandan kənarlaşdırılır və avtomatik olaraq <strong>növbəti 1 oyunu buraxır</strong>. Hakimə etiraz və qeyri-idman hərəkətləri intizam komitəsi tərəfindən cəzalandırılır.</p>
+                <p>${t('rule4Desc', lang)}</p>
               </div>
 
               <!-- Item 5 -->
               <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
                 <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
-                  <span className="mr-2">🏆</span> 5. Mükafatlandırma və Fərdi Titullar
+                  <span className="mr-2">🏆</span> ${t('rule5Title', lang)}
                 </h4>
-                <p>Turnirin sonunda I, II və III yeri tutan komandalar Kubok və medallarla təltif olunur. Həmçinin fərdi olaraq <strong>Qızıl Butsi</strong> (bombardir), <strong>Qızıl Əlcək</strong> (ən yaxşı qapıçı), <strong>Turnirin MVP-si</strong> və <strong>Dream Team</strong> heyəti elan olunur.</p>
+                <p>${t('rule5Desc', lang)}</p>
               </div>
             </div>
 
@@ -497,7 +546,7 @@ export default function App() {
                 onClick=${() => setShowRulesModal(false)}
                 className="bg-purple-900 hover:bg-purple-800 text-white font-bold py-2.5 px-6 rounded-xl text-xs transition"
               >
-                Aydındır, Bağla
+                ${t('closeBtn', lang)}
               </button>
             </div>
           </div>
@@ -515,9 +564,9 @@ export default function App() {
               <i className="fas fa-envelope-open-text"></i>
             </div>
             
-            <h3 className="text-xl font-black text-purple-950 dark:text-white mb-1">Təşkilat Komitəsi ilə Əlaqə</h3>
+            <h3 className="text-xl font-black text-purple-950 dark:text-white mb-1">${t('contactModalTitle', lang)}</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
-              Turnir oyunları, statistik xətalar və ya təklifləriniz üçün bizə yaza bilərsiniz.
+              ${t('contactModalSubtitle', lang)}
             </p>
 
             <!-- Contact Box -->
@@ -527,7 +576,7 @@ export default function App() {
                   <i className="fas fa-at"></i>
                 </div>
                 <div className="overflow-hidden">
-                  <p className="text-[10px] uppercase font-bold text-slate-400">Rəsmi E-poçt</p>
+                  <p className="text-[10px] uppercase font-bold text-slate-400">${t('contactEmailLabel', lang)}</p>
                   <a 
                     href="mailto:orxannamazovld@gmail.com?subject=TDV%20BTL%20Futbol%20Turniri" 
                     className="text-xs font-black text-purple-950 dark:text-white hover:text-green-500 transition break-all"
@@ -542,7 +591,7 @@ export default function App() {
                   <i className="fas fa-location-dot"></i>
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase font-bold text-slate-400">Məkan</p>
+                  <p className="text-[10px] uppercase font-bold text-slate-400">${lang === 'az' ? 'Məkan' : 'Location'}</p>
                   <p className="text-xs font-bold text-slate-800 dark:text-slate-200">TDV Bakı Türk Liseyi Meydançası</p>
                 </div>
               </div>
@@ -554,13 +603,13 @@ export default function App() {
                 className="flex-1 bg-green-500 hover:bg-green-600 text-purple-950 font-black py-3 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-lg shadow-green-500/20"
               >
                 <i className="fas fa-paper-plane"></i>
-                <span>E-poçt Göndər</span>
+                <span>${t('sendEmailBtn', lang)}</span>
               </a>
               <button
                 onClick=${() => setShowContactModal(false)}
                 className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold py-3 px-5 rounded-xl text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition"
               >
-                Bağla
+                ${t('closeBtn', lang)}
               </button>
             </div>
           </div>

@@ -215,7 +215,7 @@
   </style>
   
   <!-- Custom Stylesheet (with cache-busting) -->
-  <link rel="stylesheet" href="styles.css?v=20260908_1750">
+  <link rel="stylesheet" href="styles.css?v=20260908_1800">
   
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
@@ -236,7 +236,7 @@
         <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
         <i class="fas fa-futbol absolute text-2xl text-white"></i>
       </div>
-      <p class="font-black tracking-widest text-xs uppercase text-purple-200">Turnir Məlumatları Yüklənir...</p>
+      <p class="font-black tracking-widest text-xs uppercase text-purple-200">Loading Tournament / Yüklənir...</p>
     </div>
   </div>
 
@@ -245,7 +245,7 @@
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js?v=20260908_1750';
+    import App from './app.js?v=20260908_1800';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');
