@@ -106,7 +106,9 @@ export default function App() {
     
     if (
       params.get('gate') === 'admin-secret-gate' || 
+      params.get('admin') === 'true' ||
       hash === '#admin-secret-gate' || 
+      hash === '#admin' ||
       pathname === '/admin-secret-gate' ||
       pathname.endsWith('/admin-secret-gate')
     ) {
