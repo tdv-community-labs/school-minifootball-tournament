@@ -20,6 +20,8 @@ export default function App() {
   );
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
+  const [showRulesModal, setShowRulesModal] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
 
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('btl_theme') || 'system';
@@ -380,13 +382,176 @@ export default function App() {
       <footer className="bg-purple-950 text-purple-200 border-t border-purple-900 py-6 text-center text-xs font-semibold">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <p>© 2026 TDV BTL Futbol. Bütün hüquqlar qorunur.</p>
-          <div className="flex space-x-4">
-            <span className="hover:text-green-400 transition cursor-pointer">Reqlament</span>
-            <span>•</span>
-            <span className="hover:text-green-400 transition cursor-pointer">Əlaqə</span>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick=${() => setShowRulesModal(true)}
+              className="hover:text-green-400 transition cursor-pointer flex items-center space-x-1.5 py-1 px-2 rounded-lg hover:bg-purple-900/60"
+            >
+              <i className="fas fa-book-open text-xs text-green-400"></i>
+              <span className="font-bold">Reqlament</span>
+            </button>
+            <span className="text-purple-700">•</span>
+            <button
+              onClick=${() => setShowContactModal(true)}
+              className="hover:text-green-400 transition cursor-pointer flex items-center space-x-1.5 py-1 px-2 rounded-lg hover:bg-purple-900/60"
+            >
+              <i className="fas fa-envelope text-xs text-green-400"></i>
+              <span className="font-bold">Əlaqə</span>
+            </button>
           </div>
         </div>
       </footer>
+
+      <!-- Tournament Regulations (Reqlament) Modal -->
+      ${showRulesModal && html`
+        <div 
+          className="fixed inset-0 z-50 bg-purple-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+          onClick=${(e) => { if (e.target === e.currentTarget) setShowRulesModal(false); }}
+        >
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-purple-100 dark:border-slate-800 text-left animate-fadeIn max-h-[90vh] flex flex-col">
+            <!-- Header -->
+            <div className="flex items-center justify-between pb-4 border-b border-purple-100 dark:border-slate-800">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-2xl bg-green-500/20 text-green-500 flex items-center justify-center text-lg">
+                  <i className="fas fa-shield-alt"></i>
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-purple-950 dark:text-white">TDV BTL Futbol Reqlamenti</h3>
+                  <p className="text-[11px] text-gray-500 dark:text-slate-400">Məktəb Mini-Futbol Turnirinin Rəsmi Qaydalar Toplusu</p>
+                </div>
+              </div>
+              <button
+                onClick=${() => setShowRulesModal(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition"
+              >
+                <i className="fas fa-times text-sm"></i>
+              </button>
+            </div>
+
+            <!-- Scrollable Body -->
+            <div className="overflow-y-auto py-4 space-y-4 pr-1 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+              <!-- Item 1 -->
+              <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
+                <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
+                  <span className="mr-2">⏱️</span> 1. Oyun Formatı və Vaxtı
+                </h4>
+                <p>Turnir minifutbol qaydaları ilə keçirilir (5v5 və ya 6v6). Hər oyun <strong>2 hissədən</strong> (hər hissə 15 dəqiqə) və 5 dəqiqəlik fasilədən ibarətdir.</p>
+              </div>
+
+              <!-- Item 2 -->
+              <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
+                <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
+                  <span className="mr-2">📊</span> 2. Qrup Mərhələsi və Xal Hesablanması
+                </h4>
+                <p>Qələbə üçün <strong>3 xal</strong>, heç-heçə üçün <strong>1 xal</strong>, məğlubiyyət üçün <strong>0 xal</strong> verilir. Qrupda xallar bərabər olduqda yerlər aşağıdakı ardıcıllıqla müəyyənləşdirilir:</p>
+                <ul className="list-disc list-inside mt-1 space-y-0.5 text-slate-600 dark:text-slate-400">
+                  <li>Top fərqi (vurulan və buraxılan qollar)</li>
+                  <li>Vurulan qolların ümumi sayı</li>
+                  <li>Komandalar arasında şəxsi oyunun nəticəsi</li>
+                  <li>Püşkatma</li>
+                </ul>
+              </div>
+
+              <!-- Item 3 -->
+              <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
+                <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
+                  <span className="mr-2">🎯</span> 3. Pley-Off Mərhələsi (16/1, 8/1, 4/1, Yarımfinal və Final)
+                </h4>
+                <p>Pley-off matçlarında məğlub olan komanda turnirlə vidalaşır. Əgər oyunun əsas vaxtı heç-heçə başa çatarsa, əlavə vaxt oynanılmır və <strong>birbaşa penalti zərbələri</strong> (hər komandadan 3 zərbə) seriyasına keçilir.</p>
+              </div>
+
+              <!-- Item 4 -->
+              <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
+                <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
+                  <span className="mr-2">🟨</span> 4. İntizam Qaydaları və Fair-Play
+                </h4>
+                <p>Eyni oyunda iki sarı vərəqə və ya birbaşa qırmızı vərəqə alan oyunçu meydandan kənarlaşdırılır və avtomatik olaraq <strong>növbəti 1 oyunu buraxır</strong>. Hakimə etiraz və qeyri-idman hərəkətləri intizam komitəsi tərəfindən cəzalandırılır.</p>
+              </div>
+
+              <!-- Item 5 -->
+              <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
+                <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">
+                  <span className="mr-2">🏆</span> 5. Mükafatlandırma və Fərdi Titullar
+                </h4>
+                <p>Turnirin sonunda I, II və III yeri tutan komandalar Kubok və medallarla təltif olunur. Həmçinin fərdi olaraq <strong>Qızıl Butsi</strong> (bombardir), <strong>Qızıl Əlcək</strong> (ən yaxşı qapıçı), <strong>Turnirin MVP-si</strong> və <strong>Dream Team</strong> heyəti elan olunur.</p>
+              </div>
+            </div>
+
+            <!-- Footer Action -->
+            <div className="pt-4 border-t border-purple-100 dark:border-slate-800 flex justify-end">
+              <button
+                onClick=${() => setShowRulesModal(false)}
+                className="bg-purple-900 hover:bg-purple-800 text-white font-bold py-2.5 px-6 rounded-xl text-xs transition"
+              >
+                Aydındır, Bağla
+              </button>
+            </div>
+          </div>
+        </div>
+      `}
+
+      <!-- Contact (Əlaqə) Modal -->
+      ${showContactModal && html`
+        <div 
+          className="fixed inset-0 z-50 bg-purple-950/80 backdrop-blur-md flex items-center justify-center p-4"
+          onClick=${(e) => { if (e.target === e.currentTarget) setShowContactModal(false); }}
+        >
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-purple-100 dark:border-slate-800 text-center animate-fadeIn">
+            <div className="w-14 h-14 rounded-2xl bg-green-500/20 text-green-500 flex items-center justify-center text-2xl mx-auto mb-4">
+              <i className="fas fa-envelope-open-text"></i>
+            </div>
+            
+            <h3 className="text-xl font-black text-purple-950 dark:text-white mb-1">Təşkilat Komitəsi ilə Əlaqə</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
+              Turnir oyunları, statistik xətalar və ya təklifləriniz üçün bizə yaza bilərsiniz.
+            </p>
+
+            <!-- Contact Box -->
+            <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 mb-6 text-left space-y-3">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-900/50 text-purple-900 dark:text-purple-300 flex items-center justify-center text-xs">
+                  <i className="fas fa-at"></i>
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-[10px] uppercase font-bold text-slate-400">Rəsmi E-poçt</p>
+                  <a 
+                    href="mailto:orxannamazovld@gmail.com?subject=TDV%20BTL%20Futbol%20Turniri" 
+                    className="text-xs font-black text-purple-950 dark:text-white hover:text-green-500 transition break-all"
+                  >
+                    orxannamazovld@gmail.com
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 rounded-xl bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 flex items-center justify-center text-xs">
+                  <i className="fas fa-location-dot"></i>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase font-bold text-slate-400">Məkan</p>
+                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200">TDV Bakı Türk Liseyi Meydançası</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex space-x-2">
+              <a
+                href="mailto:orxannamazovld@gmail.com?subject=TDV%20BTL%20Futbol%20Turniri"
+                className="flex-1 bg-green-500 hover:bg-green-600 text-purple-950 font-black py-3 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-lg shadow-green-500/20"
+              >
+                <i className="fas fa-paper-plane"></i>
+                <span>E-poçt Göndər</span>
+              </a>
+              <button
+                onClick=${() => setShowContactModal(false)}
+                className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold py-3 px-5 rounded-xl text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition"
+              >
+                Bağla
+              </button>
+            </div>
+          </div>
+        </div>
+      `}
 
       <!-- Password Prompt Overlay Modal -->
       ${showPasswordPrompt && html`
