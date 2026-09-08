@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260908_1920';
-import Standings from './components/Standings.js?v=20260908_1920';
-import Matches from './components/Matches.js?v=20260908_1920';
-import Players from './components/Players.js?v=20260908_1920';
-import AdminDashboard from './components/AdminDashboard.js?v=20260908_1920';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260908_1920';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260908_1920';
-import { db } from './services/database.js?v=20260908_1920';
-import { t, getDivisionLabel } from './services/i18n.js?v=20260908_1920';
+import Dashboard from './components/Dashboard.js?v=20260908_2100';
+import Standings from './components/Standings.js?v=20260908_2100';
+import Matches from './components/Matches.js?v=20260908_2100';
+import Players from './components/Players.js?v=20260908_2100';
+import AdminDashboard from './components/AdminDashboard.js?v=20260908_2100';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260908_2100';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260908_2100';
+import { db } from './services/database.js?v=20260908_2100';
+import { t, getDivisionLabel } from './services/i18n.js?v=20260908_2100';
 
 const html = htm.bind(React.createElement);
 
@@ -236,7 +236,7 @@ export default function App() {
             </div>
 
             <!-- Desktop Nav Items -->
-            <nav className="hidden md:flex space-x-1.5">
+            <nav className="hidden lg:flex space-x-1.5 overflow-x-auto no-scrollbar">
               ${navItems.map(item => {
                 const isActive = activeTab === item.id;
                 return html`
@@ -256,22 +256,21 @@ export default function App() {
               })}
             </nav>
 
-            <!-- Switchers & Search (Desktop) -->
-            <div className="hidden md:flex items-center space-x-2">
-              <!-- Global Search Trigger (Desktop) -->
+            <!-- Right Controls: always visible (desktop + mobile) -->
+            <div className="flex items-center space-x-2">
+              <!-- Global Search Button (always visible) -->
               <button
                 type="button"
                 onClick=${() => setIsSearchOpen(true)}
                 title=${lang === 'az' ? 'Axtarış (Ctrl+K)' : 'Search (Ctrl+K)'}
-                className="flex items-center space-x-2 bg-purple-900/80 hover:bg-purple-800 text-purple-200 hover:text-white px-3 py-1.5 rounded-xl border border-purple-700/60 text-xs font-bold transition shadow-inner cursor-pointer"
+                className="flex items-center space-x-1.5 bg-purple-900/80 hover:bg-purple-800 text-purple-200 hover:text-white px-3 py-1.5 rounded-xl border border-purple-700/60 text-xs font-bold transition shadow-inner cursor-pointer"
               >
                 <i className="fas fa-search text-green-400 text-xs"></i>
-                <span className="hidden lg:inline text-[11px] font-extrabold tracking-wide">${lang === 'az' ? 'Axtarış...' : 'Search...'}</span>
-                <kbd className="hidden sm:inline-block bg-purple-950/80 text-[9px] px-1.5 py-0.5 rounded border border-purple-800 text-purple-300 font-mono">Ctrl+K</kbd>
+                <span className="hidden sm:inline text-[11px] font-extrabold tracking-wide">${lang === 'az' ? 'Axtar...' : 'Search...'}</span>
               </button>
 
-              <!-- Language Switcher (EN / AZ) -->
-              <div className="flex items-center bg-purple-900/80 border border-purple-700/60 rounded-xl p-0.5 shadow-inner space-x-1">
+              <!-- Language Switcher (hidden on xs, visible sm+) -->
+              <div className="hidden sm:flex items-center bg-purple-900/80 border border-purple-700/60 rounded-xl p-0.5 shadow-inner space-x-1">
                 <button
                   type="button"
                   title="English (Primary)"
@@ -300,8 +299,8 @@ export default function App() {
                 </button>
               </div>
 
-              <!-- Theme Switcher -->
-              <div className="flex items-center bg-purple-900/80 border border-purple-700/60 rounded-xl p-0.5 shadow-inner space-x-1">
+              <!-- Theme Switcher (hidden on xs, visible sm+) -->
+              <div className="hidden sm:flex items-center bg-purple-900/80 border border-purple-700/60 rounded-xl p-0.5 shadow-inner space-x-1">
                 <button
                   type="button"
                   title=${t('themeSystem', lang)}
@@ -313,7 +312,6 @@ export default function App() {
                   }`}
                 >
                   <i className="fas fa-desktop text-[11px]"></i>
-                  <span className="text-[10px] tracking-wider uppercase">${t('themeSystem', lang)}</span>
                 </button>
                 <button
                   type="button"
@@ -326,7 +324,6 @@ export default function App() {
                   }`}
                 >
                   <i className="fas fa-sun text-[11px]"></i>
-                  <span className="text-[10px] tracking-wider uppercase">${t('themeLight', lang)}</span>
                 </button>
                 <button
                   type="button"
@@ -339,43 +336,34 @@ export default function App() {
                   }`}
                 >
                   <i className="fas fa-moon text-[11px]"></i>
-                  <span className="text-[10px] tracking-wider uppercase">${t('themeDark', lang)}</span>
                 </button>
               </div>
-            </div>
 
-            <!-- Mobile Controls -->
-            <div className="md:hidden flex items-center space-x-1.5">
-              <!-- Mobile Search Button -->
-              <button
-                type="button"
-                onClick=${() => setIsSearchOpen(true)}
-                title=${lang === 'az' ? 'Axtarış' : 'Search'}
-                className="p-2 rounded-xl bg-purple-900/80 border border-purple-700/60 text-green-400 hover:text-white hover:bg-purple-800 transition shadow-inner"
-              >
-                <i className="fas fa-search text-sm"></i>
-              </button>
+              <!-- Mobile compact controls (xs only) -->
+              <div className="flex sm:hidden items-center space-x-1">
+                <!-- Mobile Language Toggle -->
+                <button
+                  onClick=${() => handleLangChange(lang === 'en' ? 'az' : 'en')}
+                  title=${lang === 'en' ? 'Azərbaycan dilinə keç' : 'Switch to English'}
+                  className="px-2 py-1 rounded-lg bg-purple-900/80 border border-purple-700/60 text-xs font-black text-white hover:bg-purple-800 transition flex items-center shadow-inner"
+                >
+                  <span>${lang === 'en' ? '🇬🇧' : '🇦🇿'}</span>
+                </button>
 
-              <!-- Mobile Language Toggle -->
-              <button
-                onClick=${() => handleLangChange(lang === 'en' ? 'az' : 'en')}
-                title=${lang === 'en' ? 'Azərbaycan dilinə keç' : 'Switch to English'}
-                className="px-2 py-1 rounded-lg bg-purple-900/80 border border-purple-700/60 text-xs font-black text-white hover:bg-purple-800 transition flex items-center space-x-1 shadow-inner"
-              >
-                <span>${lang === 'en' ? '🇬🇧 EN' : '🇦🇿 AZ'}</span>
-              </button>
+                <!-- Mobile Theme Toggle -->
+                <button
+                  onClick=${() => handleThemeChange(theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark')}
+                  title=${`Theme: ${theme}`}
+                  className="p-2 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 transition"
+                >
+                  <i className=${`fas ${theme === 'dark' ? 'fa-moon text-purple-300' : theme === 'light' ? 'fa-sun text-amber-300' : 'fa-desktop text-green-400'} text-base`}></i>
+                </button>
+              </div>
 
-              <!-- Mobile Theme Toggle -->
-              <button
-                onClick=${() => handleThemeChange(theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark')}
-                title=${`Theme / Mövzu: ${theme}`}
-                className="p-2 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 transition"
-              >
-                <i className=${`fas ${theme === 'dark' ? 'fa-moon text-purple-300' : theme === 'light' ? 'fa-sun text-amber-300' : 'fa-desktop text-green-400'} text-base`}></i>
-              </button>
+              <!-- Hamburger (mobile nav tabs) -->
               <button
                 onClick=${() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 focus:outline-none transition"
+                className="lg:hidden inline-flex items-center justify-center p-2 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 focus:outline-none transition"
               >
                 <i className=${`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-lg`}></i>
               </button>
@@ -386,7 +374,7 @@ export default function App() {
 
         <!-- Mobile Menu (Dropdown) -->
         ${isMobileMenuOpen && html`
-          <div className="md:hidden bg-purple-950 border-t border-purple-900 px-4 pt-2 pb-4 space-y-3">
+          <div className="lg:hidden bg-purple-950 border-t border-purple-900 px-4 pt-2 pb-4 space-y-3">
             <!-- Mobile Search Bar In Menu -->
             <button
               type="button"

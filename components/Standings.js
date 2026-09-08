@@ -500,7 +500,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-purple-100/60 dark:divide-slate-800 text-sm bg-white dark:bg-slate-900">
+                      <tbody className="divide-y divide-purple-100/60 dark:divide-slate-800 text-sm">
                         ${groupTeams.length === 0 
                           ? html`
                               <tr>
@@ -514,14 +514,14 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                               const isSecond = index === 1;
                               const isQualified = hasMultipleGroups ? (index < 2) : (index === 0);
 
-                              const rowBgClass = isFirst
-                                ? 'bg-emerald-50/70 hover:bg-emerald-100/70 dark:bg-emerald-950/30 dark:hover:bg-emerald-900/40 border-l-4 border-l-emerald-500'
+                              const rowClass = isFirst
+                                ? 'srow-first'
                                 : (isSecond && hasMultipleGroups)
-                                ? 'bg-purple-50/50 hover:bg-purple-100/60 dark:bg-purple-950/30 dark:hover:bg-purple-900/40 border-l-4 border-l-purple-500'
-                                : 'bg-white hover:bg-purple-50/30 dark:bg-slate-900 dark:hover:bg-slate-800/60 border-l-4 border-l-transparent';
+                                ? 'srow-second'
+                                : 'srow-other';
 
                               return html`
-                                <tr key=${row.class} className=${`transition-colors duration-150 ${rowBgClass}`}>
+                                <tr key=${row.class} className=${`transition-colors duration-150 ${rowClass}`}>
                                   <td className="py-3.5 px-4 text-center font-black">
                                     ${isFirst 
                                       ? html`<span className="bg-emerald-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black shadow-xs">1</span>`
@@ -533,11 +533,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                                   <td className="py-3.5 px-4 font-black flex items-center gap-2">
                                     <span className="text-sm font-extrabold text-purple-950 dark:text-white">${row.class} Sinfi</span>
                                     ${isQualified && html`
-                                      <span className="inline-flex items-center text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-2xs ${
+                                      <span className=${`inline-flex items-center text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-2xs ${
                                         isFirst 
                                           ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-700'
                                           : 'bg-purple-100 text-purple-800 border border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-700'
-                                      }">
+                                      }`}>
                                         ${t('playoffs') || 'Pley-off'}
                                       </span>
                                     `}
@@ -568,6 +568,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     </table>
                   </div>
                 </div>
+
               `;
             })
           }
