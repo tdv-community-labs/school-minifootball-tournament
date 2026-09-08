@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
+import { sanitizeEmbedUrl } from '../services/security.js?v=20260909_0030';
 
 const html = htm.bind(React.createElement);
 
@@ -990,7 +991,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             <div className="p-6 space-y-6">
               
               <!-- Video Highlights (YouTube Embed) -->
-              ${selectedMatch.videoUrl && html`
+              ${sanitizeEmbedUrl(selectedMatch.videoUrl) && html`
                 <div className="space-y-2.5">
                   <h4 className="text-sm font-black text-purple-950 uppercase tracking-wider flex items-center">
                     <i className="fab fa-youtube text-red-600 mr-2 text-lg"></i> Matçın Video İcmalı
@@ -998,11 +999,13 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   <div className="aspect-video bg-purple-950 rounded-2xl overflow-hidden shadow-inner border border-purple-800">
                     <iframe 
                       className="w-full h-full"
-                      src=${selectedMatch.videoUrl} 
+                      src=${sanitizeEmbedUrl(selectedMatch.videoUrl)} 
                       title="Match Highlight"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
+                      sandbox="allow-scripts allow-same-origin allow-presentation"
+                      referrerPolicy="strict-origin-when-cross-origin"
                     ></iframe>
                   </div>
                 </div>

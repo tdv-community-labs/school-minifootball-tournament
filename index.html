@@ -4,10 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TDV BTL Futbol Turniri</title>
+  
+  <!-- Cybersecurity: Content Security Policy (CSP) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://esm.sh https://www.gstatic.com https://cdn.tailwindcss.com; connect-src 'self' https://esm.sh https://generativelanguage.googleapis.com https://*.firebaseio.com https://firestore.googleapis.com https://*.workers.dev; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self';">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script>
+    function escapeHTML(str) {
+      return String(str || '').replace(/[&<>'"]/g, function(tag) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[tag] || tag;
+      });
+    }
+
     window.addEventListener('error', function(e) {
       const root = document.getElementById('root');
       if (root) {
@@ -16,10 +26,10 @@
             <i class="fas fa-exclamation-triangle text-5xl text-red-500 mb-4 animate-bounce"></i>
             <h1 class="text-xl font-black mb-2">Sistem Yüklənmə Xətası</h1>
             <p class="text-xs text-red-300 max-w-lg mb-4 font-mono bg-red-900/50 p-4 rounded-2xl border border-red-800 text-left overflow-auto max-h-60" style="white-space: pre-wrap; word-break: break-all;">
-              ${e.message || 'Bilinməyən Xəta'}<br/>
-              Fayl: ${e.filename || 'Bilinmir'}<br/>
-              Sətir: ${e.lineno || '0'}:${e.colno || '0'}<br/>
-              ${e.error && e.error.stack ? e.error.stack : ''}
+              ${escapeHTML(e.message || 'Bilinməyən Xəta')}<br/>
+              Fayl: ${escapeHTML(e.filename || 'Bilinmir')}<br/>
+              Sətir: ${escapeHTML(e.lineno || '0')}:${escapeHTML(e.colno || '0')}<br/>
+              ${escapeHTML(e.error && e.error.stack ? e.error.stack : '')}
             </p>
             <p class="text-[10px] text-red-400">Zəhmət olmasa bu xətanın nə olduğunu bizə bildirin.</p>
           </div>
@@ -30,13 +40,15 @@
     window.addEventListener('unhandledrejection', function(e) {
       const root = document.getElementById('root');
       if (root) {
+        const msg = e.reason && e.reason.message ? e.reason.message : String(e.reason || 'Unhandled Promise Rejection');
+        const stack = e.reason && e.reason.stack ? e.reason.stack : '';
         root.innerHTML = `
           <div class="min-h-screen flex flex-col items-center justify-center bg-red-950 text-white p-6 text-center" style="font-family: sans-serif;">
             <i class="fas fa-exclamation-triangle text-5xl text-red-500 mb-4 animate-bounce"></i>
             <h1 class="text-xl font-black mb-2">Sistem (Promise) Xətası</h1>
             <p class="text-xs text-red-300 max-w-lg mb-4 font-mono bg-red-900/50 p-4 rounded-2xl border border-red-800 text-left overflow-auto max-h-60" style="white-space: pre-wrap; word-break: break-all;">
-              ${e.reason && e.reason.message ? e.reason.message : e.reason || 'Unhandled Promise Rejection'}<br/>
-              ${e.reason && e.reason.stack ? e.reason.stack : ''}
+              ${escapeHTML(msg)}<br/>
+              ${escapeHTML(stack)}
             </p>
             <p class="text-[10px] text-red-400">Zəhmət olmasa bu xətanın nə olduğunu bizə bildirin.</p>
           </div>
@@ -44,9 +56,6 @@
       }
     });
   </script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TDV BTL Futbol</title>
   
   <!-- SEO Meta Tags -->
   <meta name="description" content="TDV BTL Futbol Turniri - Canlı turnir cədvəli, oyunların arxiv videoları və Sofascore tipli fərdi oyunçu reytinqləri.">
@@ -303,7 +312,7 @@
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js?v=20260909_0025';
+    import App from './app.js?v=20260909_0030';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');

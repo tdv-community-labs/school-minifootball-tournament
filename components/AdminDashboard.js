@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import { db } from '../services/database.js?v=20260909_0025';
-import { auditTournamentWithAI, askGeminiTuner } from '../services/geminiAssistant.js?v=20260909_0025';
-import { auditTournamentData, repairTournamentData } from '../services/selfHealing.js?v=20260909_0025';
+import { db } from '../services/database.js?v=20260909_0030';
+import { auditTournamentWithAI, askGeminiTuner, DEFAULT_MODEL, FALLBACK_MODEL } from '../services/geminiAssistant.js?v=20260909_0030';
+import { auditTournamentData, repairTournamentData } from '../services/selfHealing.js?v=20260909_0030';
+import { validateImportJSON, sanitizeEmbedUrl } from '../services/security.js?v=20260909_0030';
 
 const html = htm.bind(React.createElement);
 
@@ -14,9 +15,14 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
   const [newYearInput, setNewYearInput] = useState('');
   const [adminTab, setAdminTab] = useState('matches'); // 'matches', 'players', 'classes', 'years', 'system', 'ai-doctor'
 
-  // AI & Self-Healing State
-  const [geminiApiKey, setGeminiApiKey] = useState(() => localStorage.getItem('minifootball_gemini_api_key') || '');
+  // AI & Self-Healing & Security State
+  const [geminiApiKey, setGeminiApiKey] = useState(() => {
+    return sessionStorage.getItem('minifootball_gemini_api_key') || localStorage.getItem('minifootball_gemini_api_key') || '';
+  });
   const [showApiKey, setShowApiKey] = useState(false);
+  const [selectedAiModel, setSelectedAiModel] = useState(() => localStorage.getItem('btl_gemini_model') || DEFAULT_MODEL);
+  const [keyStorageMode, setKeyStorageMode] = useState(() => localStorage.getItem('btl_gemini_storage_mode') || 'session');
+  const [aiProxyUrl, setAiProxyUrl] = useState(() => localStorage.getItem('btl_gemini_proxy_url') || '');
   const [healthReport, setHealthReport] = useState(null);
   const [isHealing, setIsHealing] = useState(false);
   const [healMessage, setHealMessage] = useState(null);
@@ -108,15 +114,41 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
   const handleSaveApiKey = (e) => {
     if (e) e.preventDefault();
-    localStorage.setItem('minifootball_gemini_api_key', geminiApiKey.trim());
-    alert("Gemini API açarı yadda saxlanıldı!");
+    const key = geminiApiKey.trim();
+    localStorage.setItem('btl_gemini_storage_mode', keyStorageMode);
+    localStorage.setItem('btl_gemini_model', selectedAiModel);
+    localStorage.setItem('btl_gemini_proxy_url', aiProxyUrl.trim());
+
+    if (keyStorageMode === 'session') {
+      sessionStorage.setItem('minifootball_gemini_api_key', key);
+      localStorage.removeItem('minifootball_gemini_api_key');
+    } else {
+      localStorage.setItem('minifootball_gemini_api_key', key);
+    }
+    alert("AI konfiqurasiyası və təhlükəsizlik parametrləri yadda saxlanıldı!");
+  };
+
+  const handlePurgeApiKey = () => {
+    if (confirm("Saxlanılan Gemini API açarını və təhlükəsizlik konfiqurasiyasını tamamilə təmizləmək istəyirsiniz?")) {
+      sessionStorage.removeItem('minifootball_gemini_api_key');
+      localStorage.removeItem('minifootball_gemini_api_key');
+      setGeminiApiKey('');
+      alert("API açarı yaddaşdan silindi.");
+    }
   };
 
   const handleRunAiAudit = async () => {
     setIsAiAuditing(true);
     setAiAuditResult('');
     try {
-      const result = await auditTournamentWithAI(activeYear, geminiApiKey.trim());
+      const result = await auditTournamentWithAI(
+        { activeYear, activeDivision },
+        {
+          apiKey: geminiApiKey.trim(),
+          proxyUrl: aiProxyUrl.trim(),
+          model: selectedAiModel
+        }
+      );
       setAiAuditResult(result);
     } catch (err) {
       setAiAuditResult(`AI Təhlili xətası: ${err.message}`);
@@ -135,11 +167,20 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
     setIsAiChatLoading(true);
 
     try {
-      const reply = await askGeminiTuner(query, {
-        activeYear,
-        activeDivision,
-        apiKey: geminiApiKey.trim()
-      });
+      const reply = await askGeminiTuner(
+        query,
+        {
+          activeYear,
+          activeDivision,
+          totalClasses: classes.length,
+          totalMatches: matches.length
+        },
+        {
+          apiKey: geminiApiKey.trim(),
+          proxyUrl: aiProxyUrl.trim(),
+          model: selectedAiModel
+        }
+      );
       setAiChatHistory([...newHistory, { role: 'model', text: reply }]);
     } catch (err) {
       setAiChatHistory([...newHistory, { role: 'model', text: `Xəta baş verdi: ${err.message}` }]);
@@ -400,6 +441,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
     reader.onload = async (evt) => {
       try {
         const data = JSON.parse(evt.target.result);
+        validateImportJSON(data);
         if (confirm("Bu fayldakı bütün sinif, oyunçu və matç məlumatlarını bazaya yükləmək istəyirsiniz?")) {
           await db.importData(data);
           loadAdminData();
@@ -407,7 +449,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           if (onYearsChanged) onYearsChanged();
         }
       } catch (err) {
-        alert("Fayl oxunarkən xəta baş verib. Düzgün JSON formatı seçdiyinizdən əmin olun.");
+        alert("Təhlükəsizlik / Format xətası: " + err.message);
         console.error(err);
       }
     };
@@ -1261,51 +1303,138 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
             <!-- Right Column (5 cols): API Configuration & Interactive AI Tuner Assistant -->
             <div className="lg:col-span-5 space-y-6">
               
-              <!-- Gemini API Key Config Card -->
+              <!-- Gemini API Key & Security Config Card -->
               <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
-                <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
-                  <i className="fas fa-key text-amber-500"></i>
-                  Google Gemini API Konfiqurasiyası
-                </h4>
-                <p className="text-[11px] text-gray-500 leading-relaxed">
-                  Süni intellekt analizlərindən və interaktiv tənzimləmə köməkçisindən istifadə etmək üçün Gemini API açarını qeyd edin. Açar yalnız brauzerinizin yerli yaddaşında saxlanılır.
-                </p>
+                <div className="flex items-center justify-between">
+                  <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
+                    <i className="fas fa-shield-halved text-purple-600"></i>
+                    AI & Kibertəhlükəsizlik Konfiqurasiyası
+                  </h4>
+                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                    Qorunur
+                  </span>
+                </div>
 
-                <form onSubmit=${handleSaveApiKey} className="space-y-3">
-                  <div className="relative">
+                <form onSubmit=${handleSaveApiKey} className="space-y-3.5">
+                  <!-- AI Model Selection -->
+                  <div>
+                    <label className="block text-[10px] font-black text-gray-500 uppercase mb-1">
+                      Gemini Modeli
+                    </label>
+                    <select
+                      value=${selectedAiModel}
+                      onChange=${(e) => setSelectedAiModel(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-purple-950"
+                    >
+                      <option value="gemini-3.7-flash">Gemini 3.7 Flash — Ən Yeni & Sürətli (Tövsiyə olunur)</option>
+                      <option value="gemini-2.5-flash">Gemini 2.5 Flash — Standart Hibrid</option>
+                    </select>
+                  </div>
+
+                  <!-- Storage Mode Selection -->
+                  <div>
+                    <label className="block text-[10px] font-black text-gray-500 uppercase mb-1">
+                      API Açarının Saxlanma Təhlükəsizliyi
+                    </label>
+                    <select
+                      value=${keyStorageMode}
+                      onChange=${(e) => setKeyStorageMode(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-gray-700"
+                    >
+                      <option value="session">🔒 Müvəqqəti Sessiya (Tövsiyə olunur — Tab bağlananda silinir)</option>
+                      <option value="local">💾 Brauzerdə Saxla (Yalnız şəxsi kompüterdə)</option>
+                    </select>
+                  </div>
+
+                  <!-- API Key Input -->
+                  <div>
+                    <label className="block text-[10px] font-black text-gray-500 uppercase mb-1">
+                      Google Gemini API Açarı
+                    </label>
+                    <div className="relative">
+                      <input
+                        type=${showApiKey ? 'text' : 'password'}
+                        value=${geminiApiKey}
+                        onChange=${(e) => setGeminiApiKey(e.target.value)}
+                        placeholder="AIzaSy..."
+                        className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 pr-10 font-mono"
+                      />
+                      <button
+                        type="button"
+                        onClick=${() => setShowApiKey(!showApiKey)}
+                        className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 text-xs"
+                        title=${showApiKey ? 'Gizlət' : 'Göstər'}
+                      >
+                        <i className=${`fas ${showApiKey ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Serverless Proxy (100% Secret) -->
+                  <div>
+                    <label className="block text-[10px] font-black text-gray-500 uppercase mb-1 flex items-center justify-between">
+                      <span>Serverless Proxy URL (100% Gizli Açar)</span>
+                      <span className="text-[9px] text-purple-600 font-normal">İxtiyari</span>
+                    </label>
                     <input
-                      type=${showApiKey ? 'text' : 'password'}
-                      value=${geminiApiKey}
-                      onChange=${(e) => setGeminiApiKey(e.target.value)}
-                      placeholder="AIzaSy..."
-                      className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-3 pr-10 font-mono"
+                      type="url"
+                      value=${aiProxyUrl}
+                      onChange=${(e) => setAiProxyUrl(e.target.value)}
+                      placeholder="https://tdv-gemini-proxy.workers.dev"
+                      className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-mono placeholder-gray-300"
                     />
+                    <p className="text-[10px] text-gray-400 mt-1">
+                      Cloudflare Worker proxy istifadə etdikdə brauzerdə açar heç vaxt görünmür.
+                    </p>
+                  </div>
+
+                  <!-- Buttons -->
+                  <div className="flex items-center justify-between pt-1 gap-2">
                     <button
                       type="button"
-                      onClick=${() => setShowApiKey(!showApiKey)}
-                      className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 text-xs"
-                      title=${showApiKey ? 'Gizlət' : 'Göstər'}
+                      onClick=${handlePurgeApiKey}
+                      className="text-[11px] text-rose-600 hover:text-rose-800 font-bold px-3 py-2 rounded-xl transition hover:bg-rose-50 border border-transparent hover:border-rose-200"
                     >
-                      <i className=${`fas ${showApiKey ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                      <i className="fas fa-trash-can mr-1"></i> Açarı Təmizlə
                     </button>
-                  </div>
-                  <div className="flex items-center justify-between pt-1">
-                    <a
-                      href="https://aistudio.google.com/app/apikey"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[10px] text-purple-600 hover:underline font-bold"
-                    >
-                      <i className="fas fa-external-link-alt mr-1"></i> Pulsuz API Açarı Əldə Et
-                    </a>
                     <button
                       type="submit"
-                      className="bg-purple-950 hover:bg-purple-900 text-white font-bold text-xs px-4 py-2 rounded-xl transition"
+                      className="bg-purple-950 hover:bg-purple-900 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-sm"
                     >
                       Yadda Saxla
                     </button>
                   </div>
                 </form>
+
+                <!-- Security Best Practices Guide Accordion -->
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2 text-[11px]">
+                  <div className="font-extrabold text-slate-800 flex items-center gap-1.5">
+                    <i className="fas fa-shield-virus text-purple-600"></i>
+                    Kibertəhlükəsizlik: Açarı Necə Qorumalı?
+                  </div>
+                  <ul className="space-y-1.5 text-slate-600 pl-1 list-disc list-inside">
+                    <li>
+                      <strong>HTTP Referrer Məhdudiyyəti:</strong> Google Cloud / AI Studio-da açarı yalnız domeninizə bağlayın (məs: <code className="bg-white px-1 py-0.5 rounded text-[10px] font-mono">https://orxan.github.io/*</code>). Beləliklə, kimsə açarı kopyalasa belə işlədə bilməz.
+                    </li>
+                    <li>
+                      <strong>API İcazəsi:</strong> Açarı yalnız "Gemini API" üçün aktiv edin.
+                    </li>
+                    <li>
+                      <strong>Serverless Worker:</strong> Layihənin <code className="bg-white px-1 py-0.5 rounded text-[10px] font-mono">serverless/gemini-proxy-worker.js</code> şablonunu Cloudflare Worker-ə ataraq açarı 100% gizli saxlaya bilərsiniz.
+                    </li>
+                  </ul>
+                  <div className="pt-1">
+                    <a
+                      href="https://aistudio.google.com/app/apikey"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-purple-600 hover:underline font-bold inline-flex items-center gap-1"
+                    >
+                      <i className="fas fa-external-link-alt text-[10px]"></i> Google AI Studio Konsolu
+                    </a>
+                  </div>
+                </div>
+
               </div>
 
               <!-- Interactive AI Chat / Tuner Console -->

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260909_0025';
-import Standings from './components/Standings.js?v=20260909_0025';
-import Matches from './components/Matches.js?v=20260909_0025';
-import Players from './components/Players.js?v=20260909_0025';
-import AdminDashboard from './components/AdminDashboard.js?v=20260909_0025';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0025';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0025';
-import { db } from './services/database.js?v=20260909_0025';
-import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0025';
+import Dashboard from './components/Dashboard.js?v=20260909_0030';
+import Standings from './components/Standings.js?v=20260909_0030';
+import Matches from './components/Matches.js?v=20260909_0030';
+import Players from './components/Players.js?v=20260909_0030';
+import AdminDashboard from './components/AdminDashboard.js?v=20260909_0030';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0030';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0030';
+import { db } from './services/database.js?v=20260909_0030';
+import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0030';
+import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260909_0030';
 
 const html = htm.bind(React.createElement);
 
@@ -20,11 +21,10 @@ export default function App() {
   });
   const [years, setYears] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isAdminAuthorized, setIsAdminAuthorized] = useState(
-    localStorage.getItem('minifootball_admin_authorized') === 'true'
-  );
+  const [isAdminAuthorized, setIsAdminAuthorized] = useState(() => isSessionValid());
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
+  const [authError, setAuthError] = useState('');
   const [showRulesModal, setShowRulesModal] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -114,10 +114,11 @@ export default function App() {
       window.history.replaceState({}, document.title, '/');
       
       // If already authorized, go straight to admin tab
-      if (localStorage.getItem('minifootball_admin_authorized') === 'true') {
+      if (isSessionValid()) {
         setActiveTab('admin');
       } else {
         // Otherwise trigger password modal prompt
+        setAuthError('');
         setShowPasswordPrompt(true);
       }
     }
@@ -134,19 +135,24 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    if (inputPassword === 'btl2026') {
-      localStorage.setItem('minifootball_admin_authorized', 'true');
+    setAuthError('');
+    const result = await verifyAdminPassword(inputPassword);
+    if (result.success) {
       setIsAdminAuthorized(true);
       setShowPasswordPrompt(false);
       setInputPassword('');
       setActiveTab('admin');
     } else {
-      alert('Xəta: Yanlış şifrə!');
-      setShowPasswordPrompt(false);
+      setAuthError(result.reason || 'Xəta: Yanlış şifrə!');
+      if (result.isLocked) {
+        setTimeout(() => {
+          setShowPasswordPrompt(false);
+          setActiveTab('dashboard');
+        }, 3000);
+      }
       setInputPassword('');
-      setActiveTab('dashboard');
     }
   };
 
@@ -155,7 +161,7 @@ export default function App() {
   };
 
   const handleAdminLogout = () => {
-    localStorage.removeItem('minifootball_admin_authorized');
+    logoutAdmin();
     setIsAdminAuthorized(false);
     setActiveTab('dashboard');
   };
@@ -672,6 +678,12 @@ export default function App() {
                 onChange=${(e) => setInputPassword(e.target.value)}
                 className="w-full bg-gray-50 border border-gray-200 text-center text-sm rounded-xl p-3 font-bold focus:outline-none focus:border-purple-900 transition"
               />
+              ${authError && html`
+                <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold leading-tight animate-fadeIn">
+                  <i className="fas fa-shield-halved mr-1.5 text-red-500"></i>
+                  ${authError}
+                </div>
+              `}
               <div className="flex space-x-2">
                 <button
                   type="submit"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
+import { sanitizeEmbedUrl } from '../services/security.js?v=20260909_0030';
 
 const html = htm.bind(React.createElement);
 
@@ -253,15 +254,17 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                   <h4 className="text-base font-bold text-purple-950 dark:text-white flex items-center">
                     <i className="fab fa-youtube text-red-600 mr-2 text-xl"></i> ${lang === 'az' ? 'Matçın İcmalı (Video)' : 'Match Highlights (Video)'}
                   </h4>
-                  ${(selectedMatch.videoUrl && selectedMatch.videoUrl.includes('embed')) ? html`
+                  ${(sanitizeEmbedUrl(selectedMatch.videoUrl)) ? html`
                     <div className="aspect-video bg-purple-950 rounded-2xl overflow-hidden shadow-inner border border-purple-800">
                       <iframe 
                         className="w-full h-full"
-                        src=${selectedMatch.videoUrl} 
+                        src=${sanitizeEmbedUrl(selectedMatch.videoUrl)} 
                         title="Match Highlight"
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
+                        sandbox="allow-scripts allow-same-origin allow-presentation"
+                        referrerPolicy="strict-origin-when-cross-origin"
                       ></iframe>
                     </div>
                   ` : html`
