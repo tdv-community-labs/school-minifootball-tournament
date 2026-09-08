@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import { db } from '../services/database.js?v=20260909_0030';
-import { auditTournamentWithAI, askGeminiTuner, DEFAULT_MODEL, FALLBACK_MODEL } from '../services/geminiAssistant.js?v=20260909_0030';
-import { auditTournamentData, repairTournamentData } from '../services/selfHealing.js?v=20260909_0030';
-import { validateImportJSON, sanitizeEmbedUrl } from '../services/security.js?v=20260909_0030';
+import { db } from '../services/database.js?v=20260909_0040';
+import { 
+  auditTournamentWithAI, 
+  askGeminiTuner, 
+  DEFAULT_MODEL, 
+  FALLBACK_MODEL,
+  DEFAULT_PUBLIC_KEY,
+  DEFAULT_GUARDIAN_POOL,
+  getGuardianKeyPool,
+  getPublicChatKey 
+} from '../services/geminiAssistant.js?v=20260909_0040';
+import { auditTournamentData, repairTournamentData } from '../services/selfHealing.js?v=20260909_0040';
+import { validateImportJSON, sanitizeEmbedUrl } from '../services/security.js?v=20260909_0040';
 
 const html = htm.bind(React.createElement);
 
@@ -16,9 +25,8 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
   const [adminTab, setAdminTab] = useState('matches'); // 'matches', 'players', 'classes', 'years', 'system', 'ai-doctor'
 
   // AI & Self-Healing & Security State
-  const [geminiApiKey, setGeminiApiKey] = useState(() => {
-    return sessionStorage.getItem('minifootball_gemini_api_key') || localStorage.getItem('minifootball_gemini_api_key') || '';
-  });
+  const [publicChatKey, setPublicChatKey] = useState(() => getPublicChatKey());
+  const [guardianKeys, setGuardianKeys] = useState(() => getGuardianKeyPool());
   const [showApiKey, setShowApiKey] = useState(false);
   const [selectedAiModel, setSelectedAiModel] = useState(() => localStorage.getItem('btl_gemini_model') || DEFAULT_MODEL);
   const [keyStorageMode, setKeyStorageMode] = useState(() => localStorage.getItem('btl_gemini_storage_mode') || 'session');
@@ -114,27 +122,30 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
   const handleSaveApiKey = (e) => {
     if (e) e.preventDefault();
-    const key = geminiApiKey.trim();
     localStorage.setItem('btl_gemini_storage_mode', keyStorageMode);
     localStorage.setItem('btl_gemini_model', selectedAiModel);
     localStorage.setItem('btl_gemini_proxy_url', aiProxyUrl.trim());
+    localStorage.setItem('btl_public_chat_key', publicChatKey.trim());
+    localStorage.setItem('btl_guardian_key_pool', JSON.stringify(guardianKeys));
 
-    if (keyStorageMode === 'session') {
-      sessionStorage.setItem('minifootball_gemini_api_key', key);
-      localStorage.removeItem('minifootball_gemini_api_key');
-    } else {
-      localStorage.setItem('minifootball_gemini_api_key', key);
-    }
-    alert("AI konfiqurasiyası və təhlükəsizlik parametrləri yadda saxlanıldı!");
+    alert("Bütün AI açarları (İctimai Çatbot + 3 Qoruyucu Açar) və parametrlər yadda saxlanıldı!");
   };
 
   const handlePurgeApiKey = () => {
-    if (confirm("Saxlanılan Gemini API açarını və təhlükəsizlik konfiqurasiyasını tamamilə təmizləmək istəyirsiniz?")) {
-      sessionStorage.removeItem('minifootball_gemini_api_key');
-      localStorage.removeItem('minifootball_gemini_api_key');
-      setGeminiApiKey('');
-      alert("API açarı yaddaşdan silindi.");
+    if (confirm("Bütün saxlanılan AI açarlarını və konfiqurasiyanı sıfırlamaq istəyirsiniz?")) {
+      localStorage.removeItem('btl_public_chat_key');
+      localStorage.removeItem('btl_guardian_key_pool');
+      localStorage.removeItem('btl_gemini_proxy_url');
+      setPublicChatKey(DEFAULT_PUBLIC_KEY);
+      setGuardianKeys([...DEFAULT_GUARDIAN_POOL]);
+      alert("Açarlar ilkin vəziyyətinə qaytarıldı.");
     }
+  };
+
+  const handleGuardianKeyChange = (index, value) => {
+    const updated = [...guardianKeys];
+    updated[index] = value.trim();
+    setGuardianKeys(updated);
   };
 
   const handleRunAiAudit = async () => {
@@ -144,7 +155,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       const result = await auditTournamentWithAI(
         { activeYear, activeDivision },
         {
-          apiKey: geminiApiKey.trim(),
+          keyPool: guardianKeys,
           proxyUrl: aiProxyUrl.trim(),
           model: selectedAiModel
         }
@@ -176,7 +187,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           totalMatches: matches.length
         },
         {
-          apiKey: geminiApiKey.trim(),
+          keyPool: guardianKeys,
           proxyUrl: aiProxyUrl.trim(),
           model: selectedAiModel
         }
@@ -1346,18 +1357,24 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     </select>
                   </div>
 
-                  <!-- API Key Input -->
-                  <div>
-                    <label className="block text-[10px] font-black text-gray-500 uppercase mb-1">
-                      Google Gemini API Açarı
+                  <!-- Public Chatbot Key (1 Key for visitors) -->
+                  <div className="bg-purple-50/50 p-3 rounded-2xl border border-purple-100 space-y-2">
+                    <label className="block text-[10px] font-black text-purple-950 uppercase flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">
+                        <i className="fas fa-comments text-purple-600"></i>
+                        1. İctimai Ziyarətçi Çatbot Açarı
+                      </span>
+                      <span className="text-[9px] px-2 py-0.5 rounded-full bg-purple-200 text-purple-900 font-bold">
+                        Bütün Qonaqlar
+                      </span>
                     </label>
                     <div className="relative">
                       <input
                         type=${showApiKey ? 'text' : 'password'}
-                        value=${geminiApiKey}
-                        onChange=${(e) => setGeminiApiKey(e.target.value)}
-                        placeholder="AIzaSy..."
-                        className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 pr-10 font-mono"
+                        value=${publicChatKey}
+                        onChange=${(e) => setPublicChatKey(e.target.value)}
+                        placeholder="AQ.Ab8RN6LL1oCM..."
+                        className="w-full bg-white border border-purple-200 text-xs rounded-xl p-2.5 pr-10 font-mono"
                       />
                       <button
                         type="button"
@@ -1368,6 +1385,40 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                         <i className=${`fas ${showApiKey ? 'fa-eye-slash' : 'fa-eye'}`}></i>
                       </button>
                     </div>
+                    <p className="text-[10px] text-gray-500">
+                      Sayta daxil olan bütün şagird və azarkeşlərin sağ aşağıdakı çatbotla danışması üçün ayrılmış açar.
+                    </p>
+                  </div>
+
+                  <!-- Guardian / Diagnostic Key Pool (3 Keys for site protection) -->
+                  <div className="bg-indigo-50/50 p-3 rounded-2xl border border-indigo-100 space-y-2.5">
+                    <label className="block text-[10px] font-black text-indigo-950 uppercase flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">
+                        <i className="fas fa-shield-heart text-indigo-600"></i>
+                        2. Saytı Yoxlamaq və Qorumaq üçün Açar Hovuzu (3 Açar)
+                      </span>
+                      <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
+                        Avto-Rotasiya Aktiv
+                      </span>
+                    </label>
+                    
+                    <div className="space-y-2">
+                      ${guardianKeys.map((key, i) => html`
+                        <div key=${i} className="flex items-center gap-2">
+                          <span className="text-[10px] font-bold text-indigo-900 w-14 shrink-0">Açar ${i + 1}:</span>
+                          <input
+                            type=${showApiKey ? 'text' : 'password'}
+                            value=${key}
+                            onChange=${(e) => handleGuardianKeyChange(i, e.target.value)}
+                            placeholder=${`AQ.Ab8RN6... (Qoruyucu Açar ${i + 1})`}
+                            className="flex-1 bg-white border border-indigo-200 text-xs rounded-xl p-2 font-mono"
+                          />
+                        </div>
+                      `)}
+                    </div>
+                    <p className="text-[10px] text-gray-500">
+                      Turnir diaqnostikası, xətaların bərpası və admin AI analizləri bu 3 açarla növbəli (failover) işləyir. Biri limitə düşərsə, dərhal növbəti açar aktivləşir.
+                    </p>
                   </div>
 
                   <!-- Serverless Proxy (100% Secret) -->
