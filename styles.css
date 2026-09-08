@@ -370,3 +370,26 @@ html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
 .rating-sofascore-6plus, .bg-\[\#f97316\] { background-color: #f97316 !important; color: #ffffff !important; }
 .rating-sofascore-below6, .bg-\[\#dc2626\] { background-color: #dc2626 !important; color: #ffffff !important; }
 
+/* Standings Table Theme Protection & Contrast */
+table.standings-table,
+.standings-table tbody {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+.dark table.standings-table,
+.dark .standings-table tbody,
+html.dark table.standings-table,
+html.dark .standings-table tbody {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+html:not(.dark) table.standings-table tr {
+  color: #0f172a !important;
+}
+
+.dark table.standings-table tr,
+html.dark table.standings-table tr {
+  color: #f8fafc !important;
+}
+

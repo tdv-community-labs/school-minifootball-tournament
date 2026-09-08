@@ -467,7 +467,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   `}
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+                    <table className="w-full text-left border-collapse standings-table bg-white dark:bg-slate-900">
                       <thead>
                         <tr className="bg-purple-950 text-white text-xs font-bold tracking-wider">
                           <th className="py-4 px-6 text-center w-14">#</th>
@@ -500,7 +500,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-100 dark:divide-slate-800 text-sm">
+                      <tbody className="divide-y divide-purple-100/60 dark:divide-slate-800 text-sm bg-white dark:bg-slate-900">
                         ${groupTeams.length === 0 
                           ? html`
                               <tr>
@@ -514,41 +514,51 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                               const isSecond = index === 1;
                               const isQualified = hasMultipleGroups ? (index < 2) : (index === 0);
 
+                              const rowBgClass = isFirst
+                                ? 'bg-emerald-50/70 hover:bg-emerald-100/70 dark:bg-emerald-950/30 dark:hover:bg-emerald-900/40 border-l-4 border-l-emerald-500'
+                                : (isSecond && hasMultipleGroups)
+                                ? 'bg-purple-50/50 hover:bg-purple-100/60 dark:bg-purple-950/30 dark:hover:bg-purple-900/40 border-l-4 border-l-purple-500'
+                                : 'bg-white hover:bg-purple-50/30 dark:bg-slate-900 dark:hover:bg-slate-800/60 border-l-4 border-l-transparent';
+
                               return html`
-                                <tr key=${row.class} className=${`hover:bg-purple-50/40 dark:hover:bg-slate-800/40 transition ${
-                                  isFirst ? 'bg-emerald-50/20 dark:bg-emerald-950/20' : isSecond ? 'bg-sky-50/15 dark:bg-sky-950/20' : ''
-                                }`}>
-                                  <td className="py-4 px-6 text-center font-black">
+                                <tr key=${row.class} className=${`transition-colors duration-150 ${rowBgClass}`}>
+                                  <td className="py-3.5 px-4 text-center font-black">
                                     ${isFirst 
-                                      ? html`<span className="bg-emerald-500 text-purple-950 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black shadow-xs">1</span>`
+                                      ? html`<span className="bg-emerald-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black shadow-xs">1</span>`
                                       : isSecond && hasMultipleGroups
-                                      ? html`<span className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black">2</span>`
-                                      : html`<span className="text-gray-500 dark:text-slate-400 font-bold">${index + 1}</span>`
+                                      ? html`<span className="bg-purple-600 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black shadow-xs">2</span>`
+                                      : html`<span className="text-slate-500 dark:text-slate-400 font-bold text-xs">${index + 1}</span>`
                                     }
                                   </td>
-                                  <td className="py-4 px-4 font-bold text-purple-950 dark:text-slate-100 flex items-center gap-2">
-                                    <span>${row.class} Sinfi</span>
+                                  <td className="py-3.5 px-4 font-black flex items-center gap-2">
+                                    <span className="text-sm font-extrabold text-purple-950 dark:text-white">${row.class} Sinfi</span>
                                     ${isQualified && html`
-                                      <span className="hidden sm:inline-flex text-[9px] font-black uppercase text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/60">
-                                        Pley-off
+                                      <span className="inline-flex items-center text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-2xs ${
+                                        isFirst 
+                                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-700'
+                                          : 'bg-purple-100 text-purple-800 border border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-700'
+                                      }">
+                                        ${t('playoffs') || 'Pley-off'}
                                       </span>
                                     `}
                                   </td>
-                                  <td className="py-4 px-4 text-center font-medium text-gray-600 dark:text-slate-300">${row.played}</td>
-                                  <td className="py-4 px-4 text-center text-green-700 dark:text-emerald-400 font-bold">${row.won}</td>
-                                  <td className="py-4 px-4 text-center text-gray-500 dark:text-slate-400 font-medium">${row.drawn}</td>
-                                  <td className="py-4 px-4 text-center text-red-600 dark:text-rose-400 font-bold">${row.lost}</td>
-                                  <td className="py-4 px-4 text-center text-gray-600 dark:text-slate-300 hidden md:table-cell">${row.goalsFor}</td>
-                                  <td className="py-4 px-4 text-center text-gray-600 dark:text-slate-300 hidden md:table-cell">${row.goalsAgainst}</td>
-                                  <td className=${`py-4 px-4 text-center font-extrabold ${
+                                  <td className="py-3.5 px-4 text-center font-bold text-slate-700 dark:text-slate-200">${row.played}</td>
+                                  <td className="py-3.5 px-4 text-center text-emerald-600 dark:text-emerald-400 font-extrabold">${row.won}</td>
+                                  <td className="py-3.5 px-4 text-center text-slate-500 dark:text-slate-400 font-semibold">${row.drawn}</td>
+                                  <td className="py-3.5 px-4 text-center text-rose-600 dark:text-rose-400 font-extrabold">${row.lost}</td>
+                                  <td className="py-3.5 px-4 text-center text-slate-600 dark:text-slate-300 font-medium hidden md:table-cell">${row.goalsFor}</td>
+                                  <td className="py-3.5 px-4 text-center text-slate-600 dark:text-slate-300 font-medium hidden md:table-cell">${row.goalsAgainst}</td>
+                                  <td className=${`py-3.5 px-4 text-center font-black ${
                                     row.goalDifference > 0 ? 'text-emerald-600 dark:text-emerald-400' :
-                                    row.goalDifference < 0 ? 'text-red-500 dark:text-rose-400' :
-                                    'text-gray-500 dark:text-slate-400'
+                                    row.goalDifference < 0 ? 'text-rose-600 dark:text-rose-400' :
+                                    'text-slate-500 dark:text-slate-400'
                                   }`}>
                                     ${row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}
                                   </td>
-                                  <td className="py-4 px-6 text-center font-black text-purple-900 dark:text-purple-300 text-base">
-                                    ${row.points}
+                                  <td className="py-3.5 px-6 text-center">
+                                    <span className="inline-block min-w-[2rem] py-1 px-2.5 rounded-lg bg-purple-100/90 dark:bg-purple-950/70 text-purple-950 dark:text-purple-200 font-black text-sm shadow-2xs border border-purple-200 dark:border-purple-800">
+                                      ${row.points}
+                                    </span>
                                   </td>
                                 </tr>
                               `;

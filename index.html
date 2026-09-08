@@ -250,10 +250,30 @@
     .dark .bracket-connector-stem {
       background-color: #334155 !important;
     }
+    /* Standings Table Theme Protection & Contrast */
+    table.standings-table,
+    .standings-table tbody {
+      background-color: #ffffff;
+      color: #0f172a;
+    }
+    .dark table.standings-table,
+    .dark .standings-table tbody,
+    html.dark table.standings-table,
+    html.dark .standings-table tbody {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+    }
+    html:not(.dark) table.standings-table tr {
+      color: #0f172a !important;
+    }
+    .dark table.standings-table tr,
+    html.dark table.standings-table tr {
+      color: #f8fafc !important;
+    }
   </style>
   
   <!-- Custom Stylesheet (with cache-busting) -->
-  <link rel="stylesheet" href="styles.css?v=20260908_1900">
+  <link rel="stylesheet" href="styles.css?v=20260908_1920">
   
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
@@ -283,7 +303,7 @@
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js?v=20260908_1900';
+    import App from './app.js?v=20260908_1920';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');
