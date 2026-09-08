@@ -62,7 +62,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <script>
-    // Instant theme hydration to prevent FOUC (Flash of Unstyled Content)
+    // 1. Instant theme hydration to prevent FOUC (Flash of Unstyled Content)
     (function() {
       try {
         const theme = localStorage.getItem('btl_theme') || 'system';
@@ -74,49 +74,120 @@
         }
       } catch (e) {}
     })();
-  </script>
 
-  <!-- Tailwind CSS Play CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            // Vibrant Purple & Electric Green Custom Theme
-            purple: {
-              50: '#f5f3ff',
-              100: '#ede9fe',
-              200: '#ddd6fe',
-              300: '#c4b5fd',
-              400: '#a78bfa',
-              500: '#8b5cf6',
-              600: '#7c3aed',
-              700: '#6d28d9',
-              800: '#5b21b6',
-              900: '#4c1d95',
-              950: '#2e1065',
+    // 2. Pre-configure Tailwind CDN BEFORE loading script
+    window.tailwind = {
+      config: {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
             },
-            green: {
-              50: '#f0fdf4',
-              100: '#dcfce7',
-              500: '#22c55e',
-              600: '#16a34a',
-              700: '#15803d',
-              800: '#166534',
+            colors: {
+              purple: {
+                50: '#f5f3ff',
+                100: '#ede9fe',
+                200: '#ddd6fe',
+                300: '#c4b5fd',
+                400: '#a78bfa',
+                500: '#8b5cf6',
+                600: '#7c3aed',
+                700: '#6d28d9',
+                800: '#5b21b6',
+                900: '#4c1d95',
+                950: '#2e1065',
+              },
+              green: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                800: '#166534',
+              }
             }
           }
         }
       }
-    }
+    };
   </script>
+
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Embedded Core Dark Mode Styles (Guaranteed to apply regardless of external MIME/cache) -->
+  <style>
+    html.dark, html.dark body, body.dark, .dark body {
+      background-color: #080c14 !important;
+      color: #f1f5f9 !important;
+    }
+    .dark .glass-card {
+      background: rgba(15, 23, 42, 0.88) !important;
+      border: 1px solid rgba(51, 65, 85, 0.5) !important;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6) !important;
+    }
+    .dark .bg-white {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+    }
+    .dark .bg-slate-50, .dark .bg-gray-50 {
+      background-color: #080c14 !important;
+    }
+    .dark .bg-slate-100, .dark .bg-gray-100 {
+      background-color: #1e293b !important;
+      color: #f8fafc !important;
+    }
+    .dark .bg-purple-50 {
+      background-color: rgba(88, 28, 135, 0.22) !important;
+    }
+    .dark .bg-purple-100 {
+      background-color: rgba(88, 28, 135, 0.45) !important;
+      color: #e9d5ff !important;
+    }
+    .dark .text-purple-950:not(.bg-green-500):not(.bg-green-400),
+    .dark .text-purple-900:not(.bg-green-500):not(.bg-green-400),
+    .dark .text-slate-900,
+    .dark .text-slate-800,
+    .dark .text-gray-900,
+    .dark .text-gray-800 {
+      color: #f8fafc !important;
+    }
+    .dark .text-slate-700,
+    .dark .text-slate-600,
+    .dark .text-gray-700,
+    .dark .text-gray-600 {
+      color: #cbd5e1 !important;
+    }
+    .dark .text-slate-500,
+    .dark .text-gray-500 {
+      color: #94a3b8 !important;
+    }
+    .dark .border-purple-100,
+    .dark .border-purple-200,
+    .dark .border-slate-100,
+    .dark .border-slate-200,
+    .dark .border-gray-100,
+    .dark .border-gray-200 {
+      border-color: #1e293b !important;
+    }
+    .dark input:not([type="checkbox"]):not([type="radio"]),
+    .dark select,
+    .dark textarea {
+      background-color: #1e293b !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+    .dark .bracket-connector-branch {
+      border-color: #334155 !important;
+    }
+    .dark .bracket-connector-stem {
+      background-color: #334155 !important;
+    }
+  </style>
   
-  <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+  <!-- Custom Stylesheet (with cache-busting) -->
+  <link rel="stylesheet" href="styles.css?v=20260908_1745">
   
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
@@ -129,7 +200,7 @@
     }
   </script>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased">
+<body class="bg-slate-50 text-slate-800 antialiased dark:bg-[#080c14] dark:text-slate-100">
   <div id="root">
     <!-- Initial Loader -->
     <div class="min-h-screen flex flex-col items-center justify-center bg-purple-950 text-white">
@@ -146,7 +217,7 @@
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js';
+    import App from './app.js?v=20260908_1745';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');

@@ -152,128 +152,131 @@ body {
 /* ==========================================================================
    Professional Dark Mode Architecture
    ========================================================================== */
-html.dark {
+html.dark, body.dark, .dark {
   color-scheme: dark;
 }
 
-html.dark body {
+html.dark body, body.dark, .dark body, .dark #root, html.dark #root {
   background-color: #080c14 !important;
   color: #f1f5f9 !important;
 }
 
 /* Cards & Surfaces */
-html.dark .glass-card {
-  background: rgba(15, 23, 42, 0.85) !important;
-  border: 1px solid rgba(51, 65, 85, 0.4) !important;
+.dark .glass-card, html.dark .glass-card {
+  background: rgba(15, 23, 42, 0.88) !important;
+  border: 1px solid rgba(51, 65, 85, 0.5) !important;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6) !important;
 }
 
-html.dark .bg-white {
+.dark .bg-white, html.dark .bg-white {
   background-color: #0f172a !important;
   color: #f8fafc !important;
 }
 
-html.dark .bg-slate-50,
-html.dark .bg-gray-50 {
-  background-color: #0b1120 !important;
+.dark .bg-slate-50, html.dark .bg-slate-50,
+.dark .bg-gray-50, html.dark .bg-gray-50 {
+  background-color: #080c14 !important;
 }
 
-html.dark .bg-slate-100,
-html.dark .bg-gray-100 {
+.dark .bg-slate-100, html.dark .bg-slate-100,
+.dark .bg-gray-100, html.dark .bg-gray-100 {
   background-color: #1e293b !important;
+  color: #f8fafc !important;
 }
 
-html.dark .bg-purple-50 {
+.dark .bg-purple-50, html.dark .bg-purple-50 {
   background-color: rgba(88, 28, 135, 0.22) !important;
 }
 
-html.dark .bg-purple-100 {
+.dark .bg-purple-100, html.dark .bg-purple-100 {
   background-color: rgba(88, 28, 135, 0.45) !important;
   color: #e9d5ff !important;
 }
 
-/* Typography & Headings */
-html.dark .text-purple-950,
-html.dark .text-purple-900 {
+/* Typography & Headings (Preserve contrast for buttons) */
+.dark .text-purple-950:not(.bg-green-500):not(.bg-green-400),
+html.dark .text-purple-950:not(.bg-green-500):not(.bg-green-400),
+.dark .text-purple-900:not(.bg-green-500):not(.bg-green-400),
+html.dark .text-purple-900:not(.bg-green-500):not(.bg-green-400),
+.dark .text-slate-900, html.dark .text-slate-900,
+.dark .text-slate-800, html.dark .text-slate-800,
+.dark .text-gray-900, html.dark .text-gray-900,
+.dark .text-gray-800, html.dark .text-gray-800 {
   color: #f8fafc !important;
 }
 
-html.dark .text-slate-900,
-html.dark .text-slate-800,
-html.dark .text-gray-900,
-html.dark .text-gray-800 {
-  color: #f8fafc !important;
-}
-
-html.dark .text-slate-700,
-html.dark .text-slate-600,
-html.dark .text-gray-700,
-html.dark .text-gray-600 {
+.dark .text-slate-700, html.dark .text-slate-700,
+.dark .text-slate-600, html.dark .text-slate-600,
+.dark .text-gray-700, html.dark .text-gray-700,
+.dark .text-gray-600, html.dark .text-gray-600 {
   color: #cbd5e1 !important;
 }
 
-html.dark .text-slate-500,
-html.dark .text-gray-500 {
+.dark .text-slate-500, html.dark .text-slate-500,
+.dark .text-gray-500, html.dark .text-gray-500 {
   color: #94a3b8 !important;
 }
 
 /* Borders & Dividers */
-html.dark .border-purple-100,
-html.dark .border-purple-200,
-html.dark .border-slate-100,
-html.dark .border-slate-200,
-html.dark .border-gray-100,
-html.dark .border-gray-200 {
+.dark .border-purple-100, html.dark .border-purple-100,
+.dark .border-purple-200, html.dark .border-purple-200,
+.dark .border-slate-100, html.dark .border-slate-100,
+.dark .border-slate-200, html.dark .border-slate-200,
+.dark .border-gray-100, html.dark .border-gray-100,
+.dark .border-gray-200, html.dark .border-gray-200 {
   border-color: #1e293b !important;
 }
 
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
 html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
 html.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
 html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
   border-color: #1e293b !important;
 }
 
 /* Table Hover States */
-html.dark .hover\:bg-purple-50\/50:hover,
-html.dark .hover\:bg-purple-50:hover,
-html.dark .hover\:bg-slate-50:hover,
-html.dark .hover\:bg-gray-50:hover {
-  background-color: rgba(30, 41, 59, 0.6) !important;
+.dark .hover\:bg-purple-50\/50:hover, html.dark .hover\:bg-purple-50\/50:hover,
+.dark .hover\:bg-purple-50:hover, html.dark .hover\:bg-purple-50:hover,
+.dark .hover\:bg-slate-50:hover, html.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-gray-50:hover, html.dark .hover\:bg-gray-50:hover {
+  background-color: rgba(30, 41, 59, 0.7) !important;
 }
 
 /* Form Controls in Dark Mode */
-html.dark input:not([type="checkbox"]):not([type="radio"]),
-html.dark select,
-html.dark textarea {
+.dark input:not([type="checkbox"]):not([type="radio"]), html.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark select, html.dark select,
+.dark textarea, html.dark textarea {
   background-color: #1e293b !important;
   color: #f8fafc !important;
   border-color: #334155 !important;
 }
 
-html.dark input::placeholder,
-html.dark textarea::placeholder {
+.dark input::placeholder, html.dark input::placeholder,
+.dark textarea::placeholder, html.dark textarea::placeholder {
   color: #64748b !important;
 }
 
 /* Brackets & Tree Connectors */
-html.dark .bracket-connector-branch {
+.dark .bracket-connector-branch, html.dark .bracket-connector-branch {
   border-color: #334155 !important;
 }
 
-html.dark .bracket-connector-stem {
+.dark .bracket-connector-stem, html.dark .bracket-connector-stem {
   background-color: #334155 !important;
 }
 
 /* Dark Scrollbars */
-html.dark ::-webkit-scrollbar-track {
-  background: #0b0f19;
+.dark ::-webkit-scrollbar-track, html.dark ::-webkit-scrollbar-track {
+  background: #080c14;
 }
 
-html.dark ::-webkit-scrollbar-thumb {
+.dark ::-webkit-scrollbar-thumb, html.dark ::-webkit-scrollbar-thumb {
   background: #334155;
 }
 
-html.dark ::-webkit-scrollbar-thumb:hover {
+.dark ::-webkit-scrollbar-thumb:hover, html.dark ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
 

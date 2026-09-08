@@ -30,8 +30,10 @@ export default function App() {
     const shouldBeDark = currentTheme === 'dark' || (currentTheme === 'system' && prefersDark);
     if (shouldBeDark) {
       document.documentElement.classList.add('dark');
+      if (document.body) document.body.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
+      if (document.body) document.body.classList.remove('dark');
     }
   };
 
@@ -154,7 +156,7 @@ export default function App() {
   };
 
   return html`
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#080c14] text-slate-800 dark:text-slate-100 font-sans flex flex-col transition-colors duration-200">
       <!-- Top Premium Navbar (Branded TDV BTL Futbol) -->
       <header className="bg-purple-950 sticky top-0 z-40 text-white shadow-xl border-b border-purple-800/40 flex flex-col no-scrollbar" style=${{ backgroundColor: '#2e0249' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full no-scrollbar">
