@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import Dashboard from './components/Dashboard.js';
-import Standings from './components/Standings.js';
+import Standings from './components/Standings.js?v=20260908_1835';
 import Matches from './components/Matches.js';
 import Players from './components/Players.js';
 import AdminDashboard from './components/AdminDashboard.js';
-import { db } from './services/database.js';
-import { t, getDivisionLabel } from './services/i18n.js';
+import { db } from './services/database.js?v=20260908_1835';
+import { t, getDivisionLabel } from './services/i18n.js?v=20260908_1835';
 
 const html = htm.bind(React.createElement);
 

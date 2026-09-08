@@ -27,6 +27,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const [sortField, setSortField] = useState('points');
   const [sortAsc, setSortAsc] = useState(false);
   const [showEmptyPreview, setShowEmptyPreview] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState('ALL');
 
   useEffect(() => {
     const loadStandingsData = async () => {
@@ -40,10 +41,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
     loadStandingsData();
   }, [activeDivision, activeYear]);
 
-  // Reset view mode and preview toggle when division or year changes
+  // Reset view mode, preview toggle, and group filter when division or year changes
   useEffect(() => {
     setViewMode('table');
     setShowEmptyPreview(false);
+    setSelectedGroup('ALL');
   }, [activeDivision, activeYear]);
 
   const handleSort = (field) => {
@@ -55,15 +57,29 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
     }
   };
 
-  const sortedTable = [...table].sort((a, b) => {
-    let valA = a[sortField];
-    let valB = b[sortField];
+  // Group table into distinct groups if available
+  const availableGroups = Array.from(
+    new Set(table.map(t => t.group).filter(Boolean))
+  ).sort();
+  const hasMultipleGroups = availableGroups.length > 1;
 
-    if (typeof valA === 'string') {
-      return sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
-    }
-    return sortAsc ? valA - valB : valB - valA;
-  });
+  const sortTeams = (teams) => {
+    return [...teams].sort((a, b) => {
+      let valA = a[sortField];
+      let valB = b[sortField];
+
+      if (typeof valA === 'string') {
+        return sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      }
+      return sortAsc ? valA - valB : valB - valA;
+    });
+  };
+
+  const sortedTable = sortTeams(table);
+
+  const groupsToDisplay = (hasMultipleGroups && selectedGroup !== 'ALL')
+    ? [selectedGroup]
+    : (hasMultipleGroups ? availableGroups : ['ALL']);
 
   const getDivisionLabel = (div) => fallbackGetDivisionLabel(div, lang);
 
@@ -372,84 +388,181 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
       </div>
 
       <!-- ════════════════════════════════════════════════════════════════════════ -->
-      <!-- VIEW MODE 1: STANDINGS TABLE -->
+      <!-- VIEW MODE 1: STANDINGS TABLE (GROUPED) -->
       <!-- ════════════════════════════════════════════════════════════════════════ -->
       ${viewMode === 'table' && html`
-        <div className="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden animate-fadeIn">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-purple-950 text-white text-xs font-bold tracking-wider">
-                  <th className="py-4 px-6 text-center w-12">#</th>
-                  <th className="py-4 px-4 cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('class')}>
-                    ${t('colTeam')} ${sortField === 'class' ? (sortAsc ? '▲' : '▼') : ''}
-                  </th>
-                  <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('played')}>
-                    ${t('colPlayed')} ${sortField === 'played' ? (sortAsc ? '▲' : '▼') : ''}
-                  </th>
-                  <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('won')}>
-                    ${t('colWon')} ${sortField === 'won' ? (sortAsc ? '▲' : '▼') : ''}
-                  </th>
-                  <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('drawn')}>
-                    ${t('colDrawn')} ${sortField === 'drawn' ? (sortAsc ? '▲' : '▼') : ''}
-                  </th>
-                  <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('lost')}>
-                    ${t('colLost')} ${sortField === 'lost' ? (sortAsc ? '▲' : '▼') : ''}
-                  </th>
-                  <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsFor')}>
-                    ${t('colGF')} ${sortField === 'goalsFor' ? (sortAsc ? '▲' : '▼') : ''}
-                  </th>
-                  <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsAgainst')}>
-                    ${t('colGA')} ${sortField === 'goalsAgainst' ? (sortAsc ? '▲' : '▼') : ''}
-                  </th>
-                  <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('goalDifference')}>
-                    ${t('colGD')} ${sortField === 'goalDifference' ? (sortAsc ? '▲' : '▼') : ''}
-                  </th>
-                  <th className="py-4 px-6 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('points')}>
-                    ${t('colPoints')} ${sortField === 'points' ? (sortAsc ? '▲' : '▼') : ''}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 text-sm">
-                ${table.length === 0 
-                  ? html`
-                      <tr>
-                        <td colSpan="10" className="py-8 text-center text-gray-400">
-                          ${t('tableEmptyNotice')}
-                        </td>
-                      </tr>
-                    `
-                  : sortedTable.map((row, index) => {
-                      const isLeader = index === 0 && sortField === 'points' && !sortAsc;
-                      return html`
-                        <tr key=${row.class} className=${`hover:bg-purple-50/30 transition ${isLeader ? 'bg-green-50/20' : ''}`}>
-                          <td className="py-4 px-6 text-center font-black">
-                            ${isLeader 
-                              ? html`<span className="bg-green-500 text-purple-950 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs shadow-sm">1</span>`
-                              : index + 1
-                            }
-                          </td>
-                          <td className="py-4 px-4 font-bold text-purple-950">${row.class} Sinfi</td>
-                          <td className="py-4 px-4 text-center font-medium text-gray-600">${row.played}</td>
-                          <td className="py-4 px-4 text-center text-green-700 font-bold">${row.won}</td>
-                          <td className="py-4 px-4 text-center text-gray-500 font-medium">${row.drawn}</td>
-                          <td className="py-4 px-4 text-center text-red-600 font-bold">${row.lost}</td>
-                          <td className="py-4 px-4 text-center text-gray-600 hidden md:table-cell">${row.goalsFor}</td>
-                          <td className="py-4 px-4 text-center text-gray-600 hidden md:table-cell">${row.goalsAgainst}</td>
-                          <td className=${`py-4 px-4 text-center font-extrabold ${row.goalDifference > 0 ? 'text-green-600' : row.goalDifference < 0 ? 'text-red-500' : 'text-gray-500'}`}>
-                            ${row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}
-                          </td>
-                          <td className="py-4 px-6 text-center font-black text-purple-900 text-base">
-                            ${row.points}
-                          </td>
+        <div className="space-y-6">
+          
+          <!-- Group Selector Filter Pills -->
+          ${hasMultipleGroups && html`
+            <div className="flex flex-wrap items-center gap-2 p-1.5 bg-purple-50/80 dark:bg-purple-950/40 rounded-2xl border border-purple-100 dark:border-purple-900/60 w-fit">
+              <button
+                onClick=${() => setSelectedGroup('ALL')}
+                className=${`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition ${
+                  selectedGroup === 'ALL'
+                    ? 'bg-purple-900 text-white shadow-xs dark:bg-green-500 dark:text-purple-950'
+                    : 'text-purple-900 hover:bg-purple-100/70 dark:text-purple-200 dark:hover:bg-purple-900/50'
+                }`}
+              >
+                ${t('allGroups')}
+              </button>
+              ${availableGroups.map(grp => html`
+                <button
+                  key=${grp}
+                  onClick=${() => setSelectedGroup(grp)}
+                  className=${`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition flex items-center gap-2 ${
+                    selectedGroup === grp
+                      ? 'bg-purple-900 text-white shadow-xs dark:bg-green-500 dark:text-purple-950'
+                      : 'text-purple-900 hover:bg-purple-100/70 dark:text-purple-200 dark:hover:bg-purple-900/50'
+                  }`}
+                >
+                  <span className=${`w-2.5 h-2.5 rounded-full ${
+                    grp === 'A' ? 'bg-emerald-500 ring-2 ring-emerald-300 dark:ring-emerald-700' :
+                    grp === 'B' ? 'bg-sky-500 ring-2 ring-sky-300 dark:ring-sky-700' :
+                    grp === 'C' ? 'bg-amber-500 ring-2 ring-amber-300 dark:ring-amber-700' :
+                    'bg-purple-500 ring-2 ring-purple-300 dark:ring-purple-700'
+                  }`}></span>
+                  <span>${t('group' + grp) || (lang === 'az' ? `Qrup ${grp}` : `Group ${grp}`)}</span>
+                </button>
+              `)}
+            </div>
+          `}
+
+          ${table.length === 0 ? html`
+            <div className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-3xl p-8 text-center text-gray-400 dark:text-slate-500 shadow-sm">
+              ${t('tableEmptyNotice')}
+            </div>
+          ` : groupsToDisplay.map(grp => {
+              const groupTeams = hasMultipleGroups ? sortTeams(table.filter(t => t.group === grp)) : sortedTable;
+              const groupTitle = t('group' + grp) || (lang === 'az' ? `Qrup ${grp}` : `Group ${grp}`);
+
+              return html`
+                <div key=${grp} className="bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-3xl shadow-sm overflow-hidden animate-fadeIn">
+                  
+                  <!-- Group Card Header -->
+                  ${hasMultipleGroups && html`
+                    <div className="bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-950 text-white px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 border-b border-purple-800/60">
+                      <div className="flex items-center gap-2.5">
+                        <span className=${`w-3.5 h-3.5 rounded-full ring-4 ring-white/20 ${
+                          grp === 'A' ? 'bg-emerald-400' :
+                          grp === 'B' ? 'bg-sky-400' :
+                          grp === 'C' ? 'bg-amber-400' :
+                          'bg-purple-400'
+                        }`}></span>
+                        <h3 className="text-base font-black tracking-wide">
+                          ${groupTitle}
+                        </h3>
+                        <span className="text-xs text-purple-200 font-bold">
+                          (${groupTeams.length} ${lang === 'az' ? 'Sinif' : 'Classes'})
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-xs">
+                          <i className="fas fa-shield-alt text-[10px]"></i>
+                          ${t('top2Qualify')}
+                        </span>
+                      </div>
+                    </div>
+                  `}
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-purple-950 text-white text-xs font-bold tracking-wider">
+                          <th className="py-4 px-6 text-center w-14">#</th>
+                          <th className="py-4 px-4 cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('class')}>
+                            ${t('colTeam')} ${sortField === 'class' ? (sortAsc ? '▲' : '▼') : ''}
+                          </th>
+                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('played')}>
+                            ${t('colPlayed')} ${sortField === 'played' ? (sortAsc ? '▲' : '▼') : ''}
+                          </th>
+                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('won')}>
+                            ${t('colWon')} ${sortField === 'won' ? (sortAsc ? '▲' : '▼') : ''}
+                          </th>
+                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('drawn')}>
+                            ${t('colDrawn')} ${sortField === 'drawn' ? (sortAsc ? '▲' : '▼') : ''}
+                          </th>
+                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('lost')}>
+                            ${t('colLost')} ${sortField === 'lost' ? (sortAsc ? '▲' : '▼') : ''}
+                          </th>
+                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsFor')}>
+                            ${t('colGF')} ${sortField === 'goalsFor' ? (sortAsc ? '▲' : '▼') : ''}
+                          </th>
+                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsAgainst')}>
+                            ${t('colGA')} ${sortField === 'goalsAgainst' ? (sortAsc ? '▲' : '▼') : ''}
+                          </th>
+                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('goalDifference')}>
+                            ${t('colGD')} ${sortField === 'goalDifference' ? (sortAsc ? '▲' : '▼') : ''}
+                          </th>
+                          <th className="py-4 px-6 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('points')}>
+                            ${t('colPoints')} ${sortField === 'points' ? (sortAsc ? '▲' : '▼') : ''}
+                          </th>
                         </tr>
-                      `;
-                    })
-                }
-              </tbody>
-            </table>
-          </div>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100 dark:divide-slate-800 text-sm">
+                        ${groupTeams.length === 0 
+                          ? html`
+                              <tr>
+                                <td colSpan="10" className="py-8 text-center text-gray-400 dark:text-slate-500">
+                                  ${t('tableEmptyNotice')}
+                                </td>
+                              </tr>
+                            `
+                          : groupTeams.map((row, index) => {
+                              const isFirst = index === 0;
+                              const isSecond = index === 1;
+                              const isQualified = hasMultipleGroups ? (index < 2) : (index === 0);
+
+                              return html`
+                                <tr key=${row.class} className=${`hover:bg-purple-50/40 dark:hover:bg-slate-800/40 transition ${
+                                  isFirst ? 'bg-emerald-50/20 dark:bg-emerald-950/20' : isSecond ? 'bg-sky-50/15 dark:bg-sky-950/20' : ''
+                                }`}>
+                                  <td className="py-4 px-6 text-center font-black">
+                                    ${isFirst 
+                                      ? html`<span className="bg-emerald-500 text-purple-950 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black shadow-xs">1</span>`
+                                      : isSecond && hasMultipleGroups
+                                      ? html`<span className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black">2</span>`
+                                      : html`<span className="text-gray-500 dark:text-slate-400 font-bold">${index + 1}</span>`
+                                    }
+                                  </td>
+                                  <td className="py-4 px-4 font-bold text-purple-950 dark:text-slate-100 flex items-center gap-2">
+                                    <span>${row.class} Sinfi</span>
+                                    ${isQualified && html`
+                                      <span className="hidden sm:inline-flex text-[9px] font-black uppercase text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/60">
+                                        Pley-off
+                                      </span>
+                                    `}
+                                  </td>
+                                  <td className="py-4 px-4 text-center font-medium text-gray-600 dark:text-slate-300">${row.played}</td>
+                                  <td className="py-4 px-4 text-center text-green-700 dark:text-emerald-400 font-bold">${row.won}</td>
+                                  <td className="py-4 px-4 text-center text-gray-500 dark:text-slate-400 font-medium">${row.drawn}</td>
+                                  <td className="py-4 px-4 text-center text-red-600 dark:text-rose-400 font-bold">${row.lost}</td>
+                                  <td className="py-4 px-4 text-center text-gray-600 dark:text-slate-300 hidden md:table-cell">${row.goalsFor}</td>
+                                  <td className="py-4 px-4 text-center text-gray-600 dark:text-slate-300 hidden md:table-cell">${row.goalsAgainst}</td>
+                                  <td className=${`py-4 px-4 text-center font-extrabold ${
+                                    row.goalDifference > 0 ? 'text-emerald-600 dark:text-emerald-400' :
+                                    row.goalDifference < 0 ? 'text-red-500 dark:text-rose-400' :
+                                    'text-gray-500 dark:text-slate-400'
+                                  }`}>
+                                    ${row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}
+                                  </td>
+                                  <td className="py-4 px-6 text-center font-black text-purple-900 dark:text-purple-300 text-base">
+                                    ${row.points}
+                                  </td>
+                                </tr>
+                              `;
+                            })
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              `;
+            })
+          }
         </div>
+      `}
 
         <!-- Abbreviations Legend -->
         <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-[11px] font-semibold text-gray-500 bg-gray-50 p-4 rounded-2xl border border-gray-100">
