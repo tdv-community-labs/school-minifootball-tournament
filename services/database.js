@@ -144,8 +144,8 @@ export const calculateSofascoreRating = (stat = {}, playerRole = {}, matchContex
  */
 export const getSofascoreBadgeStyle = (rating) => {
   const r = Number(rating) || 0;
-  if (r >= 9.0) return 'bg-[#1e3a8a] text-white font-black shadow-md shadow-blue-950/40 rating-sofascore-9plus';  // 9+ Tünd Göy
-  if (r >= 8.0) return 'bg-[#2563eb] text-white font-black shadow-md shadow-blue-500/30 rating-sofascore-8plus'; // 8+ Mavi
+  if (r >= 9.0) return 'bg-[#2563eb] text-white font-black shadow-md shadow-blue-600/40 rating-sofascore-9plus';  // 9+ Parlaq Göy (Royal Blue)
+  if (r >= 8.0) return 'bg-[#0284c7] text-white font-black shadow-md shadow-sky-500/30 rating-sofascore-8plus';   // 8+ Mavi (Sky Blue)
   if (r >= 7.0) return 'bg-[#15803d] text-white font-bold rating-sofascore-7plus';                               // 7+ Tünd Yaşıl
   if (r >= 6.5) return 'bg-[#eab308] text-slate-950 font-black rating-sofascore-65plus';                        // 6.5+ Sarı
   if (r >= 6.0) return 'bg-[#f97316] text-white font-bold rating-sofascore-6plus';                              // 6+ Narıncı

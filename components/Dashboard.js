@@ -236,7 +236,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <span className="goal-badge px-2.5 py-1 rounded-lg text-xs font-black tracking-wide flex items-center space-x-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800/60 shadow-xs">
+                        <span className="goal-badge px-2.5 py-1 rounded-lg text-xs font-black tracking-wide flex items-center space-x-1.5 border shadow-xs">
                           <span>⚽</span>
                           <span className="font-extrabold">${player.goals} ${t('goals')}</span>
                         </span>
@@ -267,7 +267,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <span className="assist-badge px-2.5 py-1 rounded-lg text-xs font-black tracking-wide flex items-center space-x-1.5 bg-purple-50 text-purple-800 border border-purple-200 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-800/60 shadow-xs">
+                        <span className="assist-badge px-2.5 py-1 rounded-lg text-xs font-black tracking-wide flex items-center space-x-1.5 border shadow-xs">
                           <span>👟</span>
                           <span className="font-extrabold">${player.assists} ${t('assists')}</span>
                         </span>

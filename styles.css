@@ -249,10 +249,24 @@ html.dark body, body.dark, .dark body, .dark #root, html.dark #root, html.dark .
   color: #6ee7b7 !important;
 }
 
+.goal-badge {
+  background-color: #ecfdf5 !important;
+  color: #064e3b !important; /* Deep pine forest green, high contrast on light bg */
+  border-color: #a7f3d0 !important;
+  font-weight: 800 !important;
+}
+
 .dark .goal-badge, html.dark .goal-badge {
   background-color: rgba(6, 78, 59, 0.55) !important;
   color: #6ee7b7 !important;
   border-color: rgba(5, 150, 105, 0.5) !important;
+}
+
+.assist-badge {
+  background-color: #f5f3ff !important;
+  color: #3b0764 !important; /* Deep dark purple on light bg */
+  border-color: #ddd6fe !important;
+  font-weight: 800 !important;
 }
 
 .dark .assist-badge, html.dark .assist-badge {
@@ -347,4 +361,12 @@ html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
 .dark ::-webkit-scrollbar-thumb:hover, html.dark ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
+
+/* Sofascore Rating Scale */
+.rating-sofascore-9plus, .bg-\[\#2563eb\] { background-color: #2563eb !important; color: #ffffff !important; }
+.rating-sofascore-8plus, .bg-\[\#0284c7\] { background-color: #0284c7 !important; color: #ffffff !important; }
+.rating-sofascore-7plus, .bg-\[\#15803d\] { background-color: #15803d !important; color: #ffffff !important; }
+.rating-sofascore-65plus, .bg-\[\#eab308\] { background-color: #eab308 !important; color: #0f172a !important; }
+.rating-sofascore-6plus, .bg-\[\#f97316\] { background-color: #f97316 !important; color: #ffffff !important; }
+.rating-sofascore-below6, .bg-\[\#dc2626\] { background-color: #dc2626 !important; color: #ffffff !important; }
 

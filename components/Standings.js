@@ -678,9 +678,9 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 </div>
 
                 <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between">
-                  <span className="text-[10px] text-gray-400 font-bold">Qollar:</span>
-                  <span className="text-xs font-black text-green-600 bg-green-50 px-2 py-0.5 rounded-md">
-                    ⚽ ${topScorer ? topScorer.goals : 0} Qol
+                  <span className="text-[10px] text-gray-400 font-bold">${lang === 'az' ? 'Qollar:' : 'Goals:'}</span>
+                  <span className="goal-badge text-xs font-black px-2.5 py-0.5 rounded-md shadow-xs">
+                    ⚽ ${topScorer ? topScorer.goals : 0} ${t('goals')}
                   </span>
                 </div>
               </div>
