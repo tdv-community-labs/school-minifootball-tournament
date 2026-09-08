@@ -1,7 +1,7 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260908_2300';
+import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260908_2345';
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;

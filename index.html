@@ -273,7 +273,7 @@
   </style>
   
   <!-- Custom Stylesheet (with cache-busting) -->
-  <link rel="stylesheet" href="styles.css?v=20260908_2330">
+  <link rel="stylesheet" href="styles.css?v=20260908_2345">
   
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
@@ -303,13 +303,14 @@
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js?v=20260908_2330';
+    import App from './app.js?v=20260908_2345';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');
     const root = createRoot(container);
     root.render(html`<${App} />`);
   </script>
+
 
 </body>
 </html>
