@@ -44,6 +44,22 @@ export const auditTournamentData = (data = {}) => {
     } else {
       playerGroupMap.set(key, p);
     }
+
+    // Check for corrupt/inflated goals against canonical archive
+    const canonArchive = (ARCHIVE_PLAYERS || []).find(ap => 
+      (ap.id === p.id) || 
+      (normalizePlayerName(ap.name) === normalizePlayerName(p.name) && ap.class === p.class && (!p.year || ap.year === p.year))
+    );
+    if (canonArchive && p.goals > canonArchive.goals) {
+      issues.push({
+        id: `inflated_goals_${p.id}`,
+        type: 'corrupted_goals',
+        severity: 'warning',
+        title: `Şişirdilmiş qol sayı: "${p.name}" (${p.goals} qol yerinə ${canonArchive.goals})`,
+        description: `${p.year || ''} mövsümündə "${p.name}" üçün qol sayı arxiv və matç göstəricilərindən artıqdır.`,
+        canAutoFix: true
+      });
+    }
   });
 
   // 2. Check for legacy / unmapped division aliases in classes
@@ -167,19 +183,51 @@ export const repairTournamentData = async () => {
   const cleanPlayers = [];
   const playerDedupMap = new Map();
 
+  const canonicalArchiveMap = new Map();
+  (ARCHIVE_PLAYERS || []).forEach(ap => {
+    canonicalArchiveMap.set(`${normalizePlayerName(ap.name)}_${ap.year || ''}_${ap.class || ''}`, ap);
+  });
+
+  // Calculate actual match stats per player ID to cross-reference
+  const matchStatsMap = {};
+  matches.forEach(m => {
+    (m.playerStats || []).forEach(stat => {
+      if (!matchStatsMap[stat.playerId]) {
+        matchStatsMap[stat.playerId] = { goals: 0, assists: 0, matchesPlayed: 0 };
+      }
+      matchStatsMap[stat.playerId].goals += Number(stat.goals || 0);
+      matchStatsMap[stat.playerId].assists += Number(stat.assists || 0);
+      matchStatsMap[stat.playerId].matchesPlayed += 1;
+    });
+  });
+
   players.forEach(p => {
     if (obsoleteSet.has(p.id)) return;
     if (p.isOwnGoal || /avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || '')) return;
 
     const key = `${normalizePlayerName(p.name)}_${p.year || ''}_${p.class || ''}`;
+    const mStat = matchStatsMap[p.id];
+    const canon = canonicalArchiveMap.get(key);
+
+    let goals = (mStat && (mStat.matchesPlayed > 0 || mStat.goals > 0)) ? mStat.goals : (canon ? canon.goals : (p.goals || 0));
+    let assists = (mStat && (mStat.matchesPlayed > 0 || mStat.assists > 0)) ? mStat.assists : (canon ? canon.assists : (p.assists || 0));
+    let matchesPlayed = (mStat && mStat.matchesPlayed > 0) ? mStat.matchesPlayed : (canon ? canon.matchesPlayed : (p.matchesPlayed || 0));
+
+    const normalizedP = {
+      ...p,
+      goals,
+      assists,
+      matchesPlayed
+    };
+
     if (playerDedupMap.has(key)) {
       const exist = playerDedupMap.get(key);
-      exist.goals = (exist.goals || 0) + (p.goals || 0);
-      exist.assists = (exist.assists || 0) + (p.assists || 0);
-      exist.matchesPlayed = Math.max(exist.matchesPlayed || 0, p.matchesPlayed || 0);
-      if ((p.overallRating || 0) > (exist.overallRating || 0)) exist.overallRating = p.overallRating;
+      exist.goals = Math.max(exist.goals || 0, normalizedP.goals || 0);
+      exist.assists = Math.max(exist.assists || 0, normalizedP.assists || 0);
+      exist.matchesPlayed = Math.max(exist.matchesPlayed || 0, normalizedP.matchesPlayed || 0);
+      if ((normalizedP.overallRating || 0) > (exist.overallRating || 0)) exist.overallRating = normalizedP.overallRating;
     } else {
-      const cloned = { ...p };
+      const cloned = { ...normalizedP };
       playerDedupMap.set(key, cloned);
       cleanPlayers.push(cloned);
     }

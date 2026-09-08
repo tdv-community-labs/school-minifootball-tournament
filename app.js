@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260909_0060';
-import Standings from './components/Standings.js?v=20260909_0060';
-import Matches from './components/Matches.js?v=20260909_0060';
-import Players from './components/Players.js?v=20260909_0060';
-import AdminDashboard from './components/AdminDashboard.js?v=20260909_0060';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0060';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0060';
-import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260909_0060';
-import { db } from './services/database.js?v=20260909_0060';
-import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0060';
-import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260909_0060';
+import Dashboard from './components/Dashboard.js?v=20260909_0070';
+import Standings from './components/Standings.js?v=20260909_0070';
+import Matches from './components/Matches.js?v=20260909_0070';
+import Players from './components/Players.js?v=20260909_0070';
+import AdminDashboard from './components/AdminDashboard.js?v=20260909_0070';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0070';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0070';
+import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260909_0070';
+import { db } from './services/database.js?v=20260909_0070';
+import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0070';
+import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260909_0070';
 
 const html = htm.bind(React.createElement);
 
@@ -214,34 +214,16 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full no-scrollbar">
           <div className="flex items-center justify-between h-16">
             
-            <!-- Left Logo & Year Selector Section -->
-            <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 min-w-0">
-              <div className="flex items-center space-x-1.5 sm:space-x-2 cursor-pointer shrink-0" onClick=${() => setActiveTab('dashboard')}>
+            <!-- Left Logo Section -->
+            <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
+              <div className="flex items-center space-x-2 cursor-pointer shrink-0" onClick=${() => setActiveTab('dashboard')}>
                 <div className="bg-green-500 text-purple-950 p-1.5 sm:p-2 rounded-xl flex items-center justify-center shadow-md animate-pulse shrink-0">
                   <i className="fas fa-futbol text-base sm:text-lg"></i>
                 </div>
-                <h1 className="text-sm sm:text-lg md:text-xl font-black tracking-wider uppercase whitespace-nowrap">
+                <h1 className="text-base sm:text-lg md:text-xl font-black tracking-wider uppercase whitespace-nowrap">
                   ${t('appTitle', lang)} <span className="text-green-400 font-extrabold hidden min-[480px]:inline">${t('appSubtitle', lang)}</span>
                 </h1>
               </div>
-
-              <!-- Premium Year Selector -->
-              ${years.length > 0 && html`
-                <div className="flex items-center space-x-1 bg-purple-900/80 border border-purple-700/60 rounded-xl px-1.5 sm:px-2 py-1 ml-1 sm:ml-2 md:ml-4 shadow-inner shrink-0">
-                  <span className="text-[9px] text-green-400 font-black uppercase tracking-wider hidden sm:inline px-1">
-                    <i className="fas fa-calendar-days mr-1"></i> ${t('academicYear', lang)}
-                  </span>
-                  <select
-                    value=${activeYear}
-                    onChange=${(e) => handleYearChange(e.target.value)}
-                    className="bg-transparent text-white text-[11px] sm:text-xs font-black focus:outline-none cursor-pointer border-none py-0.5 px-1 pr-5"
-                  >
-                    ${years.map(y => html`
-                      <option key=${y} value=${y} className="bg-purple-950 text-white font-bold text-xs">${y}</option>
-                    `)}
-                  </select>
-                </div>
-              `}
             </div>
 
             <!-- Desktop Nav Items -->
@@ -462,28 +444,58 @@ export default function App() {
           </div>
         `}
 
-        <!-- Division Switcher Bar -->
-        <div className="bg-purple-950/90 border-t border-purple-800/40 py-2 w-full">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center space-x-1.5 overflow-x-auto no-scrollbar">
-            <span className="text-[10px] font-black text-green-400 uppercase tracking-widest mr-2 whitespace-nowrap">
-              <i className="fas fa-trophy mr-1"></i> ${lang === 'az' ? 'Turnir:' : 'Division:'}
-            </span>
-            ${divisions.map(div => {
-              const isSelected = activeDivision === div.id;
-              return html`
-                <button
-                  key=${div.id}
-                  onClick=${() => setActiveDivision(div.id)}
-                  className=${`px-3 py-1.5 rounded-lg text-xs font-extrabold tracking-wide whitespace-nowrap transition-all ${
-                    isSelected 
-                      ? 'bg-green-500 text-purple-950 shadow bg-green-500 scale-105' 
-                      : 'bg-purple-900/40 text-purple-200 hover:bg-purple-800/50 hover:text-white'
-                  }`}
+        <!-- Tournament Controls Bar (Season & Division) -->
+        <div className="bg-purple-950/95 border-t border-purple-800/50 py-2 sm:py-2.5 w-full backdrop-blur-md shadow-sm">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar">
+            
+            <!-- Premium Season Selector Pill -->
+            ${years.length > 0 && html`
+              <div className="relative inline-flex items-center shrink-0">
+                <div className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-500/20 via-purple-900 to-purple-900 border border-green-500/40 hover:border-green-400 rounded-xl px-2.5 sm:px-3 py-1.5 shadow-sm transition-all cursor-pointer">
+                  <i className="far fa-calendar-alt text-green-400 text-xs"></i>
+                  <span className="text-xs font-black text-white tracking-wide whitespace-nowrap">${activeYear}</span>
+                  <i className="fas fa-chevron-down text-[9px] text-green-400/80 ml-0.5"></i>
+                </div>
+                <select
+                  value=${activeYear}
+                  onChange=${(e) => handleYearChange(e.target.value)}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer text-xs"
+                  title=${lang === 'az' ? 'Mövsümü seçin' : 'Select Season'}
                 >
-                  ${div.label}
-                </button>
-              `;
-            })}
+                  ${years.map(y => html`
+                    <option key=${y} value=${y} className="bg-purple-950 text-white font-bold text-xs">
+                      ${y} ${lang === 'az' ? 'Mövsümü' : 'Season'}
+                    </option>
+                  `)}
+                </select>
+              </div>
+            `}
+
+            <!-- Elegant Separator -->
+            <div className="h-5 w-px bg-purple-800/80 shrink-0"></div>
+
+            <!-- Division Switcher Bar -->
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="text-[10px] font-black text-purple-300 uppercase tracking-widest hidden min-[440px]:inline-block mr-1">
+                <i className="fas fa-trophy mr-1 text-amber-400"></i> ${lang === 'az' ? 'Turnir:' : 'Division:'}
+              </span>
+              ${divisions.map(div => {
+                const isSelected = activeDivision === div.id;
+                return html`
+                  <button
+                    key=${div.id}
+                    onClick=${() => setActiveDivision(div.id)}
+                    className=${`px-3 py-1.5 rounded-xl text-xs font-black tracking-wide whitespace-nowrap transition-all ${
+                      isSelected 
+                        ? 'bg-green-500 text-purple-950 shadow-md transform scale-105 border border-green-400' 
+                        : 'bg-purple-900/50 text-purple-200 hover:bg-purple-800/70 hover:text-white border border-purple-700/40'
+                    }`}
+                  >
+                    ${div.label}
+                  </button>
+                `;
+              })}
+            </div>
           </div>
         </div>
       </header>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
-import { sanitizeEmbedUrl } from '../services/security.js?v=20260909_0060';
+import { sanitizeEmbedUrl } from '../services/security.js?v=20260909_0070';
 
 const html = htm.bind(React.createElement);
 

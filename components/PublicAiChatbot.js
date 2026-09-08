@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import htm from 'htm';
-import { db } from '../services/database.js?v=20260909_0060';
-import { askPublicChatbot } from '../services/geminiAssistant.js?v=20260909_0060';
+import { db } from '../services/database.js?v=20260909_0070';
+import { askPublicChatbot } from '../services/geminiAssistant.js?v=20260909_0070';
 
 const html = htm.bind(React.createElement);
 

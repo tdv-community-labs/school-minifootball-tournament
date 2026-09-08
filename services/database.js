@@ -1,9 +1,9 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260909_0060';
+import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260909_0070';
 import { isMatchDivision } from './i18n.js';
-import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260909_0060';
+import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260909_0070';
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;
@@ -567,6 +567,11 @@ export const recalculateData = () => {
   });
 
   // Update players list with calculated values, division, and year
+  const canonicalArchiveMap = new Map();
+  (ARCHIVE_PLAYERS || []).forEach(ap => {
+    canonicalArchiveMap.set(`${normalizePlayerName(ap.name)}_${ap.year || defaultYear}_${ap.class || ''}`, ap);
+  });
+
   const updatedPlayers = players.map(p => {
     const stats = playerStatsMap[p.id] || { goals: 0, assists: 0, matchesPlayed: 0, ratingSum: 0, ratingCount: 0 };
     const classInfo = updatedClassesList.find(c => c.name === p.class && (!p.year || c.year === p.year));
@@ -574,9 +579,22 @@ export const recalculateData = () => {
     const year = p.year || (classInfo ? classInfo.year : defaultYear);
     const isKeeper = (p.position || '').toLowerCase().includes('qap');
 
-    const goals = stats.goals > 0 ? stats.goals : (p.goals || 0);
-    const assists = stats.assists > 0 ? stats.assists : (p.assists || 0);
+    // Ground truth: If match stats exist, match stats are authoritative
+    let goals = (stats.matchesPlayed > 0 || stats.goals > 0) ? stats.goals : (p.goals || 0);
+    let assists = (stats.matchesPlayed > 0 || stats.assists > 0) ? stats.assists : (p.assists || 0);
     let matchesPlayed = stats.matchesPlayed > 0 ? stats.matchesPlayed : (p.matchesPlayed || 0);
+
+    // Cross-check with canonical archive to prevent corrupted goals from persisting
+    const canonKey = `${normalizePlayerName(p.name)}_${year}_${p.class || ''}`;
+    const canonicalArchive = canonicalArchiveMap.get(canonKey);
+    if (canonicalArchive) {
+      if (stats.matchesPlayed === 0 && stats.goals === 0) {
+        goals = canonicalArchive.goals || 0;
+        assists = canonicalArchive.assists || 0;
+        matchesPlayed = canonicalArchive.matchesPlayed || 0;
+      }
+    }
+
     if (matchesPlayed === 0 && (goals > 0 || assists > 0)) {
       matchesPlayed = Math.max(1, Math.ceil(goals / 2.5));
     }
@@ -602,10 +620,18 @@ export const recalculateData = () => {
     const key = `${normalizePlayerName(p.name)}_${p.year || defaultYear}_${p.class || ''}`;
     if (playerDedupMap.has(key)) {
       const existing = playerDedupMap.get(key);
-      existing.goals = (existing.goals || 0) + (p.goals || 0);
-      existing.assists = (existing.assists || 0) + (p.assists || 0);
-      existing.matchesPlayed = Math.max(existing.matchesPlayed || 0, p.matchesPlayed || 0);
-      if ((p.overallRating || 0) > (existing.overallRating || 0)) existing.overallRating = p.overallRating;
+      // NEVER sum duplicate profiles of the same player!
+      if ((p.matchesPlayed || 0) > (existing.matchesPlayed || 0) && (p.goals || 0) > 0) {
+        existing.goals = p.goals;
+        existing.assists = p.assists;
+        existing.matchesPlayed = p.matchesPlayed;
+        existing.overallRating = p.overallRating;
+      } else {
+        existing.goals = Math.max(existing.goals || 0, p.goals || 0);
+        existing.assists = Math.max(existing.assists || 0, p.assists || 0);
+        existing.matchesPlayed = Math.max(existing.matchesPlayed || 0, p.matchesPlayed || 0);
+        if ((p.overallRating || 0) > (existing.overallRating || 0)) existing.overallRating = p.overallRating;
+      }
     } else {
       const cloned = { ...p };
       playerDedupMap.set(key, cloned);
@@ -779,6 +805,11 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     });
   });
 
+  const canonicalArchiveMap = new Map();
+  (ARCHIVE_PLAYERS || []).forEach(ap => {
+    canonicalArchiveMap.set(`${normalizePlayerName(ap.name)}_${ap.year || defaultYear}_${ap.class || ''}`, ap);
+  });
+
   // Update players list with calculated values, division, and year
   const updatedPlayers = players.map(p => {
     const stats = playerStatsMap[p.id] || { goals: 0, assists: 0, matchesPlayed: 0, ratingSum: 0, ratingCount: 0 };
@@ -787,9 +818,22 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     const year = p.year || (classInfo ? classInfo.year : defaultYear);
     const isKeeper = (p.position || '').toLowerCase().includes('qap');
 
-    const goals = stats.goals > 0 ? stats.goals : (p.goals || 0);
-    const assists = stats.assists > 0 ? stats.assists : (p.assists || 0);
+    // Ground truth: If match stats exist, match stats are authoritative
+    let goals = (stats.matchesPlayed > 0 || stats.goals > 0) ? stats.goals : (p.goals || 0);
+    let assists = (stats.matchesPlayed > 0 || stats.assists > 0) ? stats.assists : (p.assists || 0);
     let matchesPlayed = stats.matchesPlayed > 0 ? stats.matchesPlayed : (p.matchesPlayed || 0);
+
+    // Cross-check with canonical archive to prevent corrupted goals from persisting
+    const canonKey = `${normalizePlayerName(p.name)}_${year}_${p.class || ''}`;
+    const canonicalArchive = canonicalArchiveMap.get(canonKey);
+    if (canonicalArchive) {
+      if (stats.matchesPlayed === 0 && stats.goals === 0) {
+        goals = canonicalArchive.goals || 0;
+        assists = canonicalArchive.assists || 0;
+        matchesPlayed = canonicalArchive.matchesPlayed || 0;
+      }
+    }
+
     if (matchesPlayed === 0 && (goals > 0 || assists > 0)) {
       matchesPlayed = Math.max(1, Math.ceil(goals / 2.5));
     }
@@ -815,10 +859,18 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     const key = `${normalizePlayerName(p.name)}_${p.year || defaultYear}_${p.class || ''}`;
     if (playerDedupMap.has(key)) {
       const existing = playerDedupMap.get(key);
-      existing.goals = (existing.goals || 0) + (p.goals || 0);
-      existing.assists = (existing.assists || 0) + (p.assists || 0);
-      existing.matchesPlayed = Math.max(existing.matchesPlayed || 0, p.matchesPlayed || 0);
-      if ((p.overallRating || 0) > (existing.overallRating || 0)) existing.overallRating = p.overallRating;
+      // NEVER sum duplicate profiles of the same player!
+      if ((p.matchesPlayed || 0) > (existing.matchesPlayed || 0) && (p.goals || 0) > 0) {
+        existing.goals = p.goals;
+        existing.assists = p.assists;
+        existing.matchesPlayed = p.matchesPlayed;
+        existing.overallRating = p.overallRating;
+      } else {
+        existing.goals = Math.max(existing.goals || 0, p.goals || 0);
+        existing.assists = Math.max(existing.assists || 0, p.assists || 0);
+        existing.matchesPlayed = Math.max(existing.matchesPlayed || 0, p.matchesPlayed || 0);
+        if ((p.overallRating || 0) > (existing.overallRating || 0)) existing.overallRating = p.overallRating;
+      }
     } else {
       const cloned = { ...p };
       playerDedupMap.set(key, cloned);
@@ -1063,8 +1115,7 @@ export const db = {
         console.log(`Firebase: Returning ${filtered.length} players for year ${year || 'all'}.`);
         return filtered;
       } catch (err) {
-        console.error("Firebase: getPlayers failed with error: ", err);
-        return [];
+        console.warn("Firebase: getPlayers failed or quota reached, falling back to local archive & storage:", err);
       }
     }
     const rawPlayers = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
