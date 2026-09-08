@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import { db } from '../services/database.js?v=20260909_0040';
+import { db } from '../services/database.js?v=20260909_0060';
 import { 
   auditTournamentWithAI, 
   askGeminiTuner, 
@@ -10,9 +10,9 @@ import {
   DEFAULT_GUARDIAN_POOL,
   getGuardianKeyPool,
   getPublicChatKey 
-} from '../services/geminiAssistant.js?v=20260909_0040';
-import { auditTournamentData, repairTournamentData } from '../services/selfHealing.js?v=20260909_0040';
-import { validateImportJSON, sanitizeEmbedUrl } from '../services/security.js?v=20260909_0040';
+} from '../services/geminiAssistant.js?v=20260909_0060';
+import { auditTournamentData, repairTournamentData } from '../services/selfHealing.js?v=20260909_0060';
+import { validateImportJSON, sanitizeEmbedUrl } from '../services/security.js?v=20260909_0060';
 
 const html = htm.bind(React.createElement);
 

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260909_0040';
-import Standings from './components/Standings.js?v=20260909_0040';
-import Matches from './components/Matches.js?v=20260909_0040';
-import Players from './components/Players.js?v=20260909_0040';
-import AdminDashboard from './components/AdminDashboard.js?v=20260909_0040';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0040';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0040';
-import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260909_0040';
-import { db } from './services/database.js?v=20260909_0040';
-import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0040';
-import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260909_0040';
+import Dashboard from './components/Dashboard.js?v=20260909_0060';
+import Standings from './components/Standings.js?v=20260909_0060';
+import Matches from './components/Matches.js?v=20260909_0060';
+import Players from './components/Players.js?v=20260909_0060';
+import AdminDashboard from './components/AdminDashboard.js?v=20260909_0060';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0060';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0060';
+import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260909_0060';
+import { db } from './services/database.js?v=20260909_0060';
+import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0060';
+import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260909_0060';
 
 const html = htm.bind(React.createElement);
 
@@ -215,26 +215,26 @@ export default function App() {
           <div className="flex items-center justify-between h-16">
             
             <!-- Left Logo & Year Selector Section -->
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-2 cursor-pointer" onClick=${() => setActiveTab('dashboard')}>
-                <div className="bg-green-500 text-purple-950 p-2 rounded-xl flex items-center justify-center shadow-md animate-pulse">
-                  <i className="fas fa-futbol text-lg"></i>
+            <div className="flex items-center space-x-2 sm:space-x-3 shrink-0 min-w-0">
+              <div className="flex items-center space-x-1.5 sm:space-x-2 cursor-pointer shrink-0" onClick=${() => setActiveTab('dashboard')}>
+                <div className="bg-green-500 text-purple-950 p-1.5 sm:p-2 rounded-xl flex items-center justify-center shadow-md animate-pulse shrink-0">
+                  <i className="fas fa-futbol text-base sm:text-lg"></i>
                 </div>
-                <h1 className="text-lg md:text-xl font-black tracking-wider uppercase">
-                  ${t('appTitle', lang)} <span className="text-green-400 font-extrabold">${t('appSubtitle', lang)}</span>
+                <h1 className="text-sm sm:text-lg md:text-xl font-black tracking-wider uppercase whitespace-nowrap">
+                  ${t('appTitle', lang)} <span className="text-green-400 font-extrabold hidden min-[480px]:inline">${t('appSubtitle', lang)}</span>
                 </h1>
               </div>
 
               <!-- Premium Year Selector -->
               ${years.length > 0 && html`
-                <div className="flex items-center space-x-1 bg-purple-900/80 border border-purple-700/60 rounded-xl px-2 py-1 ml-2 md:ml-4 shadow-inner">
+                <div className="flex items-center space-x-1 bg-purple-900/80 border border-purple-700/60 rounded-xl px-1.5 sm:px-2 py-1 ml-1 sm:ml-2 md:ml-4 shadow-inner shrink-0">
                   <span className="text-[9px] text-green-400 font-black uppercase tracking-wider hidden sm:inline px-1">
                     <i className="fas fa-calendar-days mr-1"></i> ${t('academicYear', lang)}
                   </span>
                   <select
                     value=${activeYear}
                     onChange=${(e) => handleYearChange(e.target.value)}
-                    className="bg-transparent text-white text-xs font-black focus:outline-none cursor-pointer border-none py-0.5 px-2 pr-6"
+                    className="bg-transparent text-white text-[11px] sm:text-xs font-black focus:outline-none cursor-pointer border-none py-0.5 px-1 pr-5"
                   >
                     ${years.map(y => html`
                       <option key=${y} value=${y} className="bg-purple-950 text-white font-bold text-xs">${y}</option>
@@ -266,13 +266,13 @@ export default function App() {
             </nav>
 
             <!-- Right Controls: always visible (desktop + mobile) -->
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
               <!-- Global Search Button (always visible) -->
               <button
                 type="button"
                 onClick=${() => setIsSearchOpen(true)}
                 title=${lang === 'az' ? 'Axtarış (Ctrl+K)' : 'Search (Ctrl+K)'}
-                className="flex items-center space-x-1.5 bg-purple-900/80 hover:bg-purple-800 text-purple-200 hover:text-white px-3 py-1.5 rounded-xl border border-purple-700/60 text-xs font-bold transition shadow-inner cursor-pointer"
+                className="flex items-center space-x-1.5 bg-purple-900/80 hover:bg-purple-800 text-purple-200 hover:text-white p-2 sm:px-3 sm:py-1.5 rounded-xl border border-purple-700/60 text-xs font-bold transition shadow-inner cursor-pointer"
               >
                 <i className="fas fa-search text-green-400 text-xs"></i>
                 <span className="hidden sm:inline text-[11px] font-extrabold tracking-wide">${lang === 'az' ? 'Axtar...' : 'Search...'}</span>
@@ -349,12 +349,12 @@ export default function App() {
               </div>
 
               <!-- Mobile compact controls (xs only) -->
-              <div className="flex sm:hidden items-center space-x-1">
+              <div className="flex sm:hidden items-center space-x-1 shrink-0">
                 <!-- Mobile Language Toggle -->
                 <button
                   onClick=${() => handleLangChange(lang === 'en' ? 'az' : 'en')}
                   title=${lang === 'en' ? 'Azərbaycan dilinə keç' : 'Switch to English'}
-                  className="px-2 py-1 rounded-lg bg-purple-900/80 border border-purple-700/60 text-xs font-black text-white hover:bg-purple-800 transition flex items-center shadow-inner"
+                  className="px-1.5 py-1 rounded-lg bg-purple-900/80 border border-purple-700/60 text-[11px] font-black text-white hover:bg-purple-800 transition flex items-center shadow-inner"
                 >
                   <span>${lang === 'en' ? '🇬🇧' : '🇦🇿'}</span>
                 </button>
@@ -363,19 +363,19 @@ export default function App() {
                 <button
                   onClick=${() => handleThemeChange(theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark')}
                   title=${`Theme: ${theme}`}
-                  className="p-2 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 transition"
+                  className="p-1.5 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 transition"
                 >
-                  <i className=${`fas ${theme === 'dark' ? 'fa-moon text-purple-300' : theme === 'light' ? 'fa-sun text-amber-300' : 'fa-desktop text-green-400'} text-base`}></i>
+                  <i className=${`fas ${theme === 'dark' ? 'fa-moon text-purple-300' : theme === 'light' ? 'fa-sun text-amber-300' : 'fa-desktop text-green-400'} text-sm`}></i>
+                </button>
+
+                <!-- Hamburger (mobile nav tabs) -->
+                <button
+                  onClick=${() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="lg:hidden inline-flex items-center justify-center p-1.5 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 focus:outline-none transition"
+                >
+                  <i className=${`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-base`}></i>
                 </button>
               </div>
-
-              <!-- Hamburger (mobile nav tabs) -->
-              <button
-                onClick=${() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden inline-flex items-center justify-center p-2 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 focus:outline-none transition"
-              >
-                <i className=${`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-lg`}></i>
-              </button>
             </div>
 
           </div>
@@ -489,7 +489,7 @@ export default function App() {
       </header>
 
       <!-- Main Content Area -->
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         ${renderContent()}
       </main>
 

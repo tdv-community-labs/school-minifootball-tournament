@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import htm from 'htm';
-import { db } from '../services/database.js?v=20260909_0040';
-import { askPublicChatbot } from '../services/geminiAssistant.js?v=20260909_0040';
+import { db } from '../services/database.js?v=20260909_0060';
+import { askPublicChatbot } from '../services/geminiAssistant.js?v=20260909_0060';
 
 const html = htm.bind(React.createElement);
 
@@ -88,27 +88,27 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
   };
 
   return html`
-    <div className="fixed bottom-5 right-5 z-40 font-sans">
+    <div className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-40 font-sans">
       <!-- Floating Action Button (FAB) -->
       ${!isOpen && html`
         <button
           onClick=${() => setIsOpen(true)}
-          className="group flex items-center gap-2.5 bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 hover:from-purple-800 hover:to-indigo-800 text-white px-4 py-3.5 rounded-full shadow-2xl hover:shadow-purple-500/25 transition transform hover:scale-105 active:scale-95 border border-purple-700/50"
+          className="group flex items-center gap-2 bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 hover:from-purple-800 hover:to-indigo-800 text-white px-3.5 py-3 sm:px-4 sm:py-3.5 rounded-full shadow-2xl hover:shadow-purple-500/25 transition transform hover:scale-105 active:scale-95 border border-purple-700/50"
           title="Turnir AI Köməkçisi"
         >
           <div className="relative">
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping"></span>
             <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full inline-block absolute -top-1 -right-1"></span>
-            <i className="fas fa-robot text-lg text-purple-200"></i>
+            <i className="fas fa-robot text-base sm:text-lg text-purple-200"></i>
           </div>
           <span className="text-xs font-black tracking-wide pr-1">Turnir AI</span>
-          <i className="fas fa-futbol text-emerald-400 text-sm group-hover:rotate-45 transition"></i>
+          <i className="fas fa-futbol text-emerald-400 text-xs sm:text-sm group-hover:rotate-45 transition"></i>
         </button>
       `}
 
       <!-- Chat Window Modal -->
       ${isOpen && html`
-        <div className="w-[330px] sm:w-[380px] h-[520px] bg-white rounded-3xl shadow-2xl border border-purple-100 flex flex-col overflow-hidden animate-fadeIn">
+        <div className="w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[380px] h-[480px] sm:h-[520px] max-h-[82vh] bg-white rounded-3xl shadow-2xl border border-purple-100 flex flex-col overflow-hidden animate-fadeIn">
           
           <!-- Header -->
           <div className="bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-900 text-white p-4 flex items-center justify-between shadow-sm">

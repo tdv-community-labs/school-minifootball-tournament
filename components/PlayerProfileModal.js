@@ -49,48 +49,48 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
       <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-purple-100 dark:border-slate-800 relative flex flex-col">
         
         <!-- Modal Top Header Banner -->
-        <div className="relative bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-950 text-white p-6 rounded-t-3xl border-b border-purple-800/80 overflow-hidden">
+        <div className="relative bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-950 text-white p-4 sm:p-6 rounded-t-3xl border-b border-purple-800/80 overflow-hidden">
           <div className="absolute right-0 top-0 -mr-10 -mt-10 w-40 h-40 bg-green-500/10 rounded-full blur-2xl pointer-events-none"></div>
           
-          <div className="flex items-start justify-between relative z-10">
-            <div className="flex items-center space-x-4">
+          <div className="flex items-start justify-between relative z-10 gap-2">
+            <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
               <!-- Jersey / Avatar Badge -->
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-800 to-purple-900 border-2 border-purple-700/80 flex items-center justify-center text-2xl shadow-md text-green-400 font-black shrink-0">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-800 to-purple-900 border-2 border-purple-700/80 flex items-center justify-center text-xl sm:text-2xl shadow-md text-green-400 font-black shrink-0">
                 ${profile?.isKeeper ? '🧤' : '🏃'}
               </div>
               
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="bg-green-500/20 text-green-400 border border-green-400/30 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="bg-green-500/20 text-green-400 border border-green-400/30 text-[9px] sm:text-[10px] font-black px-2 sm:px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                     ${profile ? profile.primaryClass : '—'} ${lang === 'az' ? 'Sinfi' : ''}
                   </span>
-                  <span className="text-xs text-purple-300 font-semibold">
+                  <span className="text-[11px] sm:text-xs text-purple-300 font-semibold truncate">
                     ${(profile?.positions || []).join(' • ') || (profile?.isKeeper ? (lang === 'az' ? 'Qapıçı' : 'Goalkeeper') : (lang === 'az' ? 'Hücumçu' : 'Player'))}
                   </span>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl font-black mt-1 text-white tracking-tight">
+                <h2 className="text-xl sm:text-3xl font-black mt-1 text-white tracking-tight truncate">
                   ${profile ? profile.name : playerName}
                 </h2>
-                <p className="text-xs text-purple-200 mt-0.5 font-medium">
+                <p className="text-[11px] sm:text-xs text-purple-200 mt-0.5 font-medium truncate">
                   ${lang === 'az' ? 'Məktəb Mini-Futbol Karyera Profili' : 'School Mini-Football Career Profile'}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
               <!-- Career Rating Badge -->
               ${profile && html`
-                <div className=${`w-14 h-14 rounded-2xl flex flex-col items-center justify-center font-black shadow-md ${getSofascoreBadgeStyle(profile.careerRating)}`}>
-                  <span className="text-lg leading-none">${profile.careerRating}</span>
-                  <span className="text-[8px] font-medium opacity-80 mt-0.5">Sofascore</span>
+                <div className=${`w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center font-black shadow-md ${getSofascoreBadgeStyle(profile.careerRating)}`}>
+                  <span className="text-sm sm:text-lg leading-none">${profile.careerRating}</span>
+                  <span className="text-[7px] sm:text-[8px] font-medium opacity-80 mt-0.5">Sofascore</span>
                 </div>
               `}
 
               <!-- Close button -->
               <button 
                 onClick=${onClose}
-                className="bg-purple-900/90 hover:bg-red-600 text-white transition w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shadow-md"
+                className="bg-purple-900/90 hover:bg-red-600 text-white transition w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm shadow-md shrink-0"
                 title="Bağla (ESC)"
               >
                 <i className="fas fa-times"></i>

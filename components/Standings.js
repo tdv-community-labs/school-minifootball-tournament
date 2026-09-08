@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
-import { sanitizeEmbedUrl } from '../services/security.js?v=20260909_0030';
+import { sanitizeEmbedUrl } from '../services/security.js?v=20260909_0060';
 
 const html = htm.bind(React.createElement);
 
@@ -472,41 +472,41 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     </div>
                   `}
 
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto no-scrollbar">
                     <table className="w-full text-left border-collapse standings-table bg-white dark:bg-slate-900">
                       <thead>
-                        <tr className="bg-purple-950 text-white text-xs font-bold tracking-wider">
-                          <th className="py-4 px-6 text-center w-14">#</th>
-                          <th className="py-4 px-4 cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('class')}>
+                        <tr className="bg-purple-950 text-white text-[11px] sm:text-xs font-bold tracking-wider">
+                          <th className="py-3 px-2 sm:py-4 sm:px-6 text-center w-8 sm:w-14">#</th>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('class')}>
                             ${t('colTeam')} ${sortField === 'class' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('played')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('played')}>
                             ${t('colPlayed')} ${sortField === 'played' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('won')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('won')}>
                             ${t('colWon')} ${sortField === 'won' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('drawn')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('drawn')}>
                             ${t('colDrawn')} ${sortField === 'drawn' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('lost')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('lost')}>
                             ${t('colLost')} ${sortField === 'lost' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsFor')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsFor')}>
                             ${t('colGF')} ${sortField === 'goalsFor' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsAgainst')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-green-400 transition hidden md:table-cell" onClick=${() => handleSort('goalsAgainst')}>
                             ${t('colGA')} ${sortField === 'goalsAgainst' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-4 px-4 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('goalDifference')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-green-400 transition" title="Top Fərqi (Vurulan - Buraxılan)" onClick=${() => handleSort('goalDifference')}>
                             ${t('colGD')} ${sortField === 'goalDifference' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-4 px-6 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('points')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-6 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('points')}>
                             ${t('colPoints')} ${sortField === 'points' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-purple-100/60 dark:divide-slate-800 text-sm">
+                      <tbody className="divide-y divide-purple-100/60 dark:divide-slate-800 text-xs sm:text-sm">
                         ${groupTeams.length === 0 
                           ? html`
                               <tr>
@@ -528,18 +528,18 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
 
                               return html`
                                 <tr key=${row.class} className=${`transition-colors duration-150 ${rowClass}`}>
-                                  <td className="py-3.5 px-4 text-center font-black">
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center font-black">
                                     ${isFirst 
-                                      ? html`<span className="bg-emerald-500 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black shadow-xs">1</span>`
+                                      ? html`<span className="bg-emerald-500 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full inline-flex items-center justify-center text-[11px] sm:text-xs font-black shadow-xs">1</span>`
                                       : isSecond && hasMultipleGroups
-                                      ? html`<span className="bg-purple-600 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs font-black shadow-xs">2</span>`
-                                      : html`<span className="text-slate-500 dark:text-slate-400 font-bold text-xs">${index + 1}</span>`
+                                      ? html`<span className="bg-purple-600 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full inline-flex items-center justify-center text-[11px] sm:text-xs font-black shadow-xs">2</span>`
+                                      : html`<span className="text-slate-500 dark:text-slate-400 font-bold text-[11px] sm:text-xs">${index + 1}</span>`
                                     }
                                   </td>
-                                  <td className="py-3.5 px-4 font-black flex items-center gap-2">
-                                    <span className="text-sm font-extrabold text-purple-950 dark:text-white">${row.class} Sinfi</span>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 font-black flex items-center gap-1.5 sm:gap-2">
+                                    <span className="text-xs sm:text-sm font-extrabold text-purple-950 dark:text-white whitespace-nowrap">${row.class} Sinfi</span>
                                     ${isQualified && html`
-                                      <span className=${`inline-flex items-center text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-2xs ${
+                                      <span className=${`inline-flex items-center text-[8px] sm:text-[9px] font-black uppercase px-1.5 sm:px-2 py-0.2 sm:py-0.5 rounded-full shadow-2xs ${
                                         isFirst 
                                           ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-700'
                                           : 'bg-purple-100 text-purple-800 border border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-700'
@@ -548,21 +548,24 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                                       </span>
                                     `}
                                   </td>
-                                  <td className="py-3.5 px-4 text-center font-bold text-slate-700 dark:text-slate-200">${row.played}</td>
-                                  <td className="py-3.5 px-4 text-center text-emerald-600 dark:text-emerald-400 font-extrabold">${row.won}</td>
-                                  <td className="py-3.5 px-4 text-center text-slate-500 dark:text-slate-400 font-semibold">${row.drawn}</td>
-                                  <td className="py-3.5 px-4 text-center text-rose-600 dark:text-rose-400 font-extrabold">${row.lost}</td>
-                                  <td className="py-3.5 px-4 text-center text-slate-600 dark:text-slate-300 font-medium hidden md:table-cell">${row.goalsFor}</td>
-                                  <td className="py-3.5 px-4 text-center text-slate-600 dark:text-slate-300 font-medium hidden md:table-cell">${row.goalsAgainst}</td>
-                                  <td className=${`py-3.5 px-4 text-center font-black ${
-                                    row.goalDifference > 0 ? 'text-emerald-600 dark:text-emerald-400' :
-                                    row.goalDifference < 0 ? 'text-rose-600 dark:text-rose-400' :
-                                    'text-slate-500 dark:text-slate-400'
-                                  }`}>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center font-bold text-slate-700 dark:text-slate-200">${row.played}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-emerald-600 dark:text-emerald-400 font-extrabold">${row.won}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-slate-500 dark:text-slate-400 font-semibold">${row.drawn}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-rose-600 dark:text-rose-400 font-extrabold">${row.lost}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-slate-600 dark:text-slate-300 font-medium hidden md:table-cell">${row.goalsFor}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-slate-600 dark:text-slate-300 font-medium hidden md:table-cell">${row.goalsAgainst}</td>
+                                  <td 
+                                    className=${`py-2.5 px-2 sm:py-3.5 sm:px-4 text-center font-black ${
+                                      row.goalDifference > 0 ? 'text-emerald-600 dark:text-emerald-400' :
+                                      row.goalDifference < 0 ? 'text-rose-600 dark:text-rose-400' :
+                                      'text-slate-500 dark:text-slate-400'
+                                    }`}
+                                    title=${`Top Fərqi (TF): ${row.goalsFor} vurulub - ${row.goalsAgainst} buraxılıb = ${row.goalDifference > 0 ? '+' : ''}${row.goalDifference}`}
+                                  >
                                     ${row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}
                                   </td>
-                                  <td className="py-3.5 px-6 text-center">
-                                    <span className="inline-block min-w-[2rem] py-1 px-2.5 rounded-lg bg-purple-100/90 dark:bg-purple-950/70 text-purple-950 dark:text-purple-200 font-black text-sm shadow-2xs border border-purple-200 dark:border-purple-800">
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-6 text-center">
+                                    <span className="inline-block min-w-[1.75rem] sm:min-w-[2rem] py-0.5 sm:py-1 px-1.5 sm:px-2.5 rounded-lg bg-purple-100/90 dark:bg-purple-950/70 text-purple-950 dark:text-purple-200 font-black text-xs sm:text-sm shadow-2xs border border-purple-200 dark:border-purple-800">
                                       ${row.points}
                                     </span>
                                   </td>
@@ -587,6 +590,10 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             <div><span className="text-red-600 dark:text-rose-400 font-extrabold mr-1">M:</span> ${lang === 'az' ? 'Məğlubiyyət' : 'Lost'}</div>
             <div><span className="text-purple-900 dark:text-purple-300 font-extrabold mr-1">TF:</span> ${lang === 'az' ? 'Top Fərqi' : 'Goal Diff'}</div>
             <div className="hidden md:block"><span className="text-purple-900 dark:text-purple-300 font-extrabold mr-1">VQ/BQ:</span> ${lang === 'az' ? 'Vuruldu / Buraxıldı' : 'GF / GA'}</div>
+            <div className="col-span-2 md:col-span-6 pt-2 border-t border-gray-200/70 dark:border-slate-800 text-[10px] text-slate-700 dark:text-slate-300 flex items-center gap-1.5 font-bold">
+              <i className="fas fa-info-circle text-green-600"></i>
+              <span>${lang === 'az' ? 'Aydınlaşdırma: "TF" (+34 və s.) tək bir oyunçunun qolu deyil, komandanın vurduğu və buraxdığı qollar arasındakı Top Fərqidir (məs: 43 vurulub - 9 buraxılıb = +34 TF).' : 'Clarification: "GD" (+34 etc.) is Team Goal Difference, not individual player goals (e.g. 43 scored - 9 conceded = +34 GD).'}</span>
+            </div>
           </div>
         </div>
       `}
@@ -822,13 +829,13 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 <div className="bg-slate-50/80 border border-purple-100/80 rounded-3xl p-6 shadow-sm overflow-x-auto no-scrollbar">
                   
                   <!-- Instruction banner -->
-                  <div className="flex items-center justify-between pb-4 border-b border-purple-100/60 mb-6 text-xs text-gray-500 font-semibold">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-purple-100/60 mb-6 text-xs text-gray-500 font-semibold">
                     <span className="flex items-center gap-1.5 text-purple-950 font-bold">
                       <i className="fas fa-info-circle text-green-500"></i>
                       <span>İstənilən oyuna klikləyərək matç detallarına, video icmalına və Sofascore oyunçu reytinqlərinə baxa bilərsiniz.</span>
                     </span>
-                    <span className="hidden sm:inline text-[10px] text-gray-400 font-bold">
-                      ← Sürüşdürərək digər mərhələlərə baxın →
+                    <span className="text-[10px] text-purple-900 dark:text-purple-300 font-extrabold flex items-center gap-1 bg-purple-100/70 dark:bg-purple-950 px-2.5 py-1 rounded-lg shrink-0 shadow-2xs">
+                      👈 Sağa/sola sürüşdürün 👉
                     </span>
                   </div>
 

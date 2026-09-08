@@ -92,44 +92,44 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
       </div>
 
       <!-- Quick Stats Grid -->
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-card rounded-2xl p-5 shadow-sm border border-purple-100 flex items-center space-x-4">
-          <div className="rounded-xl bg-purple-100 p-3 text-purple-900">
-            <i className="fas fa-users text-xl"></i>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="glass-card rounded-2xl p-3.5 sm:p-5 shadow-sm border border-purple-100 flex items-center space-x-2.5 sm:space-x-4">
+          <div className="rounded-xl bg-purple-100 p-2 sm:p-3 text-purple-900 shrink-0">
+            <i className="fas fa-users text-lg sm:text-xl"></i>
           </div>
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">${t('statTotalPlayers')}</p>
-            <p className="text-2xl font-black text-purple-950">${stats.totalPlayers}</p>
-          </div>
-        </div>
-
-        <div className="glass-card rounded-2xl p-5 shadow-sm border border-purple-100 flex items-center space-x-4">
-          <div className="rounded-xl bg-purple-100 p-3 text-purple-900">
-            <i className="fas fa-running text-xl"></i>
-          </div>
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">${t('statTotalMatches')}</p>
-            <p className="text-2xl font-black text-purple-950">${stats.totalMatches}</p>
+          <div className="min-w-0">
+            <p className="text-[11px] sm:text-xs text-gray-500 font-semibold truncate">${t('statTotalPlayers')}</p>
+            <p className="text-xl sm:text-2xl font-black text-purple-950">${stats.totalPlayers}</p>
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 shadow-sm border border-purple-100 flex items-center space-x-4">
-          <div className="rounded-xl bg-purple-100 p-3 text-purple-900">
-            <i className="fas fa-futbol text-xl"></i>
+        <div className="glass-card rounded-2xl p-3.5 sm:p-5 shadow-sm border border-purple-100 flex items-center space-x-2.5 sm:space-x-4">
+          <div className="rounded-xl bg-purple-100 p-2 sm:p-3 text-purple-900 shrink-0">
+            <i className="fas fa-running text-lg sm:text-xl"></i>
           </div>
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">${t('statTotalGoals')}</p>
-            <p className="text-2xl font-black text-purple-950">${stats.totalGoals}</p>
+          <div className="min-w-0">
+            <p className="text-[11px] sm:text-xs text-gray-500 font-semibold truncate">${t('statTotalMatches')}</p>
+            <p className="text-xl sm:text-2xl font-black text-purple-950">${stats.totalMatches}</p>
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-5 shadow-sm border border-purple-100 flex items-center space-x-4">
-          <div className="rounded-xl bg-green-100 p-3 text-green-700">
-            <i className="fas fa-trophy text-xl"></i>
+        <div className="glass-card rounded-2xl p-3.5 sm:p-5 shadow-sm border border-purple-100 flex items-center space-x-2.5 sm:space-x-4">
+          <div className="rounded-xl bg-purple-100 p-2 sm:p-3 text-purple-900 shrink-0">
+            <i className="fas fa-futbol text-lg sm:text-xl"></i>
           </div>
-          <div>
-            <p className="text-xs text-gray-500 font-semibold">${t('statLeader')}</p>
-            <p className="text-2xl font-black text-purple-950">${stats.leader}</p>
+          <div className="min-w-0">
+            <p className="text-[11px] sm:text-xs text-gray-500 font-semibold truncate">${t('statTotalGoals')}</p>
+            <p className="text-xl sm:text-2xl font-black text-purple-950">${stats.totalGoals}</p>
+          </div>
+        </div>
+
+        <div className="glass-card rounded-2xl p-3.5 sm:p-5 shadow-sm border border-purple-100 flex items-center space-x-2.5 sm:space-x-4">
+          <div className="rounded-xl bg-green-100 p-2 sm:p-3 text-green-700 shrink-0">
+            <i className="fas fa-trophy text-lg sm:text-xl"></i>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[11px] sm:text-xs text-gray-500 font-semibold truncate">${t('statLeader')}</p>
+            <p className="text-xl sm:text-2xl font-black text-purple-950 truncate">${stats.leader}</p>
           </div>
         </div>
       </div>
@@ -199,23 +199,23 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                   </div>
                 ` 
               : recentMatches.map(match => html`
-                  <div key=${match.id} className="p-4 rounded-2xl bg-gray-50 hover:bg-purple-50/50 border border-gray-100 transition flex justify-between items-center">
-                    <span className="text-[10px] font-black text-purple-900 bg-purple-100 px-2 py-0.5 rounded uppercase whitespace-nowrap">
+                  <div key=${match.id} className="p-3 sm:p-4 rounded-2xl bg-gray-50 hover:bg-purple-50/50 border border-gray-100 transition flex justify-between items-center gap-2">
+                    <span className="text-[9px] sm:text-[10px] font-black text-purple-900 bg-purple-100 px-1.5 sm:px-2 py-0.5 rounded uppercase whitespace-nowrap shrink-0">
                       ${match.stage}
                     </span>
-                    <div className="flex flex-col items-center justify-center flex-1">
-                      <div className="flex items-center justify-center space-x-4">
-                        <span className="font-extrabold text-sm md:text-base text-purple-950 w-16 text-right">${match.teamA}</span>
-                        <div className="bg-purple-950 text-white rounded-lg px-3 py-1 font-black text-sm md:text-base shadow-sm">
+                    <div className="flex flex-col items-center justify-center flex-1 min-w-0">
+                      <div className="flex items-center justify-center space-x-2 sm:space-x-4 w-full">
+                        <span className="font-extrabold text-xs sm:text-sm md:text-base text-purple-950 w-12 sm:w-16 text-right truncate">${match.teamA}</span>
+                        <div className="bg-purple-950 text-white rounded-lg px-2.5 sm:px-3 py-0.5 sm:py-1 font-black text-xs sm:text-sm md:text-base shadow-sm shrink-0">
                           ${match.scoreA} - ${match.scoreB}
                         </div>
-                        <span className="font-extrabold text-sm md:text-base text-purple-950 w-16 text-left">${match.teamB}</span>
+                        <span className="font-extrabold text-xs sm:text-sm md:text-base text-purple-950 w-12 sm:w-16 text-left truncate">${match.teamB}</span>
                       </div>
                       ${(match.penaltyScoreA !== null && match.penaltyScoreA !== undefined && match.penaltyScoreA !== '') && html`
-                        <span className="text-[9px] text-green-600 font-extrabold mt-0.5">${t('penaltyShootout')} ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
+                        <span className="text-[8px] sm:text-[9px] text-green-600 font-extrabold mt-0.5">${t('penaltyShootout')} ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
                       `}
                     </div>
-                    <span className="text-xs text-gray-400 hidden md:inline">${match.date || t('dateNotSet')}</span>
+                    <span className="text-xs text-gray-400 hidden md:inline shrink-0">${match.date || t('dateNotSet')}</span>
                   </div>
                 `)}
           </div>

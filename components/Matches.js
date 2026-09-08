@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
-import { sanitizeEmbedUrl } from '../services/security.js?v=20260909_0030';
+import { sanitizeEmbedUrl } from '../services/security.js?v=20260909_0060';
 
 const html = htm.bind(React.createElement);
 
@@ -162,53 +162,53 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                 className="sport-card-hover bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm cursor-pointer flex flex-col justify-between"
               >
                 <!-- Match Card Top -->
-                <div className="p-6 bg-gradient-to-b from-purple-50/50 to-white">
-                  <div className="flex justify-between items-center mb-4">
+                <div className="p-4 sm:p-6 bg-gradient-to-b from-purple-50/50 to-white">
+                  <div className="flex justify-between items-center mb-3 sm:mb-4 gap-2">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-xs font-black text-purple-900 bg-purple-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-black text-purple-900 bg-purple-100 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
                         ${match.stage}
                       </span>
                       ${match.videoTitle && html`
-                        <span className="text-[10px] font-extrabold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs" title=${match.videoTitle}>
+                        <span className="text-[9px] sm:text-[10px] font-extrabold text-red-600 bg-red-50 border border-red-200 px-1.5 sm:px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs" title=${match.videoTitle}>
                           <i className="fab fa-youtube text-red-600"></i>
                           <span>${match.videoDuration || 'Video'}</span>
                         </span>
                       `}
                     </div>
-                    <span className="text-xs text-gray-400 flex items-center">
-                      <i className="far fa-calendar-alt mr-1.5"></i> ${match.date || 'Tarix təyin edilməyib'}
+                    <span className="text-[11px] sm:text-xs text-gray-400 flex items-center shrink-0">
+                      <i className="far fa-calendar-alt mr-1"></i> ${match.date || 'Tarix təyin edilməyib'}
                     </span>
                   </div>
 
 
                   <!-- Score Display -->
-                  <div className="flex items-center justify-between py-4">
-                    <div className="text-center flex-1">
-                      <h4 className="text-lg font-black text-purple-950">${match.teamA}</h4>
-                      <span className="text-[10px] text-gray-400 font-semibold tracking-widest uppercase">Ev sahibi</span>
+                  <div className="flex items-center justify-between py-3 sm:py-4 gap-1 sm:gap-3">
+                    <div className="text-center flex-1 min-w-0">
+                      <h4 className="text-base sm:text-lg font-black text-purple-950 truncate">${match.teamA}</h4>
+                      <span className="text-[9px] sm:text-[10px] text-gray-400 font-semibold tracking-widest uppercase truncate block">Ev sahibi</span>
                     </div>
-                    <div className="flex flex-col items-center px-4">
-                      <div className="bg-purple-950 text-white rounded-2xl px-5 py-2 font-black text-2xl shadow-md border-b-4 border-green-500 flex flex-col items-center">
+                    <div className="flex flex-col items-center px-2 sm:px-4 shrink-0">
+                      <div className="bg-purple-950 text-white rounded-2xl px-3.5 sm:px-5 py-1.5 sm:py-2 font-black text-xl sm:text-2xl shadow-md border-b-4 border-green-500 flex flex-col items-center">
                         <span>${match.scoreA} - ${match.scoreB}</span>
                         ${(match.penaltyScoreA !== null && match.penaltyScoreA !== undefined && match.penaltyScoreA !== '') && html`
-                          <span className="text-[10px] text-green-400 font-extrabold mt-0.5">pen. ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
+                          <span className="text-[9px] sm:text-[10px] text-green-400 font-extrabold mt-0.5">pen. ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
                         `}
                       </div>
-                      <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full mt-2">
+                      <span className="text-[9px] sm:text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full mt-1.5 sm:mt-2">
                         Bitti
                       </span>
                     </div>
-                    <div className="text-center flex-1">
-                      <h4 className="text-lg font-black text-purple-950">${match.teamB}</h4>
-                      <span className="text-[10px] text-gray-400 font-semibold tracking-widest uppercase">Qonaq</span>
+                    <div className="text-center flex-1 min-w-0">
+                      <h4 className="text-base sm:text-lg font-black text-purple-950 truncate">${match.teamB}</h4>
+                      <span className="text-[9px] sm:text-[10px] text-gray-400 font-semibold tracking-widest uppercase truncate block">Qonaq</span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Match Card Bottom -->
-                <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center text-xs font-bold text-purple-950">
+                <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center text-[11px] sm:text-xs font-bold text-purple-950">
                   <span className="flex items-center text-gray-500">
-                    <i className="fas fa-chart-line text-green-500 mr-1.5 text-sm"></i>
+                    <i className="fas fa-chart-line text-green-500 mr-1.5 text-xs sm:text-sm"></i>
                     ${match.playerStats?.length || 0} Oyunçu reytinqi
                   </span>
                   <span className="text-purple-900 hover:text-green-600 transition flex items-center space-x-1">
@@ -222,20 +222,20 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
 
       <!-- Match Details & Sofascore Rating Modal -->
       ${selectedMatch && html`
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-purple-950/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-fadeIn relative">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-purple-950/40 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-4">
+          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl animate-fadeIn relative">
             
             <!-- Modal Header -->
-            <div className="bg-purple-900 text-white p-6 rounded-t-3xl flex justify-between items-start">
-              <div>
-                <span className="text-xs font-bold text-green-400 bg-purple-950/50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+            <div className="bg-purple-900 text-white p-4 sm:p-6 rounded-t-3xl flex justify-between items-start gap-2">
+              <div className="min-w-0">
+                <span className="text-[10px] sm:text-xs font-bold text-green-400 bg-purple-950/50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
                   ${selectedMatch.stage} • Match Details
                   ${selectedMatch.stage === 'Final' ? ' 🏆' : ''}
                 </span>
-                <h3 className="text-2xl font-black mt-2">
+                <h3 className="text-xl sm:text-2xl font-black mt-2 break-words">
                   ${selectedMatch.teamA} ${selectedMatch.scoreA} - ${selectedMatch.scoreB} ${selectedMatch.teamB}
                   ${(selectedMatch.penaltyScoreA !== null && selectedMatch.penaltyScoreA !== undefined && selectedMatch.penaltyScoreA !== '') && html`
-                    <span className="text-green-400 text-lg font-extrabold ml-2">(pen. ${selectedMatch.penaltyScoreA} - ${selectedMatch.penaltyScoreB})</span>
+                    <span className="text-green-400 text-base sm:text-lg font-extrabold ml-1 sm:ml-2">(pen. ${selectedMatch.penaltyScoreA} - ${selectedMatch.penaltyScoreB})</span>
                   `}
                 </h3>
               </div>
@@ -247,7 +247,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
               </button>
             </div>
 
-            <div className="p-6 space-y-8">
+            <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
               <!-- Video Highlights & YouTube Archive -->
               ${(selectedMatch.videoUrl || selectedMatch.videoTitle) && html`
                 <div className="space-y-3">

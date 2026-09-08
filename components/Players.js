@@ -116,7 +116,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
               return html`
                 <div
                   key=${player.id}
-                  className="sport-card-hover bg-white border border-gray-100 rounded-3xl p-6 shadow-sm flex flex-col justify-between relative overflow-hidden"
+                  className="sport-card-hover bg-white border border-gray-100 rounded-3xl p-4 sm:p-6 shadow-sm flex flex-col justify-between relative overflow-hidden"
                 >
                   <!-- Top colour bar -->
                   <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-purple-900 to-purple-800"></div>
@@ -129,7 +129,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
                   ` : null}
 
                   <!-- Player Details row -->
-                  <div className="flex justify-between items-start mb-6">
+                  <div className="flex justify-between items-start mb-4 sm:mb-6 gap-2">
                     <div>
                       <div className="flex flex-wrap items-center gap-1.5 mt-1">
                         <span className="text-[10px] font-black text-purple-900 bg-purple-50 px-2 py-0.5 rounded uppercase tracking-wider">
