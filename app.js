@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260909_0010';
-import Standings from './components/Standings.js?v=20260909_0010';
-import Matches from './components/Matches.js?v=20260909_0010';
-import Players from './components/Players.js?v=20260909_0010';
-import AdminDashboard from './components/AdminDashboard.js?v=20260909_0010';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0010';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0010';
-import { db } from './services/database.js?v=20260909_0010';
-import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0010';
+import Dashboard from './components/Dashboard.js?v=20260909_0025';
+import Standings from './components/Standings.js?v=20260909_0025';
+import Matches from './components/Matches.js?v=20260909_0025';
+import Players from './components/Players.js?v=20260909_0025';
+import AdminDashboard from './components/AdminDashboard.js?v=20260909_0025';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0025';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0025';
+import { db } from './services/database.js?v=20260909_0025';
+import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0025';
 
 const html = htm.bind(React.createElement);
 

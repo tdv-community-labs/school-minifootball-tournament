@@ -1,8 +1,9 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260909_0010';
+import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260909_0025';
 import { isMatchDivision } from './i18n.js';
+import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260909_0025';
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;
@@ -831,10 +832,11 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
   };
 };
 
-// Initialize Mock Storage
+// Initialize Mock Storage & Self-Healing
 if (!useRealFirebase) {
   initializeStorage();
 }
+startBackgroundSelfHealing();
 
 export const db = {
   // Years CRUD
@@ -1709,5 +1711,14 @@ export const db = {
       classes: matchingClasses,
       matches: matchingMatches
     };
+  },
+
+  // Health Check & Self-Healing Engine API
+  runHealthAudit: async () => {
+    return auditTournamentData();
+  },
+
+  repairData: async () => {
+    return repairTournamentData();
   }
 };

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import { db } from '../services/database.js';
+import { db } from '../services/database.js?v=20260909_0025';
+import { auditTournamentWithAI, askGeminiTuner } from '../services/geminiAssistant.js?v=20260909_0025';
+import { auditTournamentData, repairTournamentData } from '../services/selfHealing.js?v=20260909_0025';
 
 const html = htm.bind(React.createElement);
 
@@ -10,7 +12,19 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
   const [classes, setClasses] = useState([]);
   const [yearsList, setYearsList] = useState([]);
   const [newYearInput, setNewYearInput] = useState('');
-  const [adminTab, setAdminTab] = useState('matches'); // 'matches', 'players', 'classes', 'years', 'system'
+  const [adminTab, setAdminTab] = useState('matches'); // 'matches', 'players', 'classes', 'years', 'system', 'ai-doctor'
+
+  // AI & Self-Healing State
+  const [geminiApiKey, setGeminiApiKey] = useState(() => localStorage.getItem('minifootball_gemini_api_key') || '');
+  const [showApiKey, setShowApiKey] = useState(false);
+  const [healthReport, setHealthReport] = useState(null);
+  const [isHealing, setIsHealing] = useState(false);
+  const [healMessage, setHealMessage] = useState(null);
+  const [isAiAuditing, setIsAiAuditing] = useState(false);
+  const [aiAuditResult, setAiAuditResult] = useState('');
+  const [aiChatQuery, setAiChatQuery] = useState('');
+  const [isAiChatLoading, setIsAiChatLoading] = useState(false);
+  const [aiChatHistory, setAiChatHistory] = useState([]);
 
   // Class Form State
   const [classForm, setClassForm] = useState({ id: null, name: '', division: '10-11' });
@@ -56,8 +70,87 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
     }
   };
 
+  // AI & Self-Healing Handlers
+  const handleRunHealthAudit = async () => {
+    try {
+      const report = await auditTournamentData(activeYear);
+      setHealthReport(report);
+    } catch (err) {
+      console.error("Health audit failed:", err);
+    }
+  };
+
+  const handleAutoRepair = async () => {
+    if (!confirm("Bütün kateqoriyalar, turnir cədvəlləri və oyunçu statistikaları avtomatik yoxlanılıb bərpa edilsin?")) {
+      return;
+    }
+    setIsHealing(true);
+    setHealMessage(null);
+    try {
+      const result = await repairTournamentData(activeYear);
+      setHealMessage({
+        type: 'success',
+        text: `Bərpa tamamlandı: ${result.repairedCount} məsələ tənzimləndi.`
+      });
+      await loadAdminData();
+      await handleRunHealthAudit();
+      if (onYearsChanged) onYearsChanged();
+    } catch (err) {
+      console.error("Auto repair error:", err);
+      setHealMessage({
+        type: 'error',
+        text: `Bərpa zamanı xəta baş verdi: ${err.message}`
+      });
+    } finally {
+      setIsHealing(false);
+    }
+  };
+
+  const handleSaveApiKey = (e) => {
+    if (e) e.preventDefault();
+    localStorage.setItem('minifootball_gemini_api_key', geminiApiKey.trim());
+    alert("Gemini API açarı yadda saxlanıldı!");
+  };
+
+  const handleRunAiAudit = async () => {
+    setIsAiAuditing(true);
+    setAiAuditResult('');
+    try {
+      const result = await auditTournamentWithAI(activeYear, geminiApiKey.trim());
+      setAiAuditResult(result);
+    } catch (err) {
+      setAiAuditResult(`AI Təhlili xətası: ${err.message}`);
+    } finally {
+      setIsAiAuditing(false);
+    }
+  };
+
+  const handleSendAiChat = async (e, directQuery = null) => {
+    if (e) e.preventDefault();
+    const query = (directQuery || aiChatQuery).trim();
+    if (!query || isAiChatLoading) return;
+    setAiChatQuery('');
+    const newHistory = [...aiChatHistory, { role: 'user', text: query }];
+    setAiChatHistory(newHistory);
+    setIsAiChatLoading(true);
+
+    try {
+      const reply = await askGeminiTuner(query, {
+        activeYear,
+        activeDivision,
+        apiKey: geminiApiKey.trim()
+      });
+      setAiChatHistory([...newHistory, { role: 'model', text: reply }]);
+    } catch (err) {
+      setAiChatHistory([...newHistory, { role: 'model', text: `Xəta baş verdi: ${err.message}` }]);
+    } finally {
+      setIsAiChatLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadAdminData();
+    handleRunHealthAudit();
   }, [activeDivision, activeYear]);
 
   // Year Handlers
@@ -394,6 +487,22 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           }`}
         >
           Sistem
+        </button>
+        <button
+          onClick=${() => setAdminTab('ai-doctor')}
+          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap flex items-center gap-1.5 ${
+            adminTab === 'ai-doctor' 
+              ? 'border-purple-900 text-purple-950 bg-purple-50/50' 
+              : 'border-transparent text-gray-500 hover:text-purple-950'
+          }`}
+        >
+          <i className="fas fa-robot text-purple-600"></i>
+          <span>AI & Avto-Tənzimləmə</span>
+          ${healthReport && healthReport.issues.length > 0 && html`
+            <span className="ml-1 px-1.5 py-0.5 text-[9px] font-black bg-amber-500 text-white rounded-full leading-none">
+              ${healthReport.issues.length}
+            </span>
+          `}
         </button>
       </div>
 
@@ -955,6 +1064,343 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               <p className="text-[10px] text-gray-400 text-center">
                 Qeyd: Çıxış etdikdə admin paneli gizlənəcəkdir. Yenidən daxil olmaq üçün gizli keçid linkindən istifadə etməlisiniz.
               </p>
+            </div>
+          </div>
+        </div>
+      `}
+
+      <!-- TAB 6: AI DOCTOR & SELF-HEALING -->
+      ${adminTab === 'ai-doctor' && html`
+        <div className="space-y-6">
+          <!-- Top Info Banner -->
+          <div className="bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 text-white rounded-3xl p-6 shadow-md relative overflow-hidden">
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-[11px] font-bold tracking-wider uppercase mb-2 backdrop-blur-sm">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Ağıllı Avto-Tənzimləmə & Diaqnostika
+                </div>
+                <h3 className="text-xl font-black">Turnir İntellekt Mərkəzi (AI Tuner)</h3>
+                <p className="text-xs text-purple-200 mt-1 max-w-xl leading-relaxed">
+                  Turnir bazasındakı xallar, qollar, dublikat oyunçular, qrup uyğunsuzluqları və sinif kateqoriyaları avtomatik təhlil edilir və 1 kliklə bərpa olunur. Əlavə olaraq Google Gemini 2.5 AI ilə dərin audit apara bilərsiniz.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick=${handleRunHealthAudit}
+                  className="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-4 py-2.5 rounded-2xl transition border border-white/20 flex items-center gap-2"
+                >
+                  <i className="fas fa-rotate"></i>
+                  <span>Yenidən Yoxla</span>
+                </button>
+                <button
+                  onClick=${handleAutoRepair}
+                  disabled=${isHealing}
+                  className="bg-emerald-500 hover:bg-emerald-400 text-purple-950 text-xs font-black px-5 py-2.5 rounded-2xl transition shadow-md flex items-center gap-2 disabled:opacity-50"
+                >
+                  <i className=${`fas ${isHealing ? 'fa-spinner fa-spin' : 'fa-wrench'}`}></i>
+                  <span>${isHealing ? 'Bərpa edilir...' : 'İndi Avto-Bərpa Et'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Heal Status Toast/Banner -->
+          ${healMessage && html`
+            <div className=${`p-4 rounded-2xl text-xs font-bold flex items-center gap-3 animate-fadeIn ${
+              healMessage.type === 'success' 
+                ? 'bg-emerald-50 text-emerald-900 border border-emerald-200' 
+                : 'bg-red-50 text-red-900 border border-red-200'
+            }`}>
+              <i className=${`fas ${healMessage.type === 'success' ? 'fa-check-circle text-emerald-600' : 'fa-exclamation-circle text-red-600'} text-base`}></i>
+              <span className="flex-1">${healMessage.text}</span>
+              <button onClick=${() => setHealMessage(null)} className="text-gray-400 hover:text-gray-600">
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+          `}
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left Column (7 cols): Diagnostic Health Score & Issue List -->
+            <div className="lg:col-span-7 space-y-6">
+              
+              <!-- Health Score Card -->
+              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
+                      <i className="fas fa-heart-pulse text-rose-500"></i>
+                      Baza Sağlamlıq Vəziyyəti (${activeYear})
+                    </h4>
+                    <p className="text-[11px] text-gray-500 mt-0.5">Turnir məlumatlarının bütövlük indeksi</p>
+                  </div>
+
+                  ${healthReport && html`
+                    <div className="flex items-center gap-2">
+                      <div className=${`text-xl font-black px-3.5 py-1 rounded-2xl ${
+                        healthReport.healthScore >= 95 
+                          ? 'bg-emerald-100 text-emerald-800' 
+                          : healthReport.healthScore >= 80 
+                            ? 'bg-amber-100 text-amber-800' 
+                            : 'bg-rose-100 text-rose-800'
+                      }`}>
+                        ${healthReport.healthScore}%
+                      </div>
+                    </div>
+                  `}
+                </div>
+
+                <!-- Stats summary badges -->
+                ${healthReport && html`
+                  <div className="grid grid-cols-3 gap-2 pt-2">
+                    <div className="bg-purple-50 rounded-2xl p-3 text-center">
+                      <div className="text-[10px] uppercase font-bold text-purple-600">Xətalar</div>
+                      <div className="text-lg font-black text-purple-950">${healthReport.summary.errors}</div>
+                    </div>
+                    <div className="bg-amber-50 rounded-2xl p-3 text-center">
+                      <div className="text-[10px] uppercase font-bold text-amber-600">Xəbərdarlıqlar</div>
+                      <div className="text-lg font-black text-amber-950">${healthReport.summary.warnings}</div>
+                    </div>
+                    <div className="bg-sky-50 rounded-2xl p-3 text-center">
+                      <div className="text-[10px] uppercase font-bold text-sky-600">Tövsiyələr</div>
+                      <div className="text-lg font-black text-sky-950">${healthReport.summary.info}</div>
+                    </div>
+                  </div>
+                `}
+
+                <!-- Issue List -->
+                <div className="space-y-2 pt-2">
+                  <div className="text-xs font-bold text-gray-700">Aşkar Edilən Məsələlər:</div>
+                  ${!healthReport ? html`
+                    <div className="py-6 text-center text-xs text-gray-400">
+                      <i className="fas fa-spinner fa-spin mr-2"></i> Diaqnostika aparılır...
+                    </div>
+                  ` : healthReport.issues.length === 0 ? html`
+                    <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                        <i className="fas fa-check"></i>
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-emerald-900">Bütün məlumatlar tam qaydasındadır!</div>
+                        <div className="text-[11px] text-emerald-700">Qrup cədvəlləri, matç hesabları, xallar və oyunçu profilləri bütövdür.</div>
+                      </div>
+                    </div>
+                  ` : html`
+                    <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+                      ${healthReport.issues.map((issue, idx) => html`
+                        <div key=${idx} className=${`p-3 rounded-2xl border text-xs flex items-start gap-2.5 ${
+                          issue.severity === 'error'
+                            ? 'bg-rose-50/70 border-rose-200 text-rose-950'
+                            : issue.severity === 'warning'
+                              ? 'bg-amber-50/70 border-amber-200 text-amber-950'
+                              : 'bg-sky-50/70 border-sky-200 text-sky-950'
+                        }`}>
+                          <i className=${`fas ${
+                            issue.severity === 'error'
+                              ? 'fa-circle-xmark text-rose-500'
+                              : issue.severity === 'warning'
+                                ? 'fa-triangle-exclamation text-amber-500'
+                                : 'fa-circle-info text-sky-500'
+                          } mt-0.5`}></i>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-bold flex items-center gap-2">
+                              <span>${issue.description}</span>
+                              ${issue.autoFixable && html`
+                                <span className="text-[9px] px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded-md font-black uppercase">Avto-bərpa</span>
+                              `}
+                            </div>
+                            ${issue.details && html`
+                              <div className="text-[10px] text-gray-500 mt-0.5 truncate">${JSON.stringify(issue.details)}</div>
+                            `}
+                          </div>
+                        </div>
+                      `)}
+                    </div>
+                  `}
+                </div>
+              </div>
+
+              <!-- Gemini AI Deep Audit -->
+              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
+                      <i className="fas fa-brain text-purple-600"></i>
+                      Google Gemini 2.5 Dərin Turnir Auditi
+                    </h4>
+                    <p className="text-[11px] text-gray-500 mt-0.5">Turnir strukturunu, liderləri və anomaliyaları süni intellektlə analiz edin</p>
+                  </div>
+                  <button
+                    onClick=${handleRunAiAudit}
+                    disabled=${isAiAuditing}
+                    className="bg-purple-900 hover:bg-purple-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-2 disabled:opacity-50"
+                  >
+                    <i className=${`fas ${isAiAuditing ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`}></i>
+                    <span>${isAiAuditing ? 'Analiz Edilir...' : 'AI Analizi Başlat'}</span>
+                  </button>
+                </div>
+
+                ${aiAuditResult && html`
+                  <div className="p-4 bg-purple-50/50 border border-purple-100 rounded-2xl text-xs space-y-2 animate-fadeIn max-h-80 overflow-y-auto">
+                    <div className="flex items-center justify-between text-purple-900 font-bold border-b border-purple-100 pb-2">
+                      <span><i className="fas fa-sparkles text-amber-500 mr-1.5"></i> AI Nəticəsi:</span>
+                      <button onClick=${() => setAiAuditResult('')} className="text-gray-400 hover:text-gray-600 text-xs">
+                        <i className="fas fa-times"></i>
+                      </button>
+                    </div>
+                    <div className="text-gray-700 whitespace-pre-line leading-relaxed text-[11px] font-mono">
+                      ${aiAuditResult}
+                    </div>
+                  </div>
+                `}
+              </div>
+
+            </div>
+
+            <!-- Right Column (5 cols): API Configuration & Interactive AI Tuner Assistant -->
+            <div className="lg:col-span-5 space-y-6">
+              
+              <!-- Gemini API Key Config Card -->
+              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+                <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
+                  <i className="fas fa-key text-amber-500"></i>
+                  Google Gemini API Konfiqurasiyası
+                </h4>
+                <p className="text-[11px] text-gray-500 leading-relaxed">
+                  Süni intellekt analizlərindən və interaktiv tənzimləmə köməkçisindən istifadə etmək üçün Gemini API açarını qeyd edin. Açar yalnız brauzerinizin yerli yaddaşında saxlanılır.
+                </p>
+
+                <form onSubmit=${handleSaveApiKey} className="space-y-3">
+                  <div className="relative">
+                    <input
+                      type=${showApiKey ? 'text' : 'password'}
+                      value=${geminiApiKey}
+                      onChange=${(e) => setGeminiApiKey(e.target.value)}
+                      placeholder="AIzaSy..."
+                      className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-3 pr-10 font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick=${() => setShowApiKey(!showApiKey)}
+                      className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 text-xs"
+                      title=${showApiKey ? 'Gizlət' : 'Göstər'}
+                    >
+                      <i className=${`fas ${showApiKey ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between pt-1">
+                    <a
+                      href="https://aistudio.google.com/app/apikey"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] text-purple-600 hover:underline font-bold"
+                    >
+                      <i className="fas fa-external-link-alt mr-1"></i> Pulsuz API Açarı Əldə Et
+                    </a>
+                    <button
+                      type="submit"
+                      className="bg-purple-950 hover:bg-purple-900 text-white font-bold text-xs px-4 py-2 rounded-xl transition"
+                    >
+                      Yadda Saxla
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Interactive AI Chat / Tuner Console -->
+              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4 flex flex-col h-[520px]">
+                <div className="border-b border-gray-100 pb-3">
+                  <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
+                    <i className="fas fa-comments text-purple-600"></i>
+                    AI Tənzimləyici Konsol
+                  </h4>
+                  <p className="text-[10px] text-gray-500 mt-0.5">Turnir haqqında suallar verin və ya anomaliyaları sorğulayın</p>
+                </div>
+
+                <!-- Quick Query Pills -->
+                <div className="flex flex-wrap gap-1.5">
+                  <button
+                    type="button"
+                    onClick=${() => handleSendAiChat(null, "Turnir cədvəlini və lider komandaları analiz et")}
+                    className="text-[10px] bg-purple-50 text-purple-900 hover:bg-purple-100 px-2.5 py-1 rounded-lg font-semibold transition"
+                  >
+                    🏆 Liderləri analiz et
+                  </button>
+                  <button
+                    type="button"
+                    onClick=${() => handleSendAiChat(null, "Bombardirlər və asist liderləri kimlərdir?")}
+                    className="text-[10px] bg-purple-50 text-purple-900 hover:bg-purple-100 px-2.5 py-1 rounded-lg font-semibold transition"
+                  >
+                    ⚽ Bombardirlər
+                  </button>
+                  <button
+                    type="button"
+                    onClick=${() => handleSendAiChat(null, "Turnirdə hansı matçlar oynanılmayıb və ya çatışmır?")}
+                    className="text-[10px] bg-purple-50 text-purple-900 hover:bg-purple-100 px-2.5 py-1 rounded-lg font-semibold transition"
+                  >
+                    🔍 Çatışmayan matçlar
+                  </button>
+                </div>
+
+                <!-- Chat Messages Scroll Area -->
+                <div className="flex-1 overflow-y-auto space-y-3 pr-1 text-xs">
+                  ${aiChatHistory.length === 0 ? html`
+                    <div className="h-full flex flex-col items-center justify-center text-center text-gray-400 p-4">
+                      <i className="fas fa-robot text-3xl mb-2 text-purple-300"></i>
+                      <p className="font-bold text-gray-600 text-xs">Turnir AI Köməkçisi Hazırdır</p>
+                      <p className="text-[10px] text-gray-400 mt-1 max-w-xs">
+                        Turnir gedişatı, xallar, matçlar və statistikalar barədə istənilən sualı yaza bilərsiniz.
+                      </p>
+                    </div>
+                  ` : aiChatHistory.map((msg, i) => html`
+                    <div key=${i} className=${`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      <div className=${`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${
+                        msg.role === 'user'
+                          ? 'bg-purple-950 text-white rounded-br-none'
+                          : 'bg-gray-100 text-gray-800 rounded-bl-none whitespace-pre-line'
+                      }`}>
+                        ${msg.role === 'model' && html`
+                          <div className="text-[9px] font-black uppercase text-purple-700 mb-1 flex items-center gap-1">
+                            <i className="fas fa-robot"></i> Gemini AI
+                          </div>
+                        `}
+                        ${msg.text}
+                      </div>
+                    </div>
+                  `)}
+
+                  ${isAiChatLoading && html`
+                    <div className="flex justify-start">
+                      <div className="bg-purple-50 text-purple-900 rounded-2xl p-3 text-xs rounded-bl-none flex items-center gap-2">
+                        <i className="fas fa-spinner fa-spin"></i>
+                        <span>AI cavab hazırlayır...</span>
+                      </div>
+                    </div>
+                  `}
+                </div>
+
+                <!-- Chat Input Form -->
+                <form onSubmit=${(e) => handleSendAiChat(e)} className="pt-2 border-t border-gray-100 flex gap-2">
+                  <input
+                    type="text"
+                    value=${aiChatQuery}
+                    onChange=${(e) => setAiChatQuery(e.target.value)}
+                    placeholder="Turnir haqqında sual yazın..."
+                    className="flex-1 bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-medium"
+                    disabled=${isAiChatLoading}
+                  />
+                  <button
+                    type="submit"
+                    disabled=${isAiChatLoading || !aiChatQuery.trim()}
+                    className="bg-purple-950 hover:bg-purple-900 text-white font-bold px-4 rounded-xl text-xs transition disabled:opacity-50"
+                  >
+                    <i className="fas fa-paper-plane"></i>
+                  </button>
+                </form>
+
+              </div>
+
             </div>
           </div>
         </div>
