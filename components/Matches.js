@@ -16,7 +16,8 @@ export default function Matches({ activeDivision, activeYear }) {
     { id: '8/1 Final', label: '8/1 Final' },
     { id: '4/1 Final', label: '4/1 Final' },
     { id: 'Yarımfinal', label: 'Yarımfinal' },
-    { id: 'Final', label: 'Final' }
+    { id: 'Final', label: 'Final' },
+    { id: '3-cü Yer', label: '3-cü Yer' }
   ];
 
   useEffect(() => {

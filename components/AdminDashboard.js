@@ -437,6 +437,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <option value="4/1 Final">4/1 Final</option>
                   <option value="Yarımfinal">Yarımfinal</option>
                   <option value="Final">Final</option>
+                  <option value="3-cü Yer">3-cü Yer</option>
                 </select>
               </div>
 
