@@ -27,8 +27,10 @@ export const translations = {
     // Divisions
     div6: "6th Grade",
     div7_8: "7-8th Grade",
-    div9_10: "9-10th Grade",
-    div11: "11th Grade",
+    div9: "9th Grade",
+    div10_11: "10-11th Grade",
+    div9_10: "9th Grade",
+    div11: "10-11th Grade",
 
     // Dashboard Banner
     welcomeTag: "Official Championship",
@@ -168,8 +170,10 @@ export const translations = {
     // Divisions
     div6: "6-cı Siniflər",
     div7_8: "7-8-ci Siniflər",
-    div9_10: "9-10-cu Siniflər",
-    div11: "11-ci Siniflər",
+    div9: "9-cu Siniflər",
+    div10_11: "10-11-ci Siniflər",
+    div9_10: "9-cu Siniflər",
+    div11: "10-11-ci Siniflər",
 
     // Dashboard Banner
     welcomeTag: "Rəsmi Çempionat",
@@ -301,25 +305,41 @@ export const t = (key, lang = 'en') => {
  * Get localized division label
  */
 export const getDivisionLabel = (div, lang = 'en') => {
+  const d = String(div || '').trim();
   if (lang === 'az') {
-    if (div === '6') return '6-cı Siniflər';
-    if (div === '7') return '7-ci Siniflər';
-    if (div === '8') return '8-ci Siniflər';
-    if (div === '9') return '9-cu Siniflər';
-    if (div === '10-11') return '10-11-ci Siniflər';
-    if (div === '7-8') return '7-8-ci Siniflər';
-    if (div === '9-10') return '9-10-cu Siniflər';
-    return '11-ci Siniflər';
+    if (d === '6') return '6-cı Siniflər';
+    if (d === '7') return '7-ci Siniflər';
+    if (d === '8') return '8-ci Siniflər';
+    if (d === '9' || d === '9-10') return '9-cu Siniflər';
+    if (d === '10-11' || d === '11') return '10-11-ci Siniflər';
+    if (d === '7-8') return '7-8-ci Siniflər';
+    return d ? `${d}-cı Siniflər` : '10-11-ci Siniflər';
   }
   // English default
-  if (div === '6') return '6th Grade';
-  if (div === '7') return '7th Grade';
-  if (div === '8') return '8th Grade';
-  if (div === '9') return '9th Grade';
-  if (div === '10-11') return '10-11th Grade';
-  if (div === '7-8') return '7-8th Grade';
-  if (div === '9-10') return '9-10th Grade';
-  return '11th Grade';
+  if (d === '6') return '6th Grade';
+  if (d === '7') return '7th Grade';
+  if (d === '8') return '8th Grade';
+  if (d === '9' || d === '9-10') return '9th Grade';
+  if (d === '10-11' || d === '11') return '10-11th Grade';
+  if (d === '7-8') return '7-8th Grade';
+  return d ? `${d} Grade` : '10-11th Grade';
+};
+
+/**
+ * Check if a match, class, or player division matches the target division filter
+ */
+export const isMatchDivision = (itemDiv, selectedDiv) => {
+  if (!itemDiv || !selectedDiv) return false;
+  const i = String(itemDiv).trim();
+  const s = String(selectedDiv).trim();
+  if (i === s) return true;
+  // 10-11 aliases
+  if ((s === '10-11' || s === '11') && (i === '10-11' || i === '11')) return true;
+  // 9 aliases
+  if ((s === '9' || s === '9-10') && (i === '9' || i === '9-10')) return true;
+  // 7-8 aliases
+  if (s === '7-8' && (i === '7-8' || i === '7' || i === '8')) return true;
+  return false;
 };
 
 /**

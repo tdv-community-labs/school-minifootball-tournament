@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
-import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel } from '../services/i18n.js';
+import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
 
 const html = htm.bind(React.createElement);
 
@@ -86,7 +86,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   // ─────────────────────────────────────────────────────────────────────────────
   // PLAYOFF BRACKET CALCULATIONS & STAGES
   // ─────────────────────────────────────────────────────────────────────────────
-  const divisionMatches = matches.filter(m => m.division === activeDivision);
+  const divisionMatches = matches.filter(m => isMatchDivision(m.division, activeDivision));
   
   // Separate playoff matches from group stage
   const playoffMatches = divisionMatches.filter(m => {
@@ -133,7 +133,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const thirdPlaceTeam = thirdOutcome ? thirdOutcome.winner : null;
 
   // Filter players by active division & year for Awards
-  const currentDivPlayers = players.filter(p => p.division === activeDivision && p.year === activeYear);
+  const currentDivPlayers = players.filter(p => isMatchDivision(p.division, activeDivision) && p.year === activeYear);
 
   // Tournament Awards
   const dreamTeam = [...currentDivPlayers]

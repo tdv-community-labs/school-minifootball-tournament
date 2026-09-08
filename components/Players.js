@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle } from '../services/database.js';
-import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel } from '../services/i18n.js';
+import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, isMatchDivision } from '../services/i18n.js';
 
 const html = htm.bind(React.createElement);
 
@@ -25,8 +25,8 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
     setSelectedClass('All');
   }, [activeDivision, activeYear]);
 
-  const activeClasses = classes.filter(c => c.division === activeDivision);
-  const activePlayers = players.filter(p => p.division === activeDivision);
+  const activeClasses = classes.filter(c => isMatchDivision(c.division, activeDivision));
+  const activePlayers = players.filter(p => isMatchDivision(p.division, activeDivision));
 
   const filteredPlayers = activePlayers.filter(player => {
     const matchesSearch = player.name.toLowerCase().includes(searchTerm.toLowerCase());

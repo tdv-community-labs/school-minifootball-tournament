@@ -13,7 +13,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
   const [adminTab, setAdminTab] = useState('matches'); // 'matches', 'players', 'classes', 'years', 'system'
 
   // Class Form State
-  const [classForm, setClassForm] = useState({ id: null, name: '', division: '11' });
+  const [classForm, setClassForm] = useState({ id: null, name: '', division: '10-11' });
 
   // Player Form State
   const [playerForm, setPlayerForm] = useState({ id: null, name: '', class: '', position: 'Hücumçu' });
@@ -23,7 +23,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
   const [matchForm, setMatchForm] = useState({
     id: null,
     stage: 'Qrup Mərhələsi',
-    division: '11',
+    division: '10-11',
     teamA: '',
     teamB: '',
     scoreA: 0,

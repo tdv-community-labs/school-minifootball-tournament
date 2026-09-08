@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260908_2345';
-import Standings from './components/Standings.js?v=20260908_2345';
-import Matches from './components/Matches.js?v=20260908_2345';
-import Players from './components/Players.js?v=20260908_2345';
-import AdminDashboard from './components/AdminDashboard.js?v=20260908_2345';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260908_2345';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260908_2345';
-import { db } from './services/database.js?v=20260908_2345';
-import { t, getDivisionLabel } from './services/i18n.js?v=20260908_2345';
+import Dashboard from './components/Dashboard.js?v=20260908_2359';
+import Standings from './components/Standings.js?v=20260908_2359';
+import Matches from './components/Matches.js?v=20260908_2359';
+import Players from './components/Players.js?v=20260908_2359';
+import AdminDashboard from './components/AdminDashboard.js?v=20260908_2359';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260908_2359';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260908_2359';
+import { db } from './services/database.js?v=20260908_2359';
+import { t, getDivisionLabel } from './services/i18n.js?v=20260908_2359';
 
 const html = htm.bind(React.createElement);
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [activeDivision, setActiveDivision] = useState('11'); // '6', '7-8', '9-10', '11'
+  const [activeDivision, setActiveDivision] = useState('10-11'); // '6', '7-8', '9', '10-11'
   const [activeYear, setActiveYear] = useState(() => {
     return localStorage.getItem('btl_selected_year') || '2022-2023';
   });
@@ -189,8 +189,8 @@ export default function App() {
   const divisions = [
     { id: '6', label: getDivisionLabel('6', lang) },
     { id: '7-8', label: getDivisionLabel('7-8', lang) },
-    { id: '9-10', label: getDivisionLabel('9-10', lang) },
-    { id: '11', label: getDivisionLabel('11', lang) }
+    { id: '9', label: getDivisionLabel('9', lang) },
+    { id: '10-11', label: getDivisionLabel('10-11', lang) }
   ];
 
   const handleYearChange = (newYear) => {

@@ -1,7 +1,8 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260908_2345';
+import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260908_2359';
+import { isMatchDivision } from './i18n.js';
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;
@@ -265,7 +266,7 @@ export const assignGroupsToTeams = (teamsList, matchesList, yr, div) => {
   };
 
   const groupMatches = (matchesList || []).filter(m => 
-    m.year === yr && m.division === div && isGroupStage(m.stage)
+    m.year === yr && isMatchDivision(m.division, div) && isGroupStage(m.stage)
   );
 
   const adj = {};
@@ -393,14 +394,14 @@ export const recalculateData = () => {
 
   // Calculate Standing Points Map: standingsMap[year][division][class]
   const standingsMap = {};
+  const allTournamentDivisions = ['6', '7-8', '9', '10-11', '7', '8', '9-10', '11'];
   years.forEach(yr => {
     standingsMap[yr] = {};
-    const divisions = ['6', '7-8', '9-10', '11'];
-    divisions.forEach(div => {
+    allTournamentDivisions.forEach(div => {
       standingsMap[yr][div] = {};
       
       // Initialize classes for this year and division
-      const filteredClasses = updatedClassesList.filter(c => c.year === yr && c.division === div);
+      const filteredClasses = updatedClassesList.filter(c => c.year === yr && isMatchDivision(c.division, div));
       filteredClasses.forEach(c => {
         standingsMap[yr][div][c.name] = {
           class: c.name,
@@ -419,7 +420,7 @@ export const recalculateData = () => {
   // Process Matches
   matches.forEach(m => {
     const yr = m.year || defaultYear;
-    const div = m.division || "11";
+    const div = m.division || "10-11";
 
     // Match result context
     const isFinal    = m.stage === 'Final';
@@ -446,7 +447,11 @@ export const recalculateData = () => {
 
           const computedRating = stat.rating
             ? Number(stat.rating)
-            : calculateSofascoreRating(stat, { isKeeper }, { isFinal, teamWon, goalDiff: myGoalDiff, goalsAgainst });
+            : calculateSofascoreRating(
+                stat,
+                { isKeeper },
+                { isFinal, teamWon, goalDiff: myGoalDiff, goalsAgainst }
+              );
 
           playerStatsMap[stat.playerId].ratingSum   += computedRating;
           playerStatsMap[stat.playerId].ratingCount += 1;
@@ -457,42 +462,45 @@ export const recalculateData = () => {
     // Process team points only for group stage matches
     const isGroupMatch = m.stage === 'Qrup Mərhələsi' || m.stage === 'Qrup' || (m.stage || '').toLowerCase().includes('qrup');
     if (isGroupMatch) {
-      const yearDivMap = standingsMap[yr]?.[div];
-      if (yearDivMap) {
-        // Ensure teams exist in mapping
-        if (!yearDivMap[m.teamA]) {
-          yearDivMap[m.teamA] = { class: m.teamA, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+      const allDivKeys = Object.keys(standingsMap[yr] || {});
+      const relevantDivs = allDivKeys.filter(d => isMatchDivision(m.division, d));
+      relevantDivs.forEach(divKey => {
+        const yearDivMap = standingsMap[yr]?.[divKey];
+        if (yearDivMap) {
+          if (!yearDivMap[m.teamA]) {
+            yearDivMap[m.teamA] = { class: m.teamA, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+          }
+          if (!yearDivMap[m.teamB]) {
+            yearDivMap[m.teamB] = { class: m.teamB, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+          }
+
+          const teamA = yearDivMap[m.teamA];
+          const teamB = yearDivMap[m.teamB];
+
+          teamA.played += 1;
+          teamB.played += 1;
+
+          teamA.goalsFor += m.scoreA;
+          teamA.goalsAgainst += m.scoreB;
+          teamB.goalsFor += m.scoreB;
+          teamB.goalsAgainst += m.scoreA;
+
+          if (m.scoreA > m.scoreB) {
+            teamA.won += 1;
+            teamA.points += 3;
+            teamB.lost += 1;
+          } else if (m.scoreA < m.scoreB) {
+            teamB.won += 1;
+            teamB.points += 3;
+            teamA.lost += 1;
+          } else {
+            teamA.drawn += 1;
+            teamA.points += 1;
+            teamB.drawn += 1;
+            teamB.points += 1;
+          }
         }
-        if (!yearDivMap[m.teamB]) {
-          yearDivMap[m.teamB] = { class: m.teamB, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
-        }
-
-        const teamA = yearDivMap[m.teamA];
-        const teamB = yearDivMap[m.teamB];
-
-        teamA.played += 1;
-        teamB.played += 1;
-
-        teamA.goalsFor += m.scoreA;
-        teamA.goalsAgainst += m.scoreB;
-        teamB.goalsFor += m.scoreB;
-        teamB.goalsAgainst += m.scoreA;
-
-        if (m.scoreA > m.scoreB) {
-          teamA.won += 1;
-          teamA.points += 3;
-          teamB.lost += 1;
-        } else if (m.scoreA < m.scoreB) {
-          teamB.won += 1;
-          teamB.points += 3;
-          teamA.lost += 1;
-        } else {
-          teamA.drawn += 1;
-          teamA.points += 1;
-          teamB.drawn += 1;
-          teamB.points += 1;
-        }
-      }
+      });
     }
   });
 
@@ -500,8 +508,7 @@ export const recalculateData = () => {
   const finalStandings = {};
   years.forEach(yr => {
     finalStandings[yr] = {};
-    const divisions = ['6', '7-8', '9-10', '11'];
-    divisions.forEach(div => {
+    allTournamentDivisions.forEach(div => {
       if (!standingsMap[yr]?.[div]) {
         finalStandings[yr][div] = [];
         return;
@@ -582,14 +589,14 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
 
   // Calculate Standing Points Map: standingsMap[year][division][class]
   const standingsMap = {};
+  const allTournamentDivisions = ['6', '7-8', '9', '10-11', '7', '8', '9-10', '11'];
   yearsList.forEach(yr => {
     standingsMap[yr] = {};
-    const divisions = ['6', '7', '8', '9', '10-11', '7-8', '9-10', '11'];
-    divisions.forEach(div => {
+    allTournamentDivisions.forEach(div => {
       standingsMap[yr][div] = {};
       
       // Initialize classes for this year and division
-      const filteredClasses = updatedClassesList.filter(c => c.year === yr && c.division === div);
+      const filteredClasses = updatedClassesList.filter(c => c.year === yr && isMatchDivision(c.division, div));
       filteredClasses.forEach(c => {
         standingsMap[yr][div][c.name] = {
           class: c.name,
@@ -608,7 +615,7 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
   // Process Matches (recalculateInMemoryData — Firebase path)
   matches.forEach(m => {
     const yr = m.year || defaultYear;
-    const div = m.division || "11";
+    const div = m.division || "10-11";
 
     const isFinal    = m.stage === 'Final';
     const scoreA     = Number(m.scoreA || 0);
@@ -648,42 +655,46 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     // Process team points only for group stage matches
     const isGroupMatch = m.stage === 'Qrup Mərhələsi' || m.stage === 'Qrup' || (m.stage || '').toLowerCase().includes('qrup');
     if (isGroupMatch) {
-      const yearDivMap = standingsMap[yr]?.[div];
-      if (yearDivMap) {
-        // Ensure teams exist in mapping
-        if (!yearDivMap[m.teamA]) {
-          yearDivMap[m.teamA] = { class: m.teamA, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+      const allDivKeys = Object.keys(standingsMap[yr] || {});
+      const relevantDivs = allDivKeys.filter(d => isMatchDivision(m.division, d));
+      relevantDivs.forEach(divKey => {
+        const yearDivMap = standingsMap[yr]?.[divKey];
+        if (yearDivMap) {
+          // Ensure teams exist in mapping
+          if (!yearDivMap[m.teamA]) {
+            yearDivMap[m.teamA] = { class: m.teamA, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+          }
+          if (!yearDivMap[m.teamB]) {
+            yearDivMap[m.teamB] = { class: m.teamB, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+          }
+
+          const teamA = yearDivMap[m.teamA];
+          const teamB = yearDivMap[m.teamB];
+
+          teamA.played += 1;
+          teamB.played += 1;
+
+          teamA.goalsFor += m.scoreA;
+          teamA.goalsAgainst += m.scoreB;
+          teamB.goalsFor += m.scoreB;
+          teamB.goalsAgainst += m.scoreA;
+
+          if (m.scoreA > m.scoreB) {
+            teamA.won += 1;
+            teamA.points += 3;
+            teamB.lost += 1;
+          } else if (m.scoreA < m.scoreB) {
+            teamB.won += 1;
+            teamB.points += 3;
+            teamA.lost += 1;
+          } else {
+            teamA.drawn += 1;
+            teamA.points += 1;
+            teamB.drawn += 1;
+            teamB.points += 1;
+          }
         }
-        if (!yearDivMap[m.teamB]) {
-          yearDivMap[m.teamB] = { class: m.teamB, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
-        }
-
-        const teamA = yearDivMap[m.teamA];
-        const teamB = yearDivMap[m.teamB];
-
-        teamA.played += 1;
-        teamB.played += 1;
-
-        teamA.goalsFor += m.scoreA;
-        teamA.goalsAgainst += m.scoreB;
-        teamB.goalsFor += m.scoreB;
-        teamB.goalsAgainst += m.scoreA;
-
-        if (m.scoreA > m.scoreB) {
-          teamA.won += 1;
-          teamA.points += 3;
-          teamB.lost += 1;
-        } else if (m.scoreA < m.scoreB) {
-          teamB.won += 1;
-          teamB.points += 3;
-          teamA.lost += 1;
-        } else {
-          teamA.drawn += 1;
-          teamA.points += 1;
-          teamB.drawn += 1;
-          teamB.points += 1;
-        }
-      }
+      });
     }
   });
 
@@ -691,8 +702,7 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
   const finalStandings = {};
   yearsList.forEach(yr => {
     finalStandings[yr] = {};
-    const divisions = ['6', '7-8', '9-10', '11'];
-    divisions.forEach(div => {
+    allTournamentDivisions.forEach(div => {
       if (!standingsMap[yr]?.[div]) {
         finalStandings[yr][div] = [];
         return;
@@ -1185,7 +1195,13 @@ export const db = {
         const years = detectedYears;
 
         const computed = recalculateInMemoryData(classes, players, matches, years);
-        const standings = computed.standings[year]?.[division] || [];
+        let standings = computed.standings[year]?.[division] || [];
+        if (standings.length === 0) {
+          if (division === '10-11') standings = computed.standings[year]?.['11'] || [];
+          else if (division === '11') standings = computed.standings[year]?.['10-11'] || [];
+          else if (division === '9') standings = computed.standings[year]?.['9-10'] || [];
+          else if (division === '9-10') standings = computed.standings[year]?.['9'] || [];
+        }
         console.log(`Firebase: Computed standings size: ${standings.length} classes for division ${division}, year ${year}`);
         return standings;
       } catch (e) {
@@ -1195,7 +1211,14 @@ export const db = {
     }
     recalculateData(); // refresh
     const allStandings = JSON.parse(localStorage.getItem('minifootball_standings_divided') || '{}');
-    return allStandings[year]?.[division] || [];
+    let localStandings = allStandings[year]?.[division] || [];
+    if (localStandings.length === 0) {
+      if (division === '10-11') localStandings = allStandings[year]?.['11'] || [];
+      else if (division === '11') localStandings = allStandings[year]?.['10-11'] || [];
+      else if (division === '9') localStandings = allStandings[year]?.['9-10'] || [];
+      else if (division === '9-10') localStandings = allStandings[year]?.['9'] || [];
+    }
+    return localStandings;
   },
 
   // Reset Database

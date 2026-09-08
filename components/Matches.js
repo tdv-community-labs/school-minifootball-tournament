@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
-import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel } from '../services/i18n.js';
+import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
 
 const html = htm.bind(React.createElement);
 
@@ -31,7 +31,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
     loadMatchesData();
   }, [activeDivision, activeYear]);
 
-  const filteredMatches = matches.filter(m => m.division === activeDivision && m.stage === selectedStage);
+  const filteredMatches = matches.filter(m => isMatchDivision(m.division, activeDivision) && m.stage === selectedStage);
 
   /**
    * Returns enriched per-player stats for a given match,

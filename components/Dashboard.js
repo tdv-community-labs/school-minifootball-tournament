@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle } from '../services/database.js';
-import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel } from '../services/i18n.js';
+import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, isMatchDivision } from '../services/i18n.js';
 
 const html = htm.bind(React.createElement);
 
@@ -27,8 +27,8 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
       const standings = await db.getStandings(activeDivision, activeYear);
 
       // Filter by division
-      const players = allPlayers.filter(p => p.division === activeDivision);
-      const matches = allMatches.filter(m => m.division === activeDivision);
+      const players = allPlayers.filter(p => isMatchDivision(p.division, activeDivision));
+      const matches = allMatches.filter(m => isMatchDivision(m.division, activeDivision));
 
       // General Stats
       const totalPlayers = players.length;
