@@ -80,30 +80,46 @@ body {
   background: #94a3b8;
 }
 
-/* Sofascore Rating Badge Colors */
-.rating-sofascore-legendary {
-  background-color: #15803d; /* Dark Green */
-  color: #ffffff;
+/* Sofascore Rating Badge Colors (Official Tiering) */
+.rating-sofascore-legendary,
+.rating-sofascore-9plus,
+.bg-\[\#1e3a8a\] {
+  background-color: #1e3a8a !important; /* 9+ Tünd Göy (Deep Blue) */
+  color: #ffffff !important;
 }
 
-.rating-sofascore-excellent {
-  background-color: #22c55e; /* Electric Green */
-  color: #0c0a09;
+.rating-sofascore-excellent,
+.rating-sofascore-8plus,
+.bg-\[\#2563eb\] {
+  background-color: #2563eb !important; /* 8+ Mavi (Blue) */
+  color: #ffffff !important;
 }
 
-.rating-sofascore-good {
-  background-color: #eab308; /* Yellow */
-  color: #0c0a09;
+.rating-sofascore-good,
+.rating-sofascore-7plus,
+.bg-\[\#15803d\] {
+  background-color: #15803d !important; /* 7+ Tünd Yaşıl (Dark Green) */
+  color: #ffffff !important;
 }
 
-.rating-sofascore-average {
-  background-color: #f97316; /* Orange */
-  color: #ffffff;
+.rating-sofascore-65plus,
+.bg-\[\#eab308\] {
+  background-color: #eab308 !important; /* 6.5+ Sarı (Yellow) */
+  color: #0f172a !important;
 }
 
-.rating-sofascore-bad {
-  background-color: #ef4444; /* Red */
-  color: #ffffff;
+.rating-sofascore-average,
+.rating-sofascore-6plus,
+.bg-\[\#f97316\] {
+  background-color: #f97316 !important; /* 6+ Narıncı (Orange) */
+  color: #ffffff !important;
+}
+
+.rating-sofascore-bad,
+.rating-sofascore-below6,
+.bg-\[\#dc2626\] {
+  background-color: #dc2626 !important; /* 6- Qırmızı (Red) */
+  color: #ffffff !important;
 }
 
 /* Sport Card Hover Transition */
@@ -218,6 +234,31 @@ html.dark body, body.dark, .dark body, .dark #root, html.dark #root, html.dark .
 .dark .bg-purple-100, html.dark .bg-purple-100 {
   background-color: rgba(88, 28, 135, 0.45) !important;
   color: #e9d5ff !important;
+}
+
+.dark .bg-green-100, html.dark .bg-green-100,
+.dark .bg-emerald-100, html.dark .bg-emerald-100 {
+  background-color: rgba(6, 78, 59, 0.5) !important;
+  color: #6ee7b7 !important;
+  border-color: rgba(5, 150, 105, 0.4) !important;
+}
+
+.dark .bg-green-50, html.dark .bg-green-50,
+.dark .bg-emerald-50, html.dark .bg-emerald-50 {
+  background-color: rgba(6, 78, 59, 0.3) !important;
+  color: #6ee7b7 !important;
+}
+
+.dark .goal-badge, html.dark .goal-badge {
+  background-color: rgba(6, 78, 59, 0.55) !important;
+  color: #6ee7b7 !important;
+  border-color: rgba(5, 150, 105, 0.5) !important;
+}
+
+.dark .assist-badge, html.dark .assist-badge {
+  background-color: rgba(88, 28, 135, 0.55) !important;
+  color: #d8b4fe !important;
+  border-color: rgba(168, 85, 247, 0.5) !important;
 }
 
 /* Typography & Headings (Preserve contrast for buttons) */

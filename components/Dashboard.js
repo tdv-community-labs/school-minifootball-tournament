@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import { db } from '../services/database.js';
+import { db, getSofascoreBadgeStyle } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel } from '../services/i18n.js';
 
 const html = htm.bind(React.createElement);
 
-// Helper for rating colors
-const getRatingClass = (rating) => {
-  if (rating >= 8.5) return 'rating-sofascore-legendary';
-  if (rating >= 7.5) return 'rating-sofascore-excellent';
-  if (rating >= 6.5) return 'rating-sofascore-good';
-  if (rating >= 5.5) return 'rating-sofascore-average';
-  return 'rating-sofascore-bad';
-};
+// Helper for rating colors (uses official Sofascore tiering)
+const getRatingClass = (rating) => getSofascoreBadgeStyle(rating);
 
 export default function Dashboard({ setActiveTab, activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang) }) {
   const [stats, setStats] = useState({
@@ -241,11 +235,12 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                           <p className="text-xs text-gray-400">${player.class}</p>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <span className="font-extrabold text-purple-950 bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs">
-                          ⚽ ${player.goals} ${t('goals')}
+                      <div className="flex items-center space-x-2">
+                        <span className="goal-badge px-2.5 py-1 rounded-lg text-xs font-black tracking-wide flex items-center space-x-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800/60 shadow-xs">
+                          <span>⚽</span>
+                          <span className="font-extrabold">${player.goals} ${t('goals')}</span>
                         </span>
-                        <span className=${`text-xs font-bold px-1.5 py-0.5 rounded ${getRatingClass(player.overallRating)}`}>
+                        <span className=${`text-xs font-black px-2 py-0.5 rounded-md min-w-[2.4rem] text-center shadow-xs ${getRatingClass(player.overallRating)}`}>
                           ${player.overallRating}
                         </span>
                       </div>
@@ -271,11 +266,12 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                           <p className="text-xs text-gray-400">${player.class}</p>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <span className="font-extrabold text-purple-950 bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs">
-                          👟 ${player.assists} ${t('assists')}
+                      <div className="flex items-center space-x-2">
+                        <span className="assist-badge px-2.5 py-1 rounded-lg text-xs font-black tracking-wide flex items-center space-x-1.5 bg-purple-50 text-purple-800 border border-purple-200 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-800/60 shadow-xs">
+                          <span>👟</span>
+                          <span className="font-extrabold">${player.assists} ${t('assists')}</span>
                         </span>
-                        <span className=${`text-xs font-bold px-1.5 py-0.5 rounded ${getRatingClass(player.overallRating)}`}>
+                        <span className=${`text-xs font-black px-2 py-0.5 rounded-md min-w-[2.4rem] text-center shadow-xs ${getRatingClass(player.overallRating)}`}>
                           ${player.overallRating}
                         </span>
                       </div>

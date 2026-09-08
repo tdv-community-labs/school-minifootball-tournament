@@ -173,6 +173,32 @@
       background-color: rgba(88, 28, 135, 0.45) !important;
       color: #e9d5ff !important;
     }
+    .dark .bg-green-100, .dark .bg-emerald-100 {
+      background-color: rgba(6, 78, 59, 0.5) !important;
+      color: #6ee7b7 !important;
+      border-color: rgba(5, 150, 105, 0.4) !important;
+    }
+    .dark .bg-green-50, .dark .bg-emerald-50 {
+      background-color: rgba(6, 78, 59, 0.3) !important;
+      color: #6ee7b7 !important;
+    }
+    .dark .goal-badge {
+      background-color: rgba(6, 78, 59, 0.55) !important;
+      color: #6ee7b7 !important;
+      border-color: rgba(5, 150, 105, 0.5) !important;
+    }
+    .dark .assist-badge {
+      background-color: rgba(88, 28, 135, 0.55) !important;
+      color: #d8b4fe !important;
+      border-color: rgba(168, 85, 247, 0.5) !important;
+    }
+    /* Sofascore Rating Scale */
+    .rating-sofascore-9plus, .bg-\[\#1e3a8a\] { background-color: #1e3a8a !important; color: #ffffff !important; }
+    .rating-sofascore-8plus, .bg-\[\#2563eb\] { background-color: #2563eb !important; color: #ffffff !important; }
+    .rating-sofascore-7plus, .bg-\[\#15803d\] { background-color: #15803d !important; color: #ffffff !important; }
+    .rating-sofascore-65plus, .bg-\[\#eab308\] { background-color: #eab308 !important; color: #0f172a !important; }
+    .rating-sofascore-6plus, .bg-\[\#f97316\] { background-color: #f97316 !important; color: #ffffff !important; }
+    .rating-sofascore-below6, .bg-\[\#dc2626\] { background-color: #dc2626 !important; color: #ffffff !important; }
     .dark .text-purple-950:not(.bg-green-500):not(.bg-green-400),
     .dark .text-purple-900:not(.bg-green-500):not(.bg-green-400),
     .dark .text-slate-900,
@@ -215,7 +241,7 @@
   </style>
   
   <!-- Custom Stylesheet (with cache-busting) -->
-  <link rel="stylesheet" href="styles.css?v=20260908_1810">
+  <link rel="stylesheet" href="styles.css?v=20260908_1820">
   
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
@@ -245,7 +271,7 @@
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js?v=20260908_1810';
+    import App from './app.js?v=20260908_1820';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');

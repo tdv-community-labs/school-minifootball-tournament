@@ -143,21 +143,21 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
                       <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">${t('matchesPlayed')}</span>
                       <span className="text-base font-extrabold text-purple-950">${player.matchesPlayed || 0}</span>
                     </div>
-                    <div className="border-x border-gray-200">
+                    <div className="border-x border-gray-200 dark:border-slate-800">
                       ${isKeeper
                         ? html`
                           <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">${lang === 'az' ? 'Qurtarış' : 'Saves'}</span>
-                          <span className="text-base font-extrabold text-sky-700">🧤 ${player.saves || 0}</span>
+                          <span className="text-base font-extrabold text-sky-700 dark:text-sky-400">🧤 ${player.saves || 0}</span>
                         `
                         : html`
                           <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">${t('goals')}</span>
-                          <span className="text-base font-extrabold text-green-700">⚽ ${player.goals || 0}</span>
+                          <span className="text-base font-extrabold text-emerald-700 dark:text-emerald-400">⚽ ${player.goals || 0}</span>
                         `
                       }
                     </div>
                     <div>
                       <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block">${t('assists')}</span>
-                      <span className="text-base font-extrabold text-purple-900">👟 ${player.assists || 0}</span>
+                      <span className="text-base font-extrabold text-purple-900 dark:text-purple-300">👟 ${player.assists || 0}</span>
                     </div>
                   </div>
                 </div>
