@@ -21,6 +21,26 @@ export default function App() {
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
 
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('btl_theme') || 'system';
+  });
+
+  const applyTheme = (currentTheme) => {
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldBeDark = currentTheme === 'dark' || (currentTheme === 'system' && prefersDark);
+    if (shouldBeDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  const handleThemeChange = (newTheme) => {
+    setTheme(newTheme);
+    localStorage.setItem('btl_theme', newTheme);
+    applyTheme(newTheme);
+  };
+
   const fetchYearsList = async () => {
     const allYears = await db.getYears();
     setYears(allYears);
@@ -28,6 +48,21 @@ export default function App() {
       setActiveYear(allYears[0]);
     }
   };
+
+  useEffect(() => {
+    applyTheme(theme);
+    const mql = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    const listener = () => {
+      const stored = localStorage.getItem('btl_theme') || 'system';
+      if (stored === 'system') {
+        applyTheme('system');
+      }
+    };
+    if (mql && mql.addEventListener) {
+      mql.addEventListener('change', listener);
+      return () => mql.removeEventListener('change', listener);
+    }
+  }, [theme]);
 
   useEffect(() => {
     fetchYearsList();
@@ -176,8 +211,58 @@ export default function App() {
               })}
             </nav>
 
-            <!-- Mobile menu button -->
-            <div className="md:hidden">
+            <!-- Theme Switcher (Desktop) -->
+            <div className="hidden md:flex items-center bg-purple-900/80 border border-purple-700/60 rounded-xl p-0.5 shadow-inner space-x-1">
+              <button
+                type="button"
+                title="Sistem Mövzusu (Cihaza uyğun)"
+                onClick=${() => handleThemeChange('system')}
+                className=${`px-2.5 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1.5 ${
+                  theme === 'system'
+                    ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
+                    : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
+                }`}
+              >
+                <i className="fas fa-desktop text-[11px]"></i>
+                <span className="text-[10px] tracking-wider uppercase">Sistem</span>
+              </button>
+              <button
+                type="button"
+                title="Açıq Mövzu"
+                onClick=${() => handleThemeChange('light')}
+                className=${`px-2.5 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1.5 ${
+                  theme === 'light'
+                    ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
+                    : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
+                }`}
+              >
+                <i className="fas fa-sun text-[11px]"></i>
+                <span className="text-[10px] tracking-wider uppercase">Açıq</span>
+              </button>
+              <button
+                type="button"
+                title="Qaranlıq Mövzu"
+                onClick=${() => handleThemeChange('dark')}
+                className=${`px-2.5 py-1 rounded-lg text-xs font-black transition-all flex items-center space-x-1.5 ${
+                  theme === 'dark'
+                    ? 'bg-green-500 text-purple-950 shadow-md transform scale-105'
+                    : 'text-purple-200 hover:text-white hover:bg-purple-800/60'
+                }`}
+              >
+                <i className="fas fa-moon text-[11px]"></i>
+                <span className="text-[10px] tracking-wider uppercase">Qaranlıq</span>
+              </button>
+            </div>
+
+            <!-- Mobile Controls -->
+            <div className="md:hidden flex items-center space-x-1">
+              <button
+                onClick=${() => handleThemeChange(theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark')}
+                title=${`Mövzu: ${theme === 'dark' ? 'Qaranlıq' : theme === 'light' ? 'Açıq' : 'Sistem'}`}
+                className="p-2 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 transition"
+              >
+                <i className=${`fas ${theme === 'dark' ? 'fa-moon text-purple-300' : theme === 'light' ? 'fa-sun text-amber-300' : 'fa-desktop text-green-400'} text-base`}></i>
+              </button>
               <button
                 onClick=${() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="inline-flex items-center justify-center p-2 rounded-xl text-purple-200 hover:text-white hover:bg-purple-800 focus:outline-none transition"
@@ -191,27 +276,70 @@ export default function App() {
 
         <!-- Mobile Menu (Dropdown) -->
         ${isMobileMenuOpen && html`
-          <div className="md:hidden bg-purple-950 border-t border-purple-900 px-4 pt-2 pb-4 space-y-1">
-            ${navItems.map(item => {
-              const isActive = activeTab === item.id;
-              return html`
+          <div className="md:hidden bg-purple-950 border-t border-purple-900 px-4 pt-2 pb-4 space-y-3">
+            <div className="space-y-1">
+              ${navItems.map(item => {
+                const isActive = activeTab === item.id;
+                return html`
+                  <button
+                    key=${item.id}
+                    onClick=${() => {
+                      setActiveTab(item.id);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className=${`w-full text-left px-4 py-3 rounded-xl font-extrabold text-xs uppercase tracking-wider transition flex items-center space-x-3 ${
+                      isActive 
+                        ? 'bg-green-500 text-purple-950' 
+                        : 'text-purple-100 hover:bg-purple-900'
+                    }`}
+                  >
+                    <i className=${`${item.icon} w-5`}></i>
+                    <span>${item.label}</span>
+                  </button>
+                `;
+              })}
+            </div>
+
+            <!-- Mobile Theme Switcher -->
+            <div className="pt-2 border-t border-purple-900/60">
+              <div className="flex items-center justify-between mb-2 px-1">
+                <span className="text-[10px] font-black uppercase tracking-wider text-purple-300">
+                  <i className="fas fa-palette mr-1 text-green-400"></i> Mövzu
+                </span>
+                <span className="text-[10px] font-bold text-green-400 uppercase">
+                  ${theme === 'system' ? 'Sistem (Avto)' : theme === 'light' ? 'Açıq' : 'Qaranlıq'}
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-1 bg-purple-900/90 border border-purple-700/60 rounded-xl p-1 shadow-inner">
                 <button
-                  key=${item.id}
-                  onClick=${() => {
-                    setActiveTab(item.id);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className=${`w-full text-left px-4 py-3 rounded-xl font-extrabold text-xs uppercase tracking-wider transition flex items-center space-x-3 ${
-                    isActive 
-                      ? 'bg-green-500 text-purple-950' 
-                      : 'text-purple-100 hover:bg-purple-900'
+                  onClick=${() => handleThemeChange('system')}
+                  className=${`py-2 rounded-lg text-xs font-black transition flex flex-col items-center justify-center space-y-1 ${
+                    theme === 'system' ? 'bg-green-500 text-purple-950 shadow' : 'text-purple-200 hover:text-white'
                   }`}
                 >
-                  <i className=${`${item.icon} w-5`}></i>
-                  <span>${item.label}</span>
+                  <i className="fas fa-desktop text-xs"></i>
+                  <span className="text-[10px] uppercase tracking-wider">Sistem</span>
                 </button>
-              `;
-            })}
+                <button
+                  onClick=${() => handleThemeChange('light')}
+                  className=${`py-2 rounded-lg text-xs font-black transition flex flex-col items-center justify-center space-y-1 ${
+                    theme === 'light' ? 'bg-green-500 text-purple-950 shadow' : 'text-purple-200 hover:text-white'
+                  }`}
+                >
+                  <i className="fas fa-sun text-xs"></i>
+                  <span className="text-[10px] uppercase tracking-wider">Açıq</span>
+                </button>
+                <button
+                  onClick=${() => handleThemeChange('dark')}
+                  className=${`py-2 rounded-lg text-xs font-black transition flex flex-col items-center justify-center space-y-1 ${
+                    theme === 'dark' ? 'bg-green-500 text-purple-950 shadow' : 'text-purple-200 hover:text-white'
+                  }`}
+                >
+                  <i className="fas fa-moon text-xs"></i>
+                  <span className="text-[10px] uppercase tracking-wider">Qaranlıq</span>
+                </button>
+              </div>
+            </div>
           </div>
         `}
 

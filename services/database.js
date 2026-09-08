@@ -151,6 +151,52 @@ export const getSofascoreBadgeStyle = (rating) => {
   return 'bg-red-500 text-white font-bold';
 };
 
+/**
+ * Computes an intelligent overall Sofascore rating for a player
+ * based on match averages, or accumulated season metrics (goals, assists, matches)
+ * if match-by-match stats are not available.
+ */
+export const computePlayerOverallRating = (stats = {}, initialPlayer = {}) => {
+  if (stats.ratingCount > 0) {
+    return Number((stats.ratingSum / stats.ratingCount).toFixed(1));
+  }
+
+  const goals = Number(stats.goals > 0 ? stats.goals : initialPlayer.goals || 0);
+  const assists = Number(stats.assists > 0 ? stats.assists : initialPlayer.assists || 0);
+  const isKeeper = (initialPlayer.position || '').toLowerCase().includes('qap');
+
+  // If player already had an explicitly assigned custom high rating and no goals, respect it
+  if (initialPlayer.overallRating && Number(initialPlayer.overallRating) > 6.5 && goals === 0) {
+    return Number(Number(initialPlayer.overallRating).toFixed(1));
+  }
+
+  // Base rating
+  let rating = 6.5;
+
+  if (isKeeper) {
+    rating = 6.8;
+  } else {
+    // Dynamic Sofascore curve based on goal scoring performance
+    if (goals >= 20) rating = 9.8;
+    else if (goals >= 17) rating = 9.5;
+    else if (goals >= 14) rating = 9.2;
+    else if (goals >= 11) rating = 8.9;
+    else if (goals >= 9)  rating = 8.6;
+    else if (goals >= 7)  rating = 8.3;
+    else if (goals >= 5)  rating = 7.9;
+    else if (goals >= 3)  rating = 7.5;
+    else if (goals >= 2)  rating = 7.2;
+    else if (goals >= 1)  rating = 6.9;
+
+    // Assists bonus
+    if (assists > 0) {
+      rating += Math.min(0.8, assists * 0.15);
+    }
+  }
+
+  return Number(Math.min(10.0, Math.max(1.0, rating)).toFixed(1));
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Seed Initial Classes (Empty for custom entry)
@@ -354,15 +400,23 @@ export const recalculateData = () => {
     const year = classInfo ? classInfo.year : p.year || defaultYear;
     const isKeeper = (p.position || '').toLowerCase().includes('qap');
 
+    const goals = stats.goals > 0 ? stats.goals : (p.goals || 0);
+    const assists = stats.assists > 0 ? stats.assists : (p.assists || 0);
+    let matchesPlayed = stats.matchesPlayed > 0 ? stats.matchesPlayed : (p.matchesPlayed || 0);
+    if (matchesPlayed === 0 && (goals > 0 || assists > 0)) {
+      matchesPlayed = Math.max(1, Math.ceil(goals / 2.5));
+    }
+    const overallRating = computePlayerOverallRating({ ...stats, goals, assists }, p);
+
     return {
       ...p,
       division,
       year,
       isKeeper,
-      goals:         stats.goals,
-      assists:       stats.assists,
-      matchesPlayed: stats.matchesPlayed,
-      overallRating: stats.ratingCount > 0 ? Number((stats.ratingSum / stats.ratingCount).toFixed(1)) : 6.5
+      goals,
+      assists,
+      matchesPlayed,
+      overallRating
     };
   });
 
@@ -532,17 +586,23 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     const year = classInfo ? classInfo.year : p.year || defaultYear;
     const isKeeper = (p.position || '').toLowerCase().includes('qap');
 
+    const goals = stats.goals > 0 ? stats.goals : (p.goals || 0);
+    const assists = stats.assists > 0 ? stats.assists : (p.assists || 0);
+    let matchesPlayed = stats.matchesPlayed > 0 ? stats.matchesPlayed : (p.matchesPlayed || 0);
+    if (matchesPlayed === 0 && (goals > 0 || assists > 0)) {
+      matchesPlayed = Math.max(1, Math.ceil(goals / 2.5));
+    }
+    const overallRating = computePlayerOverallRating({ ...stats, goals, assists }, p);
+
     return {
       ...p,
       division,
       year,
       isKeeper,
-      goals:         stats.goals         > 0 ? stats.goals         : p.goals         || 0,
-      assists:       stats.assists       > 0 ? stats.assists       : p.assists       || 0,
-      matchesPlayed: stats.matchesPlayed > 0 ? stats.matchesPlayed : p.matchesPlayed || 0,
-      overallRating: stats.ratingCount   > 0
-        ? Number((stats.ratingSum / stats.ratingCount).toFixed(1))
-        : p.overallRating || 6.5
+      goals,
+      assists,
+      matchesPlayed,
+      overallRating
     };
   });
 
@@ -731,9 +791,15 @@ export const db = {
         cSnap.forEach(d => classes.push(sanitizeObject(d.data())));
         const players = [];
         pSnap.forEach(d => players.push(sanitizeObject(d.data())));
-        const matches = [];
-        mSnap.forEach(d => matches.push(sanitizeObject(d.data())));
-        const years = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
+        const baseYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
+        const detectedYears = Array.from(new Set([
+          ...baseYears,
+          ...classes.map(c => c.year),
+          ...players.map(p => p.year),
+          ...matches.map(m => m.year)
+        ])).filter(Boolean);
+        detectedYears.sort((a, b) => b.localeCompare(a));
+        const years = detectedYears;
 
         console.log(`Firebase: Raw loaded stats - Classes: ${classes.length}, Players: ${players.length}, Matches: ${matches.length}`);
         const computed = recalculateInMemoryData(classes, players, matches, years);
@@ -940,9 +1006,15 @@ export const db = {
         cSnap.forEach(d => classes.push(d.data()));
         const players = [];
         pSnap.forEach(d => players.push(d.data()));
-        const matches = [];
-        mSnap.forEach(d => matches.push(d.data()));
-        const years = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
+        const baseYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
+        const detectedYears = Array.from(new Set([
+          ...baseYears,
+          ...classes.map(c => c.year),
+          ...players.map(p => p.year),
+          ...matches.map(m => m.year)
+        ])).filter(Boolean);
+        detectedYears.sort((a, b) => b.localeCompare(a));
+        const years = detectedYears;
 
         const computed = recalculateInMemoryData(classes, players, matches, years);
         const standings = computed.standings[year]?.[division] || [];

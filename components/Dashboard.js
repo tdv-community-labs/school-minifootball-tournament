@@ -43,9 +43,9 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear }) 
 
       setStats({ totalPlayers, totalMatches, totalGoals, leader });
 
-      // Top Players (by rating, min 1 match)
+      // Top Players (by rating, min 1 match or scored goals/assists)
       const rankedPlayers = [...players]
-        .filter(p => p.matchesPlayed > 0)
+        .filter(p => (p.matchesPlayed > 0 || p.goals > 0 || p.assists > 0))
         .sort((a, b) => b.overallRating - a.overallRating)
         .slice(0, 3);
       setTopPlayers(rankedPlayers);
