@@ -133,7 +133,12 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const thirdPlaceTeam = thirdOutcome ? thirdOutcome.winner : null;
 
   // Filter players by active division & year for Awards
-  const currentDivPlayers = players.filter(p => isMatchDivision(p.division, activeDivision) && p.year === activeYear);
+  const currentDivPlayers = players.filter(p => 
+    isMatchDivision(p.division, activeDivision) && 
+    p.year === activeYear &&
+    !p.isOwnGoal && 
+    !/avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || '')
+  );
 
   // Tournament Awards
   const dreamTeam = [...currentDivPlayers]

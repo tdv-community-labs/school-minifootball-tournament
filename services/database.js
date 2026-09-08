@@ -1,7 +1,7 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260908_2359';
+import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260909_0010';
 import { isMatchDivision } from './i18n.js';
 
 // Initialize Firebase if useRealFirebase toggle is true
@@ -53,6 +53,37 @@ export const sanitizeObject = (obj) => {
   }
   return obj;
 };
+
+// Character-normalizer for Azerbaijani player names
+export const normalizePlayerName = (name) => {
+  return (name || '')
+    .toLowerCase()
+    .replace(/ə/g, 'e')
+    .replace(/ı/g, 'i')
+    .replace(/i̇/g, 'i')
+    .replace(/ö/g, 'o')
+    .replace(/ü/g, 'u')
+    .replace(/ğ/g, 'g')
+    .replace(/ş/g, 's')
+    .replace(/ç/g, 'c')
+    .replace(/[^a-z0-9]/g, '')
+    .trim();
+};
+
+export const OBSOLETE_PLAYER_IDS = [
+  'p_2018_azer_10f',
+  'p_2018_ilkin_11h',
+  'p_2018_xezer_11h',
+  'p_2018_rüstem_11h',
+  'p_2017_ağəkərim_10e',
+  'p_2017_avtoqol_10a',
+  'p_2017_avtoqol_11f',
+  'p_2017_avtoqol_11h',
+  'p_2017_rüstəm(özünə_qol)_11e',
+  'p_2017_şamxal(özünə_qol)_11e',
+  'p_2018_seddad(öq)_11e',
+  'p_22_asim_liyev_10c_10e'
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SOFASCORE RATING ENGINE
@@ -562,7 +593,26 @@ export const recalculateData = () => {
     };
   });
 
-  localStorage.setItem('minifootball_players', JSON.stringify(updatedPlayers));
+  // Filter out own-goal records and deduplicate duplicate player profiles in same year & class
+  const deduplicatedPlayers = [];
+  const playerDedupMap = new Map();
+  updatedPlayers.forEach(p => {
+    if (p.isOwnGoal || /avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || '')) return;
+    const key = `${normalizePlayerName(p.name)}_${p.year || defaultYear}_${p.class || ''}`;
+    if (playerDedupMap.has(key)) {
+      const existing = playerDedupMap.get(key);
+      existing.goals = (existing.goals || 0) + (p.goals || 0);
+      existing.assists = (existing.assists || 0) + (p.assists || 0);
+      existing.matchesPlayed = Math.max(existing.matchesPlayed || 0, p.matchesPlayed || 0);
+      if ((p.overallRating || 0) > (existing.overallRating || 0)) existing.overallRating = p.overallRating;
+    } else {
+      const cloned = { ...p };
+      playerDedupMap.set(key, cloned);
+      deduplicatedPlayers.push(cloned);
+    }
+  });
+
+  localStorage.setItem('minifootball_players', JSON.stringify(deduplicatedPlayers));
   localStorage.setItem('minifootball_standings_divided', JSON.stringify(finalStandings));
 };
 
@@ -756,8 +806,27 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     };
   });
 
+  // Filter out own-goal records and deduplicate duplicate player profiles in same year & class
+  const deduplicatedPlayers = [];
+  const playerDedupMap = new Map();
+  updatedPlayers.forEach(p => {
+    if (p.isOwnGoal || /avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || '')) return;
+    const key = `${normalizePlayerName(p.name)}_${p.year || defaultYear}_${p.class || ''}`;
+    if (playerDedupMap.has(key)) {
+      const existing = playerDedupMap.get(key);
+      existing.goals = (existing.goals || 0) + (p.goals || 0);
+      existing.assists = (existing.assists || 0) + (p.assists || 0);
+      existing.matchesPlayed = Math.max(existing.matchesPlayed || 0, p.matchesPlayed || 0);
+      if ((p.overallRating || 0) > (existing.overallRating || 0)) existing.overallRating = p.overallRating;
+    } else {
+      const cloned = { ...p };
+      playerDedupMap.set(key, cloned);
+      deduplicatedPlayers.push(cloned);
+    }
+  });
+
   return {
-    players: updatedPlayers,
+    players: deduplicatedPlayers,
     standings: finalStandings
   };
 };
@@ -955,22 +1024,34 @@ export const db = {
         // Merge archive classes, players, and matches
         const cIds = new Set(classes.map(c => c.id || `${c.year}_${c.name}`));
         ARCHIVE_CLASSES.forEach(ac => { if (!cIds.has(ac.id) && !cIds.has(`${ac.year}_${ac.name}`)) classes.push(ac); });
-        const pIds = new Set(players.map(p => p.id));
-        ARCHIVE_PLAYERS.forEach(ap => { if (!pIds.has(ap.id)) players.push(ap); });
+        const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);
+        const validPlayers = players.filter(p => !obsoleteSet.has(p.id));
+
+        // Background purge of obsolete duplicates from Firestore
+        if (useRealFirebase && firestore) {
+          players.forEach(p => {
+            if (obsoleteSet.has(p.id)) {
+              deleteDoc(doc(firestore, "players", p.id)).catch(() => {});
+            }
+          });
+        }
+
+        const pIds = new Set(validPlayers.map(p => p.id));
+        ARCHIVE_PLAYERS.forEach(ap => { if (!pIds.has(ap.id) && !obsoleteSet.has(ap.id)) validPlayers.push(ap); });
         const mIds = new Set(matches.map(m => m.id));
         ARCHIVE_MATCHES.forEach(am => { if (!mIds.has(am.id)) matches.push(am); });
 
         const detectedYears = Array.from(new Set([
           ...baseYears,
           ...classes.map(c => c.year),
-          ...players.map(p => p.year),
+          ...validPlayers.map(p => p.year),
           ...matches.map(m => m.year)
         ])).filter(Boolean);
         detectedYears.sort((a, b) => b.localeCompare(a));
         const years = detectedYears;
 
-        console.log(`Firebase: Raw loaded stats - Classes: ${classes.length}, Players: ${players.length}, Matches: ${matches.length}`);
-        const computed = recalculateInMemoryData(classes, players, matches, years);
+        console.log(`Firebase: Raw loaded stats - Classes: ${classes.length}, Players: ${validPlayers.length}, Matches: ${matches.length}`);
+        const computed = recalculateInMemoryData(classes, validPlayers, matches, years);
         console.log(`Firebase: In-memory stats computed. Total computed players: ${computed.players.length}`);
         
         let filtered = computed.players;
@@ -984,13 +1065,16 @@ export const db = {
         return [];
       }
     }
-    const players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+    const rawPlayers = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+    const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);
+    const players = rawPlayers.filter(p => !obsoleteSet.has(p.id));
     const existingPIds = new Set(players.map(p => p.id));
-    ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id)) players.push(ap); });
+    ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id) && !obsoleteSet.has(ap.id)) players.push(ap); });
+    let valid = players.filter(p => !p.isOwnGoal && !/avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || ''));
     if (year) {
-      return players.filter(p => p.year === year);
+      valid = valid.filter(p => p.year === year);
     }
-    return players;
+    return valid;
   },
 
   
@@ -1354,9 +1438,20 @@ export const db = {
       allMatches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     }
 
-    const matchingRecords = allPlayers.filter(p => 
-      (p.name || '').trim().toLowerCase() === targetNorm
-    );
+    const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);
+    allPlayers = allPlayers.filter(p => !obsoleteSet.has(p.id));
+    const existingPIds = new Set(allPlayers.map(p => p.id));
+    ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id) && !obsoleteSet.has(ap.id)) allPlayers.push(ap); });
+    const existingMIds = new Set(allMatches.map(m => m.id));
+    ARCHIVE_MATCHES.forEach(am => { if (!existingMIds.has(am.id)) allMatches.push(am); });
+
+    const targetKey = normalizePlayerName(playerName);
+    if (!targetKey) return null;
+
+    const matchingRecords = allPlayers.filter(p => {
+      if (p.isOwnGoal || /avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || '')) return false;
+      return normalizePlayerName(p.name) === targetKey;
+    });
 
     if (matchingRecords.length === 0) return null;
 
@@ -1367,25 +1462,42 @@ export const db = {
     const positions = Array.from(new Set(matchingRecords.map(p => p.position).filter(Boolean)));
     const isKeeper = matchingRecords.some(p => p.isKeeper || (p.position || '').toLowerCase().includes('qap'));
 
-    const seasons = matchingRecords.map(p => {
+    const seasonMap = new Map();
+    matchingRecords.forEach(p => {
+      const yr = p.year || '2022-2023';
+      const cls = p.class || '-';
+      const key = `${yr}_${cls}`;
       const goals = Number(p.goals) || 0;
       const assists = Number(p.assists) || 0;
       const matchesPlayed = Number(p.matchesPlayed) || 0;
       const rating = Number(p.overallRating) || 6.5;
       const saves = Number(p.saves) || 0;
-      return {
-        id: p.id,
-        year: p.year || '2022-2023',
-        class: p.class || '-',
-        division: p.division || '11',
-        goals,
-        assists,
-        matchesPlayed,
-        rating,
-        saves,
-        isKeeper: p.isKeeper || (p.position || '').toLowerCase().includes('qap')
-      };
-    }).sort((a, b) => (b.year || '').localeCompare(a.year || ''));
+      const keeper = p.isKeeper || (p.position || '').toLowerCase().includes('qap');
+
+      if (seasonMap.has(key)) {
+        const exist = seasonMap.get(key);
+        exist.goals += goals;
+        exist.assists += assists;
+        exist.matchesPlayed = Math.max(exist.matchesPlayed, matchesPlayed);
+        exist.saves += saves;
+        if (rating > exist.rating) exist.rating = rating;
+      } else {
+        seasonMap.set(key, {
+          id: p.id,
+          year: yr,
+          class: cls,
+          division: p.division || '10-11',
+          goals,
+          assists,
+          matchesPlayed,
+          rating,
+          saves,
+          isKeeper: keeper
+        });
+      }
+    });
+
+    const seasons = Array.from(seasonMap.values()).sort((a, b) => (b.year || '').localeCompare(a.year || ''));
 
     const totalGoals = seasons.reduce((sum, s) => sum + s.goals, 0);
     const totalAssists = seasons.reduce((sum, s) => sum + s.assists, 0);
@@ -1410,7 +1522,7 @@ export const db = {
       if (m.playerStats && m.playerStats.length > 0) {
         matchedStat = m.playerStats.find(s => 
           matchingIds.has(s.playerId) || 
-          (s.name && s.name.trim().toLowerCase() === targetNorm)
+          (!s.isOwnGoal && normalizePlayerName(s.name) === targetKey)
         );
       }
 
@@ -1492,24 +1604,29 @@ export const db = {
     }
 
     // Merge archive items so search finds historical matches and classes
+    const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);
+    allPlayers = allPlayers.filter(p => !obsoleteSet.has(p.id));
     const existingPIds = new Set(allPlayers.map(p => p.id));
-    ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id)) allPlayers.push(ap); });
+    ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id) && !obsoleteSet.has(ap.id)) allPlayers.push(ap); });
     const existingMIds = new Set(allMatches.map(m => m.id));
     ARCHIVE_MATCHES.forEach(am => { if (!existingMIds.has(am.id)) allMatches.push(am); });
     const existingCIds = new Set(allClasses.map(c => c.id || `${c.year}_${c.name}`));
     ARCHIVE_CLASSES.forEach(ac => { if (!existingCIds.has(ac.id) && !existingCIds.has(`${ac.year}_${ac.name}`)) allClasses.push(ac); });
 
-
-    // 1. Group players by normalized name
+    // 1. Group players by normalized name (deduplicate spelling variants & aliases)
     const playerGroups = {};
     allPlayers.forEach(p => {
       const name = (p.name || '').trim();
       if (!name) return;
-      const norm = name.toLowerCase();
-      if (!playerGroups[norm]) {
-        playerGroups[norm] = {
+      if (p.isOwnGoal || /avtoqol|özünə qol|ö\.q|ozune qol/i.test(name)) return;
+      const normKey = normalizePlayerName(name);
+      if (!normKey) return;
+
+      if (!playerGroups[normKey]) {
+        playerGroups[normKey] = {
           name,
-          normalizedName: norm,
+          normalizedName: name.toLowerCase(),
+          normKey,
           classes: new Set(),
           years: new Set(),
           totalGoals: 0,
@@ -1521,19 +1638,24 @@ export const db = {
           isKeeper: p.isKeeper || false
         };
       }
-      if (p.class) playerGroups[norm].classes.add(p.class);
-      if (p.year) playerGroups[norm].years.add(p.year);
-      playerGroups[norm].totalGoals += Number(p.goals) || 0;
-      playerGroups[norm].totalAssists += Number(p.assists) || 0;
-      playerGroups[norm].totalMatches += Number(p.matchesPlayed) || 0;
+      // Prefer proper Azerbaijani spelling
+      if (/[əıöüğşç]/i.test(name) && !/[əıöüğşç]/i.test(playerGroups[normKey].name)) {
+        playerGroups[normKey].name = name;
+      }
+      if (p.class) playerGroups[normKey].classes.add(p.class);
+      if (p.year) playerGroups[normKey].years.add(p.year);
+      playerGroups[normKey].totalGoals += Number(p.goals) || 0;
+      playerGroups[normKey].totalAssists += Number(p.assists) || 0;
+      playerGroups[normKey].totalMatches += Number(p.matchesPlayed) || 0;
       if (p.overallRating) {
-        playerGroups[norm].ratingSum += Number(p.overallRating);
-        playerGroups[norm].ratingCount += 1;
+        playerGroups[normKey].ratingSum += Number(p.overallRating);
+        playerGroups[normKey].ratingCount += 1;
       }
     });
 
+    const qKey = normalizePlayerName(query);
     const matchingPlayers = Object.values(playerGroups)
-      .filter(p => p.normalizedName.includes(q))
+      .filter(p => (qKey && p.normKey.includes(qKey)) || p.normalizedName.includes(q))
       .map(p => ({
         name: p.name,
         normalizedName: p.normalizedName,

@@ -27,7 +27,11 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
       const standings = await db.getStandings(activeDivision, activeYear);
 
       // Filter by division
-      const players = allPlayers.filter(p => isMatchDivision(p.division, activeDivision));
+      const players = allPlayers.filter(p => 
+        isMatchDivision(p.division, activeDivision) &&
+        !p.isOwnGoal &&
+        !/avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || '')
+      );
       const matches = allMatches.filter(m => isMatchDivision(m.division, activeDivision));
 
       // General Stats

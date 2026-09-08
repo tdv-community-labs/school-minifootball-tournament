@@ -26,9 +26,24 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
   }, [activeDivision, activeYear]);
 
   const activeClasses = classes.filter(c => isMatchDivision(c.division, activeDivision));
-  const activePlayers = players.filter(p => isMatchDivision(p.division, activeDivision));
+  const activePlayers = players.filter(p => 
+    isMatchDivision(p.division, activeDivision) &&
+    !p.isOwnGoal &&
+    !/avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || '')
+  );
 
-  const filteredPlayers = activePlayers.filter(player => {
+  // Guarantee strict uniqueness per card
+  const seenPlayerKeys = new Set();
+  const uniqueActivePlayers = [];
+  activePlayers.forEach(p => {
+    const key = p.id || `${p.name}_${p.class}_${p.year}`;
+    if (!seenPlayerKeys.has(key)) {
+      seenPlayerKeys.add(key);
+      uniqueActivePlayers.push(p);
+    }
+  });
+
+  const filteredPlayers = uniqueActivePlayers.filter(player => {
     const matchesSearch = player.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesClass = selectedClass === 'All' || player.class === selectedClass;
     return matchesSearch && matchesClass;

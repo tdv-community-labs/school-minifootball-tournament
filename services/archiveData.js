@@ -3133,6 +3133,8 @@ export const ARCHIVE_MATCHES = [
       },
       {
         "playerId": "p_2017_avtoqol_10a",
+        "name": "Avtoqol",
+        "isOwnGoal": true,
         "goals": 1,
         "assists": 0
       },
@@ -3287,7 +3289,7 @@ export const ARCHIVE_MATCHES = [
         "assists": 0
       },
       {
-        "playerId": "p_2017_ağəkərim_10e",
+        "playerId": "p_2017_ağakərim_10e",
         "goals": 2,
         "assists": 0
       },
@@ -3434,6 +3436,8 @@ export const ARCHIVE_MATCHES = [
       },
       {
         "playerId": "p_2017_avtoqol_11f",
+        "name": "Avtoqol",
+        "isOwnGoal": true,
         "goals": 1,
         "assists": 0
       },
@@ -3449,6 +3453,8 @@ export const ARCHIVE_MATCHES = [
       },
       {
         "playerId": "p_2017_avtoqol_11h",
+        "name": "Avtoqol",
+        "isOwnGoal": true,
         "goals": 1,
         "assists": 0
       }
@@ -3949,12 +3955,12 @@ export const ARCHIVE_MATCHES = [
         "assists": 0
       },
       {
-        "playerId": "p_2018_xezer_11h",
+        "playerId": "p_2018_xezər_11h",
         "goals": 2,
         "assists": 0
       },
       {
-        "playerId": "p_2018_ilkin_11h",
+        "playerId": "p_2018_i̇lkin_11h",
         "goals": 1,
         "assists": 0
       },
@@ -4389,11 +4395,15 @@ export const ARCHIVE_MATCHES = [
       },
       {
         "playerId": "p_2017_rüstəm(özünə_qol)_11e",
+        "name": "Rüstəm (Avtoqol)",
+        "isOwnGoal": true,
         "goals": 1,
         "assists": 0
       },
       {
         "playerId": "p_2017_şamxal(özünə_qol)_11e",
+        "name": "Şamxal (Avtoqol)",
+        "isOwnGoal": true,
         "goals": 1,
         "assists": 0
       }
@@ -4666,16 +4676,18 @@ export const ARCHIVE_MATCHES = [
       },
       {
         "playerId": "p_2018_seddad(öq)_11e",
+        "name": "Şəddad (Avtoqol)",
+        "isOwnGoal": true,
         "goals": 1,
         "assists": 0
       },
       {
-        "playerId": "p_2018_ilkin_11h",
+        "playerId": "p_2018_i̇lkin_11h",
         "goals": 1,
         "assists": 0
       },
       {
-        "playerId": "p_2018_rüstem_11h",
+        "playerId": "p_2018_rüstəm_11h",
         "goals": 1,
         "assists": 0
       }
@@ -4820,7 +4832,7 @@ export const ARCHIVE_MATCHES = [
         "assists": 0
       },
       {
-        "playerId": "p_2018_azer_10f",
+        "playerId": "p_2018_azər_10f",
         "goals": 1,
         "assists": 0
       },
@@ -5073,11 +5085,11 @@ export const ARCHIVE_PLAYERS = [
     "class": "10E",
     "division": "10-11",
     "year": "2017-2018",
-    "goals": 13,
+    "goals": 15,
     "assists": 0,
-    "matchesPlayed": 6,
+    "matchesPlayed": 7,
     "position": "Hücumçu",
-    "overallRating": 8.9
+    "overallRating": 9.2
   },
   {
     "id": "p_2017_taleh_10a",
@@ -5133,11 +5145,11 @@ export const ARCHIVE_PLAYERS = [
     "class": "10F",
     "division": "10-11",
     "year": "2018-2019",
-    "goals": 3,
+    "goals": 4,
     "assists": 0,
-    "matchesPlayed": 2,
+    "matchesPlayed": 3,
     "position": "Hücumçu",
-    "overallRating": 7.5
+    "overallRating": 8.2
   },
   {
     "id": "p_2018_cavidan_11b",
@@ -5190,18 +5202,6 @@ export const ARCHIVE_PLAYERS = [
   {
     "id": "p_2017_əli_10a",
     "name": "Əli",
-    "class": "11H",
-    "division": "10-11",
-    "year": "2017-2018",
-    "goals": 16,
-    "assists": 0,
-    "matchesPlayed": 8,
-    "position": "Hücumçu",
-    "overallRating": 9.2
-  },
-  {
-    "id": "p_2017_avtoqol_10a",
-    "name": "Avtoqol",
     "class": "10A",
     "division": "10-11",
     "year": "2017-2018",
@@ -5209,7 +5209,7 @@ export const ARCHIVE_PLAYERS = [
     "assists": 0,
     "matchesPlayed": 1,
     "position": "Hücumçu",
-    "overallRating": 6.9
+    "overallRating": 7
   },
   {
     "id": "p_2017_cavidan_10b",
@@ -5270,18 +5270,6 @@ export const ARCHIVE_PLAYERS = [
     "matchesPlayed": 7,
     "position": "Hücumçu",
     "overallRating": 9.2
-  },
-  {
-    "id": "p_2017_ağəkərim_10e",
-    "name": "Ağəkərim",
-    "class": "10E",
-    "division": "10-11",
-    "year": "2017-2018",
-    "goals": 2,
-    "assists": 0,
-    "matchesPlayed": 1,
-    "position": "Hücumçu",
-    "overallRating": 7.2
   },
   {
     "id": "p_2017_şamxal_10e",
@@ -5368,18 +5356,6 @@ export const ARCHIVE_PLAYERS = [
     "overallRating": 6.9
   },
   {
-    "id": "p_2017_avtoqol_11f",
-    "name": "Avtoqol",
-    "class": "11F",
-    "division": "10-11",
-    "year": "2017-2018",
-    "goals": 1,
-    "assists": 0,
-    "matchesPlayed": 1,
-    "position": "Hücumçu",
-    "overallRating": 6.9
-  },
-  {
     "id": "p_2017_vəli_11h",
     "name": "Vəli",
     "class": "11H",
@@ -5402,18 +5378,6 @@ export const ARCHIVE_PLAYERS = [
     "matchesPlayed": 5,
     "position": "Hücumçu",
     "overallRating": 8.3
-  },
-  {
-    "id": "p_2017_avtoqol_11h",
-    "name": "Avtoqol",
-    "class": "11H",
-    "division": "10-11",
-    "year": "2017-2018",
-    "goals": 1,
-    "assists": 0,
-    "matchesPlayed": 1,
-    "position": "Hücumçu",
-    "overallRating": 6.9
   },
   {
     "id": "p_2017_fərid_c_11a",
@@ -5668,30 +5632,6 @@ export const ARCHIVE_PLAYERS = [
     "overallRating": 8.6
   },
   {
-    "id": "p_2018_xezer_11h",
-    "name": "Xezer",
-    "class": "11H",
-    "division": "10-11",
-    "year": "2018-2019",
-    "goals": 2,
-    "assists": 0,
-    "matchesPlayed": 1,
-    "position": "Hücumçu",
-    "overallRating": 7.2
-  },
-  {
-    "id": "p_2018_ilkin_11h",
-    "name": "Ilkin",
-    "class": "11H",
-    "division": "10-11",
-    "year": "2018-2019",
-    "goals": 2,
-    "assists": 0,
-    "matchesPlayed": 2,
-    "position": "Hücumçu",
-    "overallRating": 7.2
-  },
-  {
     "id": "p_2018_abdulla_11h",
     "name": "Abdulla",
     "class": "11H",
@@ -5831,21 +5771,21 @@ export const ARCHIVE_PLAYERS = [
     "year": "2018-2019",
     "goals": 6,
     "assists": 0,
-    "matchesPlayed": 3,
+    "matchesPlayed": 4,
     "position": "Hücumçu",
-    "overallRating": 7.9
+    "overallRating": 8.7
   },
   {
     "id": "p_2018_rüstəm_11h",
     "name": "Rüstəm",
-    "class": "11F",
+    "class": "11H",
     "division": "10-11",
     "year": "2018-2019",
-    "goals": 15,
+    "goals": 16,
     "assists": 0,
     "matchesPlayed": 7,
     "position": "Hücumçu",
-    "overallRating": 9.2
+    "overallRating": 9.3
   },
   {
     "id": "p_2018_xezər_11h",
@@ -5853,11 +5793,11 @@ export const ARCHIVE_PLAYERS = [
     "class": "11H",
     "division": "10-11",
     "year": "2018-2019",
-    "goals": 1,
+    "goals": 3,
     "assists": 0,
-    "matchesPlayed": 1,
+    "matchesPlayed": 3,
     "position": "Hücumçu",
-    "overallRating": 6.9
+    "overallRating": 7.7
   },
   {
     "id": "p_2018_zaur_11e",
@@ -5897,7 +5837,7 @@ export const ARCHIVE_PLAYERS = [
   },
   {
     "id": "p_2018_agakerim_11e",
-    "name": "Agakerim",
+    "name": "Ağakərim",
     "class": "11E",
     "division": "10-11",
     "year": "2018-2019",
@@ -5944,32 +5884,8 @@ export const ARCHIVE_PLAYERS = [
     "overallRating": 6.9
   },
   {
-    "id": "p_2017_rüstəm(özünə_qol)_11e",
-    "name": "Rüstəm(özünə qol)",
-    "class": "11E",
-    "division": "10-11",
-    "year": "2017-2018",
-    "goals": 1,
-    "assists": 0,
-    "matchesPlayed": 1,
-    "position": "Hücumçu",
-    "overallRating": 6.9
-  },
-  {
-    "id": "p_2017_şamxal(özünə_qol)_11e",
-    "name": "Şamxal(özünə qol)",
-    "class": "11E",
-    "division": "10-11",
-    "year": "2017-2018",
-    "goals": 1,
-    "assists": 0,
-    "matchesPlayed": 1,
-    "position": "Hücumçu",
-    "overallRating": 6.9
-  },
-  {
     "id": "p_2018_qismet_11a",
-    "name": "Qismet",
+    "name": "Qismət",
     "class": "11A",
     "division": "10-11",
     "year": "2018-2019",
@@ -5980,45 +5896,9 @@ export const ARCHIVE_PLAYERS = [
     "overallRating": 7.2
   },
   {
-    "id": "p_2018_seddad(öq)_11e",
-    "name": "Seddad(ö.q)",
-    "class": "11E",
-    "division": "10-11",
-    "year": "2018-2019",
-    "goals": 1,
-    "assists": 0,
-    "matchesPlayed": 1,
-    "position": "Hücumçu",
-    "overallRating": 6.9
-  },
-  {
-    "id": "p_2018_rüstem_11h",
-    "name": "Rüstem",
-    "class": "11H",
-    "division": "10-11",
-    "year": "2018-2019",
-    "goals": 1,
-    "assists": 0,
-    "matchesPlayed": 1,
-    "position": "Hücumçu",
-    "overallRating": 6.9
-  },
-  {
     "id": "p_2018_togrul_11d",
     "name": "Togrul",
     "class": "11D",
-    "division": "10-11",
-    "year": "2018-2019",
-    "goals": 1,
-    "assists": 0,
-    "matchesPlayed": 1,
-    "position": "Hücumçu",
-    "overallRating": 6.9
-  },
-  {
-    "id": "p_2018_azer_10f",
-    "name": "Azer",
-    "class": "10F",
     "division": "10-11",
     "year": "2018-2019",
     "goals": 1,
