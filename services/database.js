@@ -395,9 +395,9 @@ export const recalculateData = () => {
   // Update players list with calculated values, division, and year
   const updatedPlayers = players.map(p => {
     const stats = playerStatsMap[p.id] || { goals: 0, assists: 0, matchesPlayed: 0, ratingSum: 0, ratingCount: 0 };
-    const classInfo = updatedClassesList.find(c => c.name === p.class);
-    const division = classInfo ? classInfo.division : p.division || "11";
-    const year = classInfo ? classInfo.year : p.year || defaultYear;
+    const classInfo = updatedClassesList.find(c => c.name === p.class && (!p.year || c.year === p.year));
+    const division = p.division || (classInfo ? classInfo.division : "11");
+    const year = p.year || (classInfo ? classInfo.year : defaultYear);
     const isKeeper = (p.position || '').toLowerCase().includes('qap');
 
     const goals = stats.goals > 0 ? stats.goals : (p.goals || 0);
@@ -581,9 +581,9 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
   // Update players list with calculated values, division, and year
   const updatedPlayers = players.map(p => {
     const stats = playerStatsMap[p.id] || { goals: 0, assists: 0, matchesPlayed: 0, ratingSum: 0, ratingCount: 0 };
-    const classInfo = updatedClassesList.find(c => c.name === p.class);
-    const division = classInfo ? classInfo.division : p.division || "11";
-    const year = classInfo ? classInfo.year : p.year || defaultYear;
+    const classInfo = updatedClassesList.find(c => c.name === p.class && (!p.year || c.year === p.year));
+    const division = p.division || (classInfo ? classInfo.division : "11");
+    const year = p.year || (classInfo ? classInfo.year : defaultYear);
     const isKeeper = (p.position || '').toLowerCase().includes('qap');
 
     const goals = stats.goals > 0 ? stats.goals : (p.goals || 0);
@@ -791,6 +791,8 @@ export const db = {
         cSnap.forEach(d => classes.push(sanitizeObject(d.data())));
         const players = [];
         pSnap.forEach(d => players.push(sanitizeObject(d.data())));
+        const matches = [];
+        mSnap.forEach(d => matches.push(sanitizeObject(d.data())));
         const baseYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
         const detectedYears = Array.from(new Set([
           ...baseYears,
@@ -1003,9 +1005,11 @@ export const db = {
           getDocs(collection(firestore, "matches"))
         ]);
         const classes = [];
-        cSnap.forEach(d => classes.push(d.data()));
+        cSnap.forEach(d => classes.push(sanitizeObject(d.data())));
         const players = [];
-        pSnap.forEach(d => players.push(d.data()));
+        pSnap.forEach(d => players.push(sanitizeObject(d.data())));
+        const matches = [];
+        mSnap.forEach(d => matches.push(sanitizeObject(d.data())));
         const baseYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
         const detectedYears = Array.from(new Set([
           ...baseYears,
