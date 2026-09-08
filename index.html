@@ -279,10 +279,118 @@
     html.dark table.standings-table tr.srow-first:hover  { background-color: rgba(6,78,59,0.4)   !important; }
     html.dark table.standings-table tr.srow-second:hover { background-color: rgba(88,28,135,0.4) !important; }
     html.dark table.standings-table tr.srow-other:hover  { background-color: #1e293b             !important; }
+
+    /* ==========================================================================
+       AĞ TEMA (LIGHT THEME) YÜKSƏK KONTRAST VƏ TÜND YAZI SİSTEMİ
+       ========================================================================== */
+    /* 1. Mətnlərin Aydınlaşdırılması və Tündləşdirilməsi */
+    html:not(.dark) .text-gray-400,
+    html:not(.dark) .text-slate-400,
+    html:not(.dark) .text-zinc-400 {
+      color: #475569 !important;
+      font-weight: 600;
+    }
+
+    html:not(.dark) .text-gray-500,
+    html:not(.dark) .text-slate-500,
+    html:not(.dark) .text-zinc-500 {
+      color: #334155 !important;
+    }
+
+    html:not(.dark) .text-gray-600,
+    html:not(.dark) .text-slate-600,
+    html:not(.dark) .text-zinc-600 {
+      color: #1e293b !important;
+    }
+
+    html:not(.dark) .text-gray-700,
+    html:not(.dark) .text-slate-700,
+    html:not(.dark) .text-zinc-700 {
+      color: #0f172a !important;
+    }
+
+    html:not(.dark) .text-gray-800,
+    html:not(.dark) .text-slate-800,
+    html:not(.dark) .text-gray-900,
+    html:not(.dark) .text-slate-900 {
+      color: #020617 !important;
+    }
+
+    /* 2. Brend Bənövşəyi Başlıqlar */
+    html:not(.dark) .text-purple-950:not(.bg-green-500):not(.bg-green-400):not(.bg-emerald-500) {
+      color: #1e0036 !important;
+    }
+    html:not(.dark) .text-purple-900:not(.bg-green-500):not(.bg-green-400):not(.bg-emerald-500) {
+      color: #2e0249 !important;
+    }
+    html:not(.dark) .text-purple-800 {
+      color: #3b0764 !important;
+    }
+    html:not(.dark) .text-purple-700 {
+      color: #581c87 !important;
+    }
+
+    /* 3. Yaşıl Düymələr daxilindəki tünd yazı qorunur */
+    html:not(.dark) .bg-green-500 .text-purple-950,
+    html:not(.dark) .bg-green-400 .text-purple-950,
+    html:not(.dark) .bg-emerald-500 .text-purple-950,
+    html:not(.dark) button.bg-green-500,
+    html:not(.dark) a.bg-green-500 {
+      color: #1e0036 !important;
+    }
+
+    /* 4. Cədvəl İçi Xanalarda Dəqiq Tünd Oxunaqlılıq */
+    html:not(.dark) table.standings-table td {
+      color: #0f172a !important;
+    }
+    html:not(.dark) table.standings-table td .text-slate-500,
+    html:not(.dark) table.standings-table td .text-slate-600,
+    html:not(.dark) table.standings-table td .text-slate-700 {
+      color: #0f172a !important;
+      font-weight: 700 !important;
+    }
+
+    /* 5. Form İdarəetmələri */
+    html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
+    html:not(.dark) select,
+    html:not(.dark) textarea {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+      font-weight: 600;
+    }
+    html:not(.dark) input::placeholder,
+    html:not(.dark) textarea::placeholder {
+      color: #64748b !important;
+      font-weight: 500;
+    }
+    html:not(.dark) label {
+      color: #0f172a !important;
+      font-weight: 800;
+    }
+
+    /* 6. Pley-off Toru Kartları */
+    html:not(.dark) .bracket-card-hover {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+    }
+    html:not(.dark) .bracket-card-hover .opacity-65 {
+      opacity: 0.9 !important;
+      color: #334155 !important;
+    }
+
+    /* 7. Haşiyə və Çərçivələr */
+    html:not(.dark) .border-gray-100 {
+      border-color: #e2e8f0 !important;
+    }
+    html:not(.dark) .border-gray-200 {
+      border-color: #cbd5e1 !important;
+    }
   </style>
   
   <!-- Custom Stylesheet (with cache-busting) -->
-  <link rel="stylesheet" href="styles.css?v=20260909_0010">
+  <link rel="stylesheet" href="styles.css?v=20260909_0050">
   
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
