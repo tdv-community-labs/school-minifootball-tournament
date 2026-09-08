@@ -150,13 +150,40 @@ body {
 }
 
 /* ==========================================================================
-   Professional Dark Mode Architecture
+   Professional Dual-Theme Architecture (Light & Dark)
    ========================================================================== */
+
+/* Explicit Light Mode (When NOT dark) */
+html:not(.dark),
+html:not(.dark) body,
+html:not(.dark) #root,
+html:not(.dark) .min-h-screen {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+html:not(.dark) .bg-slate-50,
+html:not(.dark) .bg-gray-50 {
+  background-color: #f1f5f9 !important;
+}
+
+html:not(.dark) .bg-white {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html:not(.dark) .glass-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Explicit Dark Mode (When .dark is present) */
 html.dark, body.dark, .dark {
   color-scheme: dark;
 }
 
-html.dark body, body.dark, .dark body, .dark #root, html.dark #root {
+html.dark body, body.dark, .dark body, .dark #root, html.dark #root, html.dark .min-h-screen {
   background-color: #080c14 !important;
   color: #f1f5f9 !important;
 }

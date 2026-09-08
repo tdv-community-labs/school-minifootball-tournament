@@ -12,7 +12,9 @@ const html = htm.bind(React.createElement);
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [activeDivision, setActiveDivision] = useState('11'); // '6', '7-8', '9-10', '11'
-  const [activeYear, setActiveYear] = useState('2025-2026');
+  const [activeYear, setActiveYear] = useState(() => {
+    return localStorage.getItem('btl_selected_year') || '2022-2023';
+  });
   const [years, setYears] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAdminAuthorized, setIsAdminAuthorized] = useState(
@@ -32,10 +34,16 @@ export default function App() {
     const shouldBeDark = currentTheme === 'dark' || (currentTheme === 'system' && prefersDark);
     if (shouldBeDark) {
       document.documentElement.classList.add('dark');
-      if (document.body) document.body.classList.add('dark');
+      if (document.body) {
+        document.body.classList.add('dark');
+        document.body.style.backgroundColor = '#080c14';
+      }
     } else {
       document.documentElement.classList.remove('dark');
-      if (document.body) document.body.classList.remove('dark');
+      if (document.body) {
+        document.body.classList.remove('dark');
+        document.body.style.backgroundColor = '#f1f5f9';
+      }
     }
   };
 
@@ -48,7 +56,12 @@ export default function App() {
   const fetchYearsList = async () => {
     const allYears = await db.getYears();
     setYears(allYears);
-    if (allYears.length > 0 && !allYears.includes(activeYear)) {
+    const savedYear = localStorage.getItem('btl_selected_year');
+    if (savedYear && allYears.includes(savedYear)) {
+      setActiveYear(savedYear);
+    } else if (allYears.includes('2022-2023')) {
+      setActiveYear('2022-2023');
+    } else if (allYears.length > 0) {
       setActiveYear(allYears[0]);
     }
   };
@@ -155,6 +168,7 @@ export default function App() {
 
   const handleYearChange = (newYear) => {
     setActiveYear(newYear);
+    localStorage.setItem('btl_selected_year', newYear);
   };
 
   return html`

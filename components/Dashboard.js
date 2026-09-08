@@ -50,14 +50,16 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear }) 
         .slice(0, 3);
       setTopPlayers(rankedPlayers);
 
-      // Top Goal Scorers
+      // Top Goal Scorers (only players with at least 1 goal)
       const scorers = [...players]
+        .filter(p => Number(p.goals || 0) > 0)
         .sort((a, b) => b.goals - a.goals || b.overallRating - a.overallRating)
         .slice(0, 5);
       setTopScorers(scorers);
 
-      // Top Assist Leaders
+      // Top Assist Leaders (only players with at least 1 assist)
       const assists = [...players]
+        .filter(p => Number(p.assists || 0) > 0)
         .sort((a, b) => b.assists - a.assists || b.overallRating - a.overallRating)
         .slice(0, 5);
       setTopAssists(assists);
@@ -197,7 +199,10 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear }) 
           <div className="space-y-3">
             ${recentMatches.length === 0 
               ? html`
-                  <div className="text-center py-8 text-gray-400">Heç bir matç qeydə alınmayıb.</div>
+                  <div className="text-center py-8 text-gray-400">
+                    <p className="text-sm font-medium">Bu kateqoriya və mövsüm üçün matç qeydə alınmayıb.</p>
+                    <p className="text-xs text-purple-600 dark:text-purple-400 font-bold mt-1">Nəticələri görmək üçün yuxarıdan 2022-2023 mövsümünü seçə bilərsiniz.</p>
+                  </div>
                 ` 
               : recentMatches.map(match => html`
                   <div key=${match.id} className="p-4 rounded-2xl bg-gray-50 hover:bg-purple-50/50 border border-gray-100 transition flex justify-between items-center">
@@ -231,7 +236,12 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear }) 
             </h3>
             <div className="divide-y divide-gray-100">
               ${topScorers.length === 0 
-                ? html`<p className="text-xs text-gray-400 text-center py-4">Oyunçu məlumatı tapılmadı.</p>`
+                ? html`
+                    <div className="py-6 text-center text-gray-400">
+                      <p className="text-xs">Bu kateqoriya üçün qol qeydə alınmayıb.</p>
+                      <p className="text-[11px] text-purple-600 dark:text-purple-400 font-bold mt-1">2022-2023 mövsümünü və fərqli sinifləri yoxlaya bilərsiniz.</p>
+                    </div>
+                  `
                 : topScorers.map((player, index) => html`
                     <div key=${player.id} className="py-2.5 flex justify-between items-center text-sm">
                       <div className="flex items-center space-x-3">

@@ -118,7 +118,35 @@
 
   <!-- Embedded Core Dark Mode Styles (Guaranteed to apply regardless of external MIME/cache) -->
   <style>
-    html.dark, html.dark body, body.dark, .dark body {
+    /* Explicit Light Mode (When NOT in dark mode) */
+    html:not(.dark),
+    html:not(.dark) body,
+    html:not(.dark) #root,
+    html:not(.dark) .min-h-screen {
+      background-color: #f1f5f9 !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) .bg-slate-50,
+    html:not(.dark) .bg-gray-50 {
+      background-color: #f1f5f9 !important;
+    }
+    html:not(.dark) .bg-white {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) .glass-card {
+      background: rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid rgba(226, 232, 240, 0.8) !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    /* Explicit Dark Mode (When .dark is present) */
+    html.dark,
+    html.dark body,
+    html.dark #root,
+    html.dark .min-h-screen,
+    body.dark,
+    .dark body {
       background-color: #080c14 !important;
       color: #f1f5f9 !important;
     }
@@ -187,7 +215,7 @@
   </style>
   
   <!-- Custom Stylesheet (with cache-busting) -->
-  <link rel="stylesheet" href="styles.css?v=20260908_1745">
+  <link rel="stylesheet" href="styles.css?v=20260908_1750">
   
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
@@ -200,7 +228,7 @@
     }
   </script>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased dark:bg-[#080c14] dark:text-slate-100">
+<body class="bg-slate-50 text-slate-800 antialiased dark:bg-[#080c14] dark:text-slate-100" style="background-color: #f1f5f9;">
   <div id="root">
     <!-- Initial Loader -->
     <div class="min-h-screen flex flex-col items-center justify-center bg-purple-950 text-white">
@@ -217,7 +245,7 @@
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js?v=20260908_1745';
+    import App from './app.js?v=20260908_1750';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');
