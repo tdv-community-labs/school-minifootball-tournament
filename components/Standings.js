@@ -561,17 +561,16 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
               `;
             })
           }
-        </div>
-      `}
 
-        <!-- Abbreviations Legend -->
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-[11px] font-semibold text-gray-500 bg-gray-50 p-4 rounded-2xl border border-gray-100">
-          <div><span className="text-purple-900 font-extrabold mr-1">O:</span> Oyun Sayı</div>
-          <div><span className="text-green-600 font-extrabold mr-1">Q:</span> Qələbə</div>
-          <div><span className="text-gray-600 font-extrabold mr-1">H:</span> Heç-heçə</div>
-          <div><span className="text-red-600 font-extrabold mr-1">M:</span> Məğlubiyyət</div>
-          <div><span className="text-purple-900 font-extrabold mr-1">TF:</span> Top Fərqi</div>
-          <div className="hidden md:block"><span className="text-purple-900 font-extrabold mr-1">QV/QBur:</span> Qollar Vuruldu / Buraxıldı</div>
+          <!-- Abbreviations Legend -->
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-[11px] font-semibold text-gray-500 dark:text-slate-400 bg-gray-50 dark:bg-slate-900/60 p-4 rounded-2xl border border-gray-100 dark:border-slate-800">
+            <div><span className="text-purple-900 dark:text-purple-300 font-extrabold mr-1">O:</span> ${lang === 'az' ? 'Oyun Sayı' : 'Played'}</div>
+            <div><span className="text-green-600 dark:text-emerald-400 font-extrabold mr-1">Q:</span> ${lang === 'az' ? 'Qələbə' : 'Won'}</div>
+            <div><span className="text-gray-600 dark:text-slate-300 font-extrabold mr-1">H:</span> ${lang === 'az' ? 'Heç-heçə' : 'Drawn'}</div>
+            <div><span className="text-red-600 dark:text-rose-400 font-extrabold mr-1">M:</span> ${lang === 'az' ? 'Məğlubiyyət' : 'Lost'}</div>
+            <div><span className="text-purple-900 dark:text-purple-300 font-extrabold mr-1">TF:</span> ${lang === 'az' ? 'Top Fərqi' : 'Goal Diff'}</div>
+            <div className="hidden md:block"><span className="text-purple-900 dark:text-purple-300 font-extrabold mr-1">VQ/BQ:</span> ${lang === 'az' ? 'Vuruldu / Buraxıldı' : 'GF / GA'}</div>
+          </div>
         </div>
       `}
 
