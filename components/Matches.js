@@ -163,13 +163,22 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                 <!-- Match Card Top -->
                 <div className="p-6 bg-gradient-to-b from-purple-50/50 to-white">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-xs font-black text-purple-900 bg-purple-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                      ${match.stage}
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-xs font-black text-purple-900 bg-purple-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                        ${match.stage}
+                      </span>
+                      ${match.videoTitle && html`
+                        <span className="text-[10px] font-extrabold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs" title=${match.videoTitle}>
+                          <i className="fab fa-youtube text-red-600"></i>
+                          <span>${match.videoDuration || 'Video'}</span>
+                        </span>
+                      `}
+                    </div>
                     <span className="text-xs text-gray-400 flex items-center">
                       <i className="far fa-calendar-alt mr-1.5"></i> ${match.date || 'Tarix təyin edilməyib'}
                     </span>
                   </div>
+
 
                   <!-- Score Display -->
                   <div className="flex items-center justify-between py-4">
@@ -238,24 +247,61 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
             </div>
 
             <div className="p-6 space-y-8">
-              <!-- Video Highlights -->
-              ${selectedMatch.videoUrl && html`
+              <!-- Video Highlights & YouTube Archive -->
+              ${(selectedMatch.videoUrl || selectedMatch.videoTitle) && html`
                 <div className="space-y-3">
-                  <h4 className="text-base font-bold text-purple-950 flex items-center">
-                    <i className="fab fa-youtube text-red-600 mr-2 text-xl"></i> Matçın İcmalı (Video)
+                  <h4 className="text-base font-bold text-purple-950 dark:text-white flex items-center">
+                    <i className="fab fa-youtube text-red-600 mr-2 text-xl"></i> ${lang === 'az' ? 'Matçın İcmalı (Video)' : 'Match Highlights (Video)'}
                   </h4>
-                  <div className="aspect-video bg-purple-950 rounded-2xl overflow-hidden shadow-inner border border-purple-800">
-                    <iframe 
-                      className="w-full h-full"
-                      src=${selectedMatch.videoUrl} 
-                      title="Match Highlight"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
+                  ${(selectedMatch.videoUrl && selectedMatch.videoUrl.includes('embed')) ? html`
+                    <div className="aspect-video bg-purple-950 rounded-2xl overflow-hidden shadow-inner border border-purple-800">
+                      <iframe 
+                        className="w-full h-full"
+                        src=${selectedMatch.videoUrl} 
+                        title="Match Highlight"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                  ` : html`
+                    <div className="bg-gradient-to-r from-red-500/10 via-purple-500/10 to-transparent border border-red-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center text-2xl shadow-md flex-shrink-0">
+                          <i className="fab fa-youtube"></i>
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-black uppercase text-red-600 dark:text-red-400 tracking-wider">
+                            TDV-BTL Football Cup • YouTube Arxiv
+                          </span>
+                          <h5 className="text-sm font-black text-purple-950 dark:text-white mt-0.5">
+                            ${selectedMatch.videoTitle || `${selectedMatch.teamA} ${selectedMatch.scoreA}-${selectedMatch.scoreB} ${selectedMatch.teamB}`}
+                          </h5>
+                          <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-slate-400 font-semibold mt-1">
+                            ${selectedMatch.videoDuration && html`
+                              <span className="flex items-center gap-1"><i className="far fa-clock text-gray-400"></i> ${selectedMatch.videoDuration}</span>
+                            `}
+                            ${selectedMatch.viewCount && html`
+                              <span className="flex items-center gap-1"><i className="far fa-eye text-gray-400"></i> ${selectedMatch.viewCount}</span>
+                            `}
+                          </div>
+                        </div>
+                      </div>
+                      <a
+                        href=${selectedMatch.videoUrl || `https://www.youtube.com/results?search_query=TDV-BTL+Football+Cup+${encodeURIComponent(selectedMatch.videoTitle || `${selectedMatch.teamA} ${selectedMatch.teamB}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs transition flex items-center gap-2 shadow-md hover:shadow-lg flex-shrink-0 cursor-pointer"
+                      >
+                        <i className="fas fa-play text-xs"></i>
+                        <span>${lang === 'az' ? 'YouTube-da İzlə' : 'Watch on YouTube'}</span>
+                        <i className="fas fa-external-link-alt text-[10px]"></i>
+                      </a>
+                    </div>
+                  `}
                 </div>
               `}
+
 
               <!-- Scores and scorers -->
               <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 flex justify-around text-center text-sm">

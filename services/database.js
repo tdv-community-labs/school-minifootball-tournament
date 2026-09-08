@@ -1,6 +1,7 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260908_2300';
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;
@@ -200,16 +201,16 @@ export const computePlayerOverallRating = (stats = {}, initialPlayer = {}) => {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Seed Initial Classes (Empty for custom entry)
-const initialClasses = [];
+// Seed Initial Classes with historical archive
+const initialClasses = ARCHIVE_CLASSES || [];
 
-// Seed Initial Players (Empty for custom entry)
-const initialPlayers = [];
+// Seed Initial Players with historical archive
+const initialPlayers = ARCHIVE_PLAYERS || [];
 
-const initialMatches = [];
+const initialMatches = ARCHIVE_MATCHES || [];
 
 const initializeStorage = () => {
-  const defaultYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
+  const defaultYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023", "2021-2022", "2018-2019", "2017-2018"];
   if (!localStorage.getItem('minifootball_years')) {
     localStorage.setItem('minifootball_years', JSON.stringify(defaultYears));
   } else {
@@ -228,13 +229,14 @@ const initializeStorage = () => {
       localStorage.setItem('minifootball_years', JSON.stringify(existingYears));
     }
   }
-  if (!localStorage.getItem('minifootball_classes')) {
+  if (!localStorage.getItem('minifootball_classes') || JSON.parse(localStorage.getItem('minifootball_classes')).length === 0) {
     localStorage.setItem('minifootball_classes', JSON.stringify(initialClasses));
     localStorage.setItem('minifootball_players', JSON.stringify(initialPlayers));
     localStorage.setItem('minifootball_matches', JSON.stringify(initialMatches));
   }
   recalculateData();
 };
+
 
 export const KNOWN_GROUP_SEEDS = {
   '2018-2019:11': { 'A': ['11A', '11E', '11H'], 'B': ['11B', '11D', '10F'] },
@@ -453,7 +455,8 @@ export const recalculateData = () => {
     }
 
     // Process team points only for group stage matches
-    if (m.stage === 'Qrup Mərhələsi') {
+    const isGroupMatch = m.stage === 'Qrup Mərhələsi' || m.stage === 'Qrup' || (m.stage || '').toLowerCase().includes('qrup');
+    if (isGroupMatch) {
       const yearDivMap = standingsMap[yr]?.[div];
       if (yearDivMap) {
         // Ensure teams exist in mapping
@@ -643,7 +646,8 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     }
 
     // Process team points only for group stage matches
-    if (m.stage === 'Qrup Mərhələsi') {
+    const isGroupMatch = m.stage === 'Qrup Mərhələsi' || m.stage === 'Qrup' || (m.stage || '').toLowerCase().includes('qrup');
+    if (isGroupMatch) {
       const yearDivMap = standingsMap[yr]?.[div];
       if (yearDivMap) {
         // Ensure teams exist in mapping
@@ -756,6 +760,7 @@ if (!useRealFirebase) {
 export const db = {
   // Years CRUD
   getYears: async () => {
+    const defaultArchiveYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023", "2021-2022", "2018-2019", "2017-2018"];
     if (useRealFirebase && firestore) {
       console.log("Firebase: Fetching years...");
       try {
@@ -764,18 +769,20 @@ export const db = {
         querySnapshot.forEach(docSnap => {
           list.push(docSnap.id);
         });
+        defaultArchiveYears.forEach(y => {
+          if (!list.includes(y)) list.push(y);
+        });
         console.log("Firebase: Years fetched: ", list);
-        if (list.length > 0) {
-          list.sort((a, b) => b.localeCompare(a));
-          return list;
-        }
-        return ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
+        list.sort((a, b) => b.localeCompare(a));
+        return list;
       } catch (err) {
         console.error("Firebase: getYears failed with error: ", err);
-        return ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
+        return defaultArchiveYears;
       }
     }
-    return JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025", "2023-2024", "2022-2023"]');
+    const local = JSON.parse(localStorage.getItem('minifootball_years') || '[]');
+    const merged = Array.from(new Set([...local, ...defaultArchiveYears])).sort((a, b) => b.localeCompare(a));
+    return merged;
   },
 
   addYear: async (year) => {
@@ -838,30 +845,35 @@ export const db = {
 
   // Classes CRUD
   getClasses: async (year) => {
+    let list = [];
     if (useRealFirebase && firestore) {
       console.log("Firebase: Fetching classes...");
       try {
         const querySnapshot = await getDocs(collection(firestore, "classes"));
-        const list = [];
         querySnapshot.forEach(docSnap => {
           list.push(sanitizeObject(docSnap.data()));
         });
         console.log(`Firebase: Classes fetched: ${list.length} records. Filtering by year: ${year || 'all'}`);
-        if (year) {
-          return list.filter(c => c.year === year);
-        }
-        return list;
       } catch (err) {
         console.error("Firebase: getClasses failed with error: ", err);
-        return [];
       }
     }
-    const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
-    if (year) {
-      return classes.filter(c => c.year === year);
+    if (list.length === 0) {
+      list = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     }
-    return classes;
+    // Merge archive classes ensuring no duplicate IDs
+    const existingIds = new Set(list.map(c => c.id || `${c.year}_${c.name}`));
+    ARCHIVE_CLASSES.forEach(ac => {
+      if (!existingIds.has(ac.id) && !existingIds.has(`${ac.year}_${ac.name}`)) {
+        list.push(ac);
+      }
+    });
+    if (year) {
+      return list.filter(c => c.year === year);
+    }
+    return list;
   },
+
 
   addClass: async (cls) => {
     const newClass = {
@@ -929,7 +941,15 @@ export const db = {
         pSnap.forEach(d => players.push(sanitizeObject(d.data())));
         const matches = [];
         mSnap.forEach(d => matches.push(sanitizeObject(d.data())));
-        const baseYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
+        const baseYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023", "2021-2022", "2018-2019", "2017-2018"];
+        // Merge archive classes, players, and matches
+        const cIds = new Set(classes.map(c => c.id || `${c.year}_${c.name}`));
+        ARCHIVE_CLASSES.forEach(ac => { if (!cIds.has(ac.id) && !cIds.has(`${ac.year}_${ac.name}`)) classes.push(ac); });
+        const pIds = new Set(players.map(p => p.id));
+        ARCHIVE_PLAYERS.forEach(ap => { if (!pIds.has(ap.id)) players.push(ap); });
+        const mIds = new Set(matches.map(m => m.id));
+        ARCHIVE_MATCHES.forEach(am => { if (!mIds.has(am.id)) matches.push(am); });
+
         const detectedYears = Array.from(new Set([
           ...baseYears,
           ...classes.map(c => c.year),
@@ -955,11 +975,14 @@ export const db = {
       }
     }
     const players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+    const existingPIds = new Set(players.map(p => p.id));
+    ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id)) players.push(ap); });
     if (year) {
       return players.filter(p => p.year === year);
     }
     return players;
   },
+
   
   addPlayer: async (player) => {
     const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
@@ -1041,30 +1064,35 @@ export const db = {
 
   // Matches CRUD
   getMatches: async (year) => {
+    let list = [];
     if (useRealFirebase && firestore) {
       console.log("Firebase: Fetching matches...");
       try {
         const querySnapshot = await getDocs(collection(firestore, "matches"));
-        const list = [];
         querySnapshot.forEach(docSnap => {
           list.push(sanitizeObject(docSnap.data()));
         });
         console.log(`Firebase: Matches fetched: ${list.length} records. Filtering by year: ${year || 'all'}`);
-        if (year) {
-          return list.filter(m => m.year === year);
-        }
-        return list;
       } catch (err) {
         console.error("Firebase: getMatches failed with error: ", err);
-        return [];
       }
     }
-    const matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
-    if (year) {
-      return matches.filter(m => m.year === year);
+    if (list.length === 0) {
+      list = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     }
-    return matches;
+    // Merge archive matches ensuring no duplicates
+    const existingIds = new Set(list.map(m => m.id));
+    ARCHIVE_MATCHES.forEach(am => {
+      if (!existingIds.has(am.id)) {
+        list.push(am);
+      }
+    });
+    if (year) {
+      return list.filter(m => m.year === year);
+    }
+    return list;
   },
+
 
   addMatch: async (match) => {
     const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
@@ -1439,6 +1467,15 @@ export const db = {
       allMatches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
       allClasses = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     }
+
+    // Merge archive items so search finds historical matches and classes
+    const existingPIds = new Set(allPlayers.map(p => p.id));
+    ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id)) allPlayers.push(ap); });
+    const existingMIds = new Set(allMatches.map(m => m.id));
+    ARCHIVE_MATCHES.forEach(am => { if (!existingMIds.has(am.id)) allMatches.push(am); });
+    const existingCIds = new Set(allClasses.map(c => c.id || `${c.year}_${c.name}`));
+    ARCHIVE_CLASSES.forEach(ac => { if (!existingCIds.has(ac.id) && !existingCIds.has(`${ac.year}_${ac.name}`)) allClasses.push(ac); });
+
 
     // 1. Group players by normalized name
     const playerGroups = {};
