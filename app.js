@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260909_0030';
-import Standings from './components/Standings.js?v=20260909_0030';
-import Matches from './components/Matches.js?v=20260909_0030';
-import Players from './components/Players.js?v=20260909_0030';
-import AdminDashboard from './components/AdminDashboard.js?v=20260909_0030';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0030';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0030';
-import { db } from './services/database.js?v=20260909_0030';
-import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0030';
-import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260909_0030';
+import Dashboard from './components/Dashboard.js?v=20260909_0035';
+import Standings from './components/Standings.js?v=20260909_0035';
+import Matches from './components/Matches.js?v=20260909_0035';
+import Players from './components/Players.js?v=20260909_0035';
+import AdminDashboard from './components/AdminDashboard.js?v=20260909_0035';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260909_0035';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260909_0035';
+import { db } from './services/database.js?v=20260909_0035';
+import { t, getDivisionLabel } from './services/i18n.js?v=20260909_0035';
+import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260909_0035';
 
 const html = htm.bind(React.createElement);
 

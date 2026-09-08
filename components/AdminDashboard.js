@@ -1198,15 +1198,15 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <div className="grid grid-cols-3 gap-2 pt-2">
                     <div className="bg-purple-50 rounded-2xl p-3 text-center">
                       <div className="text-[10px] uppercase font-bold text-purple-600">Xətalar</div>
-                      <div className="text-lg font-black text-purple-950">${healthReport.summary.errors}</div>
+                      <div className="text-lg font-black text-purple-950">${healthReport.summary?.errors ?? healthReport.stats?.errorCount ?? 0}</div>
                     </div>
                     <div className="bg-amber-50 rounded-2xl p-3 text-center">
                       <div className="text-[10px] uppercase font-bold text-amber-600">Xəbərdarlıqlar</div>
-                      <div className="text-lg font-black text-amber-950">${healthReport.summary.warnings}</div>
+                      <div className="text-lg font-black text-amber-950">${healthReport.summary?.warnings ?? healthReport.stats?.warningCount ?? 0}</div>
                     </div>
                     <div className="bg-sky-50 rounded-2xl p-3 text-center">
                       <div className="text-[10px] uppercase font-bold text-sky-600">Tövsiyələr</div>
-                      <div className="text-lg font-black text-sky-950">${healthReport.summary.info}</div>
+                      <div className="text-lg font-black text-sky-950">${healthReport.summary?.info ?? healthReport.stats?.infoCount ?? 0}</div>
                     </div>
                   </div>
                 `}

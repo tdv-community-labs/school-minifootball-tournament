@@ -102,6 +102,11 @@ export const auditTournamentData = (data = {}) => {
     healthScore,
     status,
     checkedAt: new Date().toISOString(),
+    summary: {
+      errors: errorCount,
+      warnings: warningCount,
+      info: infoCount
+    },
     stats: {
       totalClasses: classes.length,
       totalPlayers: players.length,
