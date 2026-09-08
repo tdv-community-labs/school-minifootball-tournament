@@ -18,7 +18,7 @@ const normalizeStage = (stage) => {
   return s;
 };
 
-export default function Standings({ activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang) }) {
+export default function Standings({ activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang), onOpenPlayerProfile }) {
   const [table, setTable] = useState([]);
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
@@ -644,7 +644,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     </span>
                     <span className="text-[9px] font-bold text-gray-400">Ən Dəyərli</span>
                   </div>
-                  <h4 className="text-sm font-black text-purple-950 truncate">
+                  <h4
+                    onClick=${() => mvpPlayer && onOpenPlayerProfile && onOpenPlayerProfile(mvpPlayer.name)}
+                    className=${`text-sm font-black text-purple-950 dark:text-purple-200 truncate ${mvpPlayer ? 'cursor-pointer hover:underline hover:text-green-600 dark:hover:text-green-400 transition-colors' : ''}`}
+                    title=${mvpPlayer ? (lang === 'az' ? 'Karyera profilinə bax' : 'View career profile') : ''}
+                  >
                     ${mvpPlayer ? mvpPlayer.name : 'Təyin edilməyib'}
                   </h4>
                   <p className="text-[10px] text-gray-500 font-semibold mt-0.5">
@@ -669,7 +673,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     </span>
                     <span className="text-[9px] font-bold text-gray-400">Qızıl Butsa</span>
                   </div>
-                  <h4 className="text-sm font-black text-purple-950 truncate">
+                  <h4
+                    onClick=${() => topScorer && onOpenPlayerProfile && onOpenPlayerProfile(topScorer.name)}
+                    className=${`text-sm font-black text-purple-950 dark:text-purple-200 truncate ${topScorer ? 'cursor-pointer hover:underline hover:text-green-600 dark:hover:text-green-400 transition-colors' : ''}`}
+                    title=${topScorer ? (lang === 'az' ? 'Karyera profilinə bax' : 'View career profile') : ''}
+                  >
                     ${topScorer ? topScorer.name : 'Təyin edilməyib'}
                   </h4>
                   <p className="text-[10px] text-gray-500 font-semibold mt-0.5">
@@ -694,7 +702,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     </span>
                     <span className="text-[9px] font-bold text-gray-400">Qızıl Əlcək</span>
                   </div>
-                  <h4 className="text-sm font-black text-purple-950 truncate">
+                  <h4
+                    onClick=${() => bestGoalkeeper && onOpenPlayerProfile && onOpenPlayerProfile(bestGoalkeeper.name)}
+                    className=${`text-sm font-black text-purple-950 dark:text-purple-200 truncate ${bestGoalkeeper ? 'cursor-pointer hover:underline hover:text-green-600 dark:hover:text-green-400 transition-colors' : ''}`}
+                    title=${bestGoalkeeper ? (lang === 'az' ? 'Karyera profilinə bax' : 'View career profile') : ''}
+                  >
                     ${bestGoalkeeper ? bestGoalkeeper.name : 'Təyin edilməyib'}
                   </h4>
                   <p className="text-[10px] text-gray-500 font-semibold mt-0.5">
@@ -738,7 +750,12 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
               ${dreamTeam.length === 0 
                 ? html`<div className="col-span-5 text-center text-xs text-gray-400 py-2">Hələ qeydə alınmış oyunçu statistikası yoxdur.</div>`
                 : dreamTeam.map((player, i) => html`
-                    <div key=${player.id || i} className="bg-purple-50/40 hover:bg-purple-100/50 p-3 rounded-2xl border border-purple-100/60 transition flex items-center justify-between space-x-2">
+                    <div
+                      key=${player.id || i}
+                      onClick=${() => onOpenPlayerProfile && onOpenPlayerProfile(player.name)}
+                      className="bg-purple-50/40 hover:bg-purple-100/60 p-3 rounded-2xl border border-purple-100/60 transition flex items-center justify-between space-x-2 cursor-pointer"
+                      title=${lang === 'az' ? 'Karyera profilinə bax' : 'View career profile'}
+                    >
                       <div className="flex items-center space-x-2 truncate">
                         <span className=${`w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center shrink-0 ${
                           i === 0 ? 'bg-amber-400 text-purple-950' : i === 1 ? 'bg-slate-300 text-purple-950' : i === 2 ? 'bg-amber-700 text-white' : 'bg-purple-200 text-purple-900'
@@ -746,7 +763,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                           ${i + 1}
                         </span>
                         <div className="truncate">
-                          <div className="text-xs font-black text-purple-950 truncate">${player.name}</div>
+                          <div className="text-xs font-black text-purple-950 truncate hover:text-green-600 transition">${player.name}</div>
                           <div className="text-[9px] font-semibold text-gray-500 truncate">${player.class} • ${player.position || 'Oyunçu'}</div>
                         </div>
                       </div>

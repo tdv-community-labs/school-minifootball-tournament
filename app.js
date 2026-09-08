@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js';
-import Standings from './components/Standings.js?v=20260908_1845';
-import Matches from './components/Matches.js';
-import Players from './components/Players.js';
-import AdminDashboard from './components/AdminDashboard.js';
-import { db } from './services/database.js?v=20260908_1845';
-import { t, getDivisionLabel } from './services/i18n.js?v=20260908_1845';
+import Dashboard from './components/Dashboard.js?v=20260908_1900';
+import Standings from './components/Standings.js?v=20260908_1900';
+import Matches from './components/Matches.js?v=20260908_1900';
+import Players from './components/Players.js?v=20260908_1900';
+import AdminDashboard from './components/AdminDashboard.js?v=20260908_1900';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260908_1900';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260908_1900';
+import { db } from './services/database.js?v=20260908_1900';
+import { t, getDivisionLabel } from './services/i18n.js?v=20260908_1900';
 
 const html = htm.bind(React.createElement);
 
@@ -25,6 +27,8 @@ export default function App() {
   const [inputPassword, setInputPassword] = useState('');
   const [showRulesModal, setShowRulesModal] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [selectedPlayerProfile, setSelectedPlayerProfile] = useState(null);
 
   // Language state (defaults to English as requested)
   const [lang, setLang] = useState(() => {
@@ -119,6 +123,17 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
     if (inputPassword === 'btl2026') {
@@ -149,17 +164,17 @@ export default function App() {
     const curT = (k) => t(k, lang);
     switch (activeTab) {
       case 'dashboard':
-        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
+        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onOpenPlayerProfile=${(name) => setSelectedPlayerProfile(name)} />`;
       case 'standings':
-        return html`<${Standings} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
+        return html`<${Standings} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onOpenPlayerProfile=${(name) => setSelectedPlayerProfile(name)} />`;
       case 'matches':
         return html`<${Matches} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
       case 'players':
-        return html`<${Players} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
+        return html`<${Players} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onOpenPlayerProfile=${(name) => setSelectedPlayerProfile(name)} />`;
       case 'admin':
         return html`<${AdminDashboard} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onYearsChanged=${handleReloadYears} onLogout=${handleAdminLogout} />`;
       default:
-        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} />`;
+        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onOpenPlayerProfile=${(name) => setSelectedPlayerProfile(name)} />`;
     }
   };
 
@@ -241,8 +256,20 @@ export default function App() {
               })}
             </nav>
 
-            <!-- Switchers: Language & Theme (Desktop) -->
+            <!-- Switchers & Search (Desktop) -->
             <div className="hidden md:flex items-center space-x-2">
+              <!-- Global Search Trigger (Desktop) -->
+              <button
+                type="button"
+                onClick=${() => setIsSearchOpen(true)}
+                title=${lang === 'az' ? 'Axtarış (Ctrl+K)' : 'Search (Ctrl+K)'}
+                className="flex items-center space-x-2 bg-purple-900/80 hover:bg-purple-800 text-purple-200 hover:text-white px-3 py-1.5 rounded-xl border border-purple-700/60 text-xs font-bold transition shadow-inner cursor-pointer"
+              >
+                <i className="fas fa-search text-green-400 text-xs"></i>
+                <span className="hidden lg:inline text-[11px] font-extrabold tracking-wide">${lang === 'az' ? 'Axtarış...' : 'Search...'}</span>
+                <kbd className="hidden sm:inline-block bg-purple-950/80 text-[9px] px-1.5 py-0.5 rounded border border-purple-800 text-purple-300 font-mono">Ctrl+K</kbd>
+              </button>
+
               <!-- Language Switcher (EN / AZ) -->
               <div className="flex items-center bg-purple-900/80 border border-purple-700/60 rounded-xl p-0.5 shadow-inner space-x-1">
                 <button
@@ -318,7 +345,17 @@ export default function App() {
             </div>
 
             <!-- Mobile Controls -->
-            <div className="md:hidden flex items-center space-x-1">
+            <div className="md:hidden flex items-center space-x-1.5">
+              <!-- Mobile Search Button -->
+              <button
+                type="button"
+                onClick=${() => setIsSearchOpen(true)}
+                title=${lang === 'az' ? 'Axtarış' : 'Search'}
+                className="p-2 rounded-xl bg-purple-900/80 border border-purple-700/60 text-green-400 hover:text-white hover:bg-purple-800 transition shadow-inner"
+              >
+                <i className="fas fa-search text-sm"></i>
+              </button>
+
               <!-- Mobile Language Toggle -->
               <button
                 onClick=${() => handleLangChange(lang === 'en' ? 'az' : 'en')}
@@ -350,6 +387,18 @@ export default function App() {
         <!-- Mobile Menu (Dropdown) -->
         ${isMobileMenuOpen && html`
           <div className="md:hidden bg-purple-950 border-t border-purple-900 px-4 pt-2 pb-4 space-y-3">
+            <!-- Mobile Search Bar In Menu -->
+            <button
+              type="button"
+              onClick=${() => {
+                setIsSearchOpen(true);
+                setIsMobileMenuOpen(false);
+              }}
+              className="w-full text-left px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center space-x-3 bg-purple-900/80 border border-purple-700 text-green-400 hover:bg-purple-800 shadow-inner"
+            >
+              <i className="fas fa-search"></i>
+              <span>${lang === 'az' ? 'Turnirdə Axtarış...' : 'Search Tournament...'}</span>
+            </button>
             <div className="space-y-1">
               ${navItems.map(item => {
                 const isActive = activeTab === item.id;
@@ -658,6 +707,36 @@ export default function App() {
           </div>
         </div>
       `}
+
+      <!-- Global Search Modal -->
+      <${GlobalSearchModal}
+        isOpen=${isSearchOpen}
+        onClose=${() => setIsSearchOpen(false)}
+        onSelectPlayer=${(name) => {
+          setIsSearchOpen(false);
+          setSelectedPlayerProfile(name);
+        }}
+        onSelectClass=${(cName, yr, div) => {
+          setIsSearchOpen(false);
+          if (yr) handleYearChange(yr);
+          if (div) setActiveDivision(div);
+          setActiveTab('standings');
+        }}
+        onSelectMatch=${(m) => {
+          setIsSearchOpen(false);
+          if (m.year) handleYearChange(m.year);
+          if (m.division) setActiveDivision(m.division);
+          setActiveTab('matches');
+        }}
+        lang=${lang}
+      />
+
+      <!-- Unified Player Career Profile Modal -->
+      <${PlayerProfileModal}
+        playerName=${selectedPlayerProfile}
+        onClose=${() => setSelectedPlayerProfile(null)}
+        lang=${lang}
+      />
     </div>
   `;
 }

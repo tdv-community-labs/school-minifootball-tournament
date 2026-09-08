@@ -363,7 +363,7 @@ html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
 }
 
 /* Sofascore Rating Scale */
-.rating-sofascore-9plus, .bg-\[\#2563eb\] { background-color: #2563eb !important; color: #ffffff !important; }
+.rating-sofascore-9plus, .bg-\[\#1d4ed8\] { background-color: #1d4ed8 !important; color: #ffffff !important; }
 .rating-sofascore-8plus, .bg-\[\#0284c7\] { background-color: #0284c7 !important; color: #ffffff !important; }
 .rating-sofascore-7plus, .bg-\[\#15803d\] { background-color: #15803d !important; color: #ffffff !important; }
 .rating-sofascore-65plus, .bg-\[\#eab308\] { background-color: #eab308 !important; color: #0f172a !important; }

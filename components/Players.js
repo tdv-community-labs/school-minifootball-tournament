@@ -5,7 +5,7 @@ import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel } from '..
 
 const html = htm.bind(React.createElement);
 
-export default function Players({ activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang) }) {
+export default function Players({ activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang), onOpenPlayerProfile }) {
   const [players, setPlayers] = useState([]);
   const [classes, setClasses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -126,7 +126,14 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
                           </span>
                         ` : null}
                       </div>
-                      <h3 className="text-base font-black text-purple-950 mt-1.5 leading-snug">${player.name}</h3>
+                      <h3
+                        onClick=${() => onOpenPlayerProfile && onOpenPlayerProfile(player.name)}
+                        className="text-base font-black text-purple-950 dark:text-purple-200 mt-1.5 leading-snug cursor-pointer hover:underline hover:text-green-600 dark:hover:text-green-400 transition-colors flex items-center gap-1.5"
+                        title=${lang === 'az' ? 'Karyera profilinə bax' : 'View career profile'}
+                      >
+                        ${player.name}
+                        <i className="fas fa-arrow-up-right-from-square text-[10px] text-purple-400 opacity-60"></i>
+                      </h3>
                       <p className="text-xs text-gray-400 font-semibold mt-0.5">${player.position || '—'}</p>
                     </div>
 

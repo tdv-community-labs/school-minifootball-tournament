@@ -8,7 +8,7 @@ const html = htm.bind(React.createElement);
 // Helper for rating colors (uses official Sofascore tiering)
 const getRatingClass = (rating) => getSofascoreBadgeStyle(rating);
 
-export default function Dashboard({ setActiveTab, activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang) }) {
+export default function Dashboard({ setActiveTab, activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang), onOpenPlayerProfile }) {
   const [stats, setStats] = useState({
     totalPlayers: 0,
     totalMatches: 0,
@@ -150,7 +150,13 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                       <span className="text-xs font-extrabold text-purple-900 bg-purple-100 px-1.5 py-0.5 rounded">
                         #${index + 1}
                       </span>
-                      <h4 className="text-base font-bold text-purple-950">${player.name}</h4>
+                      <h4
+                        onClick=${() => onOpenPlayerProfile && onOpenPlayerProfile(player.name)}
+                        className="text-base font-bold text-purple-950 dark:text-purple-200 cursor-pointer hover:underline hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                        title=${lang === 'az' ? 'Karyera profilinə bax' : 'View career profile'}
+                      >
+                        ${player.name}
+                      </h4>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">${player.class} • ${player.position || ''}</p>
                     <div className="flex gap-3 mt-3 text-xs font-semibold text-gray-600">
@@ -231,7 +237,13 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                       <div className="flex items-center space-x-3">
                         <span className="font-bold text-purple-900 w-4">${index + 1}</span>
                         <div>
-                          <p className="font-bold text-purple-950">${player.name}</p>
+                          <p
+                            onClick=${() => onOpenPlayerProfile && onOpenPlayerProfile(player.name)}
+                            className="font-bold text-purple-950 dark:text-purple-200 cursor-pointer hover:underline hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                            title=${lang === 'az' ? 'Karyera profilinə bax' : 'View career profile'}
+                          >
+                            ${player.name}
+                          </p>
                           <p className="text-xs text-gray-400">${player.class}</p>
                         </div>
                       </div>
@@ -262,7 +274,13 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                       <div className="flex items-center space-x-3">
                         <span className="font-bold text-purple-900 w-4">${index + 1}</span>
                         <div>
-                          <p className="font-bold text-purple-950">${player.name}</p>
+                          <p
+                            onClick=${() => onOpenPlayerProfile && onOpenPlayerProfile(player.name)}
+                            className="font-bold text-purple-950 dark:text-purple-200 cursor-pointer hover:underline hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                            title=${lang === 'az' ? 'Karyera profilinə bax' : 'View career profile'}
+                          >
+                            ${player.name}
+                          </p>
                           <p className="text-xs text-gray-400">${player.class}</p>
                         </div>
                       </div>

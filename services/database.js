@@ -144,7 +144,7 @@ export const calculateSofascoreRating = (stat = {}, playerRole = {}, matchContex
  */
 export const getSofascoreBadgeStyle = (rating) => {
   const r = Number(rating) || 0;
-  if (r >= 9.0) return 'bg-[#2563eb] text-white font-black shadow-md shadow-blue-600/40 rating-sofascore-9plus';  // 9+ Parlaq Göy (Royal Blue)
+  if (r >= 9.0) return 'bg-[#1d4ed8] text-white font-black shadow-md shadow-blue-700/40 rating-sofascore-9plus';  // 9+ Tünd Canlı Göy (Royal Blue)
   if (r >= 8.0) return 'bg-[#0284c7] text-white font-black shadow-md shadow-sky-500/30 rating-sofascore-8plus';   // 8+ Mavi (Sky Blue)
   if (r >= 7.0) return 'bg-[#15803d] text-white font-bold rating-sofascore-7plus';                               // 7+ Tünd Yaşıl
   if (r >= 6.5) return 'bg-[#eab308] text-slate-950 font-black rating-sofascore-65plus';                        // 6.5+ Sarı
@@ -1275,5 +1275,257 @@ export const db = {
     }
 
     recalculateData();
+  },
+
+  // Get Unified Player Profile across all seasons
+  getUnifiedPlayerProfile: async (playerName) => {
+    if (!playerName) return null;
+    const targetNorm = playerName.trim().toLowerCase();
+
+    let allPlayers = [];
+    let allMatches = [];
+
+    if (useRealFirebase && firestore) {
+      try {
+        const [pSnap, mSnap] = await Promise.all([
+          getDocs(collection(firestore, "players")),
+          getDocs(collection(firestore, "matches"))
+        ]);
+        pSnap.forEach(d => allPlayers.push(sanitizeObject(d.data())));
+        mSnap.forEach(d => allMatches.push(sanitizeObject(d.data())));
+      } catch (e) {
+        console.error("getUnifiedPlayerProfile firestore error:", e);
+      }
+    }
+
+    if (allPlayers.length === 0) {
+      allPlayers = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+      allMatches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
+    }
+
+    const matchingRecords = allPlayers.filter(p => 
+      (p.name || '').trim().toLowerCase() === targetNorm
+    );
+
+    if (matchingRecords.length === 0) return null;
+
+    const displayName = matchingRecords.reduce((best, curr) => 
+      (curr.name && curr.name.length > (best?.length || 0)) ? curr.name : best, matchingRecords[0].name
+    );
+
+    const positions = Array.from(new Set(matchingRecords.map(p => p.position).filter(Boolean)));
+    const isKeeper = matchingRecords.some(p => p.isKeeper || (p.position || '').toLowerCase().includes('qap'));
+
+    const seasons = matchingRecords.map(p => {
+      const goals = Number(p.goals) || 0;
+      const assists = Number(p.assists) || 0;
+      const matchesPlayed = Number(p.matchesPlayed) || 0;
+      const rating = Number(p.overallRating) || 6.5;
+      const saves = Number(p.saves) || 0;
+      return {
+        id: p.id,
+        year: p.year || '2022-2023',
+        class: p.class || '-',
+        division: p.division || '11',
+        goals,
+        assists,
+        matchesPlayed,
+        rating,
+        saves,
+        isKeeper: p.isKeeper || (p.position || '').toLowerCase().includes('qap')
+      };
+    }).sort((a, b) => (b.year || '').localeCompare(a.year || ''));
+
+    const totalGoals = seasons.reduce((sum, s) => sum + s.goals, 0);
+    const totalAssists = seasons.reduce((sum, s) => sum + s.assists, 0);
+    const totalMatches = seasons.reduce((sum, s) => sum + s.matchesPlayed, 0);
+    const totalSaves = seasons.reduce((sum, s) => sum + s.saves, 0);
+
+    let careerRating = 6.5;
+    if (totalMatches > 0) {
+      const weightedSum = seasons.reduce((sum, s) => sum + (s.rating * Math.max(1, s.matchesPlayed)), 0);
+      const totalWeight = seasons.reduce((sum, s) => sum + Math.max(1, s.matchesPlayed), 0);
+      careerRating = Number((weightedSum / totalWeight).toFixed(1));
+    } else {
+      const mean = seasons.reduce((sum, s) => sum + s.rating, 0) / seasons.length;
+      careerRating = Number(mean.toFixed(1));
+    }
+
+    const matchingIds = new Set(matchingRecords.map(p => p.id));
+    const playerMatches = [];
+
+    allMatches.forEach(m => {
+      let matchedStat = null;
+      if (m.playerStats && m.playerStats.length > 0) {
+        matchedStat = m.playerStats.find(s => 
+          matchingIds.has(s.playerId) || 
+          (s.name && s.name.trim().toLowerCase() === targetNorm)
+        );
+      }
+
+      const mGoals = matchedStat?.goals || 0;
+      const mAssists = matchedStat?.assists || 0;
+      const mRating = matchedStat?.rating || null;
+
+      if (matchedStat || mGoals > 0) {
+        playerMatches.push({
+          id: m.id,
+          year: m.year,
+          division: m.division,
+          stage: m.stage,
+          date: m.date,
+          teamA: m.teamA,
+          teamB: m.teamB,
+          scoreA: m.scoreA,
+          scoreB: m.scoreB,
+          goals: mGoals,
+          assists: mAssists,
+          rating: mRating,
+          isKeeper: matchedStat?.isKeeper || false,
+          videoUrl: m.videoUrl
+        });
+      }
+    });
+
+    playerMatches.sort((a, b) => (b.date || b.year || '').localeCompare(a.date || a.year || ''));
+    const latestSeason = seasons[0];
+
+    return {
+      name: displayName,
+      normalizedName: targetNorm,
+      primaryClass: latestSeason?.class || '-',
+      latestYear: latestSeason?.year || '',
+      positions: positions.length > 0 ? positions : [isKeeper ? 'Qapıçı' : 'Oyunçu'],
+      isKeeper,
+      totalGoals,
+      totalAssists,
+      totalMatches,
+      totalSaves,
+      careerRating,
+      goalRatio: totalMatches > 0 ? (totalGoals / totalMatches).toFixed(2) : totalGoals.toFixed(2),
+      seasons,
+      matches: playerMatches
+    };
+  },
+
+  // Fast Multi-Entity Search across players, teams, and matches
+  searchAll: async (query) => {
+    if (!query || query.trim().length < 2) {
+      return { players: [], classes: [], matches: [] };
+    }
+    const q = query.trim().toLowerCase();
+
+    let allPlayers = [];
+    let allMatches = [];
+    let allClasses = [];
+
+    if (useRealFirebase && firestore) {
+      try {
+        const [pSnap, mSnap, cSnap] = await Promise.all([
+          getDocs(collection(firestore, "players")),
+          getDocs(collection(firestore, "matches")),
+          getDocs(collection(firestore, "classes"))
+        ]);
+        pSnap.forEach(d => allPlayers.push(sanitizeObject(d.data())));
+        mSnap.forEach(d => allMatches.push(sanitizeObject(d.data())));
+        cSnap.forEach(d => allClasses.push(sanitizeObject(d.data())));
+      } catch (e) {
+        console.error("searchAll firestore error:", e);
+      }
+    }
+
+    if (allPlayers.length === 0) {
+      allPlayers = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+      allMatches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
+      allClasses = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
+    }
+
+    // 1. Group players by normalized name
+    const playerGroups = {};
+    allPlayers.forEach(p => {
+      const name = (p.name || '').trim();
+      if (!name) return;
+      const norm = name.toLowerCase();
+      if (!playerGroups[norm]) {
+        playerGroups[norm] = {
+          name,
+          normalizedName: norm,
+          classes: new Set(),
+          years: new Set(),
+          totalGoals: 0,
+          totalAssists: 0,
+          totalMatches: 0,
+          ratingSum: 0,
+          ratingCount: 0,
+          position: p.position || '',
+          isKeeper: p.isKeeper || false
+        };
+      }
+      if (p.class) playerGroups[norm].classes.add(p.class);
+      if (p.year) playerGroups[norm].years.add(p.year);
+      playerGroups[norm].totalGoals += Number(p.goals) || 0;
+      playerGroups[norm].totalAssists += Number(p.assists) || 0;
+      playerGroups[norm].totalMatches += Number(p.matchesPlayed) || 0;
+      if (p.overallRating) {
+        playerGroups[norm].ratingSum += Number(p.overallRating);
+        playerGroups[norm].ratingCount += 1;
+      }
+    });
+
+    const matchingPlayers = Object.values(playerGroups)
+      .filter(p => p.normalizedName.includes(q))
+      .map(p => ({
+        name: p.name,
+        normalizedName: p.normalizedName,
+        classes: Array.from(p.classes),
+        years: Array.from(p.years).sort().reverse(),
+        totalGoals: p.totalGoals,
+        totalAssists: p.totalAssists,
+        totalMatches: p.totalMatches,
+        overallRating: p.ratingCount > 0 ? Number((p.ratingSum / p.ratingCount).toFixed(1)) : 6.5,
+        position: p.position,
+        isKeeper: p.isKeeper
+      }))
+      .sort((a, b) => b.totalGoals - a.totalGoals || b.overallRating - a.overallRating)
+      .slice(0, 10);
+
+    // 2. Search Classes
+    const classMap = {};
+    allClasses.forEach(c => {
+      const name = c.name || '';
+      if (!classMap[name]) {
+        classMap[name] = {
+          name,
+          division: c.division || '11',
+          years: new Set()
+        };
+      }
+      if (c.year) classMap[name].years.add(c.year);
+    });
+
+    const matchingClasses = Object.values(classMap)
+      .filter(c => c.name.toLowerCase().includes(q))
+      .map(c => ({
+        name: c.name,
+        division: c.division,
+        years: Array.from(c.years).sort().reverse()
+      }))
+      .slice(0, 8);
+
+    // 3. Search Matches (teamA, teamB, stage, year, date)
+    const matchingMatches = allMatches
+      .filter(m => 
+        (m.teamA && m.teamA.toLowerCase().includes(q)) ||
+        (m.teamB && m.teamB.toLowerCase().includes(q)) ||
+        (m.stage && m.stage.toLowerCase().includes(q)) ||
+        (m.year && m.year.toLowerCase().includes(q))
+      )
+      .slice(0, 8);
+
+    return {
+      players: matchingPlayers,
+      classes: matchingClasses,
+      matches: matchingMatches
+    };
   }
 };
