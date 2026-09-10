@@ -1,4 +1,4 @@
-import { db, recalculateData, normalizePlayerName, OBSOLETE_PLAYER_IDS } from './database.js';
+import { db, recalculateData, normalizePlayerName, OBSOLETE_PLAYER_IDS, getMatchSemanticKey, deduplicateMatches } from './database.js';
 import { isMatchDivision } from './i18n.js';
 import { ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS, ARCHIVE_YEARS } from './archiveData.js';
 
@@ -101,6 +101,24 @@ export const auditTournamentData = (data = {}) => {
     }
   });
 
+  // 3b. Check for duplicate matches
+  const matchSemanticMap = new Map();
+  matches.forEach(m => {
+    const key = getMatchSemanticKey(m);
+    if (matchSemanticMap.has(key)) {
+      issues.push({
+        id: `duplicate_match_${m.id}`,
+        type: 'duplicate_match',
+        severity: 'warning',
+        title: `Dublikat matç: ${m.teamA} vs ${m.teamB} (${m.stage || ''})`,
+        description: `${m.year || ''} mövsümündə bu matç təkrar qeyd olunub.`,
+        canAutoFix: true
+      });
+    } else {
+      matchSemanticMap.set(key, m);
+    }
+  });
+
   // 4. Calculate overall Health Score (0 - 100)
   const errorCount = issues.filter(i => i.severity === 'error').length;
   const warningCount = issues.filter(i => i.severity === 'warning').length;
@@ -177,6 +195,14 @@ export const repairTournamentData = async () => {
     return { ...m, division: div };
   });
   if (fixedMatches > 0) details.push(`${fixedMatches} matçın kateqoriyası standartlaşdırıldı.`);
+
+  // 3b. Deduplicate matches
+  const prevMatchCount = matches.length;
+  matches = deduplicateMatches(matches);
+  const dedupedMatchCount = prevMatchCount - matches.length;
+  if (dedupedMatchCount > 0) {
+    details.push(`${dedupedMatchCount} dublikat matç təmizləndi və birləşdirildi.`);
+  }
 
   // 4. Purge obsolete IDs, fake own-goal players, and deduplicate players
   const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);

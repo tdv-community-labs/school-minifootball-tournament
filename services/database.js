@@ -1,9 +1,9 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260909_0070';
+import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260910_0080';
 import { isMatchDivision } from './i18n.js';
-import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260909_0070';
+import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260910_0080';
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;
@@ -73,6 +73,7 @@ export const normalizePlayerName = (name) => {
 
 export const OBSOLETE_PLAYER_IDS = [
   'p_2018_azer_10f',
+  'p_2018_royal_11f',
   'p_2018_ilkin_11h',
   'p_2018_xezer_11h',
   'p_2018_rüstem_11h',
@@ -85,6 +86,62 @@ export const OBSOLETE_PLAYER_IDS = [
   'p_2018_seddad(öq)_11e',
   'p_22_asim_liyev_10c_10e'
 ];
+
+// Semantic Match Deduplication Engine
+export const normalizeStage = (stage) => {
+  return (stage || '')
+    .toLowerCase()
+    .replace(/ə/g, 'e')
+    .replace(/ı/g, 'i')
+    .replace(/ö/g, 'o')
+    .replace(/ü/g, 'u')
+    .replace(/ş/g, 's')
+    .replace(/ç/g, 'c')
+    .replace(/ğ/g, 'g')
+    .replace(/[^a-z0-9]/g, '');
+};
+
+export const normalizeMatchDivision = (div) => {
+  if (!div) return '10-11';
+  if (div === '11') return '10-11';
+  if (div === '7' || div === '8') return '7-8';
+  if (div === '9-10') return '9';
+  return div;
+};
+
+export const getMatchSemanticKey = (m) => {
+  if (!m) return '';
+  const yr = m.year || '';
+  const div = normalizeMatchDivision(m.division);
+  const teams = [m.teamA || '', m.teamB || ''].sort().join('_vs_');
+  const stage = normalizeStage(m.stage);
+  const date = (m.date || '').slice(0, 10);
+  return `${yr}_${div}_${teams}_${stage}_${date}`;
+};
+
+export const mergeMatchObjects = (existing, incoming) => {
+  const existingStatsCount = (existing.playerStats || []).length;
+  const incomingStatsCount = (incoming.playerStats || []).length;
+  if (incomingStatsCount > existingStatsCount) {
+    return { ...existing, ...incoming };
+  }
+  return { ...incoming, ...existing };
+};
+
+export const deduplicateMatches = (matchesList) => {
+  const map = new Map();
+  (matchesList || []).forEach(m => {
+    if (!m) return;
+    const key = getMatchSemanticKey(m);
+    if (!map.has(key)) {
+      map.set(key, { ...m });
+    } else {
+      const current = map.get(key);
+      map.set(key, mergeMatchObjects(current, m));
+    }
+  });
+  return Array.from(map.values());
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SOFASCORE RATING ENGINE
@@ -449,8 +506,9 @@ export const recalculateData = () => {
     });
   });
 
-  // Process Matches
-  matches.forEach(m => {
+  // Process Matches (semantically deduplicated)
+  const uniqueMatches = deduplicateMatches(matches);
+  uniqueMatches.forEach(m => {
     const yr = m.year || defaultYear;
     const div = m.division || "10-11";
 
@@ -551,7 +609,7 @@ export const recalculateData = () => {
       });
 
       // Assign tournament groups (A, B, etc.)
-      assignGroupsToTeams(list, matches, yr, div);
+      assignGroupsToTeams(list, uniqueMatches, yr, div);
 
       // Sort: primary by group (if different), then by points, goalDifference, goalsFor
       list.sort((a, b) => {
@@ -689,8 +747,9 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     });
   });
 
-  // Process Matches (recalculateInMemoryData — Firebase path)
-  matches.forEach(m => {
+  // Process Matches (recalculateInMemoryData — semantically deduplicated)
+  const uniqueMatches = deduplicateMatches(matches);
+  uniqueMatches.forEach(m => {
     const yr = m.year || defaultYear;
     const div = m.division || "10-11";
 
@@ -790,7 +849,7 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
       });
 
       // Assign tournament groups (A, B, etc.)
-      assignGroupsToTeams(list, matches, yr, div);
+      assignGroupsToTeams(list, uniqueMatches, yr, div);
 
       // Sort: primary by group (if different), then by points, goalDifference, goalsFor
       list.sort((a, b) => {
@@ -1092,20 +1151,19 @@ export const db = {
 
         const pIds = new Set(validPlayers.map(p => p.id));
         ARCHIVE_PLAYERS.forEach(ap => { if (!pIds.has(ap.id) && !obsoleteSet.has(ap.id)) validPlayers.push(ap); });
-        const mIds = new Set(matches.map(m => m.id));
-        ARCHIVE_MATCHES.forEach(am => { if (!mIds.has(am.id)) matches.push(am); });
+        const deduplicatedMatches = deduplicateMatches([...matches, ...ARCHIVE_MATCHES]);
 
         const detectedYears = Array.from(new Set([
           ...baseYears,
           ...classes.map(c => c.year),
           ...validPlayers.map(p => p.year),
-          ...matches.map(m => m.year)
+          ...deduplicatedMatches.map(m => m.year)
         ])).filter(Boolean);
         detectedYears.sort((a, b) => b.localeCompare(a));
         const years = detectedYears;
 
-        console.log(`Firebase: Raw loaded stats - Classes: ${classes.length}, Players: ${validPlayers.length}, Matches: ${matches.length}`);
-        const computed = recalculateInMemoryData(classes, validPlayers, matches, years);
+        console.log(`Firebase: Raw loaded stats - Classes: ${classes.length}, Players: ${validPlayers.length}, Matches: ${deduplicatedMatches.length}`);
+        const computed = recalculateInMemoryData(classes, validPlayers, deduplicatedMatches, years);
         console.log(`Firebase: In-memory stats computed. Total computed players: ${computed.players.length}`);
         
         let filtered = computed.players;
@@ -1227,17 +1285,12 @@ export const db = {
     if (list.length === 0) {
       list = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     }
-    // Merge archive matches ensuring no duplicates
-    const existingIds = new Set(list.map(m => m.id));
-    ARCHIVE_MATCHES.forEach(am => {
-      if (!existingIds.has(am.id)) {
-        list.push(am);
-      }
-    });
+    // Merge archive matches ensuring semantic deduplication
+    const deduplicatedMatches = deduplicateMatches([...list, ...ARCHIVE_MATCHES]);
     if (year) {
-      return list.filter(m => m.year === year);
+      return deduplicatedMatches.filter(m => m.year === year);
     }
-    return list;
+    return deduplicatedMatches;
   },
 
 
@@ -1495,8 +1548,7 @@ export const db = {
     allPlayers = allPlayers.filter(p => !obsoleteSet.has(p.id));
     const existingPIds = new Set(allPlayers.map(p => p.id));
     ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id) && !obsoleteSet.has(ap.id)) allPlayers.push(ap); });
-    const existingMIds = new Set(allMatches.map(m => m.id));
-    ARCHIVE_MATCHES.forEach(am => { if (!existingMIds.has(am.id)) allMatches.push(am); });
+    allMatches = deduplicateMatches([...allMatches, ...ARCHIVE_MATCHES]);
 
     const targetKey = normalizePlayerName(playerName);
     if (!targetKey) return null;
@@ -1529,11 +1581,20 @@ export const db = {
 
       if (seasonMap.has(key)) {
         const exist = seasonMap.get(key);
-        exist.goals += goals;
-        exist.assists += assists;
-        exist.matchesPlayed = Math.max(exist.matchesPlayed, matchesPlayed);
-        exist.saves += saves;
-        if (rating > exist.rating) exist.rating = rating;
+        // Deduplicate duplicate profiles in same year & class (never sum duplicate records!)
+        if (matchesPlayed > exist.matchesPlayed && goals > 0) {
+          exist.goals = goals;
+          exist.assists = assists;
+          exist.matchesPlayed = matchesPlayed;
+          exist.saves = Math.max(exist.saves, saves);
+          if (rating > exist.rating) exist.rating = rating;
+        } else {
+          exist.goals = Math.max(exist.goals, goals);
+          exist.assists = Math.max(exist.assists, assists);
+          exist.matchesPlayed = Math.max(exist.matchesPlayed, matchesPlayed);
+          exist.saves = Math.max(exist.saves, saves);
+          if (rating > exist.rating) exist.rating = rating;
+        }
       } else {
         seasonMap.set(key, {
           id: p.id,
@@ -1661,13 +1722,13 @@ export const db = {
     allPlayers = allPlayers.filter(p => !obsoleteSet.has(p.id));
     const existingPIds = new Set(allPlayers.map(p => p.id));
     ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id) && !obsoleteSet.has(ap.id)) allPlayers.push(ap); });
-    const existingMIds = new Set(allMatches.map(m => m.id));
-    ARCHIVE_MATCHES.forEach(am => { if (!existingMIds.has(am.id)) allMatches.push(am); });
+    allMatches = deduplicateMatches([...allMatches, ...ARCHIVE_MATCHES]);
     const existingCIds = new Set(allClasses.map(c => c.id || `${c.year}_${c.name}`));
     ARCHIVE_CLASSES.forEach(ac => { if (!existingCIds.has(ac.id) && !existingCIds.has(`${ac.year}_${ac.name}`)) allClasses.push(ac); });
 
     // 1. Group players by normalized name (deduplicate spelling variants & aliases)
-    const playerGroups = {};
+    // First deduplicate per (normKey + year + class) so duplicate profiles in the same season never multiply stats
+    const seasonPlayerMap = new Map();
     allPlayers.forEach(p => {
       const name = (p.name || '').trim();
       if (!name) return;
@@ -1675,10 +1736,38 @@ export const db = {
       const normKey = normalizePlayerName(name);
       if (!normKey) return;
 
+      const seasonClassKey = `${normKey}_${p.year || ''}_${p.class || ''}`;
+      if (seasonPlayerMap.has(seasonClassKey)) {
+        const exist = seasonPlayerMap.get(seasonClassKey);
+        exist.goals = Math.max(exist.goals || 0, Number(p.goals) || 0);
+        exist.assists = Math.max(exist.assists || 0, Number(p.assists) || 0);
+        exist.matchesPlayed = Math.max(exist.matchesPlayed || 0, Number(p.matchesPlayed) || 0);
+        if ((Number(p.overallRating) || 0) > (exist.overallRating || 0)) {
+          exist.overallRating = Number(p.overallRating);
+        }
+        if (/[əıöüğşç]/i.test(name) && !/[əıöüğşç]/i.test(exist.name)) {
+          exist.name = name;
+        }
+      } else {
+        seasonPlayerMap.set(seasonClassKey, {
+          ...p,
+          normKey,
+          name,
+          goals: Number(p.goals) || 0,
+          assists: Number(p.assists) || 0,
+          matchesPlayed: Number(p.matchesPlayed) || 0,
+          overallRating: Number(p.overallRating) || 6.5
+        });
+      }
+    });
+
+    const playerGroups = {};
+    seasonPlayerMap.forEach(p => {
+      const normKey = p.normKey;
       if (!playerGroups[normKey]) {
         playerGroups[normKey] = {
-          name,
-          normalizedName: name.toLowerCase(),
+          name: p.name,
+          normalizedName: p.name.toLowerCase(),
           normKey,
           classes: new Set(),
           years: new Set(),
@@ -1692,16 +1781,16 @@ export const db = {
         };
       }
       // Prefer proper Azerbaijani spelling
-      if (/[əıöüğşç]/i.test(name) && !/[əıöüğşç]/i.test(playerGroups[normKey].name)) {
-        playerGroups[normKey].name = name;
+      if (/[əıöüğşç]/i.test(p.name) && !/[əıöüğşç]/i.test(playerGroups[normKey].name)) {
+        playerGroups[normKey].name = p.name;
       }
       if (p.class) playerGroups[normKey].classes.add(p.class);
       if (p.year) playerGroups[normKey].years.add(p.year);
-      playerGroups[normKey].totalGoals += Number(p.goals) || 0;
-      playerGroups[normKey].totalAssists += Number(p.assists) || 0;
-      playerGroups[normKey].totalMatches += Number(p.matchesPlayed) || 0;
+      playerGroups[normKey].totalGoals += p.goals;
+      playerGroups[normKey].totalAssists += p.assists;
+      playerGroups[normKey].totalMatches += p.matchesPlayed;
       if (p.overallRating) {
-        playerGroups[normKey].ratingSum += Number(p.overallRating);
+        playerGroups[normKey].ratingSum += p.overallRating;
         playerGroups[normKey].ratingCount += 1;
       }
     });
