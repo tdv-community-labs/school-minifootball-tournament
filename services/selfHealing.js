@@ -16,7 +16,7 @@
  * ============================================================================
  */
 import { db, recalculateData, normalizePlayerName, OBSOLETE_PLAYER_IDS, getMatchSemanticKey, deduplicateMatches } from './database.js';
-import { isMatchDivision } from './i18n.js';
+import { isMatchDivision, getDivisionsForYear } from './i18n.js';
 import { ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS, ARCHIVE_YEARS } from './archiveData.js';
 
 /**
@@ -81,13 +81,14 @@ export const auditTournamentData = (data = {}) => {
 
   // 2. Check for legacy / unmapped division aliases in classes
   classes.forEach(c => {
-    if (c.division && !validDivisions.includes(c.division)) {
+    const allowed = getDivisionsForYear(c.year);
+    if (c.division && !allowed.includes(c.division)) {
       issues.push({
-        id: `legacy_div_class_${c.id || c.name}`,
+        id: `legacy_div_class_${c.id || c.name}_${c.year || ''}`,
         type: 'division_alias',
         severity: 'info',
         title: `Köhnə kateqoriya kodu: "${c.name}" (${c.division})`,
-        description: `Sinif rəsmi kateqoriyalardan ('6', '7-8', '9', '10-11') fərqli kodda saxlanılıb.`,
+        description: `Sinif ${c.year || ''} mövsümünün rəsmi kateqoriyalarından (${allowed.join(', ')}) fərqli kodda saxlanılıb.`,
         canAutoFix: true
       });
     }
@@ -106,13 +107,14 @@ export const auditTournamentData = (data = {}) => {
       });
     }
 
-    if (m.division && !validDivisions.includes(m.division)) {
+    const allowed = getDivisionsForYear(m.year);
+    if (m.division && !allowed.includes(m.division)) {
       issues.push({
         id: `legacy_div_match_${m.id}`,
         type: 'division_alias',
         severity: 'info',
         title: `Matçın köhnə kateqoriyası: ${m.teamA} vs ${m.teamB}`,
-        description: `Matçın kateqoriya kodu '${m.division}' olaraq qeyd edilib.`,
+        description: `Matç ${m.year || ''} mövsümünün rəsmi kateqoriyalarından (${allowed.join(', ')}) fərqli '${m.division}' kodunda saxlanılıb.`,
         canAutoFix: true
       });
     }
@@ -191,23 +193,74 @@ export const repairTournamentData = async () => {
 
   const initialPlayerCount = players.length;
 
-  // 2. Fix class division aliases
+  // 2. Fix class division aliases to canonical seasonal format
   let fixedClasses = 0;
   classes = classes.map(c => {
+    const yr = c.year || '';
+    const name = c.name || '';
     let div = c.division;
-    if (div === '7' || div === '8') { div = '7-8'; fixedClasses++; }
+    const prevDiv = div;
+
+    if (yr === '2022-2023' || yr === '2024-2025' || yr === '2025-2026') {
+      if (name.startsWith('11')) div = '11';
+      else if (name.startsWith('9') || name.startsWith('10')) div = '9-10';
+      else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
+      else if (name.startsWith('6')) div = '6';
+    } else if (yr === '2023-2024') {
+      if (name.startsWith('10') || name.startsWith('11')) div = '10-11';
+      else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
+      else if (name.startsWith('6')) div = '6';
+    } else if (yr === '2021-2022') {
+      if (name.startsWith('10') || name.startsWith('11')) div = '10-11';
+      else if (name.startsWith('9')) div = '9';
+      else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
+      else if (name.startsWith('6')) div = '6';
+    } else if (yr === '2017-2018') {
+      if (name.startsWith('10') || name.startsWith('11')) div = '10-11';
+      else if (name.startsWith('9')) div = '9';
+    } else if (yr === '2018-2019') {
+      div = '10-11';
+    }
+
+    if (div !== prevDiv) fixedClasses++;
     return { ...c, division: div };
   });
-  if (fixedClasses > 0) details.push(`${fixedClasses} sinfin kateqoriya formatı ('7-8') standartlaşdırıldı.`);
+  if (fixedClasses > 0) details.push(`${fixedClasses} sinfin kateqoriyası mövsümün standartına uyğunlaşdırıldı.`);
 
   // 3. Fix match division aliases
   let fixedMatches = 0;
   matches = matches.map(m => {
+    const yr = m.year || '';
     let div = m.division;
-    if (div === '7' || div === '8') { div = '7-8'; fixedMatches++; }
+    const prevDiv = div;
+    const tA = m.teamA || '';
+    const tB = m.teamB || '';
+
+    if (yr === '2022-2023' || yr === '2024-2025' || yr === '2025-2026') {
+      if (tA.startsWith('11') || tB.startsWith('11')) div = '11';
+      else if (tA.startsWith('9') || tA.startsWith('10') || tB.startsWith('9') || tB.startsWith('10')) div = '9-10';
+      else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
+      else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
+    } else if (yr === '2023-2024') {
+      if (tA.startsWith('10') || tA.startsWith('11') || tB.startsWith('10') || tB.startsWith('11')) div = '10-11';
+      else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
+      else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
+    } else if (yr === '2021-2022') {
+      if (tA.startsWith('10') || tA.startsWith('11') || tB.startsWith('10') || tB.startsWith('11')) div = '10-11';
+      else if (tA.startsWith('9') || tB.startsWith('9')) div = '9';
+      else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
+      else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
+    } else if (yr === '2017-2018') {
+      if (div === '11' || div === '10-11' || tA.startsWith('10') || tA.startsWith('11')) div = '10-11';
+      else if (div === '9' || div === '9-10' || tA.startsWith('9')) div = '9';
+    } else if (yr === '2018-2019') {
+      div = '10-11';
+    }
+
+    if (div !== prevDiv) fixedMatches++;
     return { ...m, division: div };
   });
-  if (fixedMatches > 0) details.push(`${fixedMatches} matçın kateqoriyası standartlaşdırıldı.`);
+  if (fixedMatches > 0) details.push(`${fixedMatches} matçın kateqoriyası mövsümün standartına uyğunlaşdırıldı.`);
 
   // 3b. Deduplicate matches
   const prevMatchCount = matches.length;

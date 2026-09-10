@@ -151,6 +151,92 @@ const initialPlayers = ARCHIVE_PLAYERS || [];
 
 const initialMatches = ARCHIVE_MATCHES || [];
 
+const migrateStorageDivisions = () => {
+  const migrationKey = 'btl_div_migrated_v20260910_canonical';
+  if (localStorage.getItem(migrationKey)) return;
+
+  try {
+    let classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
+    let matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
+    let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+
+    // 1. Sync classes with canonical division mappings
+    classes = classes.map(c => {
+      const yr = c.year || '';
+      const name = c.name || '';
+      let div = c.division;
+
+      if (yr === '2022-2023' || yr === '2024-2025' || yr === '2025-2026') {
+        if (name.startsWith('11')) div = '11';
+        else if (name.startsWith('9') || name.startsWith('10')) div = '9-10';
+        else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
+        else if (name.startsWith('6')) div = '6';
+      } else if (yr === '2023-2024') {
+        if (name.startsWith('10') || name.startsWith('11')) div = '10-11';
+        else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
+        else if (name.startsWith('6')) div = '6';
+      } else if (yr === '2021-2022') {
+        if (name.startsWith('10') || name.startsWith('11')) div = '10-11';
+        else if (name.startsWith('9')) div = '9';
+        else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
+        else if (name.startsWith('6')) div = '6';
+      } else if (yr === '2017-2018') {
+        if (name.startsWith('10') || name.startsWith('11')) div = '10-11';
+        else if (name.startsWith('9')) div = '9';
+      } else if (yr === '2018-2019') {
+        div = '10-11';
+      }
+      return { ...c, division: div };
+    });
+
+    // 2. Sync matches with canonical division mappings
+    matches = matches.map(m => {
+      const yr = m.year || '';
+      let div = m.division;
+      const tA = m.teamA || '';
+      const tB = m.teamB || '';
+
+      if (yr === '2022-2023' || yr === '2024-2025' || yr === '2025-2026') {
+        if (tA.startsWith('11') || tB.startsWith('11')) div = '11';
+        else if (tA.startsWith('9') || tA.startsWith('10') || tB.startsWith('9') || tB.startsWith('10')) div = '9-10';
+        else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
+        else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
+      } else if (yr === '2023-2024') {
+        if (tA.startsWith('10') || tA.startsWith('11') || tB.startsWith('10') || tB.startsWith('11')) div = '10-11';
+        else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
+        else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
+      } else if (yr === '2021-2022') {
+        if (tA.startsWith('10') || tA.startsWith('11') || tB.startsWith('10') || tB.startsWith('11')) div = '10-11';
+        else if (tA.startsWith('9') || tB.startsWith('9')) div = '9';
+        else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
+        else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
+      } else if (yr === '2017-2018') {
+        if (div === '11' || div === '10-11' || tA.startsWith('10') || tA.startsWith('11')) div = '10-11';
+        else if (div === '9' || div === '9-10' || tA.startsWith('9')) div = '9';
+      } else if (yr === '2018-2019') {
+        div = '10-11';
+      }
+      return { ...m, division: div };
+    });
+
+    // 3. Sync players division with class division
+    const classDivMap = new Map();
+    classes.forEach(c => classDivMap.set(`${c.year}_${c.name}`, c.division));
+    players = players.map(p => {
+      const key = `${p.year}_${p.class}`;
+      const div = classDivMap.get(key) || p.division || '11';
+      return { ...p, division: div };
+    });
+
+    localStorage.setItem('minifootball_classes', JSON.stringify(classes));
+    localStorage.setItem('minifootball_matches', JSON.stringify(matches));
+    localStorage.setItem('minifootball_players', JSON.stringify(players));
+    localStorage.setItem(migrationKey, 'true');
+  } catch (err) {
+    console.error('migrateStorageDivisions error:', err);
+  }
+};
+
 const initializeStorage = () => {
   const defaultYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023", "2021-2022", "2018-2019", "2017-2018"];
   if (!localStorage.getItem('minifootball_years')) {
@@ -176,6 +262,7 @@ const initializeStorage = () => {
     localStorage.setItem('minifootball_players', JSON.stringify(initialPlayers));
     localStorage.setItem('minifootball_matches', JSON.stringify(initialMatches));
   }
+  migrateStorageDivisions();
   recalculateData();
 };
 
@@ -207,10 +294,10 @@ export const recalculateData = () => {
 
   // Calculate Standing Points Map: standingsMap[year][division][class]
   const standingsMap = {};
-  const allTournamentDivisions = ['6', '7-8', '9', '10-11', '7', '8', '9-10', '11'];
   years.forEach(yr => {
     standingsMap[yr] = {};
-    allTournamentDivisions.forEach(div => {
+    const yearDivisions = getDivisionsForYear(yr);
+    yearDivisions.forEach(div => {
       standingsMap[yr][div] = {};
       
       // Initialize classes for this year and division
@@ -322,7 +409,8 @@ export const recalculateData = () => {
   const finalStandings = {};
   years.forEach(yr => {
     finalStandings[yr] = {};
-    allTournamentDivisions.forEach(div => {
+    const yearDivisions = getDivisionsForYear(yr);
+    yearDivisions.forEach(div => {
       if (!standingsMap[yr]?.[div]) {
         finalStandings[yr][div] = [];
         return;
@@ -448,10 +536,10 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
 
   // Calculate Standing Points Map: standingsMap[year][division][class]
   const standingsMap = {};
-  const allTournamentDivisions = ['6', '7-8', '9', '10-11', '7', '8', '9-10', '11'];
   yearsList.forEach(yr => {
     standingsMap[yr] = {};
-    allTournamentDivisions.forEach(div => {
+    const yearDivisions = getDivisionsForYear(yr);
+    yearDivisions.forEach(div => {
       standingsMap[yr][div] = {};
       
       // Initialize classes for this year and division
@@ -562,7 +650,8 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
   const finalStandings = {};
   yearsList.forEach(yr => {
     finalStandings[yr] = {};
-    allTournamentDivisions.forEach(div => {
+    const yearDivisions = getDivisionsForYear(yr);
+    yearDivisions.forEach(div => {
       if (!standingsMap[yr]?.[div]) {
         finalStandings[yr][div] = [];
         return;
@@ -1140,12 +1229,13 @@ export const db = {
         const years = detectedYears;
 
         const computed = recalculateInMemoryData(classes, players, matches, years);
+        const validYearDivs = getDivisionsForYear(year);
         let standings = computed.standings[year]?.[division] || [];
-        if (standings.length === 0) {
-          if (division === '10-11') standings = computed.standings[year]?.['11'] || [];
-          else if (division === '11') standings = computed.standings[year]?.['10-11'] || [];
-          else if (division === '9') standings = computed.standings[year]?.['9-10'] || [];
-          else if (division === '9-10') standings = computed.standings[year]?.['9'] || [];
+        if (standings.length === 0 && !validYearDivs.includes(division)) {
+          if ((division === '11' || division === '10-11') && validYearDivs.includes('10-11')) standings = computed.standings[year]?.['10-11'] || [];
+          else if ((division === '11' || division === '10-11') && validYearDivs.includes('11')) standings = computed.standings[year]?.['11'] || [];
+          else if ((division === '9' || division === '9-10') && validYearDivs.includes('9-10')) standings = computed.standings[year]?.['9-10'] || [];
+          else if ((division === '9' || division === '9-10') && validYearDivs.includes('9')) standings = computed.standings[year]?.['9'] || [];
         }
         console.log(`Firebase: Computed standings size: ${standings.length} classes for division ${division}, year ${year}`);
         return standings;
@@ -1155,13 +1245,14 @@ export const db = {
       }
     }
     recalculateData(); // refresh
+    const validYearDivs = getDivisionsForYear(year);
     const allStandings = JSON.parse(localStorage.getItem('minifootball_standings_divided') || '{}');
     let localStandings = allStandings[year]?.[division] || [];
-    if (localStandings.length === 0) {
-      if (division === '10-11') localStandings = allStandings[year]?.['11'] || [];
-      else if (division === '11') localStandings = allStandings[year]?.['10-11'] || [];
-      else if (division === '9') localStandings = allStandings[year]?.['9-10'] || [];
-      else if (division === '9-10') localStandings = allStandings[year]?.['9'] || [];
+    if (localStandings.length === 0 && !validYearDivs.includes(division)) {
+      if ((division === '11' || division === '10-11') && validYearDivs.includes('10-11')) localStandings = allStandings[year]?.['10-11'] || [];
+      else if ((division === '11' || division === '10-11') && validYearDivs.includes('11')) localStandings = allStandings[year]?.['11'] || [];
+      else if ((division === '9' || division === '9-10') && validYearDivs.includes('9-10')) localStandings = allStandings[year]?.['9-10'] || [];
+      else if ((division === '9' || division === '9-10') && validYearDivs.includes('9')) localStandings = allStandings[year]?.['9'] || [];
     }
     return localStandings;
   },

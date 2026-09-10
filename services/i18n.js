@@ -353,16 +353,14 @@ export const isMatchDivision = (itemDiv, selectedDiv) => {
   const s = String(selectedDiv).trim();
   if (i === s) return true;
 
-  // 10-11 and 11 aliases
-  if ((s === '10-11' || s === '11') && (i === '10-11' || i === '11')) return true;
+  // Grade 7-8 combined category includes single 7 and 8
+  if (s === '7-8' && (i === '7' || i === '8')) return true;
 
-  // 7-8 includes 7 and 8
-  if (s === '7-8' && (i === '7-8' || i === '7' || i === '8')) return true;
-  if ((s === '7' || s === '8') && i === '7-8') return true;
+  // Grade 9-10 combined category includes single 9 and 10
+  if (s === '9-10' && (i === '9' || i === '10')) return true;
 
-  // 9-10 includes 9-10, 9, 10
-  if (s === '9-10' && (i === '9-10' || i === '9' || i === '10')) return true;
-  if (s === '9' && (i === '9' || i === '9-10')) return true;
+  // Grade 10-11 combined category includes single 10 and 11
+  if (s === '10-11' && (i === '10' || i === '11')) return true;
 
   return false;
 };
@@ -370,12 +368,14 @@ export const isMatchDivision = (itemDiv, selectedDiv) => {
 /**
  * Get the list of official divisions that participated in a specific tournament year.
  * Historical rules:
- * - Before 2021-2022: Younger classes (6, 7, 8) did NOT participate.
- * - In 2017-2018: Only high school / 10-11 and 9 participated.
- * - In 2018-2019: Only high school / 10-11 participated.
- * - In 2021-2022: 6, 7-8, 9, 10-11 participated.
- * - Recent years (2022-2023, 2023-2024, 2024-2025, 2025-2026):
- *   7 and 8 are combined into '7-8', 9 and 10 are combined into '9-10', plus '6' and '11'.
+ * - 2017-2018: Only 9 and 10-11 participated.
+ * - 2018-2019: Only 10-11 participated.
+ * - 2021-2022: 6, 7-8, 9, 10-11 participated.
+ * - 2022-2023: 6, 7-8, 9-10, 11 participated.
+ * - 2023-2024: 6, 7-8, 10-11 participated.
+ * - Modern/Future seasons (2024-2025, 2025-2026+): 6, 7-8, 9-10, 11.
+ * 
+ * Note: Dynamic legacy aliases are strictly rejected to prevent duplicate buttons.
  */
 export const getDivisionsForYear = (year, dynamicDetectedList = []) => {
   const y = String(year || '').trim();
@@ -393,33 +393,36 @@ export const getDivisionsForYear = (year, dynamicDetectedList = []) => {
     });
   };
 
-  // Known historical seasons
-  let baseDivs = [];
+  // Authoritative canonical sets for each tournament year
+  let canonicalDivs = [];
   if (y === '2017-2018') {
-    baseDivs = ['10-11', '9']; // Only high school and 9th cup
+    canonicalDivs = ['9', '10-11'];
   } else if (y === '2018-2019') {
-    baseDivs = ['10-11']; // Only high school
+    canonicalDivs = ['10-11'];
   } else if (y === '2021-2022') {
-    baseDivs = ['6', '7-8', '9', '10-11'];
+    canonicalDivs = ['6', '7-8', '9', '10-11'];
   } else if (y === '2022-2023') {
-    baseDivs = ['6', '7-8', '9-10', '11'];
+    canonicalDivs = ['6', '7-8', '9-10', '11'];
   } else if (y === '2023-2024') {
-    baseDivs = ['6', '7-8', '9-10', '11'];
+    canonicalDivs = ['6', '7-8', '10-11'];
   } else {
-    // Modern seasons (2024-2025, 2025-2026, and upcoming):
-    // Son illərdə 7-8 və 9-10 birlikdədir
-    baseDivs = ['6', '7-8', '9-10', '11'];
+    // 2024-2025, 2025-2026 və sonrakı illər
+    canonicalDivs = ['6', '7-8', '9-10', '11'];
   }
 
-  // If dynamic classes were passed in, include any custom divisions created by admin
+  // If dynamic classes were passed in, ONLY accept custom non-standard divisions
+  // (e.g. 'Müəllimlər' or 'Qızlar'). NEVER accept legacy aliases that cause duplicates.
+  const standardDivisionCodes = new Set(['6', '7', '8', '7-8', '9', '10', '9-10', '10-11', '11']);
   if (Array.isArray(dynamicDetectedList) && dynamicDetectedList.length > 0) {
-    const validDynamic = dynamicDetectedList.filter(d => Boolean(d) && typeof d === 'string');
-    if (validDynamic.length > 0) {
-      return sortByGrade([...baseDivs, ...validDynamic]);
+    const customDivs = dynamicDetectedList.filter(d => 
+      Boolean(d) && typeof d === 'string' && !standardDivisionCodes.has(d)
+    );
+    if (customDivs.length > 0) {
+      return sortByGrade([...canonicalDivs, ...customDivs]);
     }
   }
 
-  return sortByGrade(baseDivs);
+  return sortByGrade(canonicalDivs);
 };
 
 /**
