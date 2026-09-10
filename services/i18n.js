@@ -37,11 +37,13 @@ export const translations = {
 
     // Divisions
     div6: "6th Grade",
+    div7: "7th Grade",
+    div8: "8th Grade",
     div7_8: "7-8th Grade",
     div9: "9th Grade",
+    div9_10: "9-10th Grade",
     div10_11: "10-11th Grade",
-    div9_10: "9th Grade",
-    div11: "10-11th Grade",
+    div11: "11th Grade",
 
     // Dashboard Banner
     welcomeTag: "Official Championship",
@@ -180,11 +182,13 @@ export const translations = {
 
     // Divisions
     div6: "6-cı Siniflər",
+    div7: "7-ci Siniflər",
+    div8: "8-ci Siniflər",
     div7_8: "7-8-ci Siniflər",
     div9: "9-cu Siniflər",
+    div9_10: "9-10-cu Siniflər",
     div10_11: "10-11-ci Siniflər",
-    div9_10: "9-cu Siniflər",
-    div11: "10-11-ci Siniflər",
+    div11: "11-ci Siniflər",
 
     // Dashboard Banner
     welcomeTag: "Rəsmi Çempionat",
@@ -321,18 +325,22 @@ export const getDivisionLabel = (div, lang = 'en') => {
     if (d === '6') return '6-cı Siniflər';
     if (d === '7') return '7-ci Siniflər';
     if (d === '8') return '8-ci Siniflər';
-    if (d === '9' || d === '9-10') return '9-cu Siniflər';
-    if (d === '10-11' || d === '11') return '10-11-ci Siniflər';
     if (d === '7-8') return '7-8-ci Siniflər';
+    if (d === '9') return '9-cu Siniflər';
+    if (d === '9-10') return '9-10-cu Siniflər';
+    if (d === '10-11') return '10-11-ci Siniflər';
+    if (d === '11') return '11-ci Siniflər';
     return d ? `${d}-cı Siniflər` : '10-11-ci Siniflər';
   }
   // English default
   if (d === '6') return '6th Grade';
   if (d === '7') return '7th Grade';
   if (d === '8') return '8th Grade';
-  if (d === '9' || d === '9-10') return '9th Grade';
-  if (d === '10-11' || d === '11') return '10-11th Grade';
   if (d === '7-8') return '7-8th Grade';
+  if (d === '9') return '9th Grade';
+  if (d === '9-10') return '9-10th Grade';
+  if (d === '10-11') return '10-11th Grade';
+  if (d === '11') return '11th Grade';
   return d ? `${d} Grade` : '10-11th Grade';
 };
 
@@ -344,13 +352,74 @@ export const isMatchDivision = (itemDiv, selectedDiv) => {
   const i = String(itemDiv).trim();
   const s = String(selectedDiv).trim();
   if (i === s) return true;
-  // 10-11 aliases
+
+  // 10-11 and 11 aliases
   if ((s === '10-11' || s === '11') && (i === '10-11' || i === '11')) return true;
-  // 9 aliases
-  if ((s === '9' || s === '9-10') && (i === '9' || i === '9-10')) return true;
-  // 7-8 aliases
+
+  // 7-8 includes 7 and 8
   if (s === '7-8' && (i === '7-8' || i === '7' || i === '8')) return true;
+  if ((s === '7' || s === '8') && i === '7-8') return true;
+
+  // 9-10 includes 9-10, 9, 10
+  if (s === '9-10' && (i === '9-10' || i === '9' || i === '10')) return true;
+  if (s === '9' && (i === '9' || i === '9-10')) return true;
+
   return false;
+};
+
+/**
+ * Get the list of official divisions that participated in a specific tournament year.
+ * Historical rules:
+ * - Before 2021-2022: Younger classes (6, 7, 8) did NOT participate.
+ * - In 2017-2018: Only high school / 10-11 and 9 participated.
+ * - In 2018-2019: Only high school / 10-11 participated.
+ * - In 2021-2022: 6, 7-8, 9, 10-11 participated.
+ * - Recent years (2022-2023, 2023-2024, 2024-2025, 2025-2026):
+ *   7 and 8 are combined into '7-8', 9 and 10 are combined into '9-10', plus '6' and '11'.
+ */
+export const getDivisionsForYear = (year, dynamicDetectedList = []) => {
+  const y = String(year || '').trim();
+
+  // Canonical ordering of divisions by school grade level
+  const canonicalOrder = ['6', '7-8', '7', '8', '9', '9-10', '10-11', '11'];
+  const sortByGrade = (list) => {
+    return Array.from(new Set(list)).sort((a, b) => {
+      const idxA = canonicalOrder.indexOf(a);
+      const idxB = canonicalOrder.indexOf(b);
+      if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+      if (idxA !== -1) return -1;
+      if (idxB !== -1) return 1;
+      return a.localeCompare(b);
+    });
+  };
+
+  // Known historical seasons
+  let baseDivs = [];
+  if (y === '2017-2018') {
+    baseDivs = ['10-11', '9']; // Only high school and 9th cup
+  } else if (y === '2018-2019') {
+    baseDivs = ['10-11']; // Only high school
+  } else if (y === '2021-2022') {
+    baseDivs = ['6', '7-8', '9', '10-11'];
+  } else if (y === '2022-2023') {
+    baseDivs = ['6', '7-8', '9-10', '11'];
+  } else if (y === '2023-2024') {
+    baseDivs = ['6', '7-8', '9-10', '11'];
+  } else {
+    // Modern seasons (2024-2025, 2025-2026, and upcoming):
+    // Son illərdə 7-8 və 9-10 birlikdədir
+    baseDivs = ['6', '7-8', '9-10', '11'];
+  }
+
+  // If dynamic classes were passed in, include any custom divisions created by admin
+  if (Array.isArray(dynamicDetectedList) && dynamicDetectedList.length > 0) {
+    const validDynamic = dynamicDetectedList.filter(d => Boolean(d) && typeof d === 'string');
+    if (validDynamic.length > 0) {
+      return sortByGrade([...baseDivs, ...validDynamic]);
+    }
+  }
+
+  return sortByGrade(baseDivs);
 };
 
 /**

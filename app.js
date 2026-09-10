@@ -22,16 +22,24 @@ import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260910_00
 import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260910_0080';
 import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260910_0080';
 import { db } from './services/database.js?v=20260910_0080';
-import { t, getDivisionLabel } from './services/i18n.js?v=20260910_0080';
+import { t, getDivisionLabel, isMatchDivision, getDivisionsForYear } from './services/i18n.js?v=20260910_0080';
 import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260910_0080';
 
 const html = htm.bind(React.createElement);
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [activeDivision, setActiveDivision] = useState('10-11'); // '6', '7-8', '9', '10-11'
   const [activeYear, setActiveYear] = useState(() => {
     return localStorage.getItem('btl_selected_year') || '2022-2023';
+  });
+  const [availableDivisions, setAvailableDivisions] = useState(() => {
+    const savedYear = localStorage.getItem('btl_selected_year') || '2022-2023';
+    return getDivisionsForYear(savedYear);
+  });
+  const [activeDivision, setActiveDivision] = useState(() => {
+    const savedYear = localStorage.getItem('btl_selected_year') || '2022-2023';
+    const initDivs = getDivisionsForYear(savedYear);
+    return initDivs.includes('11') ? '11' : (initDivs[0] || '10-11');
   });
   const [years, setYears] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -86,14 +94,33 @@ export default function App() {
     const allYears = await db.getYears();
     setYears(allYears);
     const savedYear = localStorage.getItem('btl_selected_year');
+    let targetYear = '2022-2023';
     if (savedYear && allYears.includes(savedYear)) {
-      setActiveYear(savedYear);
+      targetYear = savedYear;
     } else if (allYears.includes('2022-2023')) {
-      setActiveYear('2022-2023');
+      targetYear = '2022-2023';
     } else if (allYears.length > 0) {
-      setActiveYear(allYears[0]);
+      targetYear = allYears[0];
     }
+    setActiveYear(targetYear);
+    const divs = await db.getDivisions(targetYear);
+    setAvailableDivisions(divs);
   };
+
+  useEffect(() => {
+    let isMounted = true;
+    const syncDivisions = async () => {
+      const divs = await db.getDivisions(activeYear);
+      if (!isMounted) return;
+      setAvailableDivisions(divs);
+      if (!divs.includes(activeDivision)) {
+        const compatible = divs.find(d => isMatchDivision(activeDivision, d));
+        setActiveDivision(compatible || divs[0] || '11');
+      }
+    };
+    syncDivisions();
+    return () => { isMounted = false; };
+  }, [activeYear]);
 
   useEffect(() => {
     applyTheme(theme);
@@ -208,16 +235,20 @@ export default function App() {
     ...(isAdminAuthorized ? [{ id: 'admin', label: t('navAdmin', lang), icon: 'fas fa-user-cog' }] : [])
   ];
 
-  const divisions = [
-    { id: '6', label: getDivisionLabel('6', lang) },
-    { id: '7-8', label: getDivisionLabel('7-8', lang) },
-    { id: '9', label: getDivisionLabel('9', lang) },
-    { id: '10-11', label: getDivisionLabel('10-11', lang) }
-  ];
+  const divisions = availableDivisions.map(divId => ({
+    id: divId,
+    label: getDivisionLabel(divId, lang)
+  }));
 
-  const handleYearChange = (newYear) => {
+  const handleYearChange = async (newYear) => {
     setActiveYear(newYear);
     localStorage.setItem('btl_selected_year', newYear);
+    const divs = await db.getDivisions(newYear);
+    setAvailableDivisions(divs);
+    if (!divs.includes(activeDivision)) {
+      const compatible = divs.find(d => isMatchDivision(activeDivision, d));
+      setActiveDivision(compatible || divs[0] || '11');
+    }
   };
 
   return html`

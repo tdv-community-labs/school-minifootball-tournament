@@ -31,7 +31,7 @@ export const auditTournamentData = (data = {}) => {
   const years = data.years || JSON.parse(localStorage.getItem('minifootball_years') || '[]');
 
   const issues = [];
-  const validDivisions = ['6', '7-8', '9', '10-11'];
+  const validDivisions = ['6', '7-8', '9', '9-10', '10-11', '11'];
 
   // 1. Check for duplicate player profiles
   const playerGroupMap = new Map();
@@ -195,20 +195,16 @@ export const repairTournamentData = async () => {
   let fixedClasses = 0;
   classes = classes.map(c => {
     let div = c.division;
-    if (div === '11') { div = '10-11'; fixedClasses++; }
-    else if (div === '9-10') { div = '9'; fixedClasses++; }
-    else if (div === '7' || div === '8') { div = '7-8'; fixedClasses++; }
+    if (div === '7' || div === '8') { div = '7-8'; fixedClasses++; }
     return { ...c, division: div };
   });
-  if (fixedClasses > 0) details.push(`${fixedClasses} sinfin kateqoriya formatı ('10-11', '7-8') standartlaşdırıldı.`);
+  if (fixedClasses > 0) details.push(`${fixedClasses} sinfin kateqoriya formatı ('7-8') standartlaşdırıldı.`);
 
   // 3. Fix match division aliases
   let fixedMatches = 0;
   matches = matches.map(m => {
     let div = m.division;
-    if (div === '11') { div = '10-11'; fixedMatches++; }
-    else if (div === '9-10') { div = '9'; fixedMatches++; }
-    else if (div === '7' || div === '8') { div = '7-8'; fixedMatches++; }
+    if (div === '7' || div === '8') { div = '7-8'; fixedMatches++; }
     return { ...m, division: div };
   });
   if (fixedMatches > 0) details.push(`${fixedMatches} matçın kateqoriyası standartlaşdırıldı.`);

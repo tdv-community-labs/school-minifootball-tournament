@@ -22,7 +22,7 @@ import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260910_0080';
-import { isMatchDivision } from './i18n.js';
+import { isMatchDivision, getDivisionsForYear } from './i18n.js';
 import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260910_0080';
 
 // ── Modulların İnteqrasiyası və Təkrar İxracı (100% Geriyə Uyğunluq) ─────────────
@@ -55,7 +55,8 @@ export {
   mergeMatchObjects, 
   deduplicateMatches,
   KNOWN_GROUP_SEEDS, 
-  assignGroupsToTeams 
+  assignGroupsToTeams,
+  getDivisionsForYear 
 };
 
 // Initialize Firebase if useRealFirebase toggle is true
@@ -698,6 +699,37 @@ export const db = {
     const local = JSON.parse(localStorage.getItem('minifootball_years') || '[]');
     const merged = Array.from(new Set([...local, ...defaultArchiveYears])).sort((a, b) => b.localeCompare(a));
     return merged;
+  },
+
+  // Dynamic divisions per tournament academic year
+  getDivisions: async (year) => {
+    let classes = [];
+    let matches = [];
+    if (useRealFirebase && firestore) {
+      try {
+        const [cSnap, mSnap] = await Promise.all([
+          getDocs(collection(firestore, "classes")),
+          getDocs(collection(firestore, "matches"))
+        ]);
+        cSnap.forEach(d => classes.push(sanitizeObject(d.data())));
+        mSnap.forEach(d => matches.push(sanitizeObject(d.data())));
+      } catch (e) {
+        console.error("Firebase: getDivisions failed with error:", e);
+      }
+    }
+    if (classes.length === 0) {
+      classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
+      matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
+    }
+    // Include archive data as fallback
+    classes = [...classes, ...ARCHIVE_CLASSES];
+    matches = [...matches, ...ARCHIVE_MATCHES];
+
+    const detected = new Set();
+    classes.filter(c => c.year === year).forEach(c => { if (c.division) detected.add(c.division); });
+    matches.filter(m => m.year === year).forEach(m => { if (m.division) detected.add(m.division); });
+
+    return getDivisionsForYear(year, Array.from(detected));
   },
 
   addYear: async (year) => {

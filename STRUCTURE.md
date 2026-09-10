@@ -112,9 +112,14 @@ school-minifootball-tournament/
 
 ---
 
-### 8. `services/i18n.js` — Çoxdilli Dəstək
-- **Məqsədi**: Bütün turnir interfeysinin Azərbaycan və İngilis dillərində qüsursuz işləməsini təmin edir.
-- **Əsas Funksiyaları**: `t( açar, dil )`, `getDivisionLabel()`, `getStageLabel()`.
+### 8. `services/i18n.js` — Çoxdilli Dəstək və Dinamik Kateqoriya İdarəetməsi
+- **Məqsədi**: Bütün turnir interfeysinin Azərbaycan və İngilis dillərində qüsursuz işləməsini, həmçinin hər il üzrə tarixi kateqoriyaların dinamik filtrlənməsini təmin edir.
+- **Əsas Funksiyaları**:
+  - `t( açar, dil )`: İnterfeys mətnlərinin tərcüməsi.
+  - `getDivisionLabel(div, lang)`: Yaş kateqoriyalarının rəsmi adları (məs: '9-10-cu Siniflər', '7-8-ci Siniflər').
+  - `getDivisionsForYear(year)`: Seçilən mövsümdə iştirak etmiş real kateqoriyaları çıxarır (2022-dən əvvəl aşağı siniflər gizlədilir, son illərdə 7-8 və 9-10 birləşdirilir).
+  - `isMatchDivision(itemDiv, targetDiv)`: Kateqoriyaların uyğunluğunu yoxlayır.
+  - `getStageLabel(stage, lang)`: Matç mərhələlərini tərcümə edir.
 
 ---
 
