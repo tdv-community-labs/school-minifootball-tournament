@@ -152,7 +152,7 @@ const initialPlayers = ARCHIVE_PLAYERS || [];
 const initialMatches = ARCHIVE_MATCHES || [];
 
 const migrateStorageDivisions = () => {
-  const migrationKey = 'btl_div_migrated_v20260910_canonical';
+  const migrationKey = 'btl_div_migrated_v20260910_9_10_11';
   if (localStorage.getItem(migrationKey)) return;
 
   try {
@@ -181,8 +181,7 @@ const migrateStorageDivisions = () => {
         else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
         else if (name.startsWith('6')) div = '6';
       } else if (yr === '2017-2018') {
-        if (name.startsWith('10') || name.startsWith('11')) div = '10-11';
-        else if (name.startsWith('9')) div = '9';
+        div = '9-10-11';
       } else if (yr === '2018-2019') {
         div = '10-11';
       }
@@ -211,8 +210,7 @@ const migrateStorageDivisions = () => {
         else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
         else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
       } else if (yr === '2017-2018') {
-        if (div === '11' || div === '10-11' || tA.startsWith('10') || tA.startsWith('11')) div = '10-11';
-        else if (div === '9' || div === '9-10' || tA.startsWith('9')) div = '9';
+        div = '9-10-11';
       } else if (yr === '2018-2019') {
         div = '10-11';
       }

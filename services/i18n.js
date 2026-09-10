@@ -43,6 +43,7 @@ export const translations = {
     div9: "9th Grade",
     div9_10: "9-10th Grade",
     div10_11: "10-11th Grade",
+    div9_10_11: "9-10-11th Grade",
     div11: "11th Grade",
 
     // Dashboard Banner
@@ -188,6 +189,7 @@ export const translations = {
     div9: "9-cu Siniflər",
     div9_10: "9-10-cu Siniflər",
     div10_11: "10-11-ci Siniflər",
+    div9_10_11: "9-10-11-ci Siniflər",
     div11: "11-ci Siniflər",
 
     // Dashboard Banner
@@ -330,6 +332,7 @@ export const getDivisionLabel = (div, lang = 'en') => {
     if (d === '9-10') return '9-10-cu Siniflər';
     if (d === '10-11') return '10-11-ci Siniflər';
     if (d === '11') return '11-ci Siniflər';
+    if (d === '9-10-11') return '9-10-11-ci Siniflər';
     return d ? `${d}-cı Siniflər` : '10-11-ci Siniflər';
   }
   // English default
@@ -341,6 +344,7 @@ export const getDivisionLabel = (div, lang = 'en') => {
   if (d === '9-10') return '9-10th Grade';
   if (d === '10-11') return '10-11th Grade';
   if (d === '11') return '11th Grade';
+  if (d === '9-10-11') return '9-10-11th Grade';
   return d ? `${d} Grade` : '10-11th Grade';
 };
 
@@ -362,14 +366,17 @@ export const isMatchDivision = (itemDiv, selectedDiv) => {
   // Grade 10-11 combined category includes single 10 and 11
   if (s === '10-11' && (i === '10' || i === '11')) return true;
 
+  // Grade 9-10-11 combined category (2017-2018 unified championship)
+  if (s === '9-10-11' && (i === '9-10-11' || i === '9' || i === '10' || i === '11' || i === '9-10' || i === '10-11')) return true;
+
   return false;
 };
 
 /**
  * Get the list of official divisions that participated in a specific tournament year.
  * Historical rules:
- * - 2017-2018: Only 9 and 10-11 participated.
- * - 2018-2019: Only 10-11 participated.
+ * - 2017-2018: 9, 10, and 11 played in one unified championship ('9-10-11').
+ * - 2018-2019: Only 10-11 participated ('10-11').
  * - 2021-2022: 6, 7-8, 9, 10-11 participated.
  * - 2022-2023: 6, 7-8, 9-10, 11 participated.
  * - 2023-2024: 6, 7-8, 10-11 participated.
@@ -381,7 +388,7 @@ export const getDivisionsForYear = (year, dynamicDetectedList = []) => {
   const y = String(year || '').trim();
 
   // Canonical ordering of divisions by school grade level
-  const canonicalOrder = ['6', '7-8', '7', '8', '9', '9-10', '10-11', '11'];
+  const canonicalOrder = ['6', '7-8', '7', '8', '9', '9-10', '10-11', '11', '9-10-11'];
   const sortByGrade = (list) => {
     return Array.from(new Set(list)).sort((a, b) => {
       const idxA = canonicalOrder.indexOf(a);
@@ -396,7 +403,7 @@ export const getDivisionsForYear = (year, dynamicDetectedList = []) => {
   // Authoritative canonical sets for each tournament year
   let canonicalDivs = [];
   if (y === '2017-2018') {
-    canonicalDivs = ['9', '10-11'];
+    canonicalDivs = ['9-10-11'];
   } else if (y === '2018-2019') {
     canonicalDivs = ['10-11'];
   } else if (y === '2021-2022') {
@@ -412,7 +419,7 @@ export const getDivisionsForYear = (year, dynamicDetectedList = []) => {
 
   // If dynamic classes were passed in, ONLY accept custom non-standard divisions
   // (e.g. 'Müəllimlər' or 'Qızlar'). NEVER accept legacy aliases that cause duplicates.
-  const standardDivisionCodes = new Set(['6', '7', '8', '7-8', '9', '10', '9-10', '10-11', '11']);
+  const standardDivisionCodes = new Set(['6', '7', '8', '7-8', '9', '10', '9-10', '10-11', '11', '9-10-11']);
   if (Array.isArray(dynamicDetectedList) && dynamicDetectedList.length > 0) {
     const customDivs = dynamicDetectedList.filter(d => 
       Boolean(d) && typeof d === 'string' && !standardDivisionCodes.has(d)
