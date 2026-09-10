@@ -402,10 +402,8 @@ export const getDivisionsForYear = (year, dynamicDetectedList = []) => {
 
   // Authoritative canonical sets for each tournament year
   let canonicalDivs = [];
-  if (y === '2017-2018') {
+  if (y === '2017-2018' || y === '2018-2019') {
     canonicalDivs = ['9-10-11'];
-  } else if (y === '2018-2019') {
-    canonicalDivs = ['10-11'];
   } else if (y === '2021-2022') {
     canonicalDivs = ['6', '7-8', '9', '10-11'];
   } else if (y === '2022-2023') {

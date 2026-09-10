@@ -215,10 +215,8 @@ export const repairTournamentData = async () => {
       else if (name.startsWith('9')) div = '9';
       else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
       else if (name.startsWith('6')) div = '6';
-    } else if (yr === '2017-2018') {
+    } else if (yr === '2017-2018' || yr === '2018-2019') {
       div = '9-10-11';
-    } else if (yr === '2018-2019') {
-      div = '10-11';
     }
 
     if (div !== prevDiv) fixedClasses++;
@@ -249,10 +247,8 @@ export const repairTournamentData = async () => {
       else if (tA.startsWith('9') || tB.startsWith('9')) div = '9';
       else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
       else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
-    } else if (yr === '2017-2018') {
+    } else if (yr === '2017-2018' || yr === '2018-2019') {
       div = '9-10-11';
-    } else if (yr === '2018-2019') {
-      div = '10-11';
     }
 
     if (div !== prevDiv) fixedMatches++;
