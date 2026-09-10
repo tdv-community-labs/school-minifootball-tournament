@@ -18,26 +18,26 @@
  */
 
 /**
- * Matç mərhələsinin adını normallaşdırır (məsələn: 'Qrup Mərhələsi' və 'qrup_merhelesi' eyni nəticə verir).
+ * Matç mərhələsinin adını vahid standart mərhələ koduna çevirir.
+ * Məsələn: '8/1 Final' və '1/8 final' hər ikisi '8/1' qaytarır.
  * 
  * @param {string} stage
  * @returns {string}
  */
 export const normalizeStage = (stage) => {
-  return (stage || '')
-    .toLowerCase()
-    .replace(/ə/g, 'e')
-    .replace(/ı/g, 'i')
-    .replace(/ö/g, 'o')
-    .replace(/ü/g, 'u')
-    .replace(/ş/g, 's')
-    .replace(/ç/g, 'c')
-    .replace(/ğ/g, 'g')
-    .replace(/[^a-z0-9]/g, '');
+  if (!stage) return 'group';
+  const s = String(stage).trim().toLowerCase();
+  if (s.includes('16/1') || s.includes('1/16') || s.includes('161') || s.includes('116')) return '16/1';
+  if (s.includes('8/1') || s.includes('1/8') || s.includes('81') || s.includes('18')) return '8/1';
+  if (s.includes('4/1') || s.includes('1/4') || s.includes('41') || s.includes('14') || s.includes('dörddəbir') || s.includes('dorddebir')) return '4/1';
+  if (s.includes('yarım') || s.includes('yarim') || s.includes('1/2') || s.includes('semi')) return 'semi';
+  if (s.includes('3-cü') || s.includes('3 cü') || s.includes('3-cu') || s.includes('bürünc') || s.includes('burunc') || s.includes('3rd')) return 'third';
+  if (s.includes('final')) return 'final';
+  return 'group';
 };
 
 /**
- * Matçın kateqoriya kodunu vahid formata ('10-11', '7-8', '9', '6') uyğunlaşdırır.
+ * Matçın kateqoriya kodunu vahid formata ('10-11', '7-8', '9-10', '9-10-11', '9', '6') uyğunlaşdırır.
  * 
  * @param {string} div
  * @returns {string}
@@ -51,28 +51,46 @@ export const normalizeMatchDivision = (div) => {
 /**
  * Matç üçün unikal semantik açar yaradır.
  * Komandaların sırasından asılı olmayaraq (A vs B və ya B vs A) eyni açar generasiya olunur.
+ * Kateqoriya adı dəyişsə belə (məsələn: '9' -> '9-10-11') eyni matç təkrar sayılmır.
  * 
  * @param {Object} m - Matç obyekti
  * @returns {string} Semantik açar
  */
 export const getMatchSemanticKey = (m) => {
   if (!m) return '';
+  const tA = (m.teamA || '').trim().toUpperCase();
+  const tB = (m.teamB || '').trim().toUpperCase();
+  // Pley-off şəbəkəsinin naməlum komandalı (?-?) oyunlarını bir-birinə qarışdırmamaq üçün ID əsas götürülür
+  if (!tA || !tB || tA === '?' || tB === '?') {
+    return m.id || `placeholder_${m.year || ''}_${m.stage || ''}_${Math.random()}`;
+  }
   const yr = m.year || '';
-  const div = normalizeMatchDivision(m.division);
-  const teams = [m.teamA || '', m.teamB || ''].sort().join('_vs_');
+  const teams = [tA, tB].sort().join('_vs_');
   const stage = normalizeStage(m.stage);
-  const date = (m.date || '').slice(0, 10);
-  return `${yr}_${div}_${teams}_${stage}_${date}`;
+  return `${yr}_${teams}_${stage}`;
 };
 
 /**
- * İki dublikat matç obyektini birləşdirir və ən çox oyunçu statistikası olanı üstün tutur.
+ * İki dublikat matç obyektini birləşdirir:
+ * 1. Mötəbər hesabı olan qeydə (? - ? əvəzinə) üstünlük verir.
+ * 2. Ən dolğun və zəngin oyunçu statistikası olanı üstün tutur.
  * 
  * @param {Object} existing
  * @param {Object} incoming
  * @returns {Object}
  */
 export const mergeMatchObjects = (existing, incoming) => {
+  const hasScores = (m) => Number.isFinite(Number(m?.scoreA)) && Number.isFinite(Number(m?.scoreB));
+  const existingValid = hasScores(existing);
+  const incomingValid = hasScores(incoming);
+
+  if (incomingValid && !existingValid) {
+    return { ...existing, ...incoming };
+  }
+  if (existingValid && !incomingValid) {
+    return { ...incoming, ...existing };
+  }
+
   const existingStatsCount = (existing.playerStats || []).length;
   const incomingStatsCount = (incoming.playerStats || []).length;
   if (incomingStatsCount > existingStatsCount) {

@@ -21,16 +21,16 @@
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260910_0080';
-import { isMatchDivision, getDivisionsForYear } from './i18n.js';
-import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260910_0080';
+import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260910_0230';
+import { isMatchDivision, getDivisionsForYear } from './i18n.js?v=20260910_0230';
+import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260910_0230';
 
 // ── Modulların İnteqrasiyası və Təkrar İxracı (100% Geriyə Uyğunluq) ─────────────
 import { 
   calculateSofascoreRating, 
   computePlayerOverallRating, 
   getSofascoreBadgeStyle 
-} from './ratings.js?v=20260910_0080';
+} from './ratings.js?v=20260910_0230';
 
 import { 
   normalizeStage, 
@@ -38,7 +38,7 @@ import {
   getMatchSemanticKey, 
   mergeMatchObjects, 
   deduplicateMatches 
-} from './matchUtils.js?v=20260910_0080';
+} from './matchUtils.js?v=20260910_0230';
 
 import { 
   KNOWN_GROUP_SEEDS, 
@@ -152,7 +152,7 @@ const initialPlayers = ARCHIVE_PLAYERS || [];
 const initialMatches = ARCHIVE_MATCHES || [];
 
 const migrateStorageDivisions = () => {
-  const migrationKey = 'btl_div_migrated_v20260910_2018_9_10_11';
+  const migrationKey = 'btl_div_migrated_v20260910_archive_purge_v5';
   if (localStorage.getItem(migrationKey)) return;
 
   try {
@@ -160,96 +160,18 @@ const migrateStorageDivisions = () => {
     let matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
 
-    // 1. Sync classes with canonical division mappings
-    classes = classes.map(c => {
-      const yr = c.year || '';
-      const name = c.name || '';
-      let div = c.division;
+    // 1. Purge stale archive matches from localStorage and guarantee canonical archive presence
+    const liveMatches = matches.filter(m => !ARCHIVE_YEARS.includes(m.year) || m.isCustom);
+    matches = deduplicateMatches([...ARCHIVE_MATCHES, ...liveMatches]);
 
-      if (yr === '2022-2023' || yr === '2024-2025' || yr === '2025-2026') {
-        if (name.startsWith('11')) div = '11';
-        else if (name.startsWith('9') || name.startsWith('10')) div = '9-10';
-        else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
-        else if (name.startsWith('6')) div = '6';
-      } else if (yr === '2023-2024') {
-        if (name.startsWith('10') || name.startsWith('11')) div = '10-11';
-        else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
-        else if (name.startsWith('6')) div = '6';
-      } else if (yr === '2021-2022') {
-        if (name.startsWith('10') || name.startsWith('11')) div = '10-11';
-        else if (name.startsWith('9')) div = '9';
-        else if (name.startsWith('7') || name.startsWith('8')) div = '7-8';
-        else if (name.startsWith('6')) div = '6';
-      } else if (yr === '2017-2018' || yr === '2018-2019') {
-        div = '9-10-11';
-      }
-      return { ...c, division: div };
-    });
+    // 2. Purge stale archive players from localStorage and guarantee canonical archive presence
+    const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);
+    const livePlayers = players.filter(p => (!ARCHIVE_YEARS.includes(p.year) || p.isCustom) && !obsoleteSet.has(p.id));
+    players = [...ARCHIVE_PLAYERS, ...livePlayers];
 
-    // 2. Sync matches with canonical division mappings
-    matches = matches.map(m => {
-      const yr = m.year || '';
-      let div = m.division;
-      const tA = m.teamA || '';
-      const tB = m.teamB || '';
-
-      if (yr === '2022-2023' || yr === '2024-2025' || yr === '2025-2026') {
-        if (tA.startsWith('11') || tB.startsWith('11')) div = '11';
-        else if (tA.startsWith('9') || tA.startsWith('10') || tB.startsWith('9') || tB.startsWith('10')) div = '9-10';
-        else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
-        else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
-      } else if (yr === '2023-2024') {
-        if (tA.startsWith('10') || tA.startsWith('11') || tB.startsWith('10') || tB.startsWith('11')) div = '10-11';
-        else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
-        else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
-      } else if (yr === '2021-2022') {
-        if (tA.startsWith('10') || tA.startsWith('11') || tB.startsWith('10') || tB.startsWith('11')) div = '10-11';
-        else if (tA.startsWith('9') || tB.startsWith('9')) div = '9';
-        else if (tA.startsWith('7') || tA.startsWith('8') || tB.startsWith('7') || tB.startsWith('8')) div = '7-8';
-        else if (tA.startsWith('6') || tB.startsWith('6')) div = '6';
-      } else if (yr === '2017-2018' || yr === '2018-2019') {
-        div = '9-10-11';
-      }
-      return { ...m, division: div };
-    });
-
-    // 2b. Synchronize archive matches (updated stages and newly added ?-? matches)
-    const existingMatchMap = new Map();
-    matches.forEach(m => {
-      if (m.id) existingMatchMap.set(m.id, m);
-      const semKey = getMatchSemanticKey(m);
-      if (semKey) existingMatchMap.set(semKey, m);
-    });
-
-    (ARCHIVE_MATCHES || []).forEach(am => {
-      const matchKey = getMatchSemanticKey(am);
-      const existing = (am.id && existingMatchMap.get(am.id)) || (matchKey && existingMatchMap.get(matchKey));
-      if (existing) {
-        existing.stage = am.stage;
-        existing.division = am.division;
-        existing.year = am.year;
-        if (am.scoreA !== undefined) existing.scoreA = am.scoreA;
-        if (am.scoreB !== undefined) existing.scoreB = am.scoreB;
-        if (am.penaltyScoreA !== undefined) existing.penaltyScoreA = am.penaltyScoreA;
-        if (am.penaltyScoreB !== undefined) existing.penaltyScoreB = am.penaltyScoreB;
-        if (am.date) existing.date = am.date;
-      } else {
-        matches.push(am);
-        if (am.id) existingMatchMap.set(am.id, am);
-        if (matchKey) existingMatchMap.set(matchKey, am);
-      }
-    });
-
-    matches = deduplicateMatches(matches);
-
-    // 3. Sync players division with class division
-    const classDivMap = new Map();
-    classes.forEach(c => classDivMap.set(`${c.year}_${c.name}`, c.division));
-    players = players.map(p => {
-      const key = `${p.year}_${p.class}`;
-      const div = classDivMap.get(key) || p.division || '11';
-      return { ...p, division: div };
-    });
+    // 3. Purge stale archive classes from localStorage and guarantee canonical archive presence
+    const liveClasses = classes.filter(c => !ARCHIVE_YEARS.includes(c.year) || c.isCustom);
+    classes = [...ARCHIVE_CLASSES, ...liveClasses];
 
     localStorage.setItem('minifootball_classes', JSON.stringify(classes));
     localStorage.setItem('minifootball_matches', JSON.stringify(matches));
@@ -290,11 +212,22 @@ const initializeStorage = () => {
 };
 
 export const recalculateData = () => {
-  const classesList = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
-  const players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
-  const matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
+  let classesList = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
+  let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+  let matches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
   const years = JSON.parse(localStorage.getItem('minifootball_years') || '["2025-2026", "2024-2025", "2023-2024", "2022-2023"]');
   const defaultYear = years[0] || "2025-2026";
+
+  // Enforce clean archive records without historical pollution
+  const liveClasses = classesList.filter(c => !ARCHIVE_YEARS.includes(c.year) || c.isCustom);
+  classesList = [...ARCHIVE_CLASSES, ...liveClasses];
+
+  const liveMatches = matches.filter(m => !ARCHIVE_YEARS.includes(m.year) || m.isCustom);
+  matches = deduplicateMatches([...ARCHIVE_MATCHES, ...liveMatches]);
+
+  const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);
+  const livePlayers = players.filter(p => (!ARCHIVE_YEARS.includes(p.year) || p.isCustom) && !obsoleteSet.has(p.id));
+  players = [...ARCHIVE_PLAYERS, ...livePlayers];
 
   // Ensure every class has a year
   const updatedClassesList = classesList.map(c => {
@@ -302,6 +235,7 @@ export const recalculateData = () => {
     return c;
   });
   localStorage.setItem('minifootball_classes', JSON.stringify(updatedClassesList));
+  localStorage.setItem('minifootball_matches', JSON.stringify(matches));
 
   // Reset player stats accumulator
   const playerStatsMap = {};
@@ -910,6 +844,16 @@ export const db = {
 
   // Classes CRUD
   getClasses: async (year) => {
+    if (year && ARCHIVE_YEARS.includes(year)) {
+      const archiveClasses = ARCHIVE_CLASSES.filter(c => c.year === year);
+      let customClasses = [];
+      try {
+        const localClasses = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
+        customClasses = localClasses.filter(c => c.year === year && c.isCustom);
+      } catch (e) {}
+      return customClasses.length > 0 ? [...archiveClasses, ...customClasses] : archiveClasses;
+    }
+
     let list = [];
     if (useRealFirebase && firestore) {
       console.log("Firebase: Fetching classes...");
@@ -926,17 +870,15 @@ export const db = {
     if (list.length === 0) {
       list = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     }
-    // Merge archive classes ensuring no duplicate IDs
-    const existingIds = new Set(list.map(c => c.id || `${c.year}_${c.name}`));
-    ARCHIVE_CLASSES.forEach(ac => {
-      if (!existingIds.has(ac.id) && !existingIds.has(`${ac.year}_${ac.name}`)) {
-        list.push(ac);
-      }
-    });
+
+    const nonArchiveClasses = list.filter(c => !ARCHIVE_YEARS.includes(c.year));
+    const customClasses = list.filter(c => ARCHIVE_YEARS.includes(c.year) && c.isCustom);
+    const combined = [...ARCHIVE_CLASSES, ...customClasses, ...nonArchiveClasses];
+
     if (year) {
-      return list.filter(c => c.year === year);
+      return combined.filter(c => c.year === year);
     }
-    return list;
+    return combined;
   },
 
 
@@ -992,6 +934,16 @@ export const db = {
 
   // Players CRUD
   getPlayers: async (year) => {
+    if (year && ARCHIVE_YEARS.includes(year)) {
+      const archivePlayers = ARCHIVE_PLAYERS.filter(p => p.year === year && !p.isOwnGoal && !/avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || ''));
+      let customPlayers = [];
+      try {
+        const localPlayers = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
+        customPlayers = localPlayers.filter(p => p.year === year && p.isCustom);
+      } catch (e) {}
+      return customPlayers.length > 0 ? [...archivePlayers, ...customPlayers] : archivePlayers;
+    }
+
     if (useRealFirebase && firestore) {
       console.log(`Firebase: Fetching players, classes, and matches for year: ${year || 'all'}...`);
       try {
@@ -1007,11 +959,17 @@ export const db = {
         const matches = [];
         mSnap.forEach(d => matches.push(sanitizeObject(d.data())));
         const baseYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023", "2021-2022", "2018-2019", "2017-2018"];
-        // Merge archive classes, players, and matches
-        const cIds = new Set(classes.map(c => c.id || `${c.year}_${c.name}`));
-        ARCHIVE_CLASSES.forEach(ac => { if (!cIds.has(ac.id) && !cIds.has(`${ac.year}_${ac.name}`)) classes.push(ac); });
+        
+        // Strip out stale archive records from Firestore to prevent duplication
+        const nonArchiveClasses = classes.filter(c => !ARCHIVE_YEARS.includes(c.year) || c.isCustom);
+        const combinedClasses = [...ARCHIVE_CLASSES, ...nonArchiveClasses];
+
         const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);
-        const validPlayers = players.filter(p => !obsoleteSet.has(p.id));
+        const nonArchivePlayers = players.filter(p => (!ARCHIVE_YEARS.includes(p.year) || p.isCustom) && !obsoleteSet.has(p.id));
+        const combinedPlayers = [...ARCHIVE_PLAYERS, ...nonArchivePlayers];
+
+        const nonArchiveMatches = matches.filter(m => !ARCHIVE_YEARS.includes(m.year) || m.isCustom);
+        const deduplicatedMatches = deduplicateMatches([...ARCHIVE_MATCHES, ...nonArchiveMatches]);
 
         // Background purge of obsolete duplicates from Firestore
         if (useRealFirebase && firestore) {
@@ -1022,21 +980,17 @@ export const db = {
           });
         }
 
-        const pIds = new Set(validPlayers.map(p => p.id));
-        ARCHIVE_PLAYERS.forEach(ap => { if (!pIds.has(ap.id) && !obsoleteSet.has(ap.id)) validPlayers.push(ap); });
-        const deduplicatedMatches = deduplicateMatches([...matches, ...ARCHIVE_MATCHES]);
-
         const detectedYears = Array.from(new Set([
           ...baseYears,
-          ...classes.map(c => c.year),
-          ...validPlayers.map(p => p.year),
+          ...combinedClasses.map(c => c.year),
+          ...combinedPlayers.map(p => p.year),
           ...deduplicatedMatches.map(m => m.year)
         ])).filter(Boolean);
         detectedYears.sort((a, b) => b.localeCompare(a));
         const years = detectedYears;
 
-        console.log(`Firebase: Raw loaded stats - Classes: ${classes.length}, Players: ${validPlayers.length}, Matches: ${deduplicatedMatches.length}`);
-        const computed = recalculateInMemoryData(classes, validPlayers, deduplicatedMatches, years);
+        console.log(`Firebase: Raw loaded stats - Classes: ${combinedClasses.length}, Players: ${combinedPlayers.length}, Matches: ${deduplicatedMatches.length}`);
+        const computed = recalculateInMemoryData(combinedClasses, combinedPlayers, deduplicatedMatches, years);
         console.log(`Firebase: In-memory stats computed. Total computed players: ${computed.players.length}`);
         
         let filtered = computed.players;
@@ -1051,10 +1005,9 @@ export const db = {
     }
     const rawPlayers = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
     const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);
-    const players = rawPlayers.filter(p => !obsoleteSet.has(p.id));
-    const existingPIds = new Set(players.map(p => p.id));
-    ARCHIVE_PLAYERS.forEach(ap => { if (!existingPIds.has(ap.id) && !obsoleteSet.has(ap.id)) players.push(ap); });
-    let valid = players.filter(p => !p.isOwnGoal && !/avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || ''));
+    const nonArchivePlayers = rawPlayers.filter(p => (!ARCHIVE_YEARS.includes(p.year) || p.isCustom) && !obsoleteSet.has(p.id));
+    const combinedPlayers = [...ARCHIVE_PLAYERS, ...nonArchivePlayers];
+    let valid = combinedPlayers.filter(p => !p.isOwnGoal && !/avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || ''));
     if (year) {
       valid = valid.filter(p => p.year === year);
     }
@@ -1142,6 +1095,17 @@ export const db = {
 
   // Matches CRUD
   getMatches: async (year) => {
+    // 1. If querying an archive year specifically, return canonical archive matches directly!
+    if (year && ARCHIVE_YEARS.includes(year)) {
+      const archiveMatches = ARCHIVE_MATCHES.filter(m => m.year === year);
+      let customMatches = [];
+      try {
+        const localMatches = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
+        customMatches = localMatches.filter(m => m.year === year && m.isCustom);
+      } catch (e) {}
+      return customMatches.length > 0 ? deduplicateMatches([...archiveMatches, ...customMatches]) : archiveMatches;
+    }
+
     let list = [];
     if (useRealFirebase && firestore) {
       console.log("Firebase: Fetching matches...");
@@ -1158,8 +1122,13 @@ export const db = {
     if (list.length === 0) {
       list = JSON.parse(localStorage.getItem('minifootball_matches') || '[]');
     }
-    // Merge archive matches ensuring semantic deduplication
-    const deduplicatedMatches = deduplicateMatches([...list, ...ARCHIVE_MATCHES]);
+
+    // For archive years, ALWAYS prefer canonical ARCHIVE_MATCHES over stale Firebase/localStorage records
+    const nonArchiveMatches = list.filter(m => !ARCHIVE_YEARS.includes(m.year));
+    const customArchiveMatches = list.filter(m => ARCHIVE_YEARS.includes(m.year) && m.isCustom);
+    const combined = [...ARCHIVE_MATCHES, ...customArchiveMatches, ...nonArchiveMatches];
+    const deduplicatedMatches = deduplicateMatches(combined);
+
     if (year) {
       return deduplicatedMatches.filter(m => m.year === year);
     }
@@ -1247,17 +1216,29 @@ export const db = {
         pSnap.forEach(d => players.push(sanitizeObject(d.data())));
         const matches = [];
         mSnap.forEach(d => matches.push(sanitizeObject(d.data())));
-        const baseYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023"];
+        const baseYears = ["2025-2026", "2024-2025", "2023-2024", "2022-2023", "2021-2022", "2018-2019", "2017-2018"];
+        
+        // Strip out stale archive records from Firestore to prevent duplication
+        const nonArchiveClasses = classes.filter(c => !ARCHIVE_YEARS.includes(c.year) || c.isCustom);
+        const combinedClasses = [...ARCHIVE_CLASSES, ...nonArchiveClasses];
+
+        const obsoleteSet = new Set(OBSOLETE_PLAYER_IDS);
+        const nonArchivePlayers = players.filter(p => (!ARCHIVE_YEARS.includes(p.year) || p.isCustom) && !obsoleteSet.has(p.id));
+        const combinedPlayers = [...ARCHIVE_PLAYERS, ...nonArchivePlayers];
+
+        const nonArchiveMatches = matches.filter(m => !ARCHIVE_YEARS.includes(m.year) || m.isCustom);
+        const deduplicatedMatches = deduplicateMatches([...ARCHIVE_MATCHES, ...nonArchiveMatches]);
+
         const detectedYears = Array.from(new Set([
           ...baseYears,
-          ...classes.map(c => c.year),
-          ...players.map(p => p.year),
-          ...matches.map(m => m.year)
+          ...combinedClasses.map(c => c.year),
+          ...combinedPlayers.map(p => p.year),
+          ...deduplicatedMatches.map(m => m.year)
         ])).filter(Boolean);
         detectedYears.sort((a, b) => b.localeCompare(a));
         const years = detectedYears;
 
-        const computed = recalculateInMemoryData(classes, players, matches, years);
+        const computed = recalculateInMemoryData(combinedClasses, combinedPlayers, deduplicatedMatches, years);
         const validYearDivs = getDivisionsForYear(year);
         let standings = computed.standings[year]?.[division] || [];
         if (standings.length === 0 && !validYearDivs.includes(division)) {
@@ -1265,6 +1246,7 @@ export const db = {
           else if ((division === '11' || division === '10-11') && validYearDivs.includes('11')) standings = computed.standings[year]?.['11'] || [];
           else if ((division === '9' || division === '9-10') && validYearDivs.includes('9-10')) standings = computed.standings[year]?.['9-10'] || [];
           else if ((division === '9' || division === '9-10') && validYearDivs.includes('9')) standings = computed.standings[year]?.['9'] || [];
+          else if (validYearDivs.includes('9-10-11')) standings = computed.standings[year]?.['9-10-11'] || [];
         }
         console.log(`Firebase: Computed standings size: ${standings.length} classes for division ${division}, year ${year}`);
         return standings;
@@ -1282,6 +1264,7 @@ export const db = {
       else if ((division === '11' || division === '10-11') && validYearDivs.includes('11')) localStandings = allStandings[year]?.['11'] || [];
       else if ((division === '9' || division === '9-10') && validYearDivs.includes('9-10')) localStandings = allStandings[year]?.['9-10'] || [];
       else if ((division === '9' || division === '9-10') && validYearDivs.includes('9')) localStandings = allStandings[year]?.['9'] || [];
+      else if (validYearDivs.includes('9-10-11')) localStandings = allStandings[year]?.['9-10-11'] || [];
     }
     return localStandings;
   },
