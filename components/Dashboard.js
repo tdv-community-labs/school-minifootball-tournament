@@ -1,3 +1,21 @@
+/**
+ * ============================================================================
+ * FAYL ADI: components/Dashboard.js
+ * MƏQSƏDİ: Turnirin Əsas Vitrini və İcmal İdarəetmə Paneli (Home / Dashboard)
+ * 
+ * BU KOMPONENTİN VƏZİFƏLƏRİ:
+ *   1. Turnirin cari vəziyyəti: Komandaların sayı, oyunçuların sayı, vurulan qollar.
+ *   2. Liderlər lövhəsi: Mövsümün ən yaxşı bombardiri və ən yüksək Sofascore reytinqli oyunçusu.
+ *   3. Son oyunlar: Son keçirilmiş matçların hesabları və video icmalları.
+ *   4. Sürətli keçidlər: Digər bölmələrə rahat istiqamətləndirmə.
+ * 
+ * PROPS:
+ *   - activeYear: string (məs: '2022-2023')
+ *   - activeDivision: string (məs: '10-11')
+ *   - onNavigate: function (tab dəyişməsi)
+ *   - onSelectPlayer: function (oyunçu profil modalını açmaq)
+ * ============================================================================
+ */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle } from '../services/database.js';

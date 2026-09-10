@@ -1,3 +1,15 @@
+/**
+ * ============================================================================
+ * FAYL ADI: components/Matches.js
+ * MƏQSƏDİ: Matçların Tam Siyahısı, Turlar Üzrə Filtrləmə və Video İcmallar
+ * 
+ * BU KOMPONENTİN VƏZİFƏLƏRİ:
+ *   1. Oyunların xronoloji və turlar üzrə qruplaşdırılmış kartları.
+ *   2. Canlı hesablar, qol vuran oyunçuların siyahısı və Sofascore fərdi matç xalları.
+ *   3. Təhlükəsiz YouTube inteqrasiyası ilə oyunların tam video yazılarını izləmək.
+ *   4. Mərhələ filtri (Qrup, 1/4 Final, Yarımfinal, Final).
+ * ============================================================================
+ */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';

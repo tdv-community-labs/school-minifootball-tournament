@@ -1,3 +1,17 @@
+/**
+ * ============================================================================
+ * FAYL ADI: components/GlobalSearchModal.js
+ * MƏQSƏDİ: Turnir Üzrə Universal Çox-Obyektli Qlobal Axtarış Pəncərəsi
+ * 
+ * BU KOMPONENTİN VƏZİFƏLƏRİ:
+ *   1. Real-vaxt axtarış: İstifadəçi yazdıqca dərhal nəticələri filtrləyir.
+ *   2. 3 istiqamətdə eyni vaxtda axtarış:
+ *      - Oyunçular (adı, sinfi, illəri, qol sayı, reytinqi)
+ *      - Siniflər / Komandalar (kateqoriyası, oynadığı illər)
+ *      - Matçlar (komandalar, hesablar, mərhələlər)
+ *   3. Klaviatura qısayolu (Ctrl+K / Cmd+K) ilə dərhal açılma.
+ * ============================================================================
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle } from '../services/database.js';

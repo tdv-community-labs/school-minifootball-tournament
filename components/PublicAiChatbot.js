@@ -1,3 +1,15 @@
+/**
+ * ============================================================================
+ * FAYL ADI: components/PublicAiChatbot.js
+ * MƏQSƏDİ: Sayt Ziyarətçiləri Üçün Üzən Süni İntellekt Çatbotu
+ * 
+ * BU KOMPONENTİN VƏZİFƏLƏRİ:
+ *   1. Saytın sağ aşağı küncündə həmişə əlçatan interaktiv düymə və çat pəncərəsi.
+ *   2. Ziyarətçilərin istənilən dildə (AZ, EN, RU, TR) suallarına Google Gemini AI ilə cavab.
+ *   3. Cari mövsüm və kateqoriya kontekstini dərhal nəzərə alma.
+ *   4. Hazır sürətli sual düymələri ("Bombardir kimdir?", "Lider kimdir?").
+ * ============================================================================
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import htm from 'htm';
 import { db } from '../services/database.js?v=20260910_0080';

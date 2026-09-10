@@ -1,13 +1,21 @@
 /**
- * TDV BTL Mini-Football Tournament - Cybersecurity & Hardening Service
- * Features:
- * - Web Crypto API SHA-256 Salted Password Verification
- * - Brute-Force Rate Limiting & Lockout Defense
- * - Secure Session Token Management (with auto-expiry)
- * - Safe YouTube Embed URL Sanitization (Anti-XSS / Iframe injection)
- * - JSON Import Validation & Anti-Prototype-Pollution
+ * ============================================================================
+ * FAYL ADI: services/security.js
+ * MƏQSƏDİ: Saytın Kibertəhlükəsizlik və Mühafizə Sistemi (Hardening & Security)
+ * 
+ * BU MODULUN VƏZİFƏLƏRİ:
+ *   1. SHA-256 Şifrələmə: Admin şifrəsinin Web Crypto API ilə duzlanmış (salted) heşlənməsi.
+ *   2. Brute-Force Müdafiəsi: Ardıcıl 5 uğursuz cəhddən sonra 60 saniyəlik avtomatik bloklama.
+ *   3. Təhlükəsiz Sessiya İdarəetməsi: 2 saatlıq kriptoqrafik token və avtomatik bitmə.
+ *   4. XSS və İframe Sanitizasiyası: Yalnız rəsmi YouTube embed linklərinə icazə verilməsi.
+ *   5. JSON İmport Yoxlaması: Arxiv fayllarının strukturunu və təhlükəsizliyini yoxlama.
+ * 
+ * İSTİFADƏ EDİLDİYİ YERLƏR:
+ *   - app.js (Admin giriş modalı və sessiya yoxlaması)
+ *   - components/AdminDashboard.js (JSON yükləməsi və şifrə dəyişmə)
+ *   - components/Matches.js və Standings.js (YouTube iframe təhlükəsizliyi)
+ * ============================================================================
  */
-
 const DEFAULT_SALT = 'tdv_btl_salt_2026_';
 // SHA-256 of (DEFAULT_SALT + 'btl2026')
 const DEFAULT_HASH = '495e08190021c4ddf92eaad9a65cfa81c17a4105bac71571776578c67731f5cd';

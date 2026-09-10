@@ -1,8 +1,19 @@
 /**
- * Bilingual Translation Service (EN / AZ)
- * Default Language: English ('en')
+ * ============================================================================
+ * FAYL ADI: services/i18n.js
+ * MƏQSƏDİ: Çoxdilli Tərcümə və Beynəlmiləlləşdirmə Sistemi (Internationalization)
+ * 
+ * BU MODULUN VƏZİFƏLƏRİ:
+ *   1. translations: Azərbaycan və İngilis dillərində tam interfeys lüğəti.
+ *   2. t(): Cari seçilmiş dilə uyğun mətni qaytaran əsas tərcümə funksiyası.
+ *   3. getDivisionLabel(): Yaş kateqoriyalarının rəsmi adlarını çıxarır (məs: 'X-XI Siniflər').
+ *   4. getStageLabel(): Matç mərhələlərini tərcümə edir (Final, Qrup, 3-cü yer və s.).
+ *   5. isMatchDivision(): Köhnə və yeni kateqoriya kodlarının eyniliyini yoxlayır.
+ * 
+ * İSTİFADƏ EDİLDİYİ YERLƏR:
+ *   - Bütün tətbiq (app.js, Dashboard, Standings, Matches, Players, AdminDashboard)
+ * ============================================================================
  */
-
 export const translations = {
   en: {
     // Brand & Header

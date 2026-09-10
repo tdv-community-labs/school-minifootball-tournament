@@ -1,9 +1,62 @@
+/**
+ * ============================================================================
+ * FAYL ADI: services/database.js
+ * MƏQSƏDİ: Turnirin Əsas Baza və Yaddaş İdarəetmə Qatı (Data Access Layer)
+ * 
+ * BU MODULUN VƏZİFƏLƏRİ:
+ *   1. Firestore və LocalStorage inteqrasiyası: Siniflər, oyunçular, matçlar və illər
+ *      üzrə tam CRUD (Create, Read, Update, Delete) əməliyyatları.
+ *   2. recalculateData() & recalculateInMemoryData(): Canlı matç nəticələrindən xal cədvəlini,
+ *      top fərqlərini və Sofascore fərdi reytinqlərini real-vaxt rejimində cəmləyir.
+ *   3. getUnifiedPlayerProfile(): Oyunçunun bütün mövsümlər və siniflər üzrə vahid karyera profilini formalaşdırır.
+ *   4. searchAll(): Oyunçular, komandalar və oyunlar üzrə sürətli qlobal axtarış təmin edir.
+ *   5. Modulların Re-Exportu: ratings.js, matchUtils.js və tournamentGroups.js funksiyalarını
+ *      təkrar ixrac edərək tam geriyə uyğunluq saxlayır.
+ * 
+ * İSTİFADƏ EDİLDİYİ YERLƏR:
+ *   - Bütün komponentlər (Dashboard, Standings, Matches, Players, AdminDashboard, Chatbot)
+ * ============================================================================
+ */
+
 import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260910_0080';
 import { isMatchDivision } from './i18n.js';
 import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260910_0080';
+
+// ── Modulların İnteqrasiyası və Təkrar İxracı (100% Geriyə Uyğunluq) ─────────────
+import { 
+  calculateSofascoreRating, 
+  computePlayerOverallRating, 
+  getSofascoreBadgeStyle 
+} from './ratings.js?v=20260910_0080';
+
+import { 
+  normalizeStage, 
+  normalizeMatchDivision, 
+  getMatchSemanticKey, 
+  mergeMatchObjects, 
+  deduplicateMatches 
+} from './matchUtils.js?v=20260910_0080';
+
+import { 
+  KNOWN_GROUP_SEEDS, 
+  assignGroupsToTeams 
+} from './tournamentGroups.js?v=20260910_0080';
+
+export { 
+  calculateSofascoreRating, 
+  computePlayerOverallRating, 
+  getSofascoreBadgeStyle,
+  normalizeStage, 
+  normalizeMatchDivision, 
+  getMatchSemanticKey, 
+  mergeMatchObjects, 
+  deduplicateMatches,
+  KNOWN_GROUP_SEEDS, 
+  assignGroupsToTeams 
+};
 
 // Initialize Firebase if useRealFirebase toggle is true
 let firestore = null;

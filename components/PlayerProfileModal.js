@@ -1,3 +1,15 @@
+/**
+ * ============================================================================
+ * FAYL ADI: components/PlayerProfileModal.js
+ * MƏQSƏDİ: Oyunçunun Fərdi Karyera Pəncərəsi (Player Career Modal)
+ * 
+ * BU KOMPONENTİN VƏZİFƏLƏRİ:
+ *   1. Karyera xülasəsi: Bütün tarixi turnirlər üzrə cəmi qollar, assistlər, matçlar və orta reytinq.
+ *   2. Mövsümlər üzrə bölgü cədvəli: Hansı ildə hansı sinifdə oynayıb və neçə qol vurub.
+ *   3. Bütün matç tarixçəsi: İştirak etdiyi hər bir oyun, vurduğu qollar və matç videoları.
+ *   4. Mövqe və xüsusi statuslar (Qapıçı seyvləri və s.).
+ * ============================================================================
+ */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle } from '../services/database.js';

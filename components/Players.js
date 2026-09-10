@@ -1,3 +1,14 @@
+/**
+ * ============================================================================
+ * FAYL ADI: components/Players.js
+ * MƏQSƏDİ: Bütün Turnir Oyunçularının Kataloqu və Reytinq Kartları
+ * 
+ * BU KOMPONENTİN VƏZİFƏLƏRİ:
+ *   1. Oyunçuların ada, sinfə və mövqeyə (Hücumçu, Yarımmüdafiəçi, Müdafiəçi, Qapıçı) görə süzgəci.
+ *   2. Hər oyunçunun Sofascore canlı reytinq nişanı, qol, assist və oyun sayı.
+ *   3. Kart üzərinə kliklədikdə oyunçunun tam fərdi karyera profilinin açılması.
+ * ============================================================================
+ */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle } from '../services/database.js';

@@ -1,3 +1,16 @@
+/**
+ * ============================================================================
+ * FAYL ADI: app.js
+ * MƏQSƏDİ: Turnirin Əsas Başlanğıc Komponenti və Tətbiq Konteyneri (App Shell)
+ * 
+ * BU KOMPONENTİN VƏZİFƏLƏRİ:
+ *   1. Əsas Naviqasiya Başlığı (Header) və Mobil Menyu.
+ *   2. Mövsüm Seçicisi (Tournament Year Selector) və Yaş Kateqoriyası Pill-ləri.
+ *   3. Səhifə yönləndirməsi (Dashboard, Standings, Matches, Players, Admin).
+ *   4. Qlobal modalların idarə edilməsi (Qaydalar, Əlaqə, Axtarış, Oyunçu Profili).
+ *   5. Dil (AZ, EN) və Qaranlıq/İşıqlı Tema (Dark/Light Mode) keçidləri.
+ * ============================================================================
+ */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import Dashboard from './components/Dashboard.js?v=20260910_0080';

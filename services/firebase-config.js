@@ -1,4 +1,16 @@
-// Firebase Configuration and Toggle for Real/Mock Database
+/**
+ * ============================================================================
+ * FAYL ADI: services/firebase-config.js
+ * MƏQSƏDİ: Firebase Layihə Konfiqurasiyası və Real/Lokal Rejim Seçicisi
+ * 
+ * BU MODULUN VƏZİFƏLƏRİ:
+ *   1. firebaseConfig: Google Firebase Firestore layihə parametrləri (tdv-football).
+ *   2. useRealFirebase: Canlı bulud bazası ilə yerli LocalStorage arasında kommutator.
+ * 
+ * İSTİFADƏ EDİLDİYİ YERLƏR:
+ *   - services/database.js
+ * ============================================================================
+ */
 let config = {
   apiKey: "AIzaSyAIV2lXg-4ZjZcUW9lp_-QV3hwBLZsmUs",
   authDomain: "tdv-football.firebaseapp.com",

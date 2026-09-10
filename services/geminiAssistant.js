@@ -1,12 +1,21 @@
 /**
- * Google Gemini AI Tournament Assistant, Guardian & Public Chatbot
- * Features:
- * - Multi-Key Pooling & Auto-Failover: 3 Guardian keys for site checks & protection
- * - Dedicated Public Visitor Chatbot Key
- * - Model Auto-Fallback: gemini-3.7-flash -> gemini-2.5-flash on 503/429/404
- * - Serverless Proxy support
+ * ============================================================================
+ * FAYL ADI: services/geminiAssistant.js
+ * MƏQSƏDİ: Google Gemini 3.7 Flash Süni İntellekt Analitiki və Çatbot Xidməti
+ * 
+ * BU MODULUN VƏZİFƏLƏRİ:
+ *   1. Multi-Key Hovuzu: Saytın yoxlanışı üçün 3 Guardian API açarı arasında avtomatik rotasiya.
+ *   2. İctimai Çatbot Açarı: Sayt ziyarətçilərinin suallarını cavablandıran xüsusi açar.
+ *   3. Avtomatik Model Keçidi: Əsas model (gemini-3.7-flash) məşğul olduqda ehtiyat modelə (gemini-2.5-flash) keçid.
+ *   4. auditTournamentWithAI(): Turnir məlumatlarının süni intellektlə dərindən analizi.
+ *   5. askGeminiTuner(): Admin üçün interaktiv AI məsləhətçisi.
+ *   6. askPublicChatbot(): Ziyarətçilər üçün sürətli turnir bələdçisi.
+ * 
+ * İSTİFADƏ EDİLDİYİ YERLƏR:
+ *   - components/AdminDashboard.js (AI Auditor və AI Tuner tabı)
+ *   - components/PublicAiChatbot.js (İctimai AI çatbotu)
+ * ============================================================================
  */
-
 export const DEFAULT_MODEL = 'gemini-3.7-flash';
 export const FALLBACK_MODEL = 'gemini-2.5-flash';
 

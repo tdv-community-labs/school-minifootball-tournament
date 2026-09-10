@@ -1,3 +1,17 @@
+/**
+ * ============================================================================
+ * FAYL ADI: components/AdminDashboard.js
+ * MƏQSƏDİ: Turnir Rəhbərliyi və Baş İdarəetmə Paneli (Administration Hub)
+ * 
+ * BU KOMPONENTİN VƏZİFƏLƏRİ:
+ *   1. Siniflərin idarə edilməsi (əlavə etmə, dəyişmə, silmə).
+ *   2. Oyunçuların idarə edilməsi (profil redaktəsi, mövqelər).
+ *   3. Matçların idarə edilməsi və Sofascore oyunçu xalları konstruktoru.
+ *   4. Toplu JSON Məlumat Yüklənməsi / Arxiv Bərpası.
+ *   5. Sistem Sağlamlığı və Avtomatik Bərpa (Self-Healing Engine).
+ *   6. Gemini AI Təhlükəsizlik və Model Tənzimləyicisi (AI Tuner).
+ * ============================================================================
+ */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db } from '../services/database.js?v=20260910_0080';

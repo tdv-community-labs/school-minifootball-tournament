@@ -1,3 +1,15 @@
+/**
+ * ============================================================================
+ * FAYL ADI: components/Standings.js
+ * MƏQSƏDİ: Turnir Cədvəli, Qrup Mərhələsi və Pley-Off (Knockout) Şəbəkəsi
+ * 
+ * BU KOMPONENTİN VƏZİFƏLƏRİ:
+ *   1. Qrup Cədvəlləri: A və B qruplarında xallar, qələbələr, heç-heçələr, vurulan/buraxılan qollar və TF.
+ *   2. Pley-off / Kubok Şəbəkəsi: 1/4 final, yarımfinal, 3-cü yer və Final oyunlarının interaktiv vizuallaşdırılması.
+ *   3. Bombardirlər Top-3: Hər qrup və ümumi kateqoriya üzrə ən çox qol vuranlar.
+ *   4. Video baxış: Oyunların video icmallarını birbaşa modal pəncərədə nümayiş etdirmək.
+ * ============================================================================
+ */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';

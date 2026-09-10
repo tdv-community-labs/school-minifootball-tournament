@@ -1,3 +1,20 @@
+/**
+ * ============================================================================
+ * FAYL ADI: services/selfHealing.js
+ * MƏQSƏDİ: Məlumat Bütövlüyü Yoxlanışı (Audit) və Avtomatik Bərpa Mühərriki
+ * 
+ * BU MODULUN VƏZİFƏLƏRİ:
+ *   1. auditTournamentData(): Bütün turnir bazasını deterministik testlərdən keçirərək
+ *      dublikat profilləri, təkrar matçları, mənfi hesabları və kateqoriya xətalarını aşkar edir.
+ *   2. repairTournamentData(): Tapılan bütün struktur uyğunsuzluqlarını avtomatik düzəldir,
+ *      dublikatları birləşdirir və cədvəli yenidən hesablayır.
+ *   3. startBackgroundSelfHealing(): Sayt açıldıqda arxa planda səssiz yoxlama aparır.
+ * 
+ * İSTİFADƏ EDİLDİYİ YERLƏR:
+ *   - services/database.js (ilkin yükləmə zamanı arxa plan yoxlaması)
+ *   - components/AdminDashboard.js (Sistem Sağlamlığı paneli və Bərpa düyməsi)
+ * ============================================================================
+ */
 import { db, recalculateData, normalizePlayerName, OBSOLETE_PLAYER_IDS, getMatchSemanticKey, deduplicateMatches } from './database.js';
 import { isMatchDivision } from './i18n.js';
 import { ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS, ARCHIVE_YEARS } from './archiveData.js';

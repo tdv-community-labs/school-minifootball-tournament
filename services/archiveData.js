@@ -1,5 +1,19 @@
-// Verified Historical Archive Data (YouTube TDV-BTL Football Cup + Tournament Archive)
-// Reconciled: '3 il öncə' -> 2022-2023, '2 il öncə' -> 2023-2024, duplicates merged
+/**
+ * ============================================================================
+ * FAYL ADI: services/archiveData.js
+ * MƏQSƏDİ: Turnirin Tarixi İllər Üzrə Statik Arxiv Bazası (2017-2024)
+ * 
+ * BU MODULUN VƏZİFƏLƏRİ:
+ *   1. ARCHIVE_YEARS: Keçirilmiş bütün tarixi mövsümlərin siyahısı.
+ *   2. ARCHIVE_CLASSES: Bütün tarixi siniflər və onların kateqoriyaları.
+ *   3. ARCHIVE_MATCHES: Tarixi matçlar, nəticələr, tarixlər və video icmal linkləri.
+ *   4. ARCHIVE_PLAYERS: Tarixi oyunçuların rəsmi adları, mövqeləri və qeydləri.
+ * 
+ * İSTİFADƏ EDİLDİYİ YERLƏR:
+ *   - services/database.js (ilkin məlumat toxumu və arxiv fallback)
+ *   - services/selfHealing.js (baza bütövlüyü yoxlanışı üçün etalon mənbə)
+ * ============================================================================
+ */
 
 export const ARCHIVE_YEARS = [
   "2023-2024",
