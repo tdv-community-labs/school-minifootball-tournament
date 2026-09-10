@@ -43,8 +43,24 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
     };
     loadMatchesData();
   }, [activeDivision, activeYear]);
+  const isStageMatch = (matchStage, targetStage) => {
+    if (!matchStage || !targetStage) return false;
+    if (matchStage === targetStage) return true;
+    const s1 = matchStage.toLowerCase().replace(/ə/g, 'e').replace(/ı/g, 'i').replace(/\s+/g, '');
+    const s2 = targetStage.toLowerCase().replace(/ə/g, 'e').replace(/ı/g, 'i').replace(/\s+/g, '');
+    if (s1 === s2) return true;
+    if (s2.includes('qrup') && (s1.includes('qrup') || s1.includes('tur'))) return true;
+    if ((s2.includes('16/1') || s2.includes('1/16')) && (s1.includes('16/1') || s1.includes('1/16'))) return true;
+    if ((s2.includes('8/1') || s2.includes('1/8')) && (s1.includes('8/1') || s1.includes('1/8'))) return true;
+    if ((s2.includes('4/1') || s2.includes('1/4')) && (s1.includes('4/1') || s1.includes('1/4'))) return true;
+    if ((s2.includes('yarim') || s2.includes('semi')) && (s1.includes('yarim') || s1.includes('semi'))) return true;
+    if ((s2.includes('3') && (s2.includes('yer') || s2.includes('place') || s2.includes('luk'))) &&
+        (s1.includes('3') && (s1.includes('yer') || s1.includes('place') || s1.includes('luk')))) return true;
+    if (s2 === 'final') return s1 === 'final' || s1 === 'finaloyunu';
+    return false;
+  };
 
-  const filteredMatches = matches.filter(m => isMatchDivision(m.division, activeDivision) && m.stage === selectedStage);
+  const filteredMatches = matches.filter(m => isMatchDivision(m.division, activeDivision) && isStageMatch(m.stage, selectedStage));
 
   /**
    * Returns enriched per-player stats for a given match,
@@ -206,9 +222,15 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                           <span className="text-[9px] sm:text-[10px] text-green-400 font-extrabold mt-0.5">pen. ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
                         `}
                       </div>
-                      <span className="text-[9px] sm:text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full mt-1.5 sm:mt-2">
-                        Bitti
-                      </span>
+                      ${(match.scoreA === '?' || match.scoreA == null) ? html`
+                        <span className="text-[9px] sm:text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded-full mt-1.5 sm:mt-2">
+                          ${lang === 'az' ? 'Nəticə naməlum' : 'Score unknown'}
+                        </span>
+                      ` : html`
+                        <span className="text-[9px] sm:text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full mt-1.5 sm:mt-2">
+                          ${lang === 'az' ? 'Bitti' : 'Completed'}
+                        </span>
+                      `}
                     </div>
                     <div className="text-center flex-1 min-w-0">
                       <h4 className="text-base sm:text-lg font-black text-purple-950 truncate">${match.teamB}</h4>

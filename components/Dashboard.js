@@ -55,7 +55,11 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
       // General Stats
       const totalPlayers = players.length;
       const totalMatches = matches.length;
-      const totalGoals = matches.reduce((sum, m) => sum + Number(m.scoreA || 0) + Number(m.scoreB || 0), 0);
+      const totalGoals = matches.reduce((sum, m) => {
+        const sA = Number(m.scoreA);
+        const sB = Number(m.scoreB);
+        return sum + (Number.isFinite(sA) ? sA : 0) + (Number.isFinite(sB) ? sB : 0);
+      }, 0);
       const leader = standings[0] ? standings[0].class : '-';
 
       setStats({ totalPlayers, totalMatches, totalGoals, leader });

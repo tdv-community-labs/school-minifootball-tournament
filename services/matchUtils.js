@@ -44,9 +44,7 @@ export const normalizeStage = (stage) => {
  */
 export const normalizeMatchDivision = (div) => {
   if (!div) return '10-11';
-  if (div === '11') return '10-11';
   if (div === '7' || div === '8') return '7-8';
-  if (div === '9-10') return '9';
   return div;
 };
 

@@ -96,7 +96,7 @@ export const auditTournamentData = (data = {}) => {
 
   // 3. Check matches data integrity
   matches.forEach(m => {
-    if (m.scoreA !== null && m.scoreB !== null && (Number(m.scoreA) < 0 || Number(m.scoreB) < 0)) {
+    if (Number.isFinite(Number(m.scoreA)) && Number.isFinite(Number(m.scoreB)) && (Number(m.scoreA) < 0 || Number(m.scoreB) < 0)) {
       issues.push({
         id: `negative_score_${m.id}`,
         type: 'invalid_score',

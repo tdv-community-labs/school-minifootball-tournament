@@ -152,7 +152,7 @@ const initialPlayers = ARCHIVE_PLAYERS || [];
 const initialMatches = ARCHIVE_MATCHES || [];
 
 const migrateStorageDivisions = () => {
-  const migrationKey = 'btl_div_migrated_v20260910_9_10_11';
+  const migrationKey = 'btl_div_migrated_v20260910_bracket_heal';
   if (localStorage.getItem(migrationKey)) return;
 
   try {
@@ -216,6 +216,35 @@ const migrateStorageDivisions = () => {
       }
       return { ...m, division: div };
     });
+
+    // 2b. Synchronize archive matches (updated stages and newly added ?-? matches)
+    const existingMatchMap = new Map();
+    matches.forEach(m => {
+      if (m.id) existingMatchMap.set(m.id, m);
+      const semKey = getMatchSemanticKey(m);
+      if (semKey) existingMatchMap.set(semKey, m);
+    });
+
+    (ARCHIVE_MATCHES || []).forEach(am => {
+      const matchKey = getMatchSemanticKey(am);
+      const existing = (am.id && existingMatchMap.get(am.id)) || (matchKey && existingMatchMap.get(matchKey));
+      if (existing) {
+        existing.stage = am.stage;
+        existing.division = am.division;
+        existing.year = am.year;
+        if (am.scoreA !== undefined) existing.scoreA = am.scoreA;
+        if (am.scoreB !== undefined) existing.scoreB = am.scoreB;
+        if (am.penaltyScoreA !== undefined) existing.penaltyScoreA = am.penaltyScoreA;
+        if (am.penaltyScoreB !== undefined) existing.penaltyScoreB = am.penaltyScoreB;
+        if (am.date) existing.date = am.date;
+      } else {
+        matches.push(am);
+        if (am.id) existingMatchMap.set(am.id, am);
+        if (matchKey) existingMatchMap.set(matchKey, am);
+      }
+    });
+
+    matches = deduplicateMatches(matches);
 
     // 3. Sync players division with class division
     const classDivMap = new Map();
@@ -322,10 +351,13 @@ export const recalculateData = () => {
     const div = m.division || "10-11";
 
     // Match result context
-    const isFinal    = m.stage === 'Final';
-    const scoreA     = Number(m.scoreA || 0);
-    const scoreB     = Number(m.scoreB || 0);
-    const goalDiffAB = scoreA - scoreB;
+    const isFinal        = m.stage === 'Final';
+    const numScoreA      = Number(m.scoreA);
+    const numScoreB      = Number(m.scoreB);
+    const hasValidScores = Number.isFinite(numScoreA) && Number.isFinite(numScoreB);
+    const scoreA         = hasValidScores ? numScoreA : 0;
+    const scoreB         = hasValidScores ? numScoreB : 0;
+    const goalDiffAB     = scoreA - scoreB;
 
     // Accumulate player match stats with Sofascore rating
     if (m.playerStats && Array.isArray(m.playerStats)) {
@@ -358,8 +390,8 @@ export const recalculateData = () => {
       });
     }
 
-    // Process team points only for group stage matches
-    const isGroupMatch = m.stage === 'Qrup Mərhələsi' || m.stage === 'Qrup' || (m.stage || '').toLowerCase().includes('qrup');
+    // Process team points only for group stage matches with valid numeric scores
+    const isGroupMatch = (m.stage === 'Qrup Mərhələsi' || m.stage === 'Qrup' || (m.stage || '').toLowerCase().includes('qrup')) && hasValidScores;
     if (isGroupMatch) {
       const allDivKeys = Object.keys(standingsMap[yr] || {});
       const relevantDivs = allDivKeys.filter(d => isMatchDivision(m.division, d));
@@ -379,16 +411,16 @@ export const recalculateData = () => {
           teamA.played += 1;
           teamB.played += 1;
 
-          teamA.goalsFor += m.scoreA;
-          teamA.goalsAgainst += m.scoreB;
-          teamB.goalsFor += m.scoreB;
-          teamB.goalsAgainst += m.scoreA;
+          teamA.goalsFor += scoreA;
+          teamA.goalsAgainst += scoreB;
+          teamB.goalsFor += scoreB;
+          teamB.goalsAgainst += scoreA;
 
-          if (m.scoreA > m.scoreB) {
+          if (scoreA > scoreB) {
             teamA.won += 1;
             teamA.points += 3;
             teamB.lost += 1;
-          } else if (m.scoreA < m.scoreB) {
+          } else if (scoreA < scoreB) {
             teamB.won += 1;
             teamB.points += 3;
             teamA.lost += 1;
@@ -563,10 +595,13 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
     const yr = m.year || defaultYear;
     const div = m.division || "10-11";
 
-    const isFinal    = m.stage === 'Final';
-    const scoreA     = Number(m.scoreA || 0);
-    const scoreB     = Number(m.scoreB || 0);
-    const goalDiffAB = scoreA - scoreB;
+    const isFinal        = m.stage === 'Final';
+    const numScoreA      = Number(m.scoreA);
+    const numScoreB      = Number(m.scoreB);
+    const hasValidScores = Number.isFinite(numScoreA) && Number.isFinite(numScoreB);
+    const scoreA         = hasValidScores ? numScoreA : 0;
+    const scoreB         = hasValidScores ? numScoreB : 0;
+    const goalDiffAB     = scoreA - scoreB;
 
     if (m.playerStats && Array.isArray(m.playerStats)) {
       m.playerStats.forEach(stat => {
@@ -598,8 +633,8 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
       });
     }
 
-    // Process team points only for group stage matches
-    const isGroupMatch = m.stage === 'Qrup Mərhələsi' || m.stage === 'Qrup' || (m.stage || '').toLowerCase().includes('qrup');
+    // Process team points only for group stage matches with valid numeric scores
+    const isGroupMatch = (m.stage === 'Qrup Mərhələsi' || m.stage === 'Qrup' || (m.stage || '').toLowerCase().includes('qrup')) && hasValidScores;
     if (isGroupMatch) {
       const allDivKeys = Object.keys(standingsMap[yr] || {});
       const relevantDivs = allDivKeys.filter(d => isMatchDivision(m.division, d));
@@ -620,16 +655,16 @@ export const recalculateInMemoryData = (classes, players, matches, yearsList) =>
           teamA.played += 1;
           teamB.played += 1;
 
-          teamA.goalsFor += m.scoreA;
-          teamA.goalsAgainst += m.scoreB;
-          teamB.goalsFor += m.scoreB;
-          teamB.goalsAgainst += m.scoreA;
+          teamA.goalsFor += scoreA;
+          teamA.goalsAgainst += scoreB;
+          teamB.goalsFor += scoreB;
+          teamB.goalsAgainst += scoreA;
 
-          if (m.scoreA > m.scoreB) {
+          if (scoreA > scoreB) {
             teamA.won += 1;
             teamA.points += 3;
             teamB.lost += 1;
-          } else if (m.scoreA < m.scoreB) {
+          } else if (scoreA < scoreB) {
             teamB.won += 1;
             teamB.points += 3;
             teamA.lost += 1;
