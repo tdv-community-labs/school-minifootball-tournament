@@ -36,6 +36,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
   const [viewMode, setViewMode] = useState('table'); // 'table' or 'bracket'
+  const [tournamentTrack, setTournamentTrack] = useState('main'); // 'main' (1/8 Final Tree) or 'group_cup' (Group Playoff)
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [sortField, setSortField] = useState('points');
   const [sortAsc, setSortAsc] = useState(false);
@@ -104,7 +105,17 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   // Separate playoff matches from group stage
   const playoffMatches = divisionMatches.filter(m => {
     const norm = normalizeStage(m.stage);
-    return norm !== '' && !m.stage.toLowerCase().includes('qrup');
+    if (norm === '' || m.stage.toLowerCase().includes('qrup') || m.stage.toLowerCase().includes('tur')) return false;
+
+    // For 2017-2018: separate Main Knockout (1/8 -> 1/4 -> Semi -> Final) from Group Playoffs (June 11th grade cup)
+    if (activeYear === '2017-2018') {
+      const isGroupPlayoff = m.id === 'm_2017_11a_11b_2018_06_07_yarımfinal' || 
+                             m.id === 'm_2017_10e_11h_2018_06_07_yarımfinal' || 
+                             m.id === 'm_2017_11a_11h_2018_06_11_3_cü_yer' || 
+                             m.id === 'm_2017_10e_11b_2018_06_12_final';
+      return tournamentTrack === 'group_cup' ? isGroupPlayoff : !isGroupPlayoff;
+    }
+    return true;
   });
 
   const stage16Matches = playoffMatches.filter(m => normalizeStage(m.stage) === '16/1');
@@ -117,10 +128,16 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   // Match winner calculation helper
   const getMatchWinner = (match) => {
     if (!match) return null;
-    const sA = Number(match.scoreA || 0);
-    const sB = Number(match.scoreB || 0);
-    if (sA > sB) return { winner: match.teamA, loser: match.teamB, isPenalties: false };
-    if (sB > sA) return { winner: match.teamB, loser: match.teamA, isPenalties: false };
+    if (match.winner) {
+      const loser = match.winner === match.teamA ? match.teamB : (match.winner === match.teamB ? match.teamA : null);
+      return { winner: match.winner, loser, isPenalties: Boolean(match.penaltyScoreA != null && match.penaltyScoreB != null) };
+    }
+    const sA = Number(match.scoreA);
+    const sB = Number(match.scoreB);
+    if (!isNaN(sA) && !isNaN(sB) && (sA > 0 || sB > 0 || match.played === true)) {
+      if (sA > sB) return { winner: match.teamA, loser: match.teamB, isPenalties: false };
+      if (sB > sA) return { winner: match.teamB, loser: match.teamA, isPenalties: false };
+    }
     if (
       match.penaltyScoreA !== null && match.penaltyScoreB !== null && 
       match.penaltyScoreA !== undefined && match.penaltyScoreB !== undefined && 
@@ -175,12 +192,52 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const hasStage8  = stage8Matches.length > 0 || hasStage16;
   const hasStage4  = stage4Matches.length > 0 || hasStage8;
 
-  // Prepare filled or null slots
-  const slots16 = Array.from({ length: 8 }).map((_, idx) => stage16Matches[idx] || null);
-  const slots8  = Array.from({ length: 4 }).map((_, idx) => stage8Matches[idx] || null);
-  const slots4  = Array.from({ length: 2 }).map((_, idx) => stage4Matches[idx] || null);
-  const slotsSemi = Array.from({ length: 2 }).map((_, idx) => stageSemiMatches[idx] || null);
-  const slotsFinal = Array.from({ length: 1 }).map((_, idx) => stageFinalMatches[idx] || null);
+  // Helper to align feeder round matches to match their winners/participants with target round slots
+  const alignFeederRound = (feederMatches, targetSlots, roundSize) => {
+    const slots = new Array(roundSize).fill(null);
+    const usedIndices = new Set();
+
+    targetSlots.forEach((targetMatch, tIdx) => {
+      if (!targetMatch) return;
+      const targetTeams = [targetMatch.teamA, targetMatch.teamB];
+
+      targetTeams.forEach((team, teamSubIdx) => {
+        if (!team || team === '?') return;
+        const slotIdx = tIdx * 2 + teamSubIdx;
+        if (slotIdx >= roundSize) return;
+
+        let matchIdx = feederMatches.findIndex((fm, i) => !usedIndices.has(i) && getMatchWinner(fm)?.winner === team);
+        if (matchIdx === -1) {
+          matchIdx = feederMatches.findIndex((fm, i) => !usedIndices.has(i) && (fm.teamA === team || fm.teamB === team));
+        }
+        if (matchIdx !== -1) {
+          slots[slotIdx] = feederMatches[matchIdx];
+          usedIndices.add(matchIdx);
+        }
+      });
+    });
+
+    let unusedIdx = 0;
+    for (let s = 0; s < roundSize; s++) {
+      if (!slots[s]) {
+        while (unusedIdx < feederMatches.length && usedIndices.has(unusedIdx)) {
+          unusedIdx++;
+        }
+        if (unusedIdx < feederMatches.length) {
+          slots[s] = feederMatches[unusedIdx];
+          usedIndices.add(unusedIdx);
+        }
+      }
+    }
+    return slots;
+  };
+
+  // Prepare aligned filled or null slots (Full binary tournament tree)
+  const slotsFinal = [stageFinalMatches[0] || null];
+  const slotsSemi  = alignFeederRound(stageSemiMatches, slotsFinal, 2);
+  const slots4     = alignFeederRound(stage4Matches, slotsSemi, 4);
+  const slots8     = alignFeederRound(stage8Matches, slots4, 8);
+  const slots16    = alignFeederRound(stage16Matches, slots8, 16);
 
   // Group an array of matches into pairs for tree branch connecting
   const createPairs = (items) => {
@@ -840,6 +897,34 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             : html`
                 <div className="bg-slate-50/80 border border-purple-100/80 rounded-3xl p-6 shadow-sm overflow-x-auto no-scrollbar">
                   
+                  <!-- Tournament Track Switcher (For seasons with multiple playoff tournaments like 2017-2018) -->
+                  ${activeYear === '2017-2018' && html`
+                    <div className="flex flex-wrap items-center gap-2 mb-4 p-1.5 bg-white dark:bg-purple-950/60 rounded-2xl border border-purple-100 dark:border-purple-900/60 shadow-2xs w-fit">
+                      <button
+                        onClick=${() => setTournamentTrack('main')}
+                        className=${`px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition flex items-center gap-1.5 ${
+                          tournamentTrack === 'main'
+                            ? 'bg-purple-900 text-white shadow-xs'
+                            : 'text-purple-950 dark:text-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/40'
+                        }`}
+                      >
+                        <i className="fas fa-sitemap text-xs"></i>
+                        <span>1/8 Final Toru (Əsas Kubok - 16 Komanda)</span>
+                      </button>
+                      <button
+                        onClick=${() => setTournamentTrack('group_cup')}
+                        className=${`px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition flex items-center gap-1.5 ${
+                          tournamentTrack === 'group_cup'
+                            ? 'bg-purple-900 text-white shadow-xs'
+                            : 'text-purple-950 dark:text-purple-200 hover:bg-purple-50 dark:hover:bg-purple-900/40'
+                        }`}
+                      >
+                        <i className="fas fa-trophy text-xs text-amber-500"></i>
+                        <span>11-ci Siniflər Kuboku (Qrup Pley-offu)</span>
+                      </button>
+                    </div>
+                  `}
+
                   <!-- Instruction banner -->
                   <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-purple-100/60 mb-6 text-xs text-gray-500 font-semibold">
                     <span className="flex items-center gap-1.5 text-purple-950 font-bold">
@@ -942,7 +1027,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                       </div>
 
                       <!-- 3rd Place Match (If registered or available) -->
-                      ${(stageThirdMatches.length > 0 || slotsFinal[0]) && html`
+                      ${stageThirdMatches.length > 0 && html`
                         <div className="pt-4 border-t border-dashed border-purple-200">
                           <div className="text-center mb-3">
                             <span className="text-[9px] font-black text-amber-900 bg-amber-100 px-3 py-0.5 rounded-full uppercase tracking-wider shadow-2xs inline-block">

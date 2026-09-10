@@ -13,17 +13,17 @@
  */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260910_0230';
-import Standings from './components/Standings.js?v=20260910_0230';
-import Matches from './components/Matches.js?v=20260910_0230';
-import Players from './components/Players.js?v=20260910_0230';
-import AdminDashboard from './components/AdminDashboard.js?v=20260910_0230';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260910_0230';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260910_0230';
-import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260910_0230';
-import { db } from './services/database.js?v=20260910_0230';
-import { t, getDivisionLabel, isMatchDivision, getDivisionsForYear } from './services/i18n.js?v=20260910_0230';
-import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260910_0230';
+import Dashboard from './components/Dashboard.js?v=20260910_0245';
+import Standings from './components/Standings.js?v=20260910_0245';
+import Matches from './components/Matches.js?v=20260910_0245';
+import Players from './components/Players.js?v=20260910_0245';
+import AdminDashboard from './components/AdminDashboard.js?v=20260910_0245';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260910_0245';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260910_0245';
+import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260910_0245';
+import { db } from './services/database.js?v=20260910_0245';
+import { t, getDivisionLabel, isMatchDivision, getDivisionsForYear } from './services/i18n.js?v=20260910_0245';
+import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260910_0245';
 
 const html = htm.bind(React.createElement);
 
