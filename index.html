@@ -31,6 +31,14 @@
               Sətir: ${escapeHTML(e.lineno || '0')}:${escapeHTML(e.colno || '0')}<br/>
               ${escapeHTML(e.error && e.error.stack ? e.error.stack : '')}
             </p>
+            <div class="flex gap-3 mb-4">
+              <button onclick="window.location.reload();" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg">
+                <i class="fas fa-redo-alt mr-1"></i> Səhifəni Yenilə
+              </button>
+              <button onclick="try{localStorage.clear();sessionStorage.clear();}catch(e){}window.location.reload(true);" class="px-4 py-2 bg-rose-750 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition border border-rose-500/40">
+                <i class="fas fa-trash-alt mr-1"></i> Keşi Təmizlə və Yüklə
+              </button>
+            </div>
             <p class="text-[10px] text-red-400">Zəhmət olmasa bu xətanın nə olduğunu bizə bildirin.</p>
           </div>
         `;
@@ -50,6 +58,14 @@
               ${escapeHTML(msg)}<br/>
               ${escapeHTML(stack)}
             </p>
+            <div class="flex gap-3 mb-4">
+              <button onclick="window.location.reload();" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg">
+                <i class="fas fa-redo-alt mr-1"></i> Səhifəni Yenilə
+              </button>
+              <button onclick="try{localStorage.clear();sessionStorage.clear();}catch(e){}window.location.reload(true);" class="px-4 py-2 bg-rose-750 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition border border-rose-500/40">
+                <i class="fas fa-trash-alt mr-1"></i> Keşi Təmizlə və Yüklə
+              </button>
+            </div>
             <p class="text-[10px] text-red-400">Zəhmət olmasa bu xətanın nə olduğunu bizə bildirin.</p>
           </div>
         `;
@@ -420,7 +436,7 @@
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js?v=20260912_0050';
+    import App from './app.js?v=20260912_0060';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');
