@@ -22,7 +22,7 @@ import { useRealFirebase, firebaseConfig } from './firebase-config.js';
 import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { ARCHIVE_YEARS, ARCHIVE_CLASSES, ARCHIVE_MATCHES, ARCHIVE_PLAYERS } from './archiveData.js?v=20260912_0070';
-import { isMatchDivision, getDivisionsForYear } from './i18n.js?v=20260912_0070';
+import { isMatchDivision, getDivisionsForYear } from './i18n.js?v=20260912_0100';
 import { auditTournamentData, repairTournamentData, startBackgroundSelfHealing } from './selfHealing.js?v=20260912_0070';
 
 // ── Modulların İnteqrasiyası və Təkrar İxracı (100% Geriyə Uyğunluq) ─────────────

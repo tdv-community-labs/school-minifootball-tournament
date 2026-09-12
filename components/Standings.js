@@ -15,7 +15,7 @@ import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260910_0080';
-import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0090';
+import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0100';
 
 const html = htm.bind(React.createElement);
 
@@ -1144,18 +1144,20 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
       `}
 
       <!-- Match Details & Sofascore Analytics Modal (Shotmap, Goal POV, Heatmap, 5v5 Lineup) -->
-      <${MatchAnalyticsModal}
-        match=${selectedMatch}
-        isOpen=${Boolean(selectedMatch)}
-        onClose=${() => {
-          setSelectedMatch(null);
-          if (window.location.hash.startsWith('#match/')) {
-            window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
-          }
-        }}
-        allPlayers=${players}
-        lang=${lang}
-      />
+      ${Boolean(selectedMatch) && html`
+        <${MatchAnalyticsModal}
+          match=${selectedMatch}
+          isOpen=${Boolean(selectedMatch)}
+          onClose=${() => {
+            setSelectedMatch(null);
+            if (window.location.hash.startsWith('#match/')) {
+              window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+            }
+          }}
+          allPlayers=${players}
+          lang=${lang}
+        />
+      `}
     </div>
   `;
 }

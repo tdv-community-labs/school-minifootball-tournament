@@ -22,7 +22,7 @@ export const translations = {
     academicYear: "Academic Year:",
     navHome: "Home",
     navStandings: "Standings",
-    navMatches: "Matches & Video",
+    navMatches: "Matches",
     navPlayers: "Players",
     navAdmin: "Admin Panel",
 
@@ -113,7 +113,7 @@ export const translations = {
     champion: "CHAMPION",
 
     // Matches Page
-    matchesTitle: "Matches & Video Highlights",
+    matchesTitle: "Matches",
     stageFilter: "Stage:",
     allStages: "All Stages",
     noMatchesFound: "No matches found for this stage.",
@@ -168,7 +168,7 @@ export const translations = {
     academicYear: "Tədris İli:",
     navHome: "Ana Səhifə",
     navStandings: "Turnir Cədvəli",
-    navMatches: "Matçlar & Video",
+    navMatches: "Matçlar",
     navPlayers: "Oyunçular",
     navAdmin: "Admin Panel",
 
@@ -259,7 +259,7 @@ export const translations = {
     champion: "ÇEMPİON",
 
     // Matches Page
-    matchesTitle: "Matçlar və Video İcmallar",
+    matchesTitle: "Matçlar",
     stageFilter: "Mərhələ:",
     allStages: "Bütün Mərhələlər",
     noMatchesFound: "Bu mərhələ üçün heç bir matç tapılmadı.",

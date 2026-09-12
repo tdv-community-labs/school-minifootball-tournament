@@ -16,7 +16,7 @@ import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../service
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260910_0080';
 import { normalizeStage } from '../services/matchUtils.js';
-import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0090';
+import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0100';
 
 const html = htm.bind(React.createElement);
 
@@ -231,12 +231,12 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       <!-- Title & Filters -->
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-black text-purple-950 font-sans">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
-          <p className="text-sm text-gray-500">${lang === 'az' ? 'Mərhələlər üzrə oyunlar, arxiv videolar və Sofascore reytinqləri' : 'Stage fixtures, match highlights, and Sofascore player ratings'}</p>
+          <h2 className="text-2xl font-black text-purple-950 dark:text-white font-sans">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">${lang === 'az' ? 'Mərhələlər üzrə oyunlar və Sofascore reytinqləri' : 'Stage fixtures and Sofascore player ratings'}</p>
         </div>
         
         <!-- Stage Tabs -->
-        <div className="flex bg-purple-50 p-1.5 rounded-2xl border border-purple-100 overflow-x-auto max-w-full no-scrollbar">
+        <div className="flex bg-purple-50 dark:bg-slate-900 p-1.5 rounded-2xl border border-purple-100 dark:border-slate-800 overflow-x-auto max-w-full no-scrollbar">
           ${stages.map(st => html`
             <button
               key=${st.id}
@@ -244,7 +244,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
               className=${`px-4 py-2 rounded-xl text-xs font-extrabold tracking-wide uppercase transition whitespace-nowrap ${
                 selectedStage === st.id 
                   ? 'bg-purple-900 text-white shadow-sm' 
-                  : 'text-purple-950 hover:bg-purple-200/50'
+                  : 'text-purple-950 dark:text-purple-200 hover:bg-purple-200/50 dark:hover:bg-purple-900/50'
               }`}
             >
               ${st.label}
@@ -273,13 +273,13 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
               <div 
                 key=${match.id}
                 onClick=${() => setSelectedMatch(match)}
-                className="sport-card-hover bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm cursor-pointer flex flex-col justify-between"
+                className="sport-card-hover bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm cursor-pointer flex flex-col justify-between"
               >
                 <!-- Match Card Top -->
-                <div className="p-4 sm:p-6 bg-gradient-to-b from-purple-50/50 to-white">
+                <div className="p-4 sm:p-6 bg-gradient-to-b from-purple-50/50 dark:from-slate-800/40 to-white dark:to-slate-900">
                   <div className="flex justify-between items-center mb-3 sm:mb-4 gap-2">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[11px] sm:text-xs font-black text-purple-900 bg-purple-100 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-black text-purple-900 dark:text-purple-300 bg-purple-100 dark:bg-purple-950/80 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
                         ${match.stage}
                       </span>
                       ${match.videoTitle && html`
@@ -389,11 +389,6 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                       <i className="fas fa-chart-line text-green-500 mr-1.5 text-xs sm:text-sm"></i>
                       ${match.playerStats?.length || 0} Oyunçu reytinqi
                     </span>
-                    ${(match.id === 'm_22_17' || match.videoUrl) ? html`
-                      <span className="bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full text-[10px] font-black border border-emerald-500/30 flex items-center gap-1">
-                        <i className="fas fa-bullseye text-[9px] animate-pulse text-emerald-500"></i> Zərbələr & Qapı POV
-                      </span>
-                    ` : null}
                   </div>
                   <span className="text-purple-900 dark:text-purple-300 hover:text-green-600 font-extrabold transition flex items-center space-x-1.5">
                     <span>Sofascore Analizi</span>
@@ -406,18 +401,20 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       </div>
 
       <!-- Match Details & Sofascore Analytics Modal (Shotmap, Goal POV, Heatmap, 5v5 Lineup) -->
-      <${MatchAnalyticsModal}
-        match=${selectedMatch}
-        isOpen=${Boolean(selectedMatch)}
-        onClose=${() => {
-          setSelectedMatch(null);
-          if (window.location.hash.startsWith('#match/')) {
-            window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
-          }
-        }}
-        allPlayers=${players}
-        lang=${lang}
-      />
+      ${Boolean(selectedMatch) && html`
+        <${MatchAnalyticsModal}
+          match=${selectedMatch}
+          isOpen=${Boolean(selectedMatch)}
+          onClose=${() => {
+            setSelectedMatch(null);
+            if (window.location.hash.startsWith('#match/')) {
+              window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+            }
+          }}
+          allPlayers=${players}
+          lang=${lang}
+        />
+      `}
     </div>
   `;
 }

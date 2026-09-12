@@ -15,15 +15,13 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import htm from 'htm';
-import { getMatchAnalytics } from '../services/matchAnalyticsData.js?v=20260912_0080';
-import { getSofascoreBadgeStyle } from '../services/database.js?v=20260912_0080';
+import { getMatchAnalytics } from '../services/matchAnalyticsData.js?v=20260912_0100';
+import { getSofascoreBadgeStyle } from '../services/database.js?v=20260912_0100';
 
 const html = htm.bind(React.createElement);
 
 export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers = [], lang = 'az' }) {
-  if (!isOpen || !match) return null;
-
-  const analytics = useMemo(() => getMatchAnalytics(match, allPlayers), [match, allPlayers]);
+  const analytics = useMemo(() => (match ? getMatchAnalytics(match, allPlayers) : null), [match, allPlayers]);
   const [activeTab, setActiveTab] = useState('shotmap'); // 'shotmap' | 'lineup' | 'heatmap' | 'stats' | 'video'
   const [selectedShotIndex, setSelectedShotIndex] = useState(0);
   const [shotFilter, setShotFilter] = useState('all'); // 'all' | 'goal' | 'saved' | 'teamA' | 'teamB'
@@ -35,16 +33,23 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
   // Filtrlənmiş zərbələr
   const filteredShots = useMemo(() => {
+    if (!match) return [];
     if (shotFilter === 'goal') return allShots.filter(s => s.outcome === 'goal');
     if (shotFilter === 'saved') return allShots.filter(s => s.outcome === 'saved');
     if (shotFilter === 'teamA') return allShots.filter(s => s.team === match.teamA);
     if (shotFilter === 'teamB') return allShots.filter(s => s.team === match.teamB);
     return allShots;
-  }, [allShots, shotFilter, match.teamA, match.teamB]);
+  }, [allShots, shotFilter, match?.teamA, match?.teamB]);
 
-  // Cari seçilmiş zərbə
-  const currentShot = filteredShots[selectedShotIndex] || filteredShots[0] || allShots[0] || null;
-  const stats = analytics?.stats || {};
+  const handlePrevShot = () => {
+    if (filteredShots.length === 0) return;
+    setSelectedShotIndex(prev => (prev > 0 ? prev - 1 : filteredShots.length - 1));
+  };
+
+  const handleNextShot = () => {
+    if (filteredShots.length === 0) return;
+    setSelectedShotIndex(prev => (prev < filteredShots.length - 1 ? prev + 1 : 0));
+  };
 
   // Mobil brauzer geri düyməsi və URL hash idarəetməsi
   useEffect(() => {
@@ -76,8 +81,17 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
+      if (window.location.hash.startsWith('#match/')) {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
     };
   }, [isOpen, match?.id]);
+
+  if (!isOpen || !match) return null;
+
+  // Cari seçilmiş zərbə
+  const currentShot = filteredShots[selectedShotIndex] || filteredShots[0] || allShots[0] || null;
+  const stats = analytics?.stats || {};
 
   const handleBack = () => {
     if (window.location.hash.startsWith('#match/')) {
@@ -93,16 +107,6 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
       setCopyFeedback(true);
       setTimeout(() => setCopyFeedback(false), 2000);
     }
-  };
-
-  const handlePrevShot = () => {
-    if (filteredShots.length === 0) return;
-    setSelectedShotIndex(prev => (prev > 0 ? prev - 1 : filteredShots.length - 1));
-  };
-
-  const handleNextShot = () => {
-    if (filteredShots.length === 0) return;
-    setSelectedShotIndex(prev => (prev < filteredShots.length - 1 ? prev + 1 : 0));
   };
 
   // Nəticə rəngi və etiketi
