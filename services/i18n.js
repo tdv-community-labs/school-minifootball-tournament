@@ -129,13 +129,13 @@ export const translations = {
     playerDetail: "Player Profile",
 
     // Modals
-    rulesBtn: "Tournament Rules",
+    rulesBtn: "About & Regulations",
     contactBtn: "Contact Committee",
     closeBtn: "Close",
 
     // Rules Modal
-    rulesModalTitle: "TDV BTL Tournament Regulations",
-    rulesModalSubtitle: "Official championship conduct, rules, and match guidelines",
+    rulesModalTitle: "TDV BTL Tournament About & Regulations",
+    rulesModalSubtitle: "Championship history, official conduct, rules, and match guidelines",
     rule1Title: "1. Match Format & Substitutions",
     rule1Desc: "Matches consist of two 15-minute halves (30 minutes total). Teams field 5 outfield players plus 1 goalkeeper (5+1). Substitutions are unlimited and can be made dynamically during breaks in play.",
     rule2Title: "2. Group Stage Points & Tiebreakers",
@@ -275,13 +275,13 @@ export const translations = {
     playerDetail: "Oyunçu Profili",
 
     // Modals
-    rulesBtn: "Reqlament",
+    rulesBtn: "Haqqında və Reqlament",
     contactBtn: "Əlaqə",
     closeBtn: "Bağla",
 
     // Rules Modal
-    rulesModalTitle: "TDV BTL Turnir Reqlamenti",
-    rulesModalSubtitle: "Çempionatın rəsmi qaydaları və nizam-intizam tələbləri",
+    rulesModalTitle: "TDV BTL Turniri Haqqında və Reqlament",
+    rulesModalSubtitle: "Çempionatın tarixi, rəsmi qaydaları və nizam-intizam tələbləri",
     rule1Title: "1. Ümumi Turnir Qaydaları və Əvəzetmələr",
     rule1Desc: "Matçlar hər biri 15 dəqiqə olmaqla 2 hissədən (cəmi 30 dəqiqə) ibarətdir. Meydanda 5 oyunçu + 1 qapıçı olmaqla 6 oyunçu iştirak edir. Əvəzetmələrin sayı sərbəstdir.",
     rule2Title: "2. Xallar və Qrup Mərhələsi Meyarları",

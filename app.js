@@ -13,17 +13,17 @@
  */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260912_0030';
-import Standings from './components/Standings.js?v=20260912_0030';
-import Matches from './components/Matches.js?v=20260912_0030';
-import Players from './components/Players.js?v=20260912_0030';
-import AdminDashboard from './components/AdminDashboard.js?v=20260912_0030';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260912_0030';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260912_0030';
-import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260912_0030';
-import { db } from './services/database.js?v=20260912_0030';
-import { t, getDivisionLabel, isMatchDivision, getDivisionsForYear } from './services/i18n.js?v=20260912_0030';
-import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260912_0030';
+import Dashboard from './components/Dashboard.js?v=20260912_0040';
+import Standings from './components/Standings.js?v=20260912_0040';
+import Matches from './components/Matches.js?v=20260912_0040';
+import Players from './components/Players.js?v=20260912_0040';
+import AdminDashboard from './components/AdminDashboard.js?v=20260912_0040';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260912_0040';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260912_0040';
+import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260912_0040';
+import { db } from './services/database.js?v=20260912_0040';
+import { t, getDivisionLabel, isMatchDivision, getDivisionsForYear } from './services/i18n.js?v=20260912_0040';
+import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260912_0040';
 
 const html = htm.bind(React.createElement);
 
@@ -550,13 +550,13 @@ export default function App() {
       </main>
 
       <!-- Premium Footer -->
-      <footer className="bg-purple-950 text-purple-200 border-t border-purple-900 py-6 text-center text-xs font-semibold">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <footer className="bg-purple-950 text-purple-200 border-t border-purple-900 py-6 text-center text-xs font-semibold pb-24 sm:pb-8">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 pr-4 md:pr-48">
           <p>© 2026 TDV BTL ${t('appSubtitle', lang)}. ${t('allRightsReserved', lang)}</p>
           <div className="flex items-center space-x-4">
             <button
               onClick=${() => setShowRulesModal(true)}
-              className="hover:text-green-400 transition cursor-pointer flex items-center space-x-1.5 py-1 px-2 rounded-lg hover:bg-purple-900/60"
+              className="hover:text-green-400 transition cursor-pointer flex items-center space-x-1.5 py-1.5 px-3 rounded-xl bg-purple-900/40 hover:bg-purple-900/80 border border-purple-700/40"
             >
               <i className="fas fa-book-open text-xs text-green-400"></i>
               <span className="font-bold">${t('rulesBtn', lang)}</span>
@@ -564,7 +564,7 @@ export default function App() {
             <span className="text-purple-700">•</span>
             <button
               onClick=${() => setShowContactModal(true)}
-              className="hover:text-green-400 transition cursor-pointer flex items-center space-x-1.5 py-1 px-2 rounded-lg hover:bg-purple-900/60"
+              className="hover:text-green-400 transition cursor-pointer flex items-center space-x-1.5 py-1.5 px-3 rounded-xl bg-purple-900/40 hover:bg-purple-900/80 border border-purple-700/40"
             >
               <i className="fas fa-envelope text-xs text-green-400"></i>
               <span className="font-bold">${t('contactBtn', lang)}</span>
@@ -601,6 +601,18 @@ export default function App() {
 
             <!-- Scrollable Body -->
             <div className="overflow-y-auto py-4 space-y-4 pr-1 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+              <!-- Tournament History & About Block -->
+              <div className="bg-gradient-to-r from-purple-50 via-purple-100/40 to-indigo-50 dark:from-purple-950/60 dark:via-purple-900/40 dark:to-indigo-950/60 p-4 rounded-2xl border border-purple-200/80 dark:border-purple-800/80">
+                <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1.5 flex items-center">
+                  <i className="fas fa-info-circle mr-2 text-green-500"></i> ${lang === 'az' ? 'Turnir Haqqında Ümumi Məlumat' : 'About the Championship'}
+                </h4>
+                <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
+                  ${lang === 'az' 
+                    ? 'TDV Bakı Türk Liseyinin ənənəvi minifutbol çempionatı 2017-ci ildən təşkil olunur. Çempionat məktəbimizin 9, 10 və 11-ci sinif şagirdləri arasında keçirilir və liseyimizin ən böyük idman ənənələrindən biridir. Məqsəd şagirdlər arasında idman əxlaqını, dostluq əlaqələrini və komanda ruhunu yüksəltməkdir. Bu rəsmi platformada bütün tarixi oyunlar, nəticələr, bombardirlər və Sofascore reytinqləri canlı arxivləşdirilib.' 
+                    : 'The traditional mini-football championship of TDV Baku Turkish Lyceum has been held since 2017 among 9th, 10th, and 11th grade students. The tournament is dedicated to sportsmanship, teamwork, and healthy competition, digitally featuring complete historical match records, goal statistics, and Sofascore ratings.'}
+                </p>
+              </div>
+
               <!-- Item 1 -->
               <div className="bg-purple-50/50 dark:bg-purple-950/30 p-4 rounded-2xl border border-purple-100/60 dark:border-purple-900/40">
                 <h4 className="font-extrabold text-sm text-purple-950 dark:text-purple-200 mb-1 flex items-center">

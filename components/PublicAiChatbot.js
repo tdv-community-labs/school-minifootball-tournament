@@ -100,12 +100,12 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
   };
 
   return html`
-    <div className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-40 font-sans">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 font-sans pointer-events-none">
       <!-- Floating Action Button (FAB) -->
       ${!isOpen && html`
         <button
           onClick=${() => setIsOpen(true)}
-          className="group flex items-center gap-2 bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 hover:from-purple-800 hover:to-indigo-800 text-white px-3.5 py-3 sm:px-4 sm:py-3.5 rounded-full shadow-2xl hover:shadow-purple-500/25 transition transform hover:scale-105 active:scale-95 border border-purple-700/50"
+          className="pointer-events-auto group flex items-center gap-2 bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 hover:from-purple-800 hover:to-indigo-800 text-white px-3.5 py-3 sm:px-4 sm:py-3.5 rounded-full shadow-2xl hover:shadow-purple-500/25 transition transform hover:scale-105 active:scale-95 border border-purple-700/50"
           title="Turnir AI Köməkçisi"
         >
           <div className="relative">
@@ -120,7 +120,7 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
 
       <!-- Chat Window Modal -->
       ${isOpen && html`
-        <div className="w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[380px] h-[480px] sm:h-[520px] max-h-[82vh] bg-white rounded-3xl shadow-2xl border border-purple-100 flex flex-col overflow-hidden animate-fadeIn">
+        <div className="pointer-events-auto w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[380px] h-[480px] sm:h-[520px] max-h-[82vh] bg-white rounded-3xl shadow-2xl border border-purple-100 flex flex-col overflow-hidden animate-fadeIn">
           
           <!-- Header -->
           <div className="bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-900 text-white p-4 flex items-center justify-between shadow-sm">
