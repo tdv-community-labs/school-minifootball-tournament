@@ -15,7 +15,7 @@ import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260910_0080';
-import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0060';
+import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0080';
 
 const html = htm.bind(React.createElement);
 

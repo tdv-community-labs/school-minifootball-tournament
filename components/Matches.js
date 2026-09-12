@@ -16,7 +16,7 @@ import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../service
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260910_0080';
 import { normalizeStage } from '../services/matchUtils.js';
-import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0060';
+import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0080';
 
 const html = htm.bind(React.createElement);
 
@@ -45,6 +45,25 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
     };
     loadMatchesData();
   }, [activeDivision, activeYear]);
+
+  // Handle direct URL #match/:id and browser navigation
+  useEffect(() => {
+    const handleHashCheck = () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#match/')) {
+        const targetId = hash.replace('#match/', '');
+        const found = matches.find(m => m.id === targetId);
+        if (found) {
+          setSelectedMatch(found);
+        }
+      }
+    };
+    if (matches.length > 0) {
+      handleHashCheck();
+    }
+    window.addEventListener('hashchange', handleHashCheck);
+    return () => window.removeEventListener('hashchange', handleHashCheck);
+  }, [matches]);
   const isStageMatch = (matchStage, targetStage) => {
     if (!matchStage || !targetStage) return false;
     if (matchStage === targetStage) return true;
@@ -390,7 +409,12 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       <${MatchAnalyticsModal}
         match=${selectedMatch}
         isOpen=${Boolean(selectedMatch)}
-        onClose=${() => setSelectedMatch(null)}
+        onClose=${() => {
+          setSelectedMatch(null);
+          if (window.location.hash.startsWith('#match/')) {
+            window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+          }
+        }}
         allPlayers=${players}
         lang=${lang}
       />
