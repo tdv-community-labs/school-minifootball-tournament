@@ -61,7 +61,12 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
     return false;
   };
 
-  const filteredMatches = matches.filter(m => isMatchDivision(m.division, activeDivision) && isStageMatch(m.stage, selectedStage));
+  const filteredMatches = matches.filter(m => {
+    const isDivDirect = isMatchDivision(m.division, activeDivision);
+    const isTeamRelevant = (activeDivision === '11' && (m.teamA?.startsWith('11') || m.teamB?.startsWith('11'))) ||
+                           (activeDivision === '9-10' && (m.teamA?.startsWith('10') || m.teamB?.startsWith('10') || m.teamA?.startsWith('9') || m.teamB?.startsWith('9')));
+    return (isDivDirect || isTeamRelevant) && isStageMatch(m.stage, selectedStage);
+  });
 
   /**
    * Returns enriched per-player stats for a given match,

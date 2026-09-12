@@ -4268,8 +4268,34 @@ export const ARCHIVE_MATCHES = [
     "penaltyScoreA": null,
     "penaltyScoreB": null,
     "date": "2023-06-01",
-    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "playerStats": []
+    "videoUrl": "https://www.youtube.com/embed/spKp8pezfPQ",
+    "playerStats": [
+      {
+        "playerId": "p_22_murad_abdullayev_10a",
+        "goals": 3,
+        "assists": 1
+      },
+      {
+        "playerId": "p_22_frid_hmdli_10a",
+        "goals": 2,
+        "assists": 2
+      },
+      {
+        "playerId": "p_22_amin_ismaylov_10a",
+        "goals": 0,
+        "assists": 1
+      },
+      {
+        "playerId": "p_22_ahbaz_ahbazl_11h",
+        "goals": 2,
+        "assists": 1
+      },
+      {
+        "playerId": "p_22_murad_hmdzad_11h",
+        "goals": 2,
+        "assists": 1
+      }
+    ]
   },
   {
     "id": "m_22_18",
