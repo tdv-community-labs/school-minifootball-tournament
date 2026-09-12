@@ -125,11 +125,24 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const stageFinalMatches = playoffMatches.filter(m => normalizeStage(m.stage) === 'final');
   const stageThirdMatches = playoffMatches.filter(m => normalizeStage(m.stage) === 'third');
 
+  // Track teams in 3rd place and final matches for semifinal deduction
+  const thirdPlaceTeams = new Set();
+  stageThirdMatches.forEach(m => {
+    if (m.teamA && m.teamA !== '?') thirdPlaceTeams.add(m.teamA);
+    if (m.teamB && m.teamB !== '?') thirdPlaceTeams.add(m.teamB);
+  });
+
+  const finalTeams = new Set();
+  stageFinalMatches.forEach(m => {
+    if (m.teamA && m.teamA !== '?') finalTeams.add(m.teamA);
+    if (m.teamB && m.teamB !== '?') finalTeams.add(m.teamB);
+  });
+
   // Match winner calculation helper
   const getMatchWinner = (match) => {
     if (!match) return null;
     if (match.winner) {
-      const loser = match.winner === match.teamA ? match.teamB : (match.winner === match.teamB ? match.teamA : null);
+      const loser = match.loser || (match.winner === match.teamA ? match.teamB : (match.winner === match.teamB ? match.teamA : null));
       return { winner: match.winner, loser, isPenalties: Boolean(match.penaltyScoreA != null && match.penaltyScoreB != null) };
     }
     const sA = Number(match.scoreA);
@@ -148,6 +161,16 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
       if (pA > pB) return { winner: match.teamA, loser: match.teamB, isPenalties: true };
       if (pB > pA) return { winner: match.teamB, loser: match.teamA, isPenalties: true };
     }
+
+    // Deduce for semifinals when 3rd place or final teams are known
+    const norm = normalizeStage(match.stage);
+    if (norm === 'semi') {
+      if (finalTeams.has(match.teamA)) return { winner: match.teamA, loser: match.teamB, isPenalties: false, isDeduced: true };
+      if (finalTeams.has(match.teamB)) return { winner: match.teamB, loser: match.teamA, isPenalties: false, isDeduced: true };
+      if (thirdPlaceTeams.has(match.teamA)) return { winner: match.teamB, loser: match.teamA, isPenalties: false, isDeduced: true };
+      if (thirdPlaceTeams.has(match.teamB)) return { winner: match.teamA, loser: match.teamB, isPenalties: false, isDeduced: true };
+    }
+
     return null;
   };
 
@@ -311,6 +334,9 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
     const isFinished = outcome !== null || (match.scoreA > 0 || match.scoreB > 0);
     const isTeamAWinner = outcome && outcome.winner === match.teamA;
     const isTeamBWinner = outcome && outcome.winner === match.teamB;
+    const isTeamALoser  = outcome && outcome.loser === match.teamA;
+    const isTeamBLoser  = outcome && outcome.loser === match.teamB;
+    const isFinalStage  = normalizeStage(match.stage) === 'final';
     const hasPenalties = match.penaltyScoreA !== null && match.penaltyScoreA !== undefined && match.penaltyScoreA !== '';
 
     return html`
@@ -344,9 +370,17 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             <span className="w-5 h-5 rounded-md bg-purple-950 text-white text-[9px] font-black flex items-center justify-center shrink-0">
               ${(match.teamA || '').substring(0, 3)}
             </span>
-            <span className=${`text-xs truncate ${isTeamAWinner ? 'text-green-800 font-black' : 'text-purple-950'}`}>
-              ${match.teamA}
-            </span>
+            <div className="flex items-center gap-1 truncate">
+              ${(isTeamALoser || match.loser === match.teamA) ? html`
+                <span className="bg-rose-600 text-white font-black text-[9px] px-1 py-0.2 rounded shrink-0 shadow-2xs" title="Məğlub (L)">L</span>
+              ` : null}
+              ${((isTeamAWinner && match.teamA === '?') || (match.winner === match.teamA && match.teamA === '?') || (isFinalStage && match.teamA === '?')) ? html`
+                <span className="bg-emerald-600 text-white font-black text-[9px] px-1 py-0.2 rounded shrink-0 shadow-2xs" title="Qalib (W)">W</span>
+              ` : null}
+              <span className=${`text-xs truncate ${isTeamAWinner ? 'text-green-800 font-black' : 'text-purple-950'}`}>
+                ${match.teamA}
+              </span>
+            </div>
             ${isTeamAWinner ? html`<i className="fas fa-check-circle text-green-500 text-[10px] ml-0.5"></i>` : null}
           </div>
           
@@ -370,9 +404,17 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             <span className="w-5 h-5 rounded-md bg-purple-900 text-white text-[9px] font-black flex items-center justify-center shrink-0">
               ${(match.teamB || '').substring(0, 3)}
             </span>
-            <span className=${`text-xs truncate ${isTeamBWinner ? 'text-green-800 font-black' : 'text-purple-950'}`}>
-              ${match.teamB}
-            </span>
+            <div className="flex items-center gap-1 truncate">
+              ${(isTeamBLoser || match.loser === match.teamB) ? html`
+                <span className="bg-rose-600 text-white font-black text-[9px] px-1 py-0.2 rounded shrink-0 shadow-2xs" title="Məğlub (L)">L</span>
+              ` : null}
+              ${((isTeamBWinner && match.teamB === '?') || (match.winner === match.teamB && match.teamB === '?') || (isFinalStage && match.teamB === '?')) ? html`
+                <span className="bg-emerald-600 text-white font-black text-[9px] px-1 py-0.2 rounded shrink-0 shadow-2xs" title="Qalib (W)">W</span>
+              ` : null}
+              <span className=${`text-xs truncate ${isTeamBWinner ? 'text-green-800 font-black' : 'text-purple-950'}`}>
+                ${match.teamB}
+              </span>
+            </div>
             ${isTeamBWinner ? html`<i className="fas fa-check-circle text-green-500 text-[10px] ml-0.5"></i>` : null}
           </div>
 
@@ -1070,8 +1112,14 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   </span>
                 </div>
 
-                <h3 className="text-2xl md:text-3xl font-black mt-2 tracking-tight">
-                  ${selectedMatch.teamA} ${selectedMatch.scoreA} - ${selectedMatch.scoreB} ${selectedMatch.teamB}
+                <h3 className="text-2xl md:text-3xl font-black mt-2 tracking-tight flex items-center gap-2 flex-wrap">
+                  ${selectedMatch.loser === selectedMatch.teamA ? html`<span className="bg-rose-600 text-white text-xs px-2 py-0.5 rounded font-black shadow-xs">L</span>` : null}
+                  ${(selectedMatch.winner === selectedMatch.teamA || (normalizeStage(selectedMatch.stage) === 'final' && selectedMatch.teamA === '?')) ? html`<span className="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded font-black shadow-xs">W</span>` : null}
+                  <span>${selectedMatch.teamA}</span>
+                  <span>${selectedMatch.scoreA} - ${selectedMatch.scoreB}</span>
+                  ${selectedMatch.loser === selectedMatch.teamB ? html`<span className="bg-rose-600 text-white text-xs px-2 py-0.5 rounded font-black shadow-xs">L</span>` : null}
+                  ${(selectedMatch.winner === selectedMatch.teamB || (normalizeStage(selectedMatch.stage) === 'final' && selectedMatch.teamB === '?')) ? html`<span className="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded font-black shadow-xs">W</span>` : null}
+                  <span>${selectedMatch.teamB}</span>
                   ${(selectedMatch.penaltyScoreA !== null && selectedMatch.penaltyScoreA !== undefined && selectedMatch.penaltyScoreA !== '') && html`
                     <span className="text-green-400 text-lg font-extrabold ml-2"> (pen. ${selectedMatch.penaltyScoreA} - ${selectedMatch.penaltyScoreB})</span>
                   `}

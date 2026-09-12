@@ -15,6 +15,7 @@ import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260910_0080';
+import { normalizeStage } from '../services/matchUtils.js';
 
 const html = htm.bind(React.createElement);
 
@@ -118,6 +119,22 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
     return '11-ci Siniflər';
   };
 
+  /** Render team L / W status badge */
+  const renderTeamTag = (match, teamName) => {
+    if (!match || !teamName) return null;
+    const isLoser = match.loser === teamName;
+    const isWinner = match.winner === teamName;
+    const isFinalUnknown = normalizeStage(match.stage) === 'final' && teamName === '?';
+
+    if (isLoser) {
+      return html`<span className="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.5 rounded shadow-2xs inline-block mr-1" title="Məğlub (L)">L</span>`;
+    }
+    if (isWinner || isFinalUnknown) {
+      return html`<span className="bg-emerald-600 text-white font-black text-[9px] px-1.5 py-0.5 rounded shadow-2xs inline-block mr-1" title="Qalib (W)">W</span>`;
+    }
+    return null;
+  };
+
   /** Render a single player row inside the match detail modal */
   const renderPlayerRow = (player) => {
     const badge = getSofascoreBadgeStyle(player.rating);
@@ -212,7 +229,10 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                   <!-- Score Display -->
                   <div className="flex items-center justify-between py-3 sm:py-4 gap-1 sm:gap-3">
                     <div className="text-center flex-1 min-w-0">
-                      <h4 className="text-base sm:text-lg font-black text-purple-950 truncate">${match.teamA}</h4>
+                      <h4 className="text-base sm:text-lg font-black text-purple-950 truncate flex items-center justify-center gap-1">
+                        ${renderTeamTag(match, match.teamA)}
+                        <span className="truncate">${match.teamA}</span>
+                      </h4>
                       <span className="text-[9px] sm:text-[10px] text-gray-400 font-semibold tracking-widest uppercase truncate block">Ev sahibi</span>
                     </div>
                     <div className="flex flex-col items-center px-2 sm:px-4 shrink-0">
@@ -233,7 +253,10 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                       `}
                     </div>
                     <div className="text-center flex-1 min-w-0">
-                      <h4 className="text-base sm:text-lg font-black text-purple-950 truncate">${match.teamB}</h4>
+                      <h4 className="text-base sm:text-lg font-black text-purple-950 truncate flex items-center justify-center gap-1">
+                        ${renderTeamTag(match, match.teamB)}
+                        <span className="truncate">${match.teamB}</span>
+                      </h4>
                       <span className="text-[9px] sm:text-[10px] text-gray-400 font-semibold tracking-widest uppercase truncate block">Qonaq</span>
                     </div>
                   </div>
@@ -266,8 +289,12 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                   ${selectedMatch.stage} • Match Details
                   ${selectedMatch.stage === 'Final' ? ' 🏆' : ''}
                 </span>
-                <h3 className="text-xl sm:text-2xl font-black mt-2 break-words">
-                  ${selectedMatch.teamA} ${selectedMatch.scoreA} - ${selectedMatch.scoreB} ${selectedMatch.teamB}
+                <h3 className="text-xl sm:text-2xl font-black mt-2 break-words flex items-center gap-1.5 flex-wrap">
+                  ${renderTeamTag(selectedMatch, selectedMatch.teamA)}
+                  <span>${selectedMatch.teamA}</span>
+                  <span>${selectedMatch.scoreA} - ${selectedMatch.scoreB}</span>
+                  ${renderTeamTag(selectedMatch, selectedMatch.teamB)}
+                  <span>${selectedMatch.teamB}</span>
                   ${(selectedMatch.penaltyScoreA !== null && selectedMatch.penaltyScoreA !== undefined && selectedMatch.penaltyScoreA !== '') && html`
                     <span className="text-green-400 text-base sm:text-lg font-extrabold ml-1 sm:ml-2">(pen. ${selectedMatch.penaltyScoreA} - ${selectedMatch.penaltyScoreB})</span>
                   `}
