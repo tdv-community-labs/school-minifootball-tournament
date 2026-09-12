@@ -15,6 +15,7 @@ import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260910_0080';
+import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0060';
 
 const html = htm.bind(React.createElement);
 
@@ -42,6 +43,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const [sortAsc, setSortAsc] = useState(false);
   const [showEmptyPreview, setShowEmptyPreview] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState('ALL');
+  const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
 
   useEffect(() => {
     const loadStandingsData = async () => {
@@ -1234,6 +1236,19 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 </div>
               `}
 
+              <!-- Open Sofascore Match Analytics Button -->
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  onClick=${() => setShowAnalyticsModal(true)}
+                  className="w-full py-3 px-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl flex items-center justify-center gap-2 transition transform hover:scale-[1.01] cursor-pointer border border-emerald-400/40"
+                >
+                  <i className="fas fa-bullseye text-sm animate-pulse"></i>
+                  <span>Meydança Zərbələri, Qapı POV & İstilik Xəritəsi (Sofascore)</span>
+                  <i className="fas fa-arrow-right text-[10px]"></i>
+                </button>
+              </div>
+
               <!-- Scores and scorers -->
               <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 flex justify-around text-center text-sm">
                 <div className="flex-1">
@@ -1373,6 +1388,14 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
         </div>
       `}
 
+      <!-- Match Details & Sofascore Analytics Modal (Shotmap, Goal POV, Heatmap, 5v5 Lineup) -->
+      <${MatchAnalyticsModal}
+        match=${selectedMatch}
+        isOpen=${showAnalyticsModal}
+        onClose=${() => setShowAnalyticsModal(false)}
+        allPlayers=${players}
+        lang=${lang}
+      />
     </div>
   `;
 }
