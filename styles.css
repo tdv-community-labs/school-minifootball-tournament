@@ -530,4 +530,20 @@ html:not(.dark) .border-gray-200 {
   border-color: #cbd5e1 !important;
 }
 
+/* 9. Mobile & iOS Safari Performance & Safe Area Polish */
+html, body {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
 
+/* Smooth momentum scrolling on iOS */
+.ios-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optimize touch response on mobile buttons */
+@media (max-width: 640px) {
+  button, a {
+    touch-action: manipulation;
+  }
+}

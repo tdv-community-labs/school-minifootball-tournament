@@ -100,7 +100,10 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
   };
 
   return html`
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 font-sans pointer-events-none">
+    <div 
+      className="fixed bottom-20 right-3.5 lg:bottom-6 lg:right-6 z-40 font-sans pointer-events-none"
+      style=${{ marginBottom: 'max(0px, env(safe-area-inset-bottom, 0px))' }}
+    >
       <!-- Floating Action Button (FAB) -->
       ${!isOpen && html`
         <button
@@ -120,7 +123,7 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
 
       <!-- Chat Window Modal -->
       ${isOpen && html`
-        <div className="pointer-events-auto w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[380px] h-[480px] sm:h-[520px] max-h-[82vh] bg-white rounded-3xl shadow-2xl border border-purple-100 flex flex-col overflow-hidden animate-fadeIn">
+        <div className="pointer-events-auto w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[380px] h-[460px] sm:h-[520px] max-h-[72vh] bg-white rounded-3xl shadow-2xl border border-purple-100 flex flex-col overflow-hidden animate-fadeIn">
           
           <!-- Header -->
           <div className="bg-gradient-to-r from-purple-950 via-purple-900 to-indigo-900 text-white p-4 flex items-center justify-between shadow-sm">

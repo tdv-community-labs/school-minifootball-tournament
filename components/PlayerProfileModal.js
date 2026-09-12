@@ -55,7 +55,12 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
 
   return html`
     <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-purple-950/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-fadeIn"
+      className="fixed inset-0 z-50 overflow-y-auto bg-purple-950/70 backdrop-blur-sm flex items-start sm:items-center justify-center p-3 sm:p-4 animate-fadeIn"
+      style=${{
+        WebkitOverflowScrolling: 'touch',
+        paddingTop: 'max(16px, env(safe-area-inset-top, 16px))',
+        paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))'
+      }}
       onClick=${(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-purple-100 dark:border-slate-800 relative flex flex-col">

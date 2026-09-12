@@ -2,7 +2,7 @@
 <html lang="az">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>TDV BTL Futbol Turniri</title>
   
   <!-- Cybersecurity: Content Security Policy (CSP) -->
@@ -406,7 +406,7 @@
   </style>
   
   <!-- Custom Stylesheet (with cache-busting) -->
-  <link rel="stylesheet" href="styles.css?v=20260912_0010">
+  <link rel="stylesheet" href="styles.css?v=20260912_0090">
   
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
@@ -421,22 +421,45 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased dark:bg-[#080c14] dark:text-slate-100" style="background-color: #f1f5f9;">
   <div id="root">
-    <!-- Initial Loader -->
-    <div class="min-h-screen flex flex-col items-center justify-center bg-purple-950 text-white">
-      <div class="relative flex items-center justify-center mb-4">
+    <!-- Initial Loader (Immune to dark mode CSS overrides) -->
+    <div id="initial-loader" style="min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #2e0249 !important; color: #ffffff; padding: 20px; text-align: center;">
+      <div style="position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
         <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
-        <i class="fas fa-futbol absolute text-2xl text-white"></i>
+        <i class="fas fa-futbol" style="position: absolute; font-size: 24px; color: #ffffff;"></i>
       </div>
-      <p class="font-black tracking-widest text-xs uppercase text-purple-200">Loading Tournament / Yüklənir...</p>
+      <p style="font-weight: 900; letter-spacing: 0.15em; font-size: 12px; text-transform: uppercase; color: #e9d5ff; margin-bottom: 16px;">Loading Tournament / Yüklənir...</p>
+      
+      <!-- Graceful Recovery Card for Slow Mobile / Cellular Networks -->
+      <div id="loader-fallback" style="display: none; margin-top: 12px; animation: fadeIn 0.4s ease-out forwards;">
+        <p style="font-size: 11px; color: #cbd5e1; margin-bottom: 12px; font-weight: 600;">İnternet və ya keş ləngiməsi aşkar edildi?</p>
+        <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+          <button onclick="window.location.reload();" style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 12px; font-size: 11px; font-weight: 900; cursor: pointer;">
+            🔄 Səhifəni Yenilə
+          </button>
+          <button onclick="try{localStorage.clear();sessionStorage.clear();}catch(e){}window.location.reload(true);" style="padding: 8px 16px; background-color: #7e22ce; color: white; border: 1px solid #a855f7; border-radius: 12px; font-size: 11px; font-weight: 900; cursor: pointer;">
+            ⚡ Keşi Sıfırla
+          </button>
+        </div>
+      </div>
     </div>
   </div>
+
+  <script>
+    setTimeout(function() {
+      var fb = document.getElementById('loader-fallback');
+      var root = document.getElementById('root');
+      if (fb && root && root.querySelector('#initial-loader')) {
+        fb.style.display = 'block';
+      }
+    }, 4500);
+  </script>
 
   <!-- Bootstrapping Module -->
   <script type="module">
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js?v=20260912_0080';
+    import App from './app.js?v=20260912_0090';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');

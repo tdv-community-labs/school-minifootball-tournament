@@ -15,7 +15,7 @@ import htm from 'htm';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260910_0080';
-import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0080';
+import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0090';
 
 const html = htm.bind(React.createElement);
 
@@ -43,7 +43,6 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const [sortAsc, setSortAsc] = useState(false);
   const [showEmptyPreview, setShowEmptyPreview] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState('ALL');
-  const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
 
   useEffect(() => {
     const loadStandingsData = async () => {
@@ -1144,255 +1143,16 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
         </div>
       `}
 
-      <!-- ════════════════════════════════════════════════════════════════════════ -->
-      <!-- MATCH DETAILS & SOFASCORE RATINGS POPUP MODAL -->
-      <!-- ════════════════════════════════════════════════════════════════════════ -->
-      ${selectedMatch && html`
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-purple-950/50 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-purple-100 relative">
-            
-            <!-- Modal Header -->
-            <div className="bg-purple-950 text-white p-6 rounded-t-3xl flex justify-between items-start border-b border-purple-900">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-black text-green-400 bg-purple-900 px-3 py-1 rounded-full uppercase tracking-wider">
-                    ${selectedMatch.stage}
-                  </span>
-                  <span className="text-xs text-purple-300 font-bold">
-                    ${getDivisionLabel(selectedMatch.division || activeDivision)}
-                  </span>
-                </div>
-
-                <h3 className="text-2xl md:text-3xl font-black mt-2 tracking-tight flex items-center gap-2 flex-wrap">
-                  ${(selectedOutcome?.winner === selectedMatch.teamA || (normalizeStage(selectedMatch.stage) === 'final' && selectedMatch.teamA === '?')) ? html`
-                    <span className="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded-md font-black shadow-xs flex items-center gap-1">
-                      <i className="fas fa-check-circle text-[10px]"></i> W
-                    </span>
-                  ` : null}
-                  ${selectedOutcome?.loser === selectedMatch.teamA ? html`
-                    <span className="bg-rose-600 text-white text-xs px-2 py-0.5 rounded-md font-black shadow-xs">
-                      L
-                    </span>
-                  ` : null}
-                  <span className=${selectedOutcome?.winner === selectedMatch.teamA ? 'text-green-300' : selectedOutcome?.loser === selectedMatch.teamA ? 'text-rose-300' : ''}>
-                    ${selectedMatch.teamA}
-                  </span>
-                  <span className="text-white px-2 py-0.5 font-black bg-purple-900 rounded-lg">
-                    ${selectedMatch.scoreA} - ${selectedMatch.scoreB}
-                  </span>
-                  ${(selectedOutcome?.winner === selectedMatch.teamB || (normalizeStage(selectedMatch.stage) === 'final' && selectedMatch.teamB === '?')) ? html`
-                    <span className="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded-md font-black shadow-xs flex items-center gap-1">
-                      <i className="fas fa-check-circle text-[10px]"></i> W
-                    </span>
-                  ` : null}
-                  ${selectedOutcome?.loser === selectedMatch.teamB ? html`
-                    <span className="bg-rose-600 text-white text-xs px-2 py-0.5 rounded-md font-black shadow-xs">
-                      L
-                    </span>
-                  ` : null}
-                  <span className=${selectedOutcome?.winner === selectedMatch.teamB ? 'text-green-300' : selectedOutcome?.loser === selectedMatch.teamB ? 'text-rose-300' : ''}>
-                    ${selectedMatch.teamB}
-                  </span>
-                  ${(selectedMatch.penaltyScoreA !== null && selectedMatch.penaltyScoreA !== undefined && selectedMatch.penaltyScoreA !== '') && html`
-                    <span className="text-green-400 text-lg font-extrabold ml-2"> (pen. ${selectedMatch.penaltyScoreA} - ${selectedMatch.penaltyScoreB})</span>
-                  `}
-                </h3>
-
-                ${selectedMatch.date && html`
-                  <p className="text-xs text-purple-200 font-medium mt-1">
-                    <i className="far fa-calendar-alt mr-1"></i> Tarix: ${selectedMatch.date}
-                  </p>
-                `}
-              </div>
-
-              <button 
-                onClick=${() => setSelectedMatch(null)}
-                className="bg-purple-900 hover:bg-red-600 text-white transition w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shadow-md"
-              >
-                <i className="fas fa-times"></i>
-              </button>
-            </div>
-
-            <div className="p-6 space-y-6">
-              
-              <!-- Video Highlights (YouTube Embed) -->
-              ${sanitizeEmbedUrl(selectedMatch.videoUrl) && html`
-                <div className="space-y-2.5">
-                  <h4 className="text-sm font-black text-purple-950 uppercase tracking-wider flex items-center">
-                    <i className="fab fa-youtube text-red-600 mr-2 text-lg"></i> Matçın Video İcmalı
-                  </h4>
-                  <div className="aspect-video bg-purple-950 rounded-2xl overflow-hidden shadow-inner border border-purple-800">
-                    <iframe 
-                      className="w-full h-full"
-                      src=${sanitizeEmbedUrl(selectedMatch.videoUrl)} 
-                      title="Match Highlight"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      sandbox="allow-scripts allow-same-origin allow-presentation"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                    ></iframe>
-                  </div>
-                </div>
-              `}
-
-              <!-- Open Sofascore Match Analytics Button -->
-              <div className="flex justify-center">
-                <button
-                  type="button"
-                  onClick=${() => setShowAnalyticsModal(true)}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl flex items-center justify-center gap-2 transition transform hover:scale-[1.01] cursor-pointer border border-emerald-400/40"
-                >
-                  <i className="fas fa-bullseye text-sm animate-pulse"></i>
-                  <span>Meydança Zərbələri, Qapı POV & İstilik Xəritəsi (Sofascore)</span>
-                  <i className="fas fa-arrow-right text-[10px]"></i>
-                </button>
-              </div>
-
-              <!-- Scores and scorers -->
-              <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 flex justify-around text-center text-sm">
-                <div className="flex-1">
-                  <h5 className="font-extrabold text-purple-950 text-base mb-2">${selectedMatch.teamA}</h5>
-                  <div className="space-y-1 text-xs text-gray-500 font-semibold">
-                    ${teamAPlayers.filter(p => p.goals > 0).map(p => html`
-                      <div key=${p.playerId} className="text-purple-900 font-bold">⚽ ${p.name} (${p.goals} qol)</div>
-                    `)}
-                    ${teamAPlayers.filter(p => p.goals > 0).length === 0 && html`<span className="text-gray-400">Qol vurulmayıb</span>`}
-                  </div>
-                </div>
-
-                <div className="border-r border-gray-200 h-12 my-auto"></div>
-
-                <div className="flex-1">
-                  <h5 className="font-extrabold text-purple-950 text-base mb-2">${selectedMatch.teamB}</h5>
-                  <div className="space-y-1 text-xs text-gray-500 font-semibold">
-                    ${teamBPlayers.filter(p => p.goals > 0).map(p => html`
-                      <div key=${p.playerId} className="text-purple-900 font-bold">⚽ ${p.name} (${p.goals} qol)</div>
-                    `)}
-                    ${teamBPlayers.filter(p => p.goals > 0).length === 0 && html`<span className="text-gray-400">Qol vurulmayıb</span>`}
-                  </div>
-                </div>
-              </div>
-
-              <!-- Sofascore Ratings Section -->
-              <div className="space-y-3">
-                <div className="flex items-center justify-between border-l-4 border-green-500 pl-3">
-                  <h4 className="text-base font-black text-purple-950">
-                    Oyunçu Performansı və Sofascore Reytinqləri
-                  </h4>
-                  <span className="text-[10px] font-bold text-purple-900 bg-purple-50 px-2 py-0.5 rounded-full">
-                    Sofascore Engine 1.0 - 10.0
-                  </span>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  
-                  <!-- Team A Ratings -->
-                  <div className="border border-purple-50 rounded-2xl p-4 bg-purple-50/20">
-                    <h5 className="font-black text-purple-950 mb-3 border-b border-purple-100 pb-2 text-xs uppercase tracking-wider flex items-center justify-between">
-                      <span>${selectedMatch.teamA} Heyəti</span>
-                      <span className="text-[10px] text-gray-400 font-semibold">${teamAPlayers.length} Oyunçu</span>
-                    </h5>
-                    
-                    <div className="space-y-2.5">
-                      ${teamAPlayers.length === 0 
-                        ? html`<p className="text-xs text-gray-400 text-center py-4 font-semibold">Oyunçu statistikası qeyd edilməyib.</p>`
-                        : teamAPlayers.map(player => {
-                            const badge = getSofascoreBadgeStyle(player.rating);
-                            return html`
-                              <div key=${player.playerId} className="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-2xs">
-                                <div className="flex-1 min-w-0 pr-2">
-                                  <div className="flex items-center gap-1.5 flex-wrap">
-                                    <h6 className="font-bold text-purple-950 text-xs truncate">${player.name}</h6>
-                                    ${player.isKeeper ? html`<span className="text-[9px] bg-sky-100 text-sky-700 font-black px-1.5 py-0.2 rounded uppercase">🧤 Qapıçı</span>` : null}
-                                  </div>
-                                  <p className="text-[10px] text-gray-400">${player.position || 'Oyunçu'}</p>
-                                  <div className="flex flex-wrap gap-2 text-[10px] text-gray-500 font-semibold mt-1">
-                                    ${player.isKeeper
-                                      ? html`<span>🧤 Qurtarış: ${player.saves || 0}</span>`
-                                      : html`<span>⚽ Qol: ${player.goals || 0}</span>`
-                                    }
-                                    <span>👟 Asist: ${player.assists || 0}</span>
-                                    ${(player.yellowCards || 0) > 0 ? html`<span className="text-yellow-500">🟡 ×${player.yellowCards}</span>` : null}
-                                    ${(player.redCards || 0) > 0 ? html`<span className="text-red-600">🔴 ×${player.redCards}</span>` : null}
-                                  </div>
-                                </div>
-                                <span className=${"min-w-[2.75rem] h-10 rounded-xl flex flex-col items-center justify-center font-black text-xs px-1 " + badge}>
-                                  <span className="text-xs leading-none">${player.rating}</span>
-                                  <span className="text-[7px] opacity-75 mt-0.5">Rating</span>
-                                </span>
-                              </div>
-                            `;
-                          })
-                      }
-                    </div>
-                  </div>
-
-                  <!-- Team B Ratings -->
-                  <div className="border border-purple-50 rounded-2xl p-4 bg-purple-50/20">
-                    <h5 className="font-black text-purple-950 mb-3 border-b border-purple-100 pb-2 text-xs uppercase tracking-wider flex items-center justify-between">
-                      <span>${selectedMatch.teamB} Heyəti</span>
-                      <span className="text-[10px] text-gray-400 font-semibold">${teamBPlayers.length} Oyunçu</span>
-                    </h5>
-
-                    <div className="space-y-2.5">
-                      ${teamBPlayers.length === 0 
-                        ? html`<p className="text-xs text-gray-400 text-center py-4 font-semibold">Oyunçu statistikası qeyd edilməyib.</p>`
-                        : teamBPlayers.map(player => {
-                            const badge = getSofascoreBadgeStyle(player.rating);
-                            return html`
-                              <div key=${player.playerId} className="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-2xs">
-                                <div className="flex-1 min-w-0 pr-2">
-                                  <div className="flex items-center gap-1.5 flex-wrap">
-                                    <h6 className="font-bold text-purple-950 text-xs truncate">${player.name}</h6>
-                                    ${player.isKeeper ? html`<span className="text-[9px] bg-sky-100 text-sky-700 font-black px-1.5 py-0.2 rounded uppercase">🧤 Qapıçı</span>` : null}
-                                  </div>
-                                  <p className="text-[10px] text-gray-400">${player.position || 'Oyunçu'}</p>
-                                  <div className="flex flex-wrap gap-2 text-[10px] text-gray-500 font-semibold mt-1">
-                                    ${player.isKeeper
-                                      ? html`<span>🧤 Qurtarış: ${player.saves || 0}</span>`
-                                      : html`<span>⚽ Qol: ${player.goals || 0}</span>`
-                                    }
-                                    <span>👟 Asist: ${player.assists || 0}</span>
-                                    ${(player.yellowCards || 0) > 0 ? html`<span className="text-yellow-500">🟡 ×${player.yellowCards}</span>` : null}
-                                    ${(player.redCards || 0) > 0 ? html`<span className="text-red-600">🔴 ×${player.redCards}</span>` : null}
-                                  </div>
-                                </div>
-                                <span className=${"min-w-[2.75rem] h-10 rounded-xl flex flex-col items-center justify-center font-black text-xs px-1 " + badge}>
-                                  <span className="text-xs leading-none">${player.rating}</span>
-                                  <span className="text-[7px] opacity-75 mt-0.5">Rating</span>
-                                </span>
-                              </div>
-                            `;
-                          })
-                      }
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Footer -->
-            <div className="p-4 bg-gray-50 rounded-b-3xl text-right border-t border-gray-100">
-              <button 
-                onClick=${() => setSelectedMatch(null)}
-                className="bg-purple-900 text-white hover:bg-purple-800 font-bold px-6 py-2.5 rounded-xl text-xs transition shadow-sm"
-              >
-                Bağla
-              </button>
-            </div>
-
-          </div>
-        </div>
-      `}
-
       <!-- Match Details & Sofascore Analytics Modal (Shotmap, Goal POV, Heatmap, 5v5 Lineup) -->
       <${MatchAnalyticsModal}
         match=${selectedMatch}
-        isOpen=${showAnalyticsModal}
-        onClose=${() => setShowAnalyticsModal(false)}
+        isOpen=${Boolean(selectedMatch)}
+        onClose=${() => {
+          setSelectedMatch(null);
+          if (window.location.hash.startsWith('#match/')) {
+            window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+          }
+        }}
         allPlayers=${players}
         lang=${lang}
       />

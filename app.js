@@ -164,7 +164,18 @@ export default function App() {
         setAuthError('');
         setShowPasswordPrompt(true);
       }
+    } else if (hash && hash.startsWith('#match/')) {
+      setActiveTab('matches');
     }
+
+    const handleHashChange = () => {
+      const currentHash = window.location.hash;
+      if (currentHash && currentHash.startsWith('#match/')) {
+        setActiveTab('matches');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   useEffect(() => {
@@ -254,7 +265,7 @@ export default function App() {
   return html`
     <div className="min-h-screen bg-slate-50 dark:bg-[#080c14] text-slate-800 dark:text-slate-100 font-sans flex flex-col transition-colors duration-200">
       <!-- Top Premium Navbar (Branded TDV BTL Futbol) -->
-      <header className="bg-purple-950 sticky top-0 z-40 text-white shadow-xl border-b border-purple-800/40 flex flex-col no-scrollbar" style=${{ backgroundColor: '#2e0249' }}>
+      <header className="bg-purple-950 sticky top-0 z-40 text-white shadow-xl border-b border-purple-800/40 flex flex-col no-scrollbar" style=${{ backgroundColor: '#2e0249', paddingTop: 'max(0px, env(safe-area-inset-top, 0px))' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full no-scrollbar">
           <div className="flex items-center justify-between h-16">
             
@@ -545,7 +556,7 @@ export default function App() {
       </header>
 
       <!-- Main Content Area -->
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-28 sm:pb-8">
         ${renderContent()}
       </main>
 
@@ -815,6 +826,33 @@ export default function App() {
         activeDivision=${activeDivision}
         lang=${lang}
       />
+
+      <!-- Native Mobile Bottom Navigation Bar (Sofascore Standard) -->
+      <nav 
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#1e0231]/98 backdrop-blur-lg border-t border-purple-800/60 py-1.5 px-2 flex justify-around items-center shadow-2xl"
+        style=${{ paddingBottom: 'max(8px, env(safe-area-inset-bottom, 8px))' }}
+      >
+        ${navItems.map(item => {
+          const isActive = activeTab === item.id;
+          return html`
+            <button
+              key=${item.id}
+              onClick=${() => {
+                setActiveTab(item.id);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className=${`flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${
+                isActive
+                  ? 'text-green-400 font-black scale-105 bg-purple-900/80 shadow-inner'
+                  : 'text-purple-200/80 hover:text-white font-bold'
+              }`}
+            >
+              <i className=${`${item.icon} text-base mb-0.5`}></i>
+              <span className="text-[10px] tracking-wider uppercase">${item.label}</span>
+            </button>
+          `;
+        })}
+      </nav>
     </div>
   `;
 }
