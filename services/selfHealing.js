@@ -343,7 +343,7 @@ export const repairTournamentData = async () => {
 /**
  * Background silent health check that runs periodically without obstructing UI
  */
-export const startBackgroundSelfHealing = () => {
+export function startBackgroundSelfHealing() {
   try {
     const report = auditTournamentData();
     if (report.issues.some(i => i.canAutoFix && (i.severity === 'warning' || i.severity === 'error'))) {

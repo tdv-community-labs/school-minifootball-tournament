@@ -13,19 +13,65 @@
  */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import Dashboard from './components/Dashboard.js?v=20260912_0100';
-import Standings from './components/Standings.js?v=20260912_0100';
-import Matches from './components/Matches.js?v=20260912_0100';
-import Players from './components/Players.js?v=20260912_0100';
-import AdminDashboard from './components/AdminDashboard.js?v=20260912_0100';
-import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260912_0100';
-import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260912_0100';
-import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260912_0100';
-import { db } from './services/database.js?v=20260912_0100';
-import { t, getDivisionLabel, isMatchDivision, getDivisionsForYear } from './services/i18n.js?v=20260912_0100';
-import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260912_0100';
+import Dashboard from './components/Dashboard.js?v=20260912_0120';
+import Standings from './components/Standings.js?v=20260912_0120';
+import Matches from './components/Matches.js?v=20260912_0120';
+import Players from './components/Players.js?v=20260912_0120';
+import AdminDashboard from './components/AdminDashboard.js?v=20260912_0120';
+import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260912_0120';
+import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260912_0120';
+import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260912_0120';
+import { db } from './services/database.js?v=20260912_0120';
+import { t, getDivisionLabel, isMatchDivision, getDivisionsForYear } from './services/i18n.js?v=20260912_0120';
+import { verifyAdminPassword, isSessionValid, logoutAdmin, checkBruteForceLockout } from './services/security.js?v=20260912_0120';
 
 const html = htm.bind(React.createElement);
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return html`
+        <div className="p-8 text-center bg-purple-950/40 dark:bg-slate-900/60 border border-purple-800/50 dark:border-slate-800 rounded-3xl my-6">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-2xl">
+            <i className="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3 className="text-lg font-black text-white mb-2">Bölmə Yüklənərkən Xəta Baş Verdi</h3>
+          <p className="text-xs text-rose-300 max-w-md mx-auto mb-4 font-mono bg-rose-950/60 p-3 rounded-xl border border-rose-900/60 break-all text-left">
+            ${String(this.state.error?.message || this.state.error || 'Naməlum xəta')}
+          </p>
+          <div className="flex gap-3 justify-center flex-wrap">
+            <button
+              onClick=${() => this.setState({ hasError: false, error: null })}
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg cursor-pointer"
+            >
+              <i className="fas fa-redo-alt mr-1"></i> Yenidən Cəhd Et
+            </button>
+            <button
+              onClick=${() => {
+                try { localStorage.clear(); sessionStorage.clear(); } catch(e) {}
+                window.location.href = window.location.pathname + '?fresh=' + Date.now();
+              }}
+              className="px-4 py-2 bg-purple-700 hover:bg-purple-600 text-white rounded-xl text-xs font-bold transition shadow-lg cursor-pointer"
+            >
+              <i className="fas fa-sync-alt mr-1"></i> Keşi Təmizlə və Yüklə
+            </button>
+          </div>
+        </div>
+      `;
+    }
+    return this.props.children;
+  }
+}
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -557,7 +603,9 @@ export default function App() {
 
       <!-- Main Content Area -->
       <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-28 sm:pb-8">
-        ${renderContent()}
+        <${ErrorBoundary} key=${activeTab + '_' + activeDivision + '_' + activeYear}>
+          ${renderContent()}
+        </${ErrorBoundary}>
       </main>
 
       <!-- Premium Footer -->

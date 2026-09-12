@@ -15,8 +15,8 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import htm from 'htm';
-import { getMatchAnalytics } from '../services/matchAnalyticsData.js?v=20260912_0100';
-import { getSofascoreBadgeStyle } from '../services/database.js?v=20260912_0100';
+import { getMatchAnalytics } from '../services/matchAnalyticsData.js?v=20260912_0120';
+import { getSofascoreBadgeStyle } from '../services/database.js?v=20260912_0120';
 
 const html = htm.bind(React.createElement);
 

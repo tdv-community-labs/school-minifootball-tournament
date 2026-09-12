@@ -12,11 +12,11 @@
  */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js';
-import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js';
-import { sanitizeEmbedUrl } from '../services/security.js?v=20260910_0080';
-import { normalizeStage } from '../services/matchUtils.js';
-import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0100';
+import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js?v=20260912_0120';
+import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js?v=20260912_0120';
+import { sanitizeEmbedUrl } from '../services/security.js?v=20260912_0120';
+import { normalizeStage } from '../services/matchUtils.js?v=20260912_0120';
+import MatchAnalyticsModal from './MatchAnalyticsModal.js?v=20260912_0120';
 
 const html = htm.bind(React.createElement);
 
@@ -25,6 +25,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
   const [players, setPlayers] = useState([]);
   const [selectedStage, setSelectedStage] = useState('Qrup Mərhələsi');
   const [selectedMatch, setSelectedMatch] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const stages = [
     { id: 'Qrup Mərhələsi', label: lang === 'az' ? 'Qrup' : 'Group' },
@@ -37,13 +38,24 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
   ];
 
   useEffect(() => {
+    let isMounted = true;
+    setIsLoading(true);
     const loadMatchesData = async () => {
-      const allMatches = await db.getMatches(activeYear);
-      const allPlayers = await db.getPlayers(activeYear);
-      setMatches(allMatches);
-      setPlayers(allPlayers);
+      try {
+        const allMatches = await db.getMatches(activeYear);
+        const allPlayers = await db.getPlayers(activeYear);
+        if (isMounted) {
+          setMatches(allMatches || []);
+          setPlayers(allPlayers || []);
+          setIsLoading(false);
+        }
+      } catch (err) {
+        console.error("Matches load error:", err);
+        if (isMounted) setIsLoading(false);
+      }
     };
     loadMatchesData();
+    return () => { isMounted = false; };
   }, [activeDivision, activeYear]);
 
   // Handle direct URL #match/:id and browser navigation
@@ -227,7 +239,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
   };
 
   return html`
-    <div className="space-y-6 animate-fadeIn">
+    <div className="space-y-6 animate-fadeIn opacity-100">
       <!-- Title & Filters -->
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -255,9 +267,14 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
 
       <!-- Match Cards Grid -->
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        ${filteredMatches.length === 0 
+        ${isLoading ? html`
+          <div className="col-span-1 md:col-span-2 text-center py-16 bg-white/40 dark:bg-slate-900/40 rounded-3xl border border-dashed border-gray-200 dark:border-slate-800">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-emerald-500 mx-auto mb-3"></div>
+            <p className="text-xs font-bold text-gray-500 dark:text-gray-400">${lang === 'az' ? 'Oyunlar yüklənir...' : 'Loading matches...'}</p>
+          </div>
+        ` : filteredMatches.length === 0 
           ? html`
-              <div className="col-span-2 text-center py-12 text-gray-400 bg-white rounded-3xl border border-dashed border-gray-200">
+              <div className="col-span-1 md:col-span-2 text-center py-12 text-gray-400 dark:text-gray-500 bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-gray-200 dark:border-slate-800">
                 ${t('noMatchesFound')}
               </div>
             `
