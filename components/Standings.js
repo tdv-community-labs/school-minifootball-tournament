@@ -312,6 +312,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const matchStats = selectedMatch ? getMatchPlayerDetails(selectedMatch) : [];
   const teamAPlayers = matchStats.filter(p => p.class === selectedMatch?.teamA);
   const teamBPlayers = matchStats.filter(p => p.class === selectedMatch?.teamB);
+  const selectedOutcome = selectedMatch ? getMatchWinner(selectedMatch) : null;
 
   // ─────────────────────────────────────────────────────────────────────────────
   // RENDER SINGLE BRACKET MATCH CARD
@@ -319,7 +320,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const renderBracketMatchCard = (match, label, index) => {
     if (!match) {
       return html`
-        <div className="border-2 border-dashed border-purple-100 bg-purple-50/20 rounded-2xl p-3 flex flex-col justify-center items-center h-[90px] w-60 text-center select-none">
+        <div className="border-2 border-dashed border-purple-100 bg-purple-50/20 rounded-2xl p-3 flex flex-col justify-center items-center h-[102px] w-60 text-center select-none">
           <span className="text-[9px] text-purple-900/50 font-black uppercase tracking-wider">
             ${label} #${index + 1}
           </span>
@@ -342,7 +343,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
     return html`
       <div 
         onClick=${() => setSelectedMatch(match)}
-        className=${`bracket-card-hover group bg-white border rounded-2xl p-3 shadow-xs hover:border-purple-300 transition-all cursor-pointer flex flex-col justify-between w-60 h-[96px] relative select-none ${
+        className=${`bracket-card-hover group bg-white border rounded-2xl p-2.5 shadow-xs hover:border-purple-300 transition-all cursor-pointer flex flex-col justify-between w-60 min-h-[104px] relative select-none ${
           isFinished ? 'border-purple-100/90' : 'border-gray-200'
         }`}
       >
@@ -363,25 +364,43 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
         </div>
 
         <!-- Team A Row -->
-        <div className=${`flex items-center justify-between px-2 py-1 rounded-lg transition ${
-          isTeamAWinner ? 'bg-green-50/90 font-black' : isFinished ? 'opacity-65 font-medium' : 'font-bold'
+        <div className=${`flex items-center justify-between px-2.5 py-1.5 rounded-xl border transition-all ${
+          (isTeamAWinner || (isFinalStage && match.teamA === '?'))
+            ? 'bg-emerald-50/95 border-emerald-300/80 shadow-2xs font-black dark:bg-emerald-950/40 dark:border-emerald-700/60'
+            : isTeamALoser
+            ? 'bg-rose-50/80 border-rose-200/80 dark:bg-rose-950/30 dark:border-rose-900/50'
+            : isFinished
+            ? 'bg-gray-50/60 border-gray-100 opacity-65 font-medium'
+            : 'bg-white border-gray-100 font-bold'
         }`}>
           <div className="flex items-center space-x-2 truncate pr-1">
-            <span className="w-5 h-5 rounded-md bg-purple-950 text-white text-[9px] font-black flex items-center justify-center shrink-0">
+            <span className=${`w-5 h-5 rounded-md text-[9px] font-black flex items-center justify-center shrink-0 shadow-2xs ${
+              (isTeamAWinner || (isFinalStage && match.teamA === '?'))
+                ? 'bg-emerald-600 text-white'
+                : isTeamALoser
+                ? 'bg-rose-800 text-white'
+                : 'bg-purple-950 text-white'
+            }`}>
               ${(match.teamA || '').substring(0, 3)}
             </span>
-            <div className="flex items-center gap-1 truncate">
-              ${(isTeamALoser || match.loser === match.teamA) ? html`
-                <span className="bg-rose-600 text-white font-black text-[9px] px-1 py-0.2 rounded shrink-0 shadow-2xs" title="Məğlub (L)">L</span>
+            <div className="flex items-center gap-1.5 truncate">
+              ${(isTeamAWinner || (isFinalStage && match.teamA === '?')) ? html`
+                <span className="bg-emerald-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded shrink-0 shadow-2xs" title="Qalib (W)">W</span>
               ` : null}
-              ${((isTeamAWinner && match.teamA === '?') || (match.winner === match.teamA && match.teamA === '?') || (isFinalStage && match.teamA === '?')) ? html`
-                <span className="bg-emerald-600 text-white font-black text-[9px] px-1 py-0.2 rounded shrink-0 shadow-2xs" title="Qalib (W)">W</span>
+              ${isTeamALoser ? html`
+                <span className="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded shrink-0 shadow-2xs" title="Məğlub (L)">L</span>
               ` : null}
-              <span className=${`text-xs truncate ${isTeamAWinner ? 'text-green-800 font-black' : 'text-purple-950'}`}>
+              <span className=${`text-xs truncate ${
+                (isTeamAWinner || (isFinalStage && match.teamA === '?'))
+                  ? 'text-emerald-950 dark:text-emerald-200 font-black'
+                  : isTeamALoser
+                  ? 'text-rose-950 dark:text-rose-200 font-semibold'
+                  : 'text-purple-950'
+              }`}>
                 ${match.teamA}
               </span>
             </div>
-            ${isTeamAWinner ? html`<i className="fas fa-check-circle text-green-500 text-[10px] ml-0.5"></i>` : null}
+            ${isTeamAWinner ? html`<i className="fas fa-check-circle text-emerald-600 dark:text-emerald-400 text-[10px] ml-0.5"></i>` : null}
           </div>
           
           <div className="flex items-center space-x-1 shrink-0">
@@ -390,32 +409,56 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 (${match.penaltyScoreA})
               </span>
             `}
-            <span className=${`text-xs font-black min-w-[14px] text-right ${isTeamAWinner ? 'text-green-700' : 'text-purple-950'}`}>
+            <span className=${`text-xs min-w-[14px] text-right ${
+              (isTeamAWinner || (isFinalStage && match.teamA === '?'))
+                ? 'font-black text-emerald-700 dark:text-emerald-300'
+                : isTeamALoser
+                ? 'font-bold text-rose-700 dark:text-rose-300'
+                : 'font-black text-purple-950'
+            }`}>
               ${match.scoreA ?? 0}
             </span>
           </div>
         </div>
 
         <!-- Team B Row -->
-        <div className=${`flex items-center justify-between px-2 py-1 rounded-lg transition ${
-          isTeamBWinner ? 'bg-green-50/90 font-black' : isFinished ? 'opacity-65 font-medium' : 'font-bold'
+        <div className=${`flex items-center justify-between px-2.5 py-1.5 rounded-xl border transition-all ${
+          (isTeamBWinner || (isFinalStage && match.teamB === '?'))
+            ? 'bg-emerald-50/95 border-emerald-300/80 shadow-2xs font-black dark:bg-emerald-950/40 dark:border-emerald-700/60'
+            : isTeamBLoser
+            ? 'bg-rose-50/80 border-rose-200/80 dark:bg-rose-950/30 dark:border-rose-900/50'
+            : isFinished
+            ? 'bg-gray-50/60 border-gray-100 opacity-65 font-medium'
+            : 'bg-white border-gray-100 font-bold'
         }`}>
           <div className="flex items-center space-x-2 truncate pr-1">
-            <span className="w-5 h-5 rounded-md bg-purple-900 text-white text-[9px] font-black flex items-center justify-center shrink-0">
+            <span className=${`w-5 h-5 rounded-md text-[9px] font-black flex items-center justify-center shrink-0 shadow-2xs ${
+              (isTeamBWinner || (isFinalStage && match.teamB === '?'))
+                ? 'bg-emerald-600 text-white'
+                : isTeamBLoser
+                ? 'bg-rose-800 text-white'
+                : 'bg-purple-900 text-white'
+            }`}>
               ${(match.teamB || '').substring(0, 3)}
             </span>
-            <div className="flex items-center gap-1 truncate">
-              ${(isTeamBLoser || match.loser === match.teamB) ? html`
-                <span className="bg-rose-600 text-white font-black text-[9px] px-1 py-0.2 rounded shrink-0 shadow-2xs" title="Məğlub (L)">L</span>
+            <div className="flex items-center gap-1.5 truncate">
+              ${(isTeamBWinner || (isFinalStage && match.teamB === '?')) ? html`
+                <span className="bg-emerald-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded shrink-0 shadow-2xs" title="Qalib (W)">W</span>
               ` : null}
-              ${((isTeamBWinner && match.teamB === '?') || (match.winner === match.teamB && match.teamB === '?') || (isFinalStage && match.teamB === '?')) ? html`
-                <span className="bg-emerald-600 text-white font-black text-[9px] px-1 py-0.2 rounded shrink-0 shadow-2xs" title="Qalib (W)">W</span>
+              ${isTeamBLoser ? html`
+                <span className="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded shrink-0 shadow-2xs" title="Məğlub (L)">L</span>
               ` : null}
-              <span className=${`text-xs truncate ${isTeamBWinner ? 'text-green-800 font-black' : 'text-purple-950'}`}>
+              <span className=${`text-xs truncate ${
+                (isTeamBWinner || (isFinalStage && match.teamB === '?'))
+                  ? 'text-emerald-950 dark:text-emerald-200 font-black'
+                  : isTeamBLoser
+                  ? 'text-rose-950 dark:text-rose-200 font-semibold'
+                  : 'text-purple-950'
+              }`}>
                 ${match.teamB}
               </span>
             </div>
-            ${isTeamBWinner ? html`<i className="fas fa-check-circle text-green-500 text-[10px] ml-0.5"></i>` : null}
+            ${isTeamBWinner ? html`<i className="fas fa-check-circle text-emerald-600 dark:text-emerald-400 text-[10px] ml-0.5"></i>` : null}
           </div>
 
           <div className="flex items-center space-x-1 shrink-0">
@@ -424,7 +467,13 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 (${match.penaltyScoreB})
               </span>
             `}
-            <span className=${`text-xs font-black min-w-[14px] text-right ${isTeamBWinner ? 'text-green-700' : 'text-purple-950'}`}>
+            <span className=${`text-xs min-w-[14px] text-right ${
+              (isTeamBWinner || (isFinalStage && match.teamB === '?'))
+                ? 'font-black text-emerald-700 dark:text-emerald-300'
+                : isTeamBLoser
+                ? 'font-bold text-rose-700 dark:text-rose-300'
+                : 'font-black text-purple-950'
+            }`}>
               ${match.scoreB ?? 0}
             </span>
           </div>
@@ -1113,13 +1162,35 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 </div>
 
                 <h3 className="text-2xl md:text-3xl font-black mt-2 tracking-tight flex items-center gap-2 flex-wrap">
-                  ${selectedMatch.loser === selectedMatch.teamA ? html`<span className="bg-rose-600 text-white text-xs px-2 py-0.5 rounded font-black shadow-xs">L</span>` : null}
-                  ${(selectedMatch.winner === selectedMatch.teamA || (normalizeStage(selectedMatch.stage) === 'final' && selectedMatch.teamA === '?')) ? html`<span className="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded font-black shadow-xs">W</span>` : null}
-                  <span>${selectedMatch.teamA}</span>
-                  <span>${selectedMatch.scoreA} - ${selectedMatch.scoreB}</span>
-                  ${selectedMatch.loser === selectedMatch.teamB ? html`<span className="bg-rose-600 text-white text-xs px-2 py-0.5 rounded font-black shadow-xs">L</span>` : null}
-                  ${(selectedMatch.winner === selectedMatch.teamB || (normalizeStage(selectedMatch.stage) === 'final' && selectedMatch.teamB === '?')) ? html`<span className="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded font-black shadow-xs">W</span>` : null}
-                  <span>${selectedMatch.teamB}</span>
+                  ${(selectedOutcome?.winner === selectedMatch.teamA || (normalizeStage(selectedMatch.stage) === 'final' && selectedMatch.teamA === '?')) ? html`
+                    <span className="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded-md font-black shadow-xs flex items-center gap-1">
+                      <i className="fas fa-check-circle text-[10px]"></i> W
+                    </span>
+                  ` : null}
+                  ${selectedOutcome?.loser === selectedMatch.teamA ? html`
+                    <span className="bg-rose-600 text-white text-xs px-2 py-0.5 rounded-md font-black shadow-xs">
+                      L
+                    </span>
+                  ` : null}
+                  <span className=${selectedOutcome?.winner === selectedMatch.teamA ? 'text-green-300' : selectedOutcome?.loser === selectedMatch.teamA ? 'text-rose-300' : ''}>
+                    ${selectedMatch.teamA}
+                  </span>
+                  <span className="text-white px-2 py-0.5 font-black bg-purple-900 rounded-lg">
+                    ${selectedMatch.scoreA} - ${selectedMatch.scoreB}
+                  </span>
+                  ${(selectedOutcome?.winner === selectedMatch.teamB || (normalizeStage(selectedMatch.stage) === 'final' && selectedMatch.teamB === '?')) ? html`
+                    <span className="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded-md font-black shadow-xs flex items-center gap-1">
+                      <i className="fas fa-check-circle text-[10px]"></i> W
+                    </span>
+                  ` : null}
+                  ${selectedOutcome?.loser === selectedMatch.teamB ? html`
+                    <span className="bg-rose-600 text-white text-xs px-2 py-0.5 rounded-md font-black shadow-xs">
+                      L
+                    </span>
+                  ` : null}
+                  <span className=${selectedOutcome?.winner === selectedMatch.teamB ? 'text-green-300' : selectedOutcome?.loser === selectedMatch.teamB ? 'text-rose-300' : ''}>
+                    ${selectedMatch.teamB}
+                  </span>
                   ${(selectedMatch.penaltyScoreA !== null && selectedMatch.penaltyScoreA !== undefined && selectedMatch.penaltyScoreA !== '') && html`
                     <span className="text-green-400 text-lg font-extrabold ml-2"> (pen. ${selectedMatch.penaltyScoreA} - ${selectedMatch.penaltyScoreB})</span>
                   `}
