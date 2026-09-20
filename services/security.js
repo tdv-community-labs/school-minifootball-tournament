@@ -17,7 +17,6 @@
  * ============================================================================
  */
 const DEFAULT_SALT = 'tdv_btl_salt_2026_';
-// SHA-256 of (DEFAULT_SALT + 'btl2026')
 const DEFAULT_HASH = '495e08190021c4ddf92eaad9a65cfa81c17a4105bac71571776578c67731f5cd';
 
 const SESSION_KEY = 'btl_admin_session_token';
@@ -163,8 +162,8 @@ export function createAdminSession() {
     };
     const token = btoa(JSON.stringify(payload));
     sessionStorage.setItem(SESSION_KEY, token);
-    // Legacy support for offline refresh in current tab
-    localStorage.setItem('minifootball_admin_authorized', 'true');
+    // Security: ensure legacy localStorage authorization flag is purged
+    localStorage.removeItem('minifootball_admin_authorized');
   } catch (e) {
     console.error('Session creation failed:', e);
   }
@@ -177,11 +176,6 @@ export function isSessionValid() {
   try {
     const token = sessionStorage.getItem(SESSION_KEY);
     if (!token) {
-      // Fallback check: if legacy localStorage exists, hydrate into sessionStorage
-      if (localStorage.getItem('minifootball_admin_authorized') === 'true') {
-        createAdminSession();
-        return true;
-      }
       return false;
     }
     const payload = JSON.parse(atob(token));
