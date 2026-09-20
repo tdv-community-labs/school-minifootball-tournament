@@ -109,7 +109,7 @@ export default function App() {
   };
 
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('btl_theme') || 'system';
+    return localStorage.getItem('btl_theme') || localStorage.getItem('tdv_theme') || 'system';
   });
 
   const applyTheme = (currentTheme) => {
@@ -133,6 +133,9 @@ export default function App() {
   const handleThemeChange = (newTheme) => {
     setTheme(newTheme);
     localStorage.setItem('btl_theme', newTheme);
+    if (newTheme === 'dark' || newTheme === 'light') {
+      localStorage.setItem('tdv_theme', newTheme);
+    }
     applyTheme(newTheme);
   };
 
