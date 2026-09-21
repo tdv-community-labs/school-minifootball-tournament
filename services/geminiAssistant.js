@@ -19,15 +19,20 @@
 export const DEFAULT_MODEL = 'gemini-3.7-flash';
 export const FALLBACK_MODEL = 'gemini-2.5-flash';
 
-// 1. Dedicated Public Chatbot Key (for all website visitors)
-export const DEFAULT_PUBLIC_KEY = 'AQ.Ab8RN6LL1oCM_mOpYDNdL-77xjPogrh3pLNNwUyt90YvcRcRag';
+// Ætraf MÃ¼hit DÉ™yiÅŸÉ™nlÉ™rindÉ™n tÉ™hlÃ¼kÉ™siz oxuma (window.ENV, process.env vÉ™ ya localStorage)
+const getSafeEnv = (key) => {
+  if (typeof window !== 'undefined' && window.ENV && window.ENV[key]) return window.ENV[key];
+  if (typeof process !== 'undefined' && process.env && process.env[key]) return process.env[key];
+  return '';
+};
 
-// 2. Guardian & Site Audit Key Pool (3 Keys with automatic failover rotation)
-export const DEFAULT_GUARDIAN_POOL = [
-  'AQ.Ab8RN6Ll8Jxb9y6enZ15PPInR8IhiE8-thTTD_NhrzQ67C7aJg',
-  'AQ.Ab8RN6IP3PfF2j4CP3L_NcAxzDo2sd-w6xtulo4khkuohcuCYA',
-  'AQ.Ab8RN6LaifwdZxf-ilOlYytU3G99qEuxNjtwUMrtBPrH0wAbKQ'
-];
+// 1. Dedicated Public Chatbot Key (oxunur .env / window.ENV vÉ™ ya localStorage-dan)
+export const DEFAULT_PUBLIC_KEY = getSafeEnv('GEMINI_PUBLIC_KEY') || getSafeEnv('GEMINI_API_KEY') || '';
+
+// 2. Guardian & Site Audit Key Pool (oxunur .env / window.ENV vÉ™ ya localStorage-dan)
+export const DEFAULT_GUARDIAN_POOL = getSafeEnv('GEMINI_GUARDIAN_POOL')
+  ? getSafeEnv('GEMINI_GUARDIAN_POOL').split(',').map(s => s.trim()).filter(Boolean)
+  : (DEFAULT_PUBLIC_KEY ? [DEFAULT_PUBLIC_KEY] : []);
 
 const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 
