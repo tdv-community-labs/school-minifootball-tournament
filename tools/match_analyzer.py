@@ -22,7 +22,7 @@ import urllib.error
 import argparse
 from datetime import datetime
 
-DEFAULT_API_KEY = os.environ.get("GEMINI_API_KEY", "AQ.Ab8RN6KLWwAGO85GdHBo5seR_zl56xfeQ5Jt0mpdcdXxAzSMlg")
+DEFAULT_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 DEFAULT_YOUTUBE_URL = "https://www.youtube.com/watch?v=spKp8pezfPQ"
 
 SYSTEM_PROMPT = """You are a world-class professional football and mini-football video analyst (Opta / StatsBomb / Sofascore expert).
