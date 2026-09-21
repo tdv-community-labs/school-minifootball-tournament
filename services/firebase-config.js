@@ -12,7 +12,7 @@
  * ============================================================================
  */
 let config = {
-  apiKey: "AIzaSyAIV2lXg-4ZjZcUW9lp_-QV3hwBLZsmUs",
+  apiKey: (typeof window !== "undefined" && window.ENV?.FIREBASE_API_KEY) || (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_FIREBASE_API_KEY) || (typeof localStorage !== "undefined" ? localStorage.getItem("btl_firebase_api_key") : "") || "",
   authDomain: "tdv-football.firebaseapp.com",
   projectId: "tdv-football",
   storageBucket: "tdv-football.firebasestorage.app",
