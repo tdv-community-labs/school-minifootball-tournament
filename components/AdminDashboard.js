@@ -1387,7 +1387,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                         type=${showApiKey ? 'text' : 'password'}
                         value=${publicChatKey}
                         onChange=${(e) => setPublicChatKey(e.target.value)}
-                        placeholder="AIzaSy... / Gemini API Key"
+                        placeholder="Gemini API AÃ§arÄ±nÄ± daxil edin..."
                         className="w-full bg-white border border-purple-200 text-xs rounded-xl p-2.5 pr-10 font-mono"
                       />
                       <button
@@ -1424,7 +1424,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                             type=${showApiKey ? 'text' : 'password'}
                             value=${key}
                             onChange=${(e) => handleGuardianKeyChange(i, e.target.value)}
-                            placeholder=${`AQ.Ab8RN6... (Qoruyucu Açar ${i + 1})`}
+                            placeholder=${`Qoruyucu AÃ§ar (Qoruyucu Açar ${i + 1})`}
                             className="flex-1 bg-white border border-indigo-200 text-xs rounded-xl p-2 font-mono"
                           />
                         </div>
