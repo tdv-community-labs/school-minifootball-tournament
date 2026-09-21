@@ -1387,7 +1387,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                         type=${showApiKey ? 'text' : 'password'}
                         value=${publicChatKey}
                         onChange=${(e) => setPublicChatKey(e.target.value)}
-                        placeholder="AQ.Ab8RN6LL1oCM..."
+                        placeholder="AIzaSy... / Gemini API Key"
                         className="w-full bg-white border border-purple-200 text-xs rounded-xl p-2.5 pr-10 font-mono"
                       />
                       <button
