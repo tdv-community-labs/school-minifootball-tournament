@@ -683,7 +683,7 @@ export default function App() {
                 </h4>
                 <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
                   ${lang === 'az' 
-                    ? 'TDV Bakı Türk Liseyinin ənənəvi minifutbol çempionatı 2017-ci ildən təşkil olunur. Çempionat məktəbimizin 9, 10 və 11-ci sinif şagirdləri arasında keçirilir və liseyimizin ən böyük idman ənənələrindən biridir. Məqsəd şagirdlər arasında idman əxlaqını, dostluq əlaqələrini və komanda ruhunu yüksəltməkdir. Bu rəsmi platformada bütün tarixi oyunlar, nəticələr, bombardirlər və Sofascore reytinqləri canlı arxivləşdirilib.' 
+                    ? 'TDV Bakı Türk Liseyinin ənənəvi minifutbol çempionatı 2017-ci ildən təşkil olunur. Çempionat məktəbimizin 9, 10 və 11-ci sinif şagirdləri arasında keçirilir və liseyimizin ən böyük idman ənənələrindən biridir. Məqsəd şagirdlər arasında idman əxlaqını, dostluq əlaqələrini və komanda ruhunu yüksəltməkdir. Bu platformada bütün tarixi oyunlar, nəticələr, bombardirlər və Sofascore reytinqləri canlı arxivləşdirilib.' 
                     : 'The traditional mini-football championship of TDV Baku Turkish Lyceum has been held since 2017 among 9th, 10th, and 11th grade students. The tournament is dedicated to sportsmanship, teamwork, and healthy competition, digitally featuring complete historical match records, goal statistics, and Sofascore ratings.'}
                 </p>
               </div>
