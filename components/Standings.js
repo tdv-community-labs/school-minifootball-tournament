@@ -98,6 +98,22 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
 
   const getDivisionLabel = (div) => fallbackGetDivisionLabel(div, lang);
 
+  // Sofascore Form Guide (last 5 matches)
+  const getTeamForm = (teamName) => {
+    if (!teamName || !matches || matches.length === 0) return [];
+    const teamMatches = matches
+      .filter(m => (m.teamA === teamName || m.teamB === teamName) && (m.played === true || (m.scoreA !== null && m.scoreA !== undefined && m.scoreA !== '')))
+      .slice(-5);
+    return teamMatches.map(m => {
+      const isTeamA = m.teamA === teamName;
+      const sA = Number(m.scoreA || 0);
+      const sB = Number(m.scoreB || 0);
+      if (sA === sB) return 'D';
+      return (isTeamA ? sA > sB : sB > sA) ? 'W' : 'L';
+    });
+  };
+
+
   // ─────────────────────────────────────────────────────────────────────────────
   // PLAYOFF BRACKET CALCULATIONS & STAGES
   // ─────────────────────────────────────────────────────────────────────────────
@@ -634,9 +650,9 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   `}
 
                   <div className="overflow-x-auto no-scrollbar">
-                    <table className="w-full text-left border-collapse standings-table bg-white dark:bg-slate-900">
+                    <table className="w-full text-left border-collapse standings-table bg-slate-900/90 text-slate-200">
                       <thead>
-                        <tr className="bg-purple-950 text-white text-[11px] sm:text-xs font-bold tracking-wider">
+                        <tr className="bg-slate-950/90 text-slate-300 text-[11px] sm:text-xs font-black tracking-wider uppercase border-b border-white/10">
                           <th className="py-3 px-2 sm:py-4 sm:px-6 text-center w-8 sm:w-14">#</th>
                           <th className="py-3 px-2 sm:py-4 sm:px-4 cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('class')}>
                             ${t('colTeam')} ${sortField === 'class' ? (sortAsc ? '▲' : '▼') : ''}
@@ -662,6 +678,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                           <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-green-400 transition" title="Top Fərqi (Vurulan - Buraxılan)" onClick=${() => handleSort('goalDifference')}>
                             ${t('colGD')} ${sortField === 'goalDifference' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
+                          <th className="py-3 px-2 sm:py-4 sm:px-3 text-center hidden md:table-cell font-black tracking-wider uppercase">Forma</th>
                           <th className="py-3 px-2 sm:py-4 sm:px-6 text-center cursor-pointer hover:text-green-400 transition" onClick=${() => handleSort('points')}>
                             ${t('colPoints')} ${sortField === 'points' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
@@ -724,6 +741,17 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                                     title=${`Top Fərqi (TF): ${row.goalsFor} vurulub - ${row.goalsAgainst} buraxılıb = ${row.goalDifference > 0 ? '+' : ''}${row.goalDifference}`}
                                   >
                                     ${row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}
+                                  </td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-3 text-center hidden md:table-cell">
+                                    <div className="flex items-center justify-center gap-1">
+                                      ${getTeamForm(row.class).map((f, i) => html`
+                                        <span key=${i} className=${`w-4 h-4 rounded text-[8px] font-mono font-black inline-flex items-center justify-center text-white shadow-2xs ${
+                                          f === 'W' ? 'bg-emerald-500' : f === 'D' ? 'bg-amber-500' : 'bg-rose-500'
+                                        }`} title=${f === 'W' ? 'Qələbə' : f === 'D' ? 'Heç-heçə' : 'Məğlubiyyət'}>
+                                          ${f}
+                                        </span>
+                                      `)}
+                                    </div>
                                   </td>
                                   <td className="py-2.5 px-2 sm:py-3.5 sm:px-6 text-center">
                                     <span className="inline-block min-w-[1.75rem] sm:min-w-[2rem] py-0.5 sm:py-1 px-1.5 sm:px-2.5 rounded-lg bg-purple-100/90 dark:bg-purple-950/70 text-purple-950 dark:text-purple-200 font-black text-xs sm:text-sm shadow-2xs border border-purple-200 dark:border-purple-800">
