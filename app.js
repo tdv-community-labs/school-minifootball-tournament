@@ -314,19 +314,32 @@ export default function App() {
   return html`
     <div className="min-h-screen bg-slate-50 dark:bg-[#080c14] text-slate-800 dark:text-slate-100 font-sans flex flex-col transition-colors duration-200">
       <!-- Top Premium Navbar (Branded TDV BTL Futbol) -->
-      <header className="bg-purple-950 sticky top-0 z-40 text-white shadow-xl border-b border-purple-800/40 flex flex-col no-scrollbar" style=${{ backgroundColor: '#2e0249', paddingTop: 'max(0px, env(safe-area-inset-top, 0px))' }}>
+      <header className="bg-slate-900/95 sticky top-0 z-40 text-white shadow-xl border-b border-amber-500/20 flex flex-col no-scrollbar backdrop-blur-md" style=${{ background: 'linear-gradient(135deg, #070a12 0%, #15091c 50%, #0d1527 100%)', paddingTop: 'max(0px, env(safe-area-inset-top, 0px))' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full no-scrollbar">
           <div className="flex items-center justify-between h-16">
             
-            <!-- Left Logo Section -->
-            <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
-              <div className="flex items-center space-x-2 cursor-pointer shrink-0" onClick=${() => setActiveTab('dashboard')}>
-                <div className="bg-green-500 text-purple-950 p-1.5 sm:p-2 rounded-xl flex items-center justify-center shadow-md animate-pulse shrink-0">
-                  <i className="fas fa-futbol text-base sm:text-lg"></i>
+            <!-- Left Logo Section: Official TDV BTL School Crest -->
+            <div className="flex items-center space-x-2.5 sm:space-x-3 shrink-0">
+              <div className="flex items-center space-x-2.5 cursor-pointer shrink-0 group" onClick=${() => setActiveTab('dashboard')}>
+                <div className="relative shrink-0">
+                  <img src="assets/tdv-logo.jpg" alt="TDV BTL Crest" className="w-10 h-10 rounded-full object-cover border-2 border-amber-400/80 shadow-md shadow-amber-500/10 group-hover:scale-105 transition shrink-0" />
+                  <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-white w-4 h-4 rounded-full flex items-center justify-center border border-slate-900 shadow">
+                    <i className="fas fa-futbol text-[8px]"></i>
+                  </div>
                 </div>
-                <h1 className="text-base sm:text-lg md:text-xl font-black tracking-wider uppercase whitespace-nowrap">
-                  ${t('appTitle', lang)} <span className="text-green-400 font-extrabold hidden min-[480px]:inline">${t('appSubtitle', lang)}</span>
-                </h1>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-1.5">
+                    <h1 className="text-sm sm:text-base md:text-lg font-black tracking-wider text-white uppercase whitespace-nowrap m-0">
+                      ${t('appTitle', lang)} <span className="text-emerald-400 font-extrabold">${t('appSubtitle', lang)}</span>
+                    </h1>
+                    <span className="hidden sm:inline-block text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/40">
+                      RƏSMİ
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase hidden min-[480px]:inline">
+                    BAKI TÜRK LİSEYİ • SPORTS LİQASI
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -612,9 +625,12 @@ export default function App() {
       </main>
 
       <!-- Premium Footer -->
-      <footer className="bg-purple-950 text-purple-200 border-t border-purple-900 py-6 text-center text-xs font-semibold pb-24 sm:pb-8">
+      <footer className="bg-[#070a12] text-slate-400 border-t border-slate-800 py-8 text-center text-xs font-semibold pb-24 sm:pb-8">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 pr-4 md:pr-48">
-          <p>© 2026 TDV BTL ${t('appSubtitle', lang)}. ${t('allRightsReserved', lang)}</p>
+          <div className="flex items-center gap-2.5">
+            <img src="assets/tdv-logo.jpg" alt="TDV BTL" className="w-6 h-6 rounded-full object-cover border border-amber-400/60" />
+            <p className="text-slate-300">© 2026 Türkiye Diyanet Vakfı Bakı Türk Liseyi • TDV Sports Liqası. ${t('allRightsReserved', lang)}</p>
+          </div>
           <div className="flex items-center space-x-4">
             <button
               onClick=${() => setShowRulesModal(true)}
