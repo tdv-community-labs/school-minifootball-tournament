@@ -8,7 +8,9 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>TDV BTL Futbol Turniri</title>
+  <title>TDV BTL Sports • Minifutbol Turniri</title>
+  <link rel="icon" type="image/jpeg" href="assets/tdv-logo.jpg">
+  <link rel="apple-touch-icon" href="assets/tdv-logo.jpg">
   
   <!-- Cybersecurity: Content Security Policy (CSP) & Hardening Headers -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://esm.sh https://www.gstatic.com https://cdn.tailwindcss.com; connect-src 'self' https://esm.sh https://generativelanguage.googleapis.com https://*.firebaseio.com https://firestore.googleapis.com https://*.workers.dev; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self';">
@@ -430,20 +432,22 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased dark:bg-[#080c14] dark:text-slate-100 transition-colors">
   <!-- TDV Community Labs Ecosystem Global Bar -->
-  <aside id="tdv-ecosystem-topbar" aria-label="TDV Community Labs Ecosystem Bar" class="bg-slate-950 border-b border-slate-800/90 py-1.5 px-3 sm:px-4 text-[11px] sticky top-0 z-50 transition-colors" style="font-family: 'Inter', system-ui, sans-serif;">
+  <!-- TDV Community Labs Ecosystem Global Bar -->
+  <aside id="tdv-ecosystem-topbar" aria-label="TDV Community Labs Ecosystem Bar" class="bg-[#070a12] border-b border-amber-500/20 py-1.5 px-3 sm:px-4 text-[11px] sticky top-0 z-50 transition-colors shadow-sm" style="font-family: 'Inter', system-ui, sans-serif;">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
-      <!-- Left: Org Identity -->
+      <!-- Left: Institutional Crest & Identity -->
       <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
-        <a href="https://tdv-community-hubs.vercel.app/" class="inline-flex items-center gap-1.5 font-extrabold text-white hover:text-blue-400 transition" style="text-decoration: none;">
-          <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-          <span class="tracking-tight text-white">TDV Community Labs</span>
+        <a href="https://tdv-community-hubs.vercel.app/" class="inline-flex items-center gap-2 font-extrabold text-white hover:text-amber-300 transition" style="text-decoration: none;">
+          <img src="assets/tdv-logo.jpg" alt="TDV BTL Crest" class="w-5 h-5 rounded-full object-cover border border-amber-400/70 shadow-sm shrink-0" />
+          <span class="tracking-tight text-white font-black text-[11px] hidden min-[380px]:inline">TÜRKİYE DİYANET VAKFI • BAKI TÜRK LİSEYİ</span>
+          <span class="tracking-tight text-white font-black text-[11px] min-[380px]:hidden">TDV BTL</span>
         </a>
         <span class="text-slate-700 hidden sm:inline">•</span>
-        <span class="text-slate-400 text-[10px] hidden md:inline">Məktəb Rəqəmsal Ekosistemi</span>
+        <span class="text-amber-400/90 text-[10px] font-semibold hidden md:inline">Sports Liqası</span>
       </div>
 
-            <!-- Right: Unified Ecosystem Switcher Pill -->
-      <nav class="flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-2xl text-xs font-medium shadow-sm">
+      <!-- Right: Unified Ecosystem Switcher Pill -->
+      <nav class="flex items-center gap-1 bg-slate-900/95 border border-slate-800 p-1 rounded-2xl text-xs font-medium shadow-sm">
         <a href="https://tdv-community-hubs.vercel.app/" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition flex items-center gap-1.5" style="text-decoration: none;" title="TDV Hub Mərkəzi Portalı">
           <i class="fas fa-house text-blue-400 text-xs"></i>
           <span class="hidden sm:inline">Mərkəz</span>
@@ -452,8 +456,8 @@
           <i class="fas fa-graduation-cap text-emerald-400 text-xs"></i>
           <span class="hidden sm:inline">E-School</span>
         </a>
-        <a href="https://school-minifootball-tournament-2.vercel.app/" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-blue-600 text-white font-semibold shadow-sm flex items-center gap-1.5" style="text-decoration: none;" title="TDV Sports Minifutbol (Aktiv)">
-          <i class="fas fa-trophy text-xs"></i>
+        <a href="https://school-minifootball-tournament-2.vercel.app/" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold shadow-md flex items-center gap-1.5 border border-emerald-400/40" style="text-decoration: none;" title="TDV Sports Minifutbol (Aktiv)">
+          <i class="fas fa-trophy text-amber-300 text-xs"></i>
           <span class="hidden sm:inline">Sports</span>
         </a>
         <a href="https://tdv-community-hubs.vercel.app/games" target="_blank" rel="noopener noreferrer" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-purple-950/40 hover:border-purple-500/30 transition flex items-center gap-1.5 group" style="text-decoration: none;" title="TDV Games & Mafia">
@@ -470,7 +474,7 @@
 
   <div id="root">
     <!-- Initial Loader (Immune to dark mode CSS overrides) -->
-    <div id="initial-loader" style="min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #2e0249 !important; color: #ffffff; padding: 20px; text-align: center;">
+    <div id="initial-loader" style="min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #070a12 !important; color: #ffffff; padding: 20px; text-align: center;">
       <div style="position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
         <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
         <i class="fas fa-futbol" style="position: absolute; font-size: 24px; color: #ffffff;"></i>
