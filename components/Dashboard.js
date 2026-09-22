@@ -101,7 +101,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#070a12] via-[#140b20] to-[#0c1829] p-6 sm:p-8 text-white shadow-2xl border border-amber-500/20">
         <div className="absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-emerald-500 opacity-15 blur-3xl pointer-events-none"></div>
         <div className="absolute right-8 top-1/2 -translate-y-1/2 opacity-10 hidden md:block pointer-events-none">
-          <img src="assets/tdv-logo.jpg" alt="" className="w-48 h-48 rounded-full object-cover filter grayscale" />
+          <img src="assets/tdv-logo.png" alt="" className="w-48 h-48 rounded-full object-cover filter grayscale" />
         </div>
         <div className="relative z-10 max-w-2xl">
           <div className="flex items-center gap-2 mb-3">
@@ -122,45 +122,45 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
         </div>
       </div>
 
-      <!-- Quick Stats Grid -->
+      <!-- Quick Stats Bento Grid (Sofascore & UEFA Grade) -->
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="glass-card rounded-2xl p-3.5 sm:p-5 shadow-sm border border-purple-100 flex items-center space-x-2.5 sm:space-x-4">
-          <div className="rounded-xl bg-purple-100 p-2 sm:p-3 text-purple-900 shrink-0">
-            <i className="fas fa-users text-lg sm:text-xl"></i>
+        <div className="glass-card rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 dark:border-white/[0.08] hover:border-blue-500/40 transition flex items-center space-x-3.5">
+          <div className="w-11 h-11 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0 text-base sm:text-lg">
+            <i className="fas fa-users"></i>
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] sm:text-xs text-gray-500 font-semibold truncate">${t('statTotalPlayers')}</p>
-            <p className="text-xl sm:text-2xl font-black text-purple-950">${stats.totalPlayers}</p>
+            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-semibold truncate">${t('statTotalPlayers')}</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">${stats.totalPlayers}</p>
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-3.5 sm:p-5 shadow-sm border border-purple-100 flex items-center space-x-2.5 sm:space-x-4">
-          <div className="rounded-xl bg-purple-100 p-2 sm:p-3 text-purple-900 shrink-0">
-            <i className="fas fa-running text-lg sm:text-xl"></i>
+        <div className="glass-card rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 dark:border-white/[0.08] hover:border-emerald-500/40 transition flex items-center space-x-3.5">
+          <div className="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 text-base sm:text-lg">
+            <i className="fas fa-running"></i>
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] sm:text-xs text-gray-500 font-semibold truncate">${t('statTotalMatches')}</p>
-            <p className="text-xl sm:text-2xl font-black text-purple-950">${stats.totalMatches}</p>
+            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-semibold truncate">${t('statTotalMatches')}</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">${stats.totalMatches}</p>
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-3.5 sm:p-5 shadow-sm border border-purple-100 flex items-center space-x-2.5 sm:space-x-4">
-          <div className="rounded-xl bg-purple-100 p-2 sm:p-3 text-purple-900 shrink-0">
-            <i className="fas fa-futbol text-lg sm:text-xl"></i>
+        <div className="glass-card rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 dark:border-white/[0.08] hover:border-teal-500/40 transition flex items-center space-x-3.5">
+          <div className="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-500 flex items-center justify-center shrink-0 text-base sm:text-lg">
+            <i className="fas fa-futbol"></i>
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] sm:text-xs text-gray-500 font-semibold truncate">${t('statTotalGoals')}</p>
-            <p className="text-xl sm:text-2xl font-black text-purple-950">${stats.totalGoals}</p>
+            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-semibold truncate">${t('statTotalGoals')}</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">${stats.totalGoals}</p>
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-3.5 sm:p-5 shadow-sm border border-purple-100 flex items-center space-x-2.5 sm:space-x-4">
-          <div className="rounded-xl bg-green-100 p-2 sm:p-3 text-green-700 shrink-0">
-            <i className="fas fa-trophy text-lg sm:text-xl"></i>
+        <div className="glass-card rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 dark:border-white/[0.08] hover:border-amber-500/40 transition flex items-center space-x-3.5">
+          <div className="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0 text-base sm:text-lg">
+            <i className="fas fa-trophy"></i>
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] sm:text-xs text-gray-500 font-semibold truncate">${t('statLeader')}</p>
-            <p className="text-xl sm:text-2xl font-black text-purple-950 truncate">${stats.leader}</p>
+            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-semibold truncate">${t('statLeader')}</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white truncate">${stats.leader}</p>
           </div>
         </div>
       </div>
