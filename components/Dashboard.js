@@ -98,16 +98,25 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
   return html`
     <div className="space-y-8 animate-fadeIn">
       <!-- Welcome Banner -->
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-950 via-purple-900 to-purple-800 p-8 text-white shadow-xl">
-        <div className="absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-green-500 opacity-10 blur-2xl"></div>
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#070a12] via-[#140b20] to-[#0c1829] p-6 sm:p-8 text-white shadow-2xl border border-amber-500/20">
+        <div className="absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-emerald-500 opacity-15 blur-3xl pointer-events-none"></div>
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 opacity-10 hidden md:block pointer-events-none">
+          <img src="assets/tdv-logo.jpg" alt="" className="w-48 h-48 rounded-full object-cover filter grayscale" />
+        </div>
         <div className="relative z-10 max-w-2xl">
-          <span className="mb-2 inline-block rounded-full bg-green-500/20 px-3 py-1 text-xs font-bold text-green-400 uppercase tracking-widest">
-            ${fallbackGetDivisionLabel(activeDivision, lang)}
-          </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 px-3 py-1 text-xs font-bold text-emerald-300 uppercase tracking-widest">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              ${fallbackGetDivisionLabel(activeDivision, lang)}
+            </span>
+            <span className="inline-block rounded-full bg-amber-500/20 border border-amber-400/30 px-3 py-1 text-xs font-bold text-amber-300 uppercase tracking-widest">
+              TDV BTL LİQA
+            </span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">
             ${t('welcomeTitle')}
           </h2>
-          <p className="mt-2 text-purple-200 text-sm md:text-base">
+          <p className="mt-2 text-slate-300 text-sm md:text-base leading-relaxed">
             ${t('welcomeDesc')}
           </p>
         </div>
