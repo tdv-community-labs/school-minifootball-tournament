@@ -318,26 +318,23 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full no-scrollbar">
           <div className="flex items-center justify-between h-16">
             
-            <!-- Left Logo Section: Official TDV BTL School Crest -->
+            <!-- Left Logo Section: Dedicated Sports Product Logo -->
             <div className="flex items-center space-x-2.5 sm:space-x-3 shrink-0">
               <div className="flex items-center space-x-2.5 cursor-pointer shrink-0 group" onClick=${() => setActiveTab('dashboard')}>
-                <div className="relative shrink-0">
-                  <img src="assets/tdv-logo.jpg" alt="TDV BTL Crest" className="w-10 h-10 rounded-full object-cover border-2 border-amber-400/80 shadow-md shadow-amber-500/10 group-hover:scale-105 transition shrink-0" />
-                  <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-white w-4 h-4 rounded-full flex items-center justify-center border border-slate-900 shadow">
-                    <i className="fas fa-futbol text-[8px]"></i>
-                  </div>
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-green-500 flex items-center justify-center text-white shadow-lg shadow-emerald-600/30 shrink-0 group-hover:scale-105 transition-transform">
+                  <i className="fas fa-futbol text-lg"></i>
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1.5">
                     <h1 className="text-sm sm:text-base md:text-lg font-black tracking-wider text-white uppercase whitespace-nowrap m-0">
                       ${t('appTitle', lang)} <span className="text-emerald-400 font-extrabold">${t('appSubtitle', lang)}</span>
                     </h1>
-                    <span className="hidden sm:inline-block text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/40">
-                      RƏSMİ
+                    <span className="hidden sm:inline-block text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                      LİQA
                     </span>
                   </div>
                   <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase hidden min-[480px]:inline">
-                    BAKI TÜRK LİSEYİ • SPORTS LİQASI
+                    BAKI TÜRK LİSEYİ • ATLETİKA & FUTBOL
                   </span>
                 </div>
               </div>
