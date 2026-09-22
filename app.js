@@ -1,3 +1,5 @@
+import { authService } from './services/authService.js?v=20260912_0120';
+import UnifiedAuthBarrier from './components/UnifiedAuthBarrier.js?v=20260912_0120';
 /**
  * ============================================================================
  * FAYL ADI: app.js
@@ -40,7 +42,17 @@ class ErrorBoundary extends React.Component {
   }
   render() {
     if (this.state.hasError) {
-      return html`
+      // MƏCBURİ VAHİD GİRİŞ QAPISI (MANDATORY AUTH GATE)
+  if (!userSession) {
+    return html`
+      <\${UnifiedAuthBarrier}
+        lang=\${lang}
+        onLogin=\${(session) => setUserSession(session)}
+      />
+    `;
+  }
+
+  return html`
         <div className="p-8 text-center bg-purple-950/40 dark:bg-slate-900/60 border border-purple-800/50 dark:border-slate-800 rounded-3xl my-6">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-2xl">
             <i className="fas fa-exclamation-triangle"></i>
@@ -74,6 +86,7 @@ class ErrorBoundary extends React.Component {
 }
 
 export default function App() {
+  const [userSession, setUserSession] = useState(() => authService.getSession());
   const [activeTab, setActiveTab] = useState('dashboard');
   const [activeYear, setActiveYear] = useState(() => {
     return localStorage.getItem('btl_selected_year') || '2022-2023';
@@ -334,7 +347,7 @@ export default function App() {
                     </span>
                   </div>
                   <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase hidden min-[480px]:inline">
-                    BAKI TÜRK LİSEYİ • ATLETİKA & FUTBOL
+                    TDV COMMUNITY LABS • ATLETİKA & FUTBOL
                   </span>
                 </div>
               </div>
@@ -363,6 +376,24 @@ export default function App() {
 
             <!-- Right Controls: always visible (desktop + mobile) -->
             <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
+              <!-- Active User Profile Chip & Logout -->
+              \${userSession && html`
+                <div className="flex items-center gap-1.5 sm:gap-2 bg-emerald-950/60 border border-emerald-500/30 px-2 sm:px-2.5 py-1 rounded-xl shadow-xs">
+                  <span className="text-sm">\${userSession.avatar || '⚽'}</span>
+                  <div className="flex flex-col text-left leading-tight hidden md:flex">
+                    <span className="text-[11px] font-black text-emerald-300 truncate max-w-[100px]">\${userSession.fullName || userSession.username}</span>
+                    <span className="text-[9px] text-slate-400 font-bold">\${userSession.schoolClass || 'Oyunçu'}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick=\${() => { authService.logout(); setUserSession(null); }}
+                    title="Çıxış (Girişi kilidlə)"
+                    className="ml-0.5 sm:ml-1 p-1 text-rose-400 hover:text-rose-300 transition cursor-pointer"
+                  >
+                    <i className="fas fa-sign-out-alt text-xs"></i>
+                  </button>
+                </div>
+              `}
               <!-- Global Search Button (always visible) -->
               <button
                 type="button"
