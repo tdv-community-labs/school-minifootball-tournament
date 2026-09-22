@@ -290,10 +290,10 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
               <div 
                 key=${match.id}
                 onClick=${() => setSelectedMatch(match)}
-                className="sport-card-hover bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm cursor-pointer flex flex-col justify-between"
+                className="sport-card-hover bento-card bg-slate-900/80 backdrop-blur-xl border border-white/10 hover:border-emerald-500/40 rounded-3xl overflow-hidden shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 cursor-pointer flex flex-col justify-between"
               >
                 <!-- Match Card Top -->
-                <div className="p-4 sm:p-6 bg-gradient-to-b from-purple-50/50 dark:from-slate-800/40 to-white dark:to-slate-900">
+                <div className="p-4 sm:p-6 bg-gradient-to-b from-slate-800/60 to-slate-900/90 border-b border-white/5">
                   <div className="flex justify-between items-center mb-3 sm:mb-4 gap-2">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="text-[11px] sm:text-xs font-black text-purple-900 dark:text-purple-300 bg-purple-100 dark:bg-purple-950/80 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
@@ -348,7 +348,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
 
                     <!-- Score Box -->
                     <div className="flex flex-col items-center px-1 sm:px-2 shrink-0">
-                      <div className="bg-purple-950 text-white rounded-2xl px-3.5 sm:px-5 py-1.5 sm:py-2 font-black text-xl sm:text-2xl shadow-md border-b-4 border-green-500 flex flex-col items-center">
+                      <div className="bg-black/70 text-white rounded-2xl px-4 sm:px-6 py-2 font-mono font-black text-2xl sm:text-3xl shadow-inner border border-emerald-500/30 flex flex-col items-center tracking-tight">
                         <span>${match.scoreA} - ${match.scoreB}</span>
                         ${(match.penaltyScoreA !== null && match.penaltyScoreA !== undefined && match.penaltyScoreA !== '') && html`
                           <span className="text-[9px] sm:text-[10px] text-green-400 font-extrabold mt-0.5">pen. ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
