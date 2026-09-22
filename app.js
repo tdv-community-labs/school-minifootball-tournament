@@ -77,6 +77,13 @@ class ErrorBoundary extends React.Component {
 
 export default function App() {
   const [userSession, setUserSession] = useState(() => authService.getSession());
+
+  useEffect(() => {
+    const unsub = authService.subscribe((newSession) => {
+      setUserSession(newSession);
+    });
+    return unsub;
+  }, []);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [activeYear, setActiveYear] = useState(() => {
     return localStorage.getItem('btl_selected_year') || '2022-2023';
