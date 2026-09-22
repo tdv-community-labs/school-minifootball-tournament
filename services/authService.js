@@ -1,5 +1,5 @@
 /**
- * TDV Community Labs - Vahid Giriş Sistemi (Unified Ecosystem SSO & Session Service)
+ * TDV Community Labs - Vahid Giriş və Qeydiyyat Sistemi (Unified Ecosystem SSO & Session Service)
  * TDV Sports (Futbol Turniri) üçün Vahid Sessiya İdarəedicisi
  */
 
@@ -62,7 +62,7 @@ export const authService = {
    */
   login(username, teamClass = '10A', pin = '', role = 'player') {
     const trimmed = (username || '').trim();
-    if (!trimmed) throw new Error('Zəhmət olmasa adınızı və ya oyunçu kodunu daxil edin.');
+    if (!trimmed) throw new Error('Zəhmət olmasa adınızı və ya oyunçu kodunuzu daxil edin.');
 
     const cleanClass = teamClass || '10A';
     const gradeMatch = cleanClass.match(/\d+/);
@@ -86,6 +86,49 @@ export const authService = {
       localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     } catch (e) {
       console.error('⚠️ [Auth] Sessiya yaddaşa yazıla bilmədi:', e);
+    }
+
+    return session;
+  },
+
+  /**
+   * Yeni idmançı / şagird hesabı qeydiyyatı
+   */
+  register({ fullName, username, teamClass = '10A', pin = '', avatar = '⚽', role = 'player' }) {
+    const trimmedUser = (username || '').trim();
+    const trimmedName = (fullName || '').trim() || trimmedUser;
+    if (!trimmedUser) throw new Error('Zəhmət olmasa istifadəçi adınızı və ya oyunçu kodunuzu daxil edin.');
+
+    const cleanClass = teamClass || '10A';
+    const gradeMatch = cleanClass.match(/\d+/);
+    const grade = gradeMatch ? Number(gradeMatch[0]) : 10;
+    const finalAvatar = avatar || (role === 'coach' ? '👨‍🏫' : '⚽');
+
+    const session = {
+      userId: 'tdv-usr-' + Date.now().toString(36),
+      username: trimmedUser,
+      fullName: trimmedName,
+      grade: grade,
+      schoolClass: cleanClass,
+      role: role || 'player',
+      avatar: finalAvatar,
+      token: 'tdv_token_' + Math.random().toString(36).substring(2) + Date.now().toString(36),
+      createdAt: Date.now(),
+      expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+    };
+
+    try {
+      const regUsersRaw = localStorage.getItem('tdv_registered_users_v1');
+      const regUsers = regUsersRaw ? JSON.parse(regUsersRaw) : [];
+      regUsers.push({
+        ...session,
+        pin: pin || ''
+      });
+      localStorage.setItem('tdv_registered_users_v1', JSON.stringify(regUsers));
+
+      localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    } catch (e) {
+      console.error('⚠️ [Auth] Qeydiyyat yaddaşa yazıla bilmədi:', e);
     }
 
     return session;
