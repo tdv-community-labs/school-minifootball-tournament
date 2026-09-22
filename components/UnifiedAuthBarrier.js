@@ -136,13 +136,13 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-wider mb-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              ${lang === 'az' ? 'Vahid Giriş & Qeydiyyat • Qorunan Turnir' : 'Unified Auth & Registration • Protected'}
+              ${lang === 'az' ? 'Vahid Ekosistem Profili • 1 Hesab = Bütün Ekosistem' : 'Unified Ecosystem Profile • 1 Account for All'}
             </div>
             <h1 className="text-2xl font-black text-white tracking-tight">TDV SPORTS</h1>
             <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
               ${lang === 'az' 
-                ? 'Minifutbol turnir cədvəlinə və canlı oyunlara daxil olmaq üçün hesabınızla daxil olun və ya yeni oyunçu profili yaradın.' 
-                : 'Sign in or register a new player profile to access tournament standings, live fixtures and match statistics.'}
+                ? 'Tək 1 profil Futbol Turniri, E-School, Games və Mafia portallarının hamısına bəs edir! Vahid profilinizlə daxil olun və ya yeni vahid profil yaradın.' 
+                : 'One single profile is enough for Football, E-School, Games and Mafia! Sign in with your unified profile or create one.'}
             </p>
           </div>
         </div>
@@ -159,7 +159,7 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
             }`}
           >
             <i className="fas fa-arrow-right-to-bracket text-xs"></i>
-            <span>${lang === 'az' ? 'Daxil Ol' : 'Sign In'}</span>
+            <span>${lang === 'az' ? 'Vahid Giriş' : 'Sign In'}</span>
           </button>
           <button
             type="button"
@@ -171,7 +171,7 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
             }`}
           >
             <i className="fas fa-user-plus text-xs"></i>
-            <span>${lang === 'az' ? 'Qeydiyyatdan Keç' : 'Register'}</span>
+            <span>${lang === 'az' ? 'Vahid Profil Yarat' : 'Create Profile'}</span>
           </button>
         </div>
 
@@ -365,7 +365,7 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
               className="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-cyan-600/30 transition-all flex items-center justify-center space-x-2 cursor-pointer mt-1"
             >
               ${isLoading ? html`<i className="fas fa-circle-notch fa-spin text-xs"></i>` : html`<i className="fas fa-user-check text-xs"></i>`}
-              <span>${isLoading ? (lang === 'az' ? 'Profil Yaradılır...' : 'Creating...') : (lang === 'az' ? 'Profil Yarat və Daxil Ol' : 'Create Profile & Enter')}</span>
+              <span>${isLoading ? (lang === 'az' ? 'Profil Yaradılır...' : 'Creating...') : (lang === 'az' ? 'Vahid Profil Yarat və Ekosistemə Daxil Ol' : 'Create Profile & Enter')}</span>
             </button>
           </form>
         `}
