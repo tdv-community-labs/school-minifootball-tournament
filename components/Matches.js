@@ -243,20 +243,20 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       <!-- Title & Filters -->
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-black text-purple-950 dark:text-white font-sans">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">${lang === 'az' ? 'Mərhələlər üzrə oyunlar və Sofascore reytinqləri' : 'Stage fixtures and Sofascore player ratings'}</p>
+          <h2 className="text-2xl font-black text-zinc-900 dark:text-white font-sans">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">${lang === 'az' ? 'Mərhələlər üzrə oyunlar və Sofascore reytinqləri' : 'Stage fixtures and Sofascore player ratings'}</p>
         </div>
         
         <!-- Stage Tabs -->
-        <div className="flex bg-purple-50 dark:bg-slate-900 p-1.5 rounded-2xl border border-purple-100 dark:border-slate-800 overflow-x-auto max-w-full no-scrollbar">
+        <div className="flex bg-zinc-100 dark:bg-zinc-800/80 p-1.5 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 overflow-x-auto max-w-full no-scrollbar shadow-xs">
           ${stages.map(st => html`
             <button
               key=${st.id}
               onClick=${() => setSelectedStage(st.id)}
-              className=${`px-4 py-2 rounded-xl text-xs font-extrabold tracking-wide uppercase transition whitespace-nowrap ${
+              className=${`px-4 py-2 rounded-xl text-xs font-extrabold tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer ${
                 selectedStage === st.id 
-                  ? 'bg-purple-900 text-white shadow-sm' 
-                  : 'text-purple-950 dark:text-purple-200 hover:bg-purple-200/50 dark:hover:bg-purple-900/50'
+                  ? 'bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 font-black shadow-xs border border-zinc-200/80 dark:border-zinc-700/80' 
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
               }`}
             >
               ${st.label}
@@ -268,13 +268,13 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       <!-- Match Cards Grid -->
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         ${isLoading ? html`
-          <div className="col-span-1 md:col-span-2 text-center py-16 bg-white/40 dark:bg-slate-900/40 rounded-3xl border border-dashed border-gray-200 dark:border-slate-800">
+          <div className="col-span-1 md:col-span-2 text-center py-16 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800">
             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-emerald-500 mx-auto mb-3"></div>
-            <p className="text-xs font-bold text-gray-500 dark:text-gray-400">${lang === 'az' ? 'Oyunlar yüklənir...' : 'Loading matches...'}</p>
+            <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400">${lang === 'az' ? 'Oyunlar yüklənir...' : 'Loading matches...'}</p>
           </div>
         ` : filteredMatches.length === 0 
           ? html`
-              <div className="col-span-1 md:col-span-2 text-center py-12 text-gray-400 dark:text-gray-500 bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-gray-200 dark:border-slate-800">
+              <div className="col-span-1 md:col-span-2 text-center py-12 text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800">
                 ${t('noMatchesFound')}
               </div>
             `
@@ -290,37 +290,36 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
               <div 
                 key=${match.id}
                 onClick=${() => setSelectedMatch(match)}
-                className="sport-card-hover bento-card bg-slate-900/80 backdrop-blur-xl border border-white/10 hover:border-emerald-500/40 rounded-3xl overflow-hidden shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/40 dark:hover:border-emerald-500/40 rounded-3xl overflow-hidden shadow-xs hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between"
               >
                 <!-- Match Card Top -->
-                <div className="p-4 sm:p-6 bg-gradient-to-b from-slate-800/60 to-slate-900/90 border-b border-white/5">
+                <div className="p-4 sm:p-6 bg-zinc-50/50 dark:bg-zinc-900/60 border-b border-zinc-100 dark:border-zinc-800/60">
                   <div className="flex justify-between items-center mb-3 sm:mb-4 gap-2">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[11px] sm:text-xs font-black text-purple-900 dark:text-purple-300 bg-purple-100 dark:bg-purple-950/80 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-black text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
                         ${match.stage}
                       </span>
                       ${match.videoTitle && html`
-                        <span className="text-[9px] sm:text-[10px] font-extrabold text-red-600 bg-red-50 border border-red-200 px-1.5 sm:px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs" title=${match.videoTitle}>
-                          <i className="fab fa-youtube text-red-600"></i>
+                        <span className="text-[9px] sm:text-[10px] font-extrabold text-red-600 dark:text-red-400 bg-red-500/10 border border-red-500/20 px-1.5 sm:px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs" title=${match.videoTitle}>
+                          <i className="fab fa-youtube text-red-600 dark:text-red-400"></i>
                           <span>${match.videoDuration || 'Video'}</span>
                         </span>
                       `}
                     </div>
-                    <span className="text-[11px] sm:text-xs text-gray-400 flex items-center shrink-0">
+                    <span className="text-[11px] sm:text-xs text-zinc-400 dark:text-zinc-500 flex items-center shrink-0">
                       <i className="far fa-calendar-alt mr-1"></i> ${match.date || 'Tarix təyin edilməyib'}
                     </span>
                   </div>
-
 
                   <!-- Score Display -->
                   <div className="flex items-center justify-between py-3 sm:py-4 gap-2 sm:gap-3">
                     <!-- Team A Box -->
                     <div className=${`text-center flex-1 min-w-0 p-2.5 sm:p-3.5 rounded-2xl border transition-all ${
                       (isTeamAWinner || (isFinalStage && match.teamA === '?'))
-                        ? 'bg-emerald-50/95 border-emerald-300/80 shadow-2xs dark:bg-emerald-950/30 dark:border-emerald-700/60'
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-950 dark:text-emerald-200 shadow-2xs'
                         : isTeamALoser
-                        ? 'bg-rose-50/80 border-rose-200/80 dark:bg-rose-950/25 dark:border-rose-900/50'
-                        : 'bg-gray-50/50 border-gray-100'
+                        ? 'bg-rose-500/10 border-rose-500/20 text-rose-950 dark:text-rose-300'
+                        : 'bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200/70 dark:border-zinc-700/60'
                     }`}>
                       <div className="flex items-center justify-center gap-1 mb-1">
                         ${(isTeamAWinner || (isFinalStage && match.teamA === '?')) ? html`
@@ -339,27 +338,27 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                           ? 'font-black text-emerald-950 dark:text-emerald-200'
                           : isTeamALoser
                           ? 'font-semibold text-rose-950 dark:text-rose-300'
-                          : 'font-black text-purple-950 dark:text-white'
+                          : 'font-black text-zinc-900 dark:text-white'
                       }`}>
                         ${match.teamA}
                       </h4>
-                      <span className="text-[9px] sm:text-[10px] text-gray-400 font-semibold tracking-widest uppercase truncate block mt-0.5">Ev sahibi</span>
+                      <span className="text-[9px] sm:text-[10px] text-zinc-400 dark:text-zinc-500 font-semibold tracking-widest uppercase truncate block mt-0.5">Ev sahibi</span>
                     </div>
 
                     <!-- Score Box -->
                     <div className="flex flex-col items-center px-1 sm:px-2 shrink-0">
-                      <div className="bg-black/70 text-white rounded-2xl px-4 sm:px-6 py-2 font-mono font-black text-2xl sm:text-3xl shadow-inner border border-emerald-500/30 flex flex-col items-center tracking-tight">
+                      <div className="bg-zinc-900 dark:bg-zinc-950 text-white rounded-2xl px-4 sm:px-6 py-2 font-mono font-black text-2xl sm:text-3xl shadow-xs border border-zinc-700/60 flex flex-col items-center tracking-tight">
                         <span>${match.scoreA} - ${match.scoreB}</span>
                         ${(match.penaltyScoreA !== null && match.penaltyScoreA !== undefined && match.penaltyScoreA !== '') && html`
-                          <span className="text-[9px] sm:text-[10px] text-green-400 font-extrabold mt-0.5">pen. ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
+                          <span className="text-[9px] sm:text-[10px] text-emerald-400 font-extrabold mt-0.5">pen. ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
                         `}
                       </div>
                       ${(match.scoreA === '?' || match.scoreA == null) ? html`
-                        <span className="text-[9px] sm:text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded-full mt-1.5 sm:mt-2">
+                        <span className="text-[9px] sm:text-[10px] font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full mt-1.5 sm:mt-2">
                           ${lang === 'az' ? 'Nəticə naməlum' : 'Score unknown'}
                         </span>
                       ` : html`
-                        <span className="text-[9px] sm:text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full mt-1.5 sm:mt-2">
+                        <span className="text-[9px] sm:text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full mt-1.5 sm:mt-2">
                           ${lang === 'az' ? 'Bitti' : 'Completed'}
                         </span>
                       `}
@@ -368,10 +367,10 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                     <!-- Team B Box -->
                     <div className=${`text-center flex-1 min-w-0 p-2.5 sm:p-3.5 rounded-2xl border transition-all ${
                       (isTeamBWinner || (isFinalStage && match.teamB === '?'))
-                        ? 'bg-emerald-50/95 border-emerald-300/80 shadow-2xs dark:bg-emerald-950/30 dark:border-emerald-700/60'
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-950 dark:text-emerald-200 shadow-2xs'
                         : isTeamBLoser
-                        ? 'bg-rose-50/80 border-rose-200/80 dark:bg-rose-950/25 dark:border-rose-900/50'
-                        : 'bg-gray-50/50 border-gray-100'
+                        ? 'bg-rose-500/10 border-rose-500/20 text-rose-950 dark:text-rose-300'
+                        : 'bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200/70 dark:border-zinc-700/60'
                     }`}>
                       <div className="flex items-center justify-center gap-1 mb-1">
                         ${(isTeamBWinner || (isFinalStage && match.teamB === '?')) ? html`
@@ -390,24 +389,24 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                           ? 'font-black text-emerald-950 dark:text-emerald-200'
                           : isTeamBLoser
                           ? 'font-semibold text-rose-950 dark:text-rose-300'
-                          : 'font-black text-purple-950 dark:text-white'
+                          : 'font-black text-zinc-900 dark:text-white'
                       }`}>
                         ${match.teamB}
                       </h4>
-                      <span className="text-[9px] sm:text-[10px] text-gray-400 font-semibold tracking-widest uppercase truncate block mt-0.5">Qonaq</span>
+                      <span className="text-[9px] sm:text-[10px] text-zinc-400 dark:text-zinc-500 font-semibold tracking-widest uppercase truncate block mt-0.5">Qonaq</span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Match Card Bottom -->
-                <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 flex justify-between items-center text-[11px] sm:text-xs font-bold text-purple-950 dark:text-purple-200">
+                <div className="px-4 sm:px-6 py-3 sm:py-4 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-800/80 flex justify-between items-center text-[11px] sm:text-xs font-bold text-zinc-700 dark:text-zinc-300">
                   <div className="flex items-center gap-2">
-                    <span className="flex items-center text-gray-500 dark:text-gray-400">
-                      <i className="fas fa-chart-line text-green-500 mr-1.5 text-xs sm:text-sm"></i>
+                    <span className="flex items-center text-zinc-500 dark:text-zinc-400">
+                      <i className="fas fa-chart-line text-emerald-500 mr-1.5 text-xs sm:text-sm"></i>
                       ${match.playerStats?.length || 0} Oyunçu reytinqi
                     </span>
                   </div>
-                  <span className="text-purple-900 dark:text-purple-300 hover:text-green-600 font-extrabold transition flex items-center space-x-1.5">
+                  <span className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-extrabold transition-colors flex items-center space-x-1.5">
                     <span>Sofascore Analizi</span>
                     <i className="fas fa-chevron-right text-[9px]"></i>
                   </span>

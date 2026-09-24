@@ -5,21 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
   <meta name="supported-color-schemes" content="light dark">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <title>TDV BTL Sports • Minifutbol Turniri</title>
   <link rel="icon" type="image/jpeg" href="assets/tdv-logo.jpg">
   <link rel="apple-touch-icon" href="assets/tdv-logo.jpg">
   
   <!-- Cybersecurity: Content Security Policy (CSP) & Hardening Headers -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://esm.sh https://www.gstatic.com https://cdn.tailwindcss.com; connect-src 'self' https://esm.sh https://generativelanguage.googleapis.com https://*.firebaseio.com https://firestore.googleapis.com https://*.workers.dev; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://esm.sh https://www.gstatic.com https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; connect-src 'self' https://esm.sh https://generativelanguage.googleapis.com https://*.firebaseio.com https://firestore.googleapis.com https://*.workers.dev https://*.vercel.app; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https: blob:; frame-src 'self' https://tdv-community-hubs.vercel.app https://*.vercel.app https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self';">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="TDV BTL Futbol Turniri - Canlı turnir cədvəli, oyunların arxiv videoları və Sofascore tipli fərdi oyunçu reytinqləri.">
+  <meta name="keywords" content="futbol, minifutbol, məktəb turniri, reytinqlər, turnir cədvəli, matçlar">
+  <meta name="author" content="TDV Community Labs">
+
+  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for Football & System Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
   <script src="env.js" onerror="this.remove()"></script>
   <script>
     function escapeHTML(str) {
@@ -28,77 +38,7 @@
       });
     }
 
-    window.addEventListener('error', function(e) {
-      const root = document.getElementById('root');
-      if (root) {
-        root.innerHTML = `
-          <div class="min-h-screen flex flex-col items-center justify-center bg-red-950 text-white p-6 text-center" style="font-family: sans-serif;">
-            <i class="fas fa-exclamation-triangle text-5xl text-red-500 mb-4 animate-bounce"></i>
-            <h1 class="text-xl font-black mb-2">Sistem Yüklənmə Xətası</h1>
-            <p class="text-xs text-red-300 max-w-lg mb-4 font-mono bg-red-900/50 p-4 rounded-2xl border border-red-800 text-left overflow-auto max-h-60" style="white-space: pre-wrap; word-break: break-all;">
-              ${escapeHTML(e.message || 'Bilinməyən Xəta')}<br/>
-              Fayl: ${escapeHTML(e.filename || 'Bilinmir')}<br/>
-              Sətir: ${escapeHTML(e.lineno || '0')}:${escapeHTML(e.colno || '0')}<br/>
-              ${escapeHTML(e.error && e.error.stack ? e.error.stack : '')}
-            </p>
-            <div class="flex gap-3 mb-4">
-              <button onclick="window.location.reload();" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg">
-                <i class="fas fa-redo-alt mr-1"></i> Səhifəni Yenilə
-              </button>
-              <button onclick="try{localStorage.clear();sessionStorage.clear();}catch(e){}window.location.href=window.location.pathname+'?fresh='+Date.now();" class="px-4 py-2 bg-rose-750 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition border border-rose-500/40">
-                <i class="fas fa-trash-alt mr-1"></i> Keşi Təmizlə və Yüklə
-              </button>
-            </div>
-            <p class="text-[10px] text-red-400">Zəhmət olmasa bu xətanın nə olduğunu bizə bildirin.</p>
-          </div>
-        `;
-      }
-    });
-
-    window.addEventListener('unhandledrejection', function(e) {
-      const root = document.getElementById('root');
-      if (root) {
-        const msg = e.reason && e.reason.message ? e.reason.message : String(e.reason || 'Unhandled Promise Rejection');
-        const stack = e.reason && e.reason.stack ? e.reason.stack : '';
-        root.innerHTML = `
-          <div class="min-h-screen flex flex-col items-center justify-center bg-red-950 text-white p-6 text-center" style="font-family: sans-serif;">
-            <i class="fas fa-exclamation-triangle text-5xl text-red-500 mb-4 animate-bounce"></i>
-            <h1 class="text-xl font-black mb-2">Sistem (Promise) Xətası</h1>
-            <p class="text-xs text-red-300 max-w-lg mb-4 font-mono bg-red-900/50 p-4 rounded-2xl border border-red-800 text-left overflow-auto max-h-60" style="white-space: pre-wrap; word-break: break-all;">
-              ${escapeHTML(msg)}<br/>
-              ${escapeHTML(stack)}
-            </p>
-            <div class="flex gap-3 mb-4">
-              <button onclick="window.location.reload();" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg">
-                <i class="fas fa-redo-alt mr-1"></i> Səhifəni Yenilə
-              </button>
-              <button onclick="try{localStorage.clear();sessionStorage.clear();}catch(e){}window.location.href=window.location.pathname+'?fresh='+Date.now();" class="px-4 py-2 bg-rose-750 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition border border-rose-500/40">
-                <i class="fas fa-trash-alt mr-1"></i> Keşi Təmizlə və Yüklə
-              </button>
-            </div>
-            <p class="text-[10px] text-red-400">Zəhmət olmasa bu xətanın nə olduğunu bizə bildirin.</p>
-          </div>
-        `;
-      }
-    });
-  </script>
-  
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="TDV BTL Futbol Turniri - Canlı turnir cədvəli, oyunların arxiv videoları və Sofascore tipli fərdi oyunçu reytinqləri.">
-  <meta name="keywords" content="futbol, minifutbol, məktəb turniri, reytinqlər, turnir cədvəli, matçlar">
-  <meta name="author" content="Antigravity Agent">
-
-  <!-- FontAwesome for Football & System Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Google Fonts: Inter (Sporty & Modern) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <script src="env.js" onerror="this.remove()"></script>
-  <script>
-    // 1. Instant theme hydration to prevent FOUC (Flash of Unstyled Content)
+    // 1. Instant theme hydration to prevent FOUC
     (function() {
       try {
         const theme = localStorage.getItem('btl_theme') || localStorage.getItem('tdv_theme') || 'system';
@@ -111,36 +51,28 @@
       } catch (e) {}
     })();
 
-    // 2. Pre-configure Tailwind CDN BEFORE loading script
+    // 2. Pre-configure Tailwind CDN
     window.tailwind = {
       config: {
         darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
+              sans: ['Inter', 'system-ui', 'sans-serif'],
             },
             colors: {
-              purple: {
-                50: '#f5f3ff',
-                100: '#ede9fe',
-                200: '#ddd6fe',
-                300: '#c4b5fd',
-                400: '#a78bfa',
-                500: '#8b5cf6',
-                600: '#7c3aed',
-                700: '#6d28d9',
-                800: '#5b21b6',
-                900: '#4c1d95',
-                950: '#2e1065',
-              },
-              green: {
-                50: '#f0fdf4',
-                100: '#dcfce7',
-                500: '#22c55e',
-                600: '#16a34a',
-                700: '#15803d',
-                800: '#166534',
+              zinc: {
+                950: '#09090b',
+                900: '#18181b',
+                800: '#27272a',
+                700: '#3f3f46',
+                600: '#52525b',
+                500: '#71717a',
+                400: '#a1a1aa',
+                300: '#d4d4d8',
+                200: '#e4e4e7',
+                100: '#f4f4f5',
+                50: '#fafafa',
               }
             }
           }
@@ -152,273 +84,6 @@
   <!-- Tailwind CSS Play CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Embedded Core Dark Mode Styles (Guaranteed to apply regardless of external MIME/cache) -->
-  <style>
-    /* Explicit Light Mode (When NOT in dark mode) */
-    html:not(.dark),
-    html:not(.dark) body,
-    html:not(.dark) #root,
-    html:not(.dark) .min-h-screen {
-      background-color: #f1f5f9 !important;
-      color: #0f172a !important;
-    }
-    html:not(.dark) .bg-slate-50,
-    html:not(.dark) .bg-gray-50 {
-      background-color: #f1f5f9 !important;
-    }
-    html:not(.dark) .bg-white {
-      background-color: #ffffff !important;
-      color: #0f172a !important;
-    }
-    html:not(.dark) .glass-card {
-      background: rgba(255, 255, 255, 0.9) !important;
-      border: 1px solid rgba(226, 232, 240, 0.8) !important;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
-    }
-
-    /* Explicit Dark Mode (When .dark is present) */
-    html.dark,
-    html.dark body,
-    html.dark #root,
-    html.dark .min-h-screen,
-    body.dark,
-    .dark body {
-      background-color: #080c14 !important;
-      color: #f1f5f9 !important;
-    }
-    .dark .glass-card {
-      background: rgba(15, 23, 42, 0.88) !important;
-      border: 1px solid rgba(51, 65, 85, 0.5) !important;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6) !important;
-    }
-    .dark .bg-white {
-      background-color: #0f172a !important;
-      color: #f8fafc !important;
-    }
-    .dark .bg-slate-50, .dark .bg-gray-50 {
-      background-color: #080c14 !important;
-    }
-    .dark .bg-slate-100, .dark .bg-gray-100 {
-      background-color: #1e293b !important;
-      color: #f8fafc !important;
-    }
-    .dark .bg-purple-50 {
-      background-color: rgba(88, 28, 135, 0.22) !important;
-    }
-    .dark .bg-purple-100 {
-      background-color: rgba(88, 28, 135, 0.45) !important;
-      color: #e9d5ff !important;
-    }
-    .dark .bg-green-100, .dark .bg-emerald-100 {
-      background-color: rgba(6, 78, 59, 0.5) !important;
-      color: #6ee7b7 !important;
-      border-color: rgba(5, 150, 105, 0.4) !important;
-    }
-    .dark .bg-green-50, .dark .bg-emerald-50 {
-      background-color: rgba(6, 78, 59, 0.3) !important;
-      color: #6ee7b7 !important;
-    }
-    .goal-badge {
-      background-color: #ecfdf5 !important;
-      color: #064e3b !important;
-      border-color: #a7f3d0 !important;
-      font-weight: 800 !important;
-    }
-    .dark .goal-badge {
-      background-color: rgba(6, 78, 59, 0.55) !important;
-      color: #6ee7b7 !important;
-      border-color: rgba(5, 150, 105, 0.5) !important;
-    }
-    .assist-badge {
-      background-color: #f5f3ff !important;
-      color: #3b0764 !important;
-      border-color: #ddd6fe !important;
-      font-weight: 800 !important;
-    }
-    .dark .assist-badge {
-      background-color: rgba(88, 28, 135, 0.55) !important;
-      color: #d8b4fe !important;
-      border-color: rgba(168, 85, 247, 0.5) !important;
-    }
-    /* Sofascore Rating Scale */
-    .rating-sofascore-9plus, .bg-\[\#1d4ed8\] { background-color: #1d4ed8 !important; color: #ffffff !important; }
-    .rating-sofascore-8plus, .bg-\[\#0284c7\] { background-color: #0284c7 !important; color: #ffffff !important; }
-    .rating-sofascore-7plus, .bg-\[\#15803d\] { background-color: #15803d !important; color: #ffffff !important; }
-    .rating-sofascore-65plus, .bg-\[\#eab308\] { background-color: #eab308 !important; color: #0f172a !important; }
-    .rating-sofascore-6plus, .bg-\[\#f97316\] { background-color: #f97316 !important; color: #ffffff !important; }
-    .rating-sofascore-below6, .bg-\[\#dc2626\] { background-color: #dc2626 !important; color: #ffffff !important; }
-    .dark .text-purple-950:not(.bg-green-500):not(.bg-green-400),
-    .dark .text-purple-900:not(.bg-green-500):not(.bg-green-400),
-    .dark .text-slate-900,
-    .dark .text-slate-800,
-    .dark .text-gray-900,
-    .dark .text-gray-800 {
-      color: #f8fafc !important;
-    }
-    .dark .text-slate-700,
-    .dark .text-slate-600,
-    .dark .text-gray-700,
-    .dark .text-gray-600 {
-      color: #cbd5e1 !important;
-    }
-    .dark .text-slate-500,
-    .dark .text-gray-500 {
-      color: #94a3b8 !important;
-    }
-    .dark .border-purple-100,
-    .dark .border-purple-200,
-    .dark .border-slate-100,
-    .dark .border-slate-200,
-    .dark .border-gray-100,
-    .dark .border-gray-200 {
-      border-color: #1e293b !important;
-    }
-    .dark input:not([type="checkbox"]):not([type="radio"]),
-    .dark select,
-    .dark textarea {
-      background-color: #1e293b !important;
-      color: #f8fafc !important;
-      border-color: #334155 !important;
-    }
-    .dark .bracket-connector-branch {
-      border-color: #334155 !important;
-    }
-    .dark .bracket-connector-stem {
-      background-color: #334155 !important;
-    }
-    /* Standings Table Theme Protection & Contrast */
-    table.standings-table { border-collapse: collapse; width: 100%; }
-
-    /* Light mode table */
-    html:not(.dark) table.standings-table tbody { background-color: #ffffff; color: #0f172a; }
-    html:not(.dark) table.standings-table tr.srow-first  { background-color: #f0fdf4 !important; color: #0f172a !important; border-left: 4px solid #10b981; }
-    html:not(.dark) table.standings-table tr.srow-second { background-color: #f5f3ff !important; color: #0f172a !important; border-left: 4px solid #8b5cf6; }
-    html:not(.dark) table.standings-table tr.srow-other  { background-color: #ffffff  !important; color: #0f172a !important; border-left: 4px solid transparent; }
-    html:not(.dark) table.standings-table tr.srow-first:hover  { background-color: #dcfce7 !important; }
-    html:not(.dark) table.standings-table tr.srow-second:hover { background-color: #ede9fe !important; }
-    html:not(.dark) table.standings-table tr.srow-other:hover  { background-color: #f5f3ff !important; }
-
-    /* Dark mode table */
-    html.dark table.standings-table tbody { background-color: #0f172a; color: #f8fafc; }
-    html.dark table.standings-table tr.srow-first  { background-color: rgba(6,78,59,0.25)   !important; color: #f8fafc !important; border-left: 4px solid #10b981; }
-    html.dark table.standings-table tr.srow-second { background-color: rgba(88,28,135,0.25) !important; color: #f8fafc !important; border-left: 4px solid #8b5cf6; }
-    html.dark table.standings-table tr.srow-other  { background-color: #0f172a             !important; color: #f8fafc !important; border-left: 4px solid transparent; }
-    html.dark table.standings-table tr.srow-first:hover  { background-color: rgba(6,78,59,0.4)   !important; }
-    html.dark table.standings-table tr.srow-second:hover { background-color: rgba(88,28,135,0.4) !important; }
-    html.dark table.standings-table tr.srow-other:hover  { background-color: #1e293b             !important; }
-
-    /* ==========================================================================
-       AĞ TEMA (LIGHT THEME) YÜKSƏK KONTRAST VƏ TÜND YAZI SİSTEMİ
-       ========================================================================== */
-    /* 1. Mətnlərin Aydınlaşdırılması və Tündləşdirilməsi */
-    html:not(.dark) .text-gray-400,
-    html:not(.dark) .text-slate-400,
-    html:not(.dark) .text-zinc-400 {
-      color: #475569 !important;
-      font-weight: 600;
-    }
-
-    html:not(.dark) .text-gray-500,
-    html:not(.dark) .text-slate-500,
-    html:not(.dark) .text-zinc-500 {
-      color: #334155 !important;
-    }
-
-    html:not(.dark) .text-gray-600,
-    html:not(.dark) .text-slate-600,
-    html:not(.dark) .text-zinc-600 {
-      color: #1e293b !important;
-    }
-
-    html:not(.dark) .text-gray-700,
-    html:not(.dark) .text-slate-700,
-    html:not(.dark) .text-zinc-700 {
-      color: #0f172a !important;
-    }
-
-    html:not(.dark) .text-gray-800,
-    html:not(.dark) .text-slate-800,
-    html:not(.dark) .text-gray-900,
-    html:not(.dark) .text-slate-900 {
-      color: #020617 !important;
-    }
-
-    /* 2. Brend Bənövşəyi Başlıqlar */
-    html:not(.dark) .text-purple-950:not(.bg-green-500):not(.bg-green-400):not(.bg-emerald-500) {
-      color: #1e0036 !important;
-    }
-    html:not(.dark) .text-purple-900:not(.bg-green-500):not(.bg-green-400):not(.bg-emerald-500) {
-      color: #2e0249 !important;
-    }
-    html:not(.dark) .text-purple-800 {
-      color: #3b0764 !important;
-    }
-    html:not(.dark) .text-purple-700 {
-      color: #581c87 !important;
-    }
-
-    /* 3. Yaşıl Düymələr daxilindəki tünd yazı qorunur */
-    html:not(.dark) .bg-green-500 .text-purple-950,
-    html:not(.dark) .bg-green-400 .text-purple-950,
-    html:not(.dark) .bg-emerald-500 .text-purple-950,
-    html:not(.dark) button.bg-green-500,
-    html:not(.dark) a.bg-green-500 {
-      color: #1e0036 !important;
-    }
-
-    /* 4. Cədvəl İçi Xanalarda Dəqiq Tünd Oxunaqlılıq */
-    html:not(.dark) table.standings-table td {
-      color: #0f172a !important;
-    }
-    html:not(.dark) table.standings-table td .text-slate-500,
-    html:not(.dark) table.standings-table td .text-slate-600,
-    html:not(.dark) table.standings-table td .text-slate-700 {
-      color: #0f172a !important;
-      font-weight: 700 !important;
-    }
-
-    /* 5. Form İdarəetmələri */
-    html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
-    html:not(.dark) select,
-    html:not(.dark) textarea {
-      background-color: #ffffff !important;
-      color: #0f172a !important;
-      border-color: #cbd5e1 !important;
-      font-weight: 600;
-    }
-    html:not(.dark) input::placeholder,
-    html:not(.dark) textarea::placeholder {
-      color: #64748b !important;
-      font-weight: 500;
-    }
-    html:not(.dark) label {
-      color: #0f172a !important;
-      font-weight: 800;
-    }
-
-    /* 6. Pley-off Toru Kartları */
-    html:not(.dark) .bracket-card-hover {
-      background-color: #ffffff !important;
-      border-color: #cbd5e1 !important;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
-    }
-    html:not(.dark) .bracket-card-hover .opacity-65 {
-      opacity: 0.9 !important;
-      color: #334155 !important;
-    }
-
-    /* 7. Haşiyə və Çərçivələr */
-    html:not(.dark) .border-gray-100 {
-      border-color: #e2e8f0 !important;
-    }
-    html:not(.dark) .border-gray-200 {
-      border-color: #cbd5e1 !important;
-    }
-  </style>
-  
-  <!-- Custom Stylesheet (with cache-busting) -->
-  <link rel="stylesheet" href="styles.css?v=20260912_0120">
-  
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
     {
@@ -430,42 +95,41 @@
     }
   </script>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased dark:bg-[#080c14] dark:text-slate-100 transition-colors">
+<body class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-200 font-sans">
   <!-- TDV Community Labs Ecosystem Global Bar -->
-  <!-- TDV Community Labs Ecosystem Global Bar -->
-  <aside id="tdv-ecosystem-topbar" aria-label="TDV Community Labs Ecosystem Bar" class="bg-[#070a12] border-b border-amber-500/20 py-1.5 px-3 sm:px-4 text-[11px] sticky top-0 z-50 transition-colors shadow-sm" style="font-family: 'Inter', system-ui, sans-serif;">
+  <aside id="tdv-ecosystem-topbar" aria-label="TDV Community Labs Ecosystem Bar" class="bg-white/95 dark:bg-zinc-950/95 border-b border-zinc-200 dark:border-zinc-800 py-1.5 px-3 sm:px-4 text-[11px] sticky top-0 z-50 transition-colors duration-200 shadow-sm" style="font-family: 'Inter', system-ui, sans-serif;">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
       <!-- Left: Institutional Crest & Identity -->
       <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
-        <a href="https://tdv-community-hubs.vercel.app/" class="inline-flex items-center gap-2 font-extrabold text-white hover:text-amber-300 transition" style="text-decoration: none;">
-          <img src="assets/tdv-logo.png" alt="TDV BTL Crest" class="w-5 h-5 rounded-full object-cover border border-amber-400/70 shadow-sm shrink-0" />
-          <span class="tracking-tight text-white font-black text-[11px] hidden min-[380px]:inline">TDV Community Labs</span>
-          <span class="tracking-tight text-white font-black text-[11px] min-[380px]:hidden">TDV BTL</span>
+        <a href="https://tdv-community-hubs.vercel.app/" class="inline-flex items-center gap-2 font-extrabold text-zinc-950 dark:text-white hover:text-emerald-600 dark:hover:text-amber-300 transition" style="text-decoration: none;">
+          <img src="assets/tdv-logo.jpg" alt="TDV BTL Crest" class="w-5 h-5 rounded-full object-cover border border-amber-400/70 shadow-sm shrink-0" />
+          <span class="tracking-tight text-zinc-950 dark:text-white font-black text-[11px] hidden min-[380px]:inline">TDV Community Labs</span>
+          <span class="tracking-tight text-zinc-950 dark:text-white font-black text-[11px] min-[380px]:hidden">TDV BTL</span>
         </a>
-        <span class="text-slate-700 hidden sm:inline">•</span>
-        <span class="text-amber-400/90 text-[10px] font-semibold hidden md:inline">Sports Liqası</span>
+        <span class="text-zinc-400 dark:text-zinc-600 hidden sm:inline">•</span>
+        <span class="text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold hidden md:inline">Sports Liqası</span>
       </div>
 
       <!-- Right: Unified Ecosystem Switcher Pill -->
-      <nav class="flex items-center gap-1 bg-slate-900/95 border border-slate-800 p-1 rounded-2xl text-xs font-medium shadow-sm">
-        <a href="https://tdv-community-hubs.vercel.app/" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition flex items-center gap-1.5" style="text-decoration: none;" title="TDV Hub Mərkəzi Portalı">
-          <i class="fas fa-house text-blue-400 text-xs"></i>
+      <nav class="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-1 rounded-2xl text-xs font-medium shadow-sm">
+        <a href="https://tdv-community-hubs.vercel.app/" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5" style="text-decoration: none;" title="TDV Hub Mərkəzi Portalı">
+          <i class="fas fa-house text-blue-500 text-xs"></i>
           <span class="hidden sm:inline">Mərkəz</span>
         </a>
-        <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition flex items-center gap-1.5" style="text-decoration: none;" title="TDV E-School Təhsil Portalı">
-          <i class="fas fa-graduation-cap text-emerald-400 text-xs"></i>
+        <a href="https://tdv-e-school.vercel.app/" target="_blank" rel="noopener noreferrer" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5" style="text-decoration: none;" title="TDV E-School Təhsil Portalı">
+          <i class="fas fa-graduation-cap text-indigo-500 text-xs"></i>
           <span class="hidden sm:inline">E-School</span>
         </a>
         <a href="https://school-minifootball-tournament.vercel.app/" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold shadow-md flex items-center gap-1.5 border border-emerald-400/40" style="text-decoration: none;" title="TDV Sports Minifutbol (Aktiv)">
           <i class="fas fa-trophy text-amber-300 text-xs"></i>
           <span class="hidden sm:inline">Sports</span>
         </a>
-        <a href="https://tdv-community-hubs.vercel.app/games" target="_blank" rel="noopener noreferrer" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-slate-300 hover:text-white hover:bg-purple-950/40 hover:border-purple-500/30 transition flex items-center gap-1.5 group" style="text-decoration: none;" title="TDV Games & Mafia">
-          <i class="fas fa-gamepad text-purple-400 group-hover:scale-110 transition text-xs"></i>
+        <a href="https://tdv-community-hubs.vercel.app/games" target="_blank" rel="noopener noreferrer" class="px-2.5 sm:px-3 py-1.5 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition flex items-center gap-1.5 group" style="text-decoration: none;" title="TDV Games & Mafia">
+          <i class="fas fa-gamepad text-purple-500 text-xs"></i>
           <span class="hidden sm:inline">Games</span>
-          <span class="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300 font-bold border border-purple-500/30">Mafia</span>
+          <span class="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-600 dark:text-purple-300 font-bold border border-purple-500/30">Mafia</span>
         </a>
-        <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="hidden sm:flex px-2 py-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/60 transition" title="GitHub Təşkilatı" style="text-decoration: none;">
+        <a href="https://github.com/tdv-community-labs" target="_blank" rel="noopener noreferrer" class="hidden sm:flex px-2 py-1.5 rounded-xl text-zinc-500 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800 transition" title="GitHub Təşkilatı" style="text-decoration: none;">
           <i class="fab fa-github text-xs"></i>
         </a>
       </nav>
@@ -473,53 +137,30 @@
   </aside>
 
   <div id="root">
-    <!-- Initial Loader (Immune to dark mode CSS overrides) -->
-    <div id="initial-loader" style="min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #070a12 !important; color: #ffffff; padding: 20px; text-align: center;">
-      <div style="position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
-        <i class="fas fa-futbol" style="position: absolute; font-size: 24px; color: #ffffff;"></i>
+    <!-- Initial Spinner while modules load -->
+    <div class="min-h-screen flex flex-col items-center justify-center bg-zinc-950 text-white space-y-4">
+      <div class="relative flex items-center justify-center">
+        <div class="animate-spin rounded-full h-14 w-14 border-4 border-emerald-500/30 border-t-emerald-500"></div>
+        <i class="fas fa-futbol absolute text-xl text-emerald-400"></i>
       </div>
-      <p style="font-weight: 900; letter-spacing: 0.15em; font-size: 12px; text-transform: uppercase; color: #e9d5ff; margin-bottom: 16px;">Loading Tournament / Yüklənir...</p>
-      
-      <!-- Graceful Recovery Card for Slow Mobile / Cellular Networks -->
-      <div id="loader-fallback" style="display: none; margin-top: 12px; animation: fadeIn 0.4s ease-out forwards;">
-        <p style="font-size: 11px; color: #cbd5e1; margin-bottom: 12px; font-weight: 600;">İnternet və ya keş ləngiməsi aşkar edildi?</p>
-        <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
-          <button onclick="window.location.reload();" style="padding: 8px 16px; background-color: #10b981; color: white; border: none; border-radius: 12px; font-size: 11px; font-weight: 900; cursor: pointer;">
-            🔄 Səhifəni Yenilə
-          </button>
-          <button onclick="try{localStorage.clear();sessionStorage.clear();}catch(e){}window.location.href=window.location.pathname+'?fresh='+Date.now();" style="padding: 8px 16px; background-color: #7e22ce; color: white; border: 1px solid #a855f7; border-radius: 12px; font-size: 11px; font-weight: 900; cursor: pointer;">
-            ⚡ Keşi Sıfırla
-          </button>
-        </div>
+      <div class="text-center">
+        <div class="font-black tracking-wider text-sm uppercase bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">TDV Sports</div>
+        <p class="text-[10px] text-zinc-400 mt-0.5">Turnir məlumatları və cədvəllər hazırlanır...</p>
       </div>
     </div>
   </div>
-
-  <script src="env.js" onerror="this.remove()"></script>
-  <script>
-    setTimeout(function() {
-      var fb = document.getElementById('loader-fallback');
-      var root = document.getElementById('root');
-      if (fb && root && root.querySelector('#initial-loader')) {
-        fb.style.display = 'block';
-      }
-    }, 4500);
-  </script>
 
   <!-- Bootstrapping Module -->
   <script type="module">
     import React from 'react';
     import { createRoot } from 'react-dom';
     import htm from 'htm';
-    import App from './app.js?v=20260920_1830';
+    import App from './app.js';
 
     const html = htm.bind(React.createElement);
     const container = document.getElementById('root');
     const root = createRoot(container);
     root.render(html`<${App} />`);
   </script>
-
-
 </body>
 </html>

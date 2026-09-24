@@ -1,19 +1,52 @@
-/* Custom Styles for School Minifootball Tournament Platform */
+/* TDV Community Labs - Sports Minifootball Tournament
+   Official Dual-Theme Design System (zinc-950 / zinc-50) & WCAG AA Contrast Standards */
 
 :root {
   color-scheme: light dark;
+  --color-zinc-950: #09090b;
+  --color-zinc-900: #18181b;
+  --color-zinc-800: #27272a;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-50: #fafafa;
+  --bg-main: #fafafa;
+  --bg-card: #ffffff;
+  --border: #e4e4e7;
+  --text-primary: #09090b;
+  --text-secondary: #71717a;
+  --accent-emerald: #059669;
+  --accent-emerald-light: #10b981;
 }
 
+html.dark {
+  --color-zinc-950: #09090b;
+  --color-zinc-900: #18181b;
+  --color-zinc-800: #27272a;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-50: #fafafa;
+  --bg-main: #09090b;
+  --bg-card: #18181b;
+  --border: #27272a;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --accent-emerald: #10b981;
+  --accent-emerald-light: #34d399;
+}
+
+/* Base Body Styles */
 body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color-scheme: light dark;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -22,549 +55,234 @@ body {
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.35s ease-out forwards;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: opacity, transform;
 }
 
-/* Failsafe for Xiaomi HyperOS / Android with reduced or disabled animations */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .animate-fadeIn,
-  [class*="animate-"] {
+  .animate-fadeIn {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
   }
 }
 
-/* Glassmorphism Effect */
+/* Bento Glass Card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(228, 228, 231, 0.9);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 }
 
-.glass-nav {
-  background-color: #2e0249 !important;
-  background: linear-gradient(135deg, #1e0036 0%, #3b0764 50%, #2e0249 100%) !important;
-  border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+.dark .glass-card {
+  background-color: rgba(24, 24, 27, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
 }
 
-/* Hide all scrollbar elements, arrows, and buttons for Windows Chrome/Edge */
-.no-scrollbar,
-.no-scrollbar * {
+/* Scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+.no-scrollbar {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
 }
 
-.no-scrollbar::-webkit-scrollbar,
-.no-scrollbar *::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-  background: transparent !important;
-}
-
-.no-scrollbar::-webkit-scrollbar-button,
-.no-scrollbar *::-webkit-scrollbar-button {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-}
-
-.no-scrollbar::-webkit-scrollbar-thumb,
-.no-scrollbar *::-webkit-scrollbar-thumb {
-  display: none !important;
-}
-
-/* Scrollbar Customization */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: #d4d4d8;
+  border-radius: 9999px;
 }
-
+.dark ::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+}
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #a1a1aa;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
 }
 
 /* Sofascore Rating Badge Colors (Official Tiering) */
 .rating-sofascore-legendary,
 .rating-sofascore-9plus,
 .bg-\[\#1e3a8a\] {
-  background-color: #1e3a8a !important; /* 9+ Tünd Göy (Deep Blue) */
+  background-color: #1d4ed8 !important; /* 9+ Deep Blue */
   color: #ffffff !important;
 }
 
 .rating-sofascore-excellent,
 .rating-sofascore-8plus,
 .bg-\[\#2563eb\] {
-  background-color: #2563eb !important; /* 8+ Mavi (Blue) */
+  background-color: #0284c7 !important; /* 8+ Sky Blue */
   color: #ffffff !important;
 }
 
 .rating-sofascore-good,
 .rating-sofascore-7plus,
 .bg-\[\#15803d\] {
-  background-color: #15803d !important; /* 7+ Tünd Yaşıl (Dark Green) */
+  background-color: #15803d !important; /* 7+ Deep Emerald */
   color: #ffffff !important;
 }
 
 .rating-sofascore-65plus,
 .bg-\[\#eab308\] {
-  background-color: #eab308 !important; /* 6.5+ Sarı (Yellow) */
-  color: #0f172a !important;
+  background-color: #ca8a04 !important; /* 6.5+ Amber/Yellow */
+  color: #ffffff !important;
 }
 
 .rating-sofascore-average,
 .rating-sofascore-6plus,
 .bg-\[\#f97316\] {
-  background-color: #f97316 !important; /* 6+ Narıncı (Orange) */
+  background-color: #ea580c !important; /* 6+ Orange */
   color: #ffffff !important;
 }
 
 .rating-sofascore-bad,
 .rating-sofascore-below6,
 .bg-\[\#dc2626\] {
-  background-color: #dc2626 !important; /* 6- Qırmızı (Red) */
+  background-color: #dc2626 !important; /* 6- Red */
   color: #ffffff !important;
 }
 
-/* Sport Card Hover Transition */
+/* Card Hover Elevation */
 .sport-card-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 .sport-card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 20px -8px rgba(59, 7, 100, 0.15);
-}
-
-/* Playoff Bracket Tree Styles */
-.bracket-card-hover {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.bracket-card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(46, 2, 73, 0.12), 0 8px 10px -6px rgba(46, 2, 73, 0.08);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+.dark .sport-card-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
 }
 
-.bracket-connector-branch {
-  position: absolute;
-  right: -1.75rem;
-  top: 25%;
-  bottom: 25%;
-  width: 1.75rem;
-  border-right: 2px solid #cbd5e1;
-  border-top: 2px solid #cbd5e1;
-  border-bottom: 2px solid #cbd5e1;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-  pointer-events: none;
+/* Standings Table Theme & WCAG AA Contrast */
+table.standings-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
 }
 
-.bracket-connector-stem {
-  position: absolute;
-  right: -1.75rem;
-  top: 50%;
-  width: 1.75rem;
-  height: 2px;
-  background-color: #cbd5e1;
-  transform: translateY(-50%);
-  pointer-events: none;
+html:not(.dark) table.standings-table tbody tr.srow-first {
+  background-color: #f0fdf4 !important;
+  color: #09090b !important;
+  border-left: 3px solid #10b981;
 }
-
-/* ==========================================================================
-   Professional Dual-Theme Architecture (Light & Dark)
-   ========================================================================== */
-
-/* Explicit Light Mode (When NOT dark) */
-html:not(.dark),
-html:not(.dark) body,
-html:not(.dark) #root,
-html:not(.dark) .min-h-screen {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
+html:not(.dark) table.standings-table tr.srow-second {
+  background-color: #f4f4f5 !important;
+  color: #09090b !important;
+  border-left: 3px solid #3b82f6;
 }
-
-html:not(.dark) .bg-slate-50,
-html:not(.dark) .bg-gray-50 {
-  background-color: #f1f5f9 !important;
-}
-
-html:not(.dark) .bg-white {
+html:not(.dark) table.standings-table tr.srow-other {
   background-color: #ffffff !important;
-  color: #0f172a !important;
+  color: #09090b !important;
+}
+html:not(.dark) table.standings-table tr.srow-first:hover {
+  background-color: #dcfce7 !important;
+}
+html:not(.dark) table.standings-table tr.srow-second:hover {
+  background-color: #e4e4e7 !important;
+}
+html:not(.dark) table.standings-table tr.srow-other:hover {
+  background-color: #f4f4f5 !important;
 }
 
-html:not(.dark) .glass-card {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border: 1px solid rgba(226, 232, 240, 0.8) !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+html.dark table.standings-table tbody tr.srow-first {
+  background-color: rgba(6, 78, 59, 0.22) !important;
+  color: #fafafa !important;
+  border-left: 3px solid #10b981;
+}
+html.dark table.standings-table tr.srow-second {
+  background-color: rgba(30, 58, 138, 0.2) !important;
+  color: #fafafa !important;
+  border-left: 3px solid #3b82f6;
+}
+html.dark table.standings-table tr.srow-other {
+  background-color: #18181b !important;
+  color: #fafafa !important;
+}
+html.dark table.standings-table tr.srow-first:hover {
+  background-color: rgba(6, 78, 59, 0.35) !important;
+}
+html.dark table.standings-table tr.srow-second:hover {
+  background-color: rgba(30, 58, 138, 0.35) !important;
+}
+html.dark table.standings-table tr.srow-other:hover {
+  background-color: #27272a !important;
 }
 
-/* Explicit Dark Mode (When .dark is present) */
-html.dark, body.dark, .dark {
-  color-scheme: dark;
+/* Playoff Tournament Bracket Connectors */
+.bracket-connector-branch {
+  border-color: #d4d4d8;
+}
+.dark .bracket-connector-branch {
+  border-color: #3f3f46;
+}
+.bracket-connector-stem {
+  background-color: #d4d4d8;
+}
+.dark .bracket-connector-stem {
+  background-color: #3f3f46;
 }
 
-html.dark body, body.dark, .dark body, .dark #root, html.dark #root, html.dark .min-h-screen {
-  background-color: #080c14 !important;
-  color: #f1f5f9 !important;
-}
-
-/* Cards & Surfaces */
-.dark .glass-card, html.dark .glass-card {
-  background: rgba(15, 23, 42, 0.88) !important;
-  border: 1px solid rgba(51, 65, 85, 0.5) !important;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6) !important;
-}
-
-.dark .bg-white, html.dark .bg-white {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
-}
-
-.dark .bg-slate-50, html.dark .bg-slate-50,
-.dark .bg-gray-50, html.dark .bg-gray-50 {
-  background-color: #080c14 !important;
-}
-
-.dark .bg-slate-100, html.dark .bg-slate-100,
-.dark .bg-gray-100, html.dark .bg-gray-100 {
-  background-color: #1e293b !important;
-  color: #f8fafc !important;
-}
-
-.dark .bg-purple-50, html.dark .bg-purple-50 {
-  background-color: rgba(88, 28, 135, 0.22) !important;
-}
-
-.dark .bg-purple-100, html.dark .bg-purple-100 {
-  background-color: rgba(88, 28, 135, 0.45) !important;
-  color: #e9d5ff !important;
-}
-
-.dark .bg-green-100, html.dark .bg-green-100,
-.dark .bg-emerald-100, html.dark .bg-emerald-100 {
-  background-color: rgba(6, 78, 59, 0.5) !important;
-  color: #6ee7b7 !important;
-  border-color: rgba(5, 150, 105, 0.4) !important;
-}
-
-.dark .bg-green-50, html.dark .bg-green-50,
-.dark .bg-emerald-50, html.dark .bg-emerald-50 {
-  background-color: rgba(6, 78, 59, 0.3) !important;
-  color: #6ee7b7 !important;
-}
-
+/* Goal & Assist Badges */
 .goal-badge {
-  background-color: #ecfdf5 !important;
-  color: #064e3b !important; /* Deep pine forest green, high contrast on light bg */
-  border-color: #a7f3d0 !important;
-  font-weight: 800 !important;
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  font-weight: 800;
 }
-
-.dark .goal-badge, html.dark .goal-badge {
-  background-color: rgba(6, 78, 59, 0.55) !important;
-  color: #6ee7b7 !important;
-  border-color: rgba(5, 150, 105, 0.5) !important;
+.dark .goal-badge {
+  background-color: rgba(6, 78, 59, 0.45);
+  color: #6ee7b7;
+  border-color: rgba(5, 150, 105, 0.4);
 }
 
 .assist-badge {
-  background-color: #f5f3ff !important;
-  color: #3b0764 !important; /* Deep dark purple on light bg */
-  border-color: #ddd6fe !important;
-  font-weight: 800 !important;
-}
-
-.dark .assist-badge, html.dark .assist-badge {
-  background-color: rgba(88, 28, 135, 0.55) !important;
-  color: #d8b4fe !important;
-  border-color: rgba(168, 85, 247, 0.5) !important;
-}
-
-/* Typography & Headings (Preserve contrast for buttons) */
-.dark .text-purple-950:not(.bg-green-500):not(.bg-green-400),
-html.dark .text-purple-950:not(.bg-green-500):not(.bg-green-400),
-.dark .text-purple-900:not(.bg-green-500):not(.bg-green-400),
-html.dark .text-purple-900:not(.bg-green-500):not(.bg-green-400),
-.dark .text-slate-900, html.dark .text-slate-900,
-.dark .text-slate-800, html.dark .text-slate-800,
-.dark .text-gray-900, html.dark .text-gray-900,
-.dark .text-gray-800, html.dark .text-gray-800 {
-  color: #f8fafc !important;
-}
-
-.dark .text-slate-700, html.dark .text-slate-700,
-.dark .text-slate-600, html.dark .text-slate-600,
-.dark .text-gray-700, html.dark .text-gray-700,
-.dark .text-gray-600, html.dark .text-gray-600 {
-  color: #cbd5e1 !important;
-}
-
-.dark .text-slate-500, html.dark .text-slate-500,
-.dark .text-gray-500, html.dark .text-gray-500 {
-  color: #94a3b8 !important;
-}
-
-/* Borders & Dividers */
-.dark .border-purple-100, html.dark .border-purple-100,
-.dark .border-purple-200, html.dark .border-purple-200,
-.dark .border-slate-100, html.dark .border-slate-100,
-.dark .border-slate-200, html.dark .border-slate-200,
-.dark .border-gray-100, html.dark .border-gray-100,
-.dark .border-gray-200, html.dark .border-gray-200 {
-  border-color: #1e293b !important;
-}
-
-.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
-html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
-.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
-html.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
-.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
-html.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
-  border-color: #1e293b !important;
-}
-
-/* Table Hover States */
-.dark .hover\:bg-purple-50\/50:hover, html.dark .hover\:bg-purple-50\/50:hover,
-.dark .hover\:bg-purple-50:hover, html.dark .hover\:bg-purple-50:hover,
-.dark .hover\:bg-slate-50:hover, html.dark .hover\:bg-slate-50:hover,
-.dark .hover\:bg-gray-50:hover, html.dark .hover\:bg-gray-50:hover {
-  background-color: rgba(30, 41, 59, 0.7) !important;
-}
-
-/* Form Controls in Dark Mode */
-.dark input:not([type="checkbox"]):not([type="radio"]), html.dark input:not([type="checkbox"]):not([type="radio"]),
-.dark select, html.dark select,
-.dark textarea, html.dark textarea {
-  background-color: #1e293b !important;
-  color: #f8fafc !important;
-  border-color: #334155 !important;
-}
-
-.dark input::placeholder, html.dark input::placeholder,
-.dark textarea::placeholder, html.dark textarea::placeholder {
-  color: #64748b !important;
-}
-
-/* Brackets & Tree Connectors */
-.dark .bracket-connector-branch, html.dark .bracket-connector-branch {
-  border-color: #334155 !important;
-}
-
-.dark .bracket-connector-stem, html.dark .bracket-connector-stem {
-  background-color: #334155 !important;
-}
-
-/* Dark Scrollbars */
-.dark ::-webkit-scrollbar-track, html.dark ::-webkit-scrollbar-track {
-  background: #080c14;
-}
-
-.dark ::-webkit-scrollbar-thumb, html.dark ::-webkit-scrollbar-thumb {
-  background: #334155;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover, html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
-}
-
-/* Sofascore Rating Scale */
-.rating-sofascore-9plus, .bg-\[\#1d4ed8\] { background-color: #1d4ed8 !important; color: #ffffff !important; }
-.rating-sofascore-8plus, .bg-\[\#0284c7\] { background-color: #0284c7 !important; color: #ffffff !important; }
-.rating-sofascore-7plus, .bg-\[\#15803d\] { background-color: #15803d !important; color: #ffffff !important; }
-.rating-sofascore-65plus, .bg-\[\#eab308\] { background-color: #eab308 !important; color: #0f172a !important; }
-.rating-sofascore-6plus, .bg-\[\#f97316\] { background-color: #f97316 !important; color: #ffffff !important; }
-.rating-sofascore-below6, .bg-\[\#dc2626\] { background-color: #dc2626 !important; color: #ffffff !important; }
-
-/* Standings Table Theme Protection & Contrast */
-table.standings-table { border-collapse: collapse; width: 100%; }
-
-/* Light mode table */
-html:not(.dark) table.standings-table tbody { background-color: #ffffff; color: #0f172a; }
-html:not(.dark) table.standings-table tr.srow-first  { background-color: #f0fdf4 !important; color: #0f172a !important; border-left: 4px solid #10b981; }
-html:not(.dark) table.standings-table tr.srow-second { background-color: #f5f3ff !important; color: #0f172a !important; border-left: 4px solid #8b5cf6; }
-html:not(.dark) table.standings-table tr.srow-other  { background-color: #ffffff  !important; color: #0f172a !important; border-left: 4px solid transparent; }
-html:not(.dark) table.standings-table tr.srow-first:hover  { background-color: #dcfce7 !important; }
-html:not(.dark) table.standings-table tr.srow-second:hover { background-color: #ede9fe !important; }
-html:not(.dark) table.standings-table tr.srow-other:hover  { background-color: #f5f3ff !important; }
-
-/* Dark mode table */
-html.dark table.standings-table tbody { background-color: #0f172a; color: #f8fafc; }
-html.dark table.standings-table tr.srow-first  { background-color: rgba(6,78,59,0.25)   !important; color: #f8fafc !important; border-left: 4px solid #10b981; }
-html.dark table.standings-table tr.srow-second { background-color: rgba(88,28,135,0.25) !important; color: #f8fafc !important; border-left: 4px solid #8b5cf6; }
-html.dark table.standings-table tr.srow-other  { background-color: #0f172a             !important; color: #f8fafc !important; border-left: 4px solid transparent; }
-html.dark table.standings-table tr.srow-first:hover  { background-color: rgba(6,78,59,0.4)   !important; }
-html.dark table.standings-table tr.srow-second:hover { background-color: rgba(88,28,135,0.4) !important; }
-html.dark table.standings-table tr.srow-other:hover  { background-color: #1e293b             !important; }
-
-/* ==========================================================================
-   AĞ TEMA (LIGHT THEME) YÜKSƏK KONTRAST VƏ TÜND YAZI SİSTEMİ
-   ========================================================================== */
-
-/* 1. Gövdə və Əsas Kartlar */
-html:not(.dark),
-html:not(.dark) body,
-html:not(.dark) #root,
-html:not(.dark) .min-h-screen {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
-}
-
-html:not(.dark) .bg-white {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-}
-
-html:not(.dark) .bg-slate-50,
-html:not(.dark) .bg-gray-50 {
-  background-color: #f8fafc !important;
-}
-
-html:not(.dark) .glass-card {
-  background: rgba(255, 255, 255, 0.98) !important;
-  border: 1px solid #cbd5e1 !important;
-  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06) !important;
-}
-
-/* 2. Solğun Boz Yazıların Tündləşdirilib Aydınlaşdırılması */
-/* Solğun gray-400 / slate-400 (tarixlər, alt izahlar, qeydlər) tünd Slate-600 olur */
-html:not(.dark) .text-gray-400,
-html:not(.dark) .text-slate-400,
-html:not(.dark) .text-zinc-400 {
-  color: #475569 !important;
-  font-weight: 600;
-}
-
-/* İkinci dərəcəli gray-500 / slate-500 (statistika başlıqları, form etiketləri) tünd Slate-700 olur */
-html:not(.dark) .text-gray-500,
-html:not(.dark) .text-slate-500,
-html:not(.dark) .text-zinc-500 {
-  color: #334155 !important;
-}
-
-/* Gövdə mətni gray-600 / slate-600 tünd Slate-800 olur */
-html:not(.dark) .text-gray-600,
-html:not(.dark) .text-slate-600,
-html:not(.dark) .text-zinc-600 {
-  color: #1e293b !important;
-}
-
-/* Tünd mətndə olan gray-700 / slate-700 dərin Slate-900 olur */
-html:not(.dark) .text-gray-700,
-html:not(.dark) .text-slate-700,
-html:not(.dark) .text-zinc-700 {
-  color: #0f172a !important;
-}
-
-/* Ən qara başlıqlar və adlar */
-html:not(.dark) .text-gray-800,
-html:not(.dark) .text-slate-800,
-html:not(.dark) .text-gray-900,
-html:not(.dark) .text-slate-900 {
-  color: #020617 !important;
-}
-
-/* 3. Brend Bənövşəyi Başlıqlar və Mətnlər */
-html:not(.dark) .text-purple-950:not(.bg-green-500):not(.bg-green-400):not(.bg-emerald-500) {
-  color: #1e0036 !important;
-}
-html:not(.dark) .text-purple-900:not(.bg-green-500):not(.bg-green-400):not(.bg-emerald-500) {
-  color: #2e0249 !important;
-}
-html:not(.dark) .text-purple-800 {
-  color: #3b0764 !important;
-}
-html:not(.dark) .text-purple-700 {
-  color: #581c87 !important;
-}
-
-/* 4. Yaşıl Düymələr daxilindəki tünd yazı qorunur */
-html:not(.dark) .bg-green-500 .text-purple-950,
-html:not(.dark) .bg-green-400 .text-purple-950,
-html:not(.dark) .bg-emerald-500 .text-purple-950,
-html:not(.dark) button.bg-green-500,
-html:not(.dark) a.bg-green-500 {
-  color: #1e0036 !important;
-}
-
-/* 5. Cədvəl İçi Xanalarda Dəqiq Tünd Oxunaqlılıq */
-html:not(.dark) table.standings-table td {
-  color: #0f172a !important;
-}
-html:not(.dark) table.standings-table td .text-slate-500,
-html:not(.dark) table.standings-table td .text-slate-600,
-html:not(.dark) table.standings-table td .text-slate-700 {
-  color: #0f172a !important;
-  font-weight: 700 !important;
-}
-
-/* 6. Form İdarəetmələri (Input, Select, Textarea və Placeholder) */
-html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
-html:not(.dark) select,
-html:not(.dark) textarea {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
-  font-weight: 600;
-}
-html:not(.dark) input::placeholder,
-html:not(.dark) textarea::placeholder {
-  color: #64748b !important;
-  font-weight: 500;
-}
-html:not(.dark) label {
-  color: #0f172a !important;
+  background-color: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
   font-weight: 800;
 }
-
-/* 7. Pley-off Toru (Knockout Bracket) Kartları */
-html:not(.dark) .bracket-card-hover {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
-}
-html:not(.dark) .bracket-card-hover .opacity-65 {
-  opacity: 0.9 !important;
-  color: #334155 !important;
+.dark .assist-badge {
+  background-color: rgba(30, 58, 138, 0.45);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.4);
 }
 
-/* 8. Haşiyə və Çərçivə Aydınlığı */
-html:not(.dark) .border-gray-100 {
-  border-color: #e2e8f0 !important;
-}
-html:not(.dark) .border-gray-200 {
-  border-color: #cbd5e1 !important;
-}
-
-/* 9. Mobile & iOS Safari Performance & Safe Area Polish */
-html, body {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-size-adjust: 100%;
-}
-
-/* Smooth momentum scrolling on iOS */
-.ios-scroll {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Optimize touch response on mobile buttons */
-@media (max-width: 640px) {
-  button, a {
-    touch-action: manipulation;
+/* Print Optimization */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print,
+  #tdv-ecosystem-topbar,
+  header,
+  nav,
+  button:not(.print-include) {
+    display: none !important;
+  }
+  .glass-card,
+  .sport-card-hover {
+    box-shadow: none !important;
+    border: 1px solid #cccccc !important;
+    break-inside: avoid;
   }
 }

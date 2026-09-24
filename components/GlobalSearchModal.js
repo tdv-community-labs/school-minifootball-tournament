@@ -83,14 +83,14 @@ export default function GlobalSearchModal({
 
   return html`
     <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-purple-950/70 backdrop-blur-md flex items-start justify-center p-3 sm:p-6 pt-12 sm:pt-20 animate-fadeIn"
+      className="fixed inset-0 z-50 overflow-y-auto bg-zinc-950/80 backdrop-blur-md flex items-start justify-center p-3 sm:p-6 pt-12 sm:pt-20 animate-fadeIn transition-colors duration-200"
       onClick=${(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full shadow-2xl border border-purple-100 dark:border-slate-800 overflow-hidden flex flex-col max-h-[85vh]">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl max-w-2xl w-full shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col max-h-[85vh] transition-colors duration-200">
         
         <!-- Search Input Header -->
-        <div className="p-4 sm:p-5 border-b border-gray-100 dark:border-slate-800 flex items-center gap-3 bg-gray-50/70 dark:bg-slate-950/50">
-          <i className="fas fa-search text-lg text-purple-900 dark:text-purple-400 shrink-0"></i>
+        <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-3 bg-zinc-50 dark:bg-zinc-950/60 transition-colors duration-200">
+          <i className="fas fa-search text-lg text-emerald-600 dark:text-emerald-400 shrink-0"></i>
           
           <input
             ref=${inputRef}
@@ -98,24 +98,24 @@ export default function GlobalSearchModal({
             value=${query}
             onInput=${(e) => setQuery(e.target.value)}
             placeholder=${lang === 'az' ? 'Oyunçu, sinif və ya matç axtarın... (Məs: Taleh, 11A)' : 'Search players, classes, or matches... (e.g. Taleh, 11A)'}
-            className="flex-1 bg-transparent text-sm sm:text-base font-bold text-purple-950 dark:text-white placeholder-gray-400 focus:outline-none"
+            className="flex-1 bg-transparent text-sm sm:text-base font-bold text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none"
           />
 
           ${loading && html`
-            <div className="animate-spin rounded-full h-4 w-4 border-2 border-purple-600 border-t-transparent shrink-0"></div>
+            <div className="animate-spin rounded-full h-4 w-4 border-2 border-emerald-500 border-t-transparent shrink-0"></div>
           `}
 
           ${query && html`
             <button
               onClick=${() => setQuery('')}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1"
-              title="Təmizlə"
+              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1 transition cursor-pointer"
+              title=${lang === 'az' ? 'Təmizlə' : 'Clear'}
             >
               <i className="fas fa-times-circle text-sm"></i>
             </button>
           `}
 
-          <span className="hidden sm:inline text-[10px] font-black uppercase text-gray-400 bg-gray-200/60 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+          <span className="hidden sm:inline text-[10px] font-black uppercase text-zinc-500 dark:text-zinc-400 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-md">
             ESC
           </span>
         </div>
@@ -126,26 +126,26 @@ export default function GlobalSearchModal({
           <!-- Empty Query: Quick suggestions -->
           ${(!query || query.trim().length < 2) && html`
             <div className="py-6 text-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-950/70 text-purple-900 dark:text-purple-300 flex items-center justify-center mx-auto text-xl">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto text-xl border border-emerald-100 dark:border-emerald-800/40">
                 <i className="fas fa-bolt"></i>
               </div>
               <div>
-                <h4 className="text-sm font-black text-purple-950 dark:text-slate-200">
+                <h4 className="text-sm font-black text-zinc-900 dark:text-zinc-100">
                   ${lang === 'az' ? 'Bütün Çempionat Arxivində Sürətli Axtarış' : 'Search Across All Championship Archives'}
                 </h4>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
                   ${lang === 'az' ? 'Oyunçuların adlarını, sinifləri və ya mərhələləri axtarın' : 'Search by player names, classes, or tournament stages'}
                 </p>
               </div>
 
               <!-- Popular tags -->
               <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">${lang === 'az' ? 'Məşhur:' : 'Popular:'}</span>
+                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">${lang === 'az' ? 'Məşhur:' : 'Popular:'}</span>
                 ${popularQueries.map(tag => html`
                   <button
                     key=${tag}
                     onClick=${() => setQuery(tag)}
-                    className="bg-purple-50 dark:bg-slate-800 hover:bg-purple-100 text-purple-950 dark:text-purple-200 text-xs font-extrabold px-3 py-1 rounded-xl transition border border-purple-100/70 dark:border-slate-700"
+                    className="bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-zinc-700 hover:text-emerald-600 dark:hover:text-emerald-400 text-zinc-700 dark:text-zinc-200 text-xs font-bold px-3 py-1 rounded-xl transition border border-zinc-200 dark:border-zinc-700 cursor-pointer"
                   >
                     ${tag}
                   </button>
@@ -156,12 +156,12 @@ export default function GlobalSearchModal({
 
           <!-- Query with No Results -->
           ${query && query.trim().length >= 2 && !loading && totalResults === 0 && html`
-            <div className="py-12 text-center text-gray-400 space-y-2">
+            <div className="py-12 text-center text-zinc-400 space-y-2">
               <i className="fas fa-search-minus text-3xl opacity-40"></i>
-              <p className="text-sm font-bold text-purple-950 dark:text-slate-300">
+              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-200">
                 "${query}" ${lang === 'az' ? 'üzrə nəticə tapılmadı.' : 'not found.'}
               </p>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 ${lang === 'az' ? 'Zəhmət olmasa başqa oyunçu adı və ya sinif daxil edin.' : 'Please try a different player name or class.'}
               </p>
             </div>
@@ -170,12 +170,12 @@ export default function GlobalSearchModal({
           <!-- Section 1: PLAYERS -->
           ${results.players.length > 0 && html`
             <div className="space-y-2.5">
-              <div className="flex items-center justify-between pb-1 border-b border-gray-100 dark:border-slate-800">
-                <span className="text-[11px] font-black uppercase tracking-wider text-purple-950 dark:text-purple-300 flex items-center gap-1.5">
-                  <i className="fas fa-running text-green-500"></i>
+              <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-zinc-800">
+                <span className="text-[11px] font-black uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                  <i className="fas fa-running text-emerald-500"></i>
                   <span>${lang === 'az' ? 'Oyunçular' : 'Players'}</span>
                 </span>
-                <span className="text-[10px] text-gray-400 font-bold">${results.players.length} ${lang === 'az' ? 'nəticə' : 'results'}</span>
+                <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-bold">${results.players.length} ${lang === 'az' ? 'nəticə' : 'results'}</span>
               </div>
 
               <div className="space-y-2">
@@ -186,22 +186,22 @@ export default function GlobalSearchModal({
                       onClose();
                       if (onSelectPlayer) onSelectPlayer(p.name);
                     }}
-                    className="group bg-white dark:bg-slate-800/80 hover:bg-purple-50/50 dark:hover:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-slate-700 transition cursor-pointer flex items-center justify-between gap-3 shadow-2xs"
+                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between gap-3 shadow-2xs"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-950/80 text-purple-900 dark:text-purple-300 flex items-center justify-center font-black text-sm shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center font-black text-sm shrink-0">
                         ${p.isKeeper ? '🧤' : '🏃'}
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <h5 className="font-extrabold text-sm text-purple-950 dark:text-white truncate group-hover:text-purple-900 transition">
+                          <h5 className="font-extrabold text-sm text-zinc-900 dark:text-white truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
                             ${p.name}
                           </h5>
-                          <span className="text-[9px] font-black uppercase text-purple-900 dark:text-purple-300 bg-purple-50 dark:bg-purple-950 px-1.5 py-0.2 rounded">
+                          <span className="text-[9px] font-black uppercase text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 px-1.5 py-0.2 rounded">
                             ${p.classes.join(', ')}
                           </span>
                         </div>
-                        <p className="text-[11px] text-gray-400 font-medium truncate mt-0.5">
+                        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium truncate mt-0.5">
                           ${p.years.join(' • ')}
                         </p>
                       </div>
@@ -216,7 +216,7 @@ export default function GlobalSearchModal({
                       <span className=${`text-xs font-black px-2 py-0.5 rounded-md ${getSofascoreBadgeStyle(p.overallRating)}`}>
                         ${p.overallRating}
                       </span>
-                      <i className="fas fa-chevron-right text-[10px] text-gray-300 group-hover:text-purple-600 transition pl-1"></i>
+                      <i className="fas fa-chevron-right text-[10px] text-zinc-400 group-hover:text-emerald-600 transition pl-1"></i>
                     </div>
                   </div>
                 `)}
@@ -227,12 +227,12 @@ export default function GlobalSearchModal({
           <!-- Section 2: CLASSES / TEAMS -->
           ${results.classes.length > 0 && html`
             <div className="space-y-2.5">
-              <div className="flex items-center justify-between pb-1 border-b border-gray-100 dark:border-slate-800">
-                <span className="text-[11px] font-black uppercase tracking-wider text-purple-950 dark:text-purple-300 flex items-center gap-1.5">
+              <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-zinc-800">
+                <span className="text-[11px] font-black uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
                   <i className="fas fa-shield-alt text-sky-500"></i>
                   <span>${lang === 'az' ? 'Siniflər və Komandalar' : 'Classes & Teams'}</span>
                 </span>
-                <span className="text-[10px] text-gray-400 font-bold">${results.classes.length} ${lang === 'az' ? 'nəticə' : 'results'}</span>
+                <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-bold">${results.classes.length} ${lang === 'az' ? 'nəticə' : 'results'}</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -243,22 +243,22 @@ export default function GlobalSearchModal({
                       onClose();
                       if (onSelectClass) onSelectClass(c.name, c.years[0], c.division);
                     }}
-                    className="group bg-white dark:bg-slate-800/80 hover:bg-sky-50/40 dark:hover:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-slate-700 transition cursor-pointer flex items-center justify-between shadow-2xs"
+                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-sky-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
                   >
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-950/70 text-sky-800 dark:text-sky-300 flex items-center justify-center font-black text-xs">
                         🛡️
                       </div>
                       <div>
-                        <h5 className="font-extrabold text-xs text-purple-950 dark:text-white group-hover:text-sky-700 transition">
+                        <h5 className="font-extrabold text-xs text-zinc-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition">
                           ${c.name} Sinfi
                         </h5>
-                        <p className="text-[10px] text-gray-400">
+                        <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
                           ${c.years.join(', ')}
                         </p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-sky-700 bg-sky-50 dark:bg-sky-950/50 px-2 py-0.5 rounded-md">
+                    <span className="text-[10px] font-bold text-sky-700 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/50 px-2 py-0.5 rounded-md border border-sky-200 dark:border-sky-800/50">
                       ${lang === 'az' ? 'Cədvələ Bax' : 'View'} →
                     </span>
                   </div>
@@ -270,12 +270,12 @@ export default function GlobalSearchModal({
           <!-- Section 3: MATCHES -->
           ${results.matches.length > 0 && html`
             <div className="space-y-2.5">
-              <div className="flex items-center justify-between pb-1 border-b border-gray-100 dark:border-slate-800">
-                <span className="text-[11px] font-black uppercase tracking-wider text-purple-950 dark:text-purple-300 flex items-center gap-1.5">
+              <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-zinc-800">
+                <span className="text-[11px] font-black uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
                   <i className="fas fa-futbol text-emerald-500"></i>
                   <span>${lang === 'az' ? 'Matçlar' : 'Matches'}</span>
                 </span>
-                <span className="text-[10px] text-gray-400 font-bold">${results.matches.length} ${lang === 'az' ? 'nəticə' : 'results'}</span>
+                <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-bold">${results.matches.length} ${lang === 'az' ? 'nəticə' : 'results'}</span>
               </div>
 
               <div className="space-y-2">
@@ -286,25 +286,25 @@ export default function GlobalSearchModal({
                       onClose();
                       if (onSelectMatch) onSelectMatch(m);
                     }}
-                    className="group bg-white dark:bg-slate-800/80 hover:bg-emerald-50/40 dark:hover:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-slate-700 transition cursor-pointer flex items-center justify-between shadow-2xs"
+                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
                   >
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[9px] font-black uppercase text-purple-900 dark:text-purple-300 bg-purple-50 dark:bg-purple-950 px-1.5 py-0.2 rounded">
+                        <span className="text-[9px] font-black uppercase text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 px-1.5 py-0.2 rounded">
                           ${m.stage}
                         </span>
-                        <span className="text-[10px] text-gray-400 font-semibold">${m.year}</span>
+                        <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold">${m.year}</span>
                         ${m.videoUrl && html`
                           <span className="text-red-500 text-[10px]"><i className="fab fa-youtube"></i></span>
                         `}
                       </div>
-                      <p className="text-xs font-black text-purple-950 dark:text-white mt-1 group-hover:text-emerald-700 transition">
+                      <p className="text-xs font-black text-zinc-900 dark:text-white mt-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
                         ${m.teamA} ${m.scoreA} - ${m.scoreB} ${m.teamB}
                       </p>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-bold text-gray-400 group-hover:text-purple-900 transition">
+                      <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
                         ${lang === 'az' ? 'Detallar' : 'Details'} →
                       </span>
                     </div>
@@ -317,13 +317,13 @@ export default function GlobalSearchModal({
         </div>
 
         <!-- Search Modal Footer -->
-        <div className="p-3 bg-gray-50 dark:bg-slate-950/80 border-t border-gray-100 dark:border-slate-800 flex justify-between items-center text-[11px] text-gray-400 px-5">
+        <div className="p-3 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center text-[11px] text-zinc-500 dark:text-zinc-400 px-5 transition-colors duration-200">
           <span className="flex items-center gap-2">
             <span><i className="fas fa-keyboard mr-1"></i> <b>ESC</b> ${lang === 'az' ? 'bağlayır' : 'closes'}</span>
             <span>•</span>
             <span><b>Ctrl+K</b> ${lang === 'az' ? 'açar' : 'opens'}</span>
           </span>
-          <span className="text-purple-900 dark:text-purple-400 font-bold">TDV BTL Mini-Football</span>
+          <span className="text-emerald-600 dark:text-emerald-400 font-bold">TDV BTL Mini-Football</span>
         </div>
 
       </div>
