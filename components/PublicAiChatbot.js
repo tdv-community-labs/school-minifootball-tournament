@@ -108,13 +108,13 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
       ${!isOpen && html`
         <button
           onClick=${() => setIsOpen(true)}
-          className="pointer-events-auto group flex items-center gap-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 px-3.5 py-3 sm:px-4 sm:py-3.5 rounded-full shadow-2xl transition transform hover:scale-105 active:scale-95 border border-zinc-700 dark:border-zinc-600 cursor-pointer"
+          className="pointer-events-auto group flex items-center gap-2 bg-gradient-to-r from-purple-800 via-purple-900 to-indigo-950 hover:from-purple-700 hover:to-indigo-900 text-white px-3.5 py-3 sm:px-4 sm:py-3.5 rounded-full shadow-2xl transition transform hover:scale-105 active:scale-95 border border-purple-500/40 cursor-pointer"
           title="Turnir AI Köməkçisi"
         >
           <div className="relative">
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping"></span>
             <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full inline-block absolute -top-1 -right-1"></span>
-            <i className="fas fa-robot text-base sm:text-lg text-emerald-400"></i>
+            <i className="fas fa-robot text-base sm:text-lg text-purple-200"></i>
           </div>
           <span className="text-xs font-black tracking-wide pr-1">Turnir AI</span>
           <i className="fas fa-futbol text-emerald-400 text-xs sm:text-sm group-hover:rotate-45 transition"></i>
@@ -126,9 +126,9 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
         <div className="pointer-events-auto w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[380px] h-[460px] sm:h-[520px] max-h-[72vh] bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 flex flex-col overflow-hidden animate-fadeIn transition-colors duration-200">
           
           <!-- Header -->
-          <div className="bg-zinc-950 text-white p-4 flex items-center justify-between border-b border-zinc-800">
+          <div className="bg-gradient-to-r from-purple-950 via-purple-900 to-zinc-950 text-white p-4 flex items-center justify-between border-b border-purple-800/40">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-zinc-800 flex items-center justify-center text-emerald-400 border border-zinc-700">
+              <div className="w-10 h-10 rounded-2xl bg-purple-900/40 flex items-center justify-center text-purple-300 border border-purple-700/50">
                 <i className="fas fa-robot text-lg"></i>
               </div>
               <div>
@@ -136,13 +136,13 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
                   <h4 className="text-xs font-black text-white">TDV BTL Turnir AI</h4>
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 </div>
-                <p className="text-[10px] text-zinc-400">Canlı Məlumat Köməkçisi (${activeYear})</p>
+                <p className="text-[10px] text-purple-200">Canlı Məlumat Köməkçisi (${activeYear})</p>
               </div>
             </div>
             
             <button
               onClick=${() => setIsOpen(false)}
-              className="text-zinc-400 hover:text-white transition w-8 h-8 rounded-full flex items-center justify-center hover:bg-zinc-800 cursor-pointer"
+              className="text-purple-300 hover:text-white transition w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 cursor-pointer"
             >
               <i className="fas fa-times"></i>
             </button>
@@ -152,19 +152,19 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
           <div className="bg-zinc-50 dark:bg-zinc-950/80 border-b border-zinc-200 dark:border-zinc-800 px-3 py-2 flex items-center gap-1.5 overflow-x-auto text-[10px] transition-colors duration-200">
             <button
               onClick=${(e) => handleSendMessage(e, 'Bu il kimlər liderdir və cədvəldə vəziyyət necədir?')}
-              className="bg-white dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-zinc-700 hover:text-emerald-600 dark:hover:text-emerald-400 text-zinc-800 dark:text-zinc-200 font-bold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-2xs border border-zinc-200 dark:border-zinc-700 transition cursor-pointer"
+              className="bg-white dark:bg-zinc-800 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-600 dark:hover:text-purple-300 text-zinc-800 dark:text-zinc-200 font-bold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-2xs border border-zinc-200 dark:border-zinc-700 transition cursor-pointer"
             >
               🏆 Liderlər
             </button>
             <button
               onClick=${(e) => handleSendMessage(e, 'Bombardirlər kimdir və ən çox qolu kim vurub?')}
-              className="bg-white dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-zinc-700 hover:text-emerald-600 dark:hover:text-emerald-400 text-zinc-800 dark:text-zinc-200 font-bold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-2xs border border-zinc-200 dark:border-zinc-700 transition cursor-pointer"
+              className="bg-white dark:bg-zinc-800 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-600 dark:hover:text-purple-300 text-zinc-800 dark:text-zinc-200 font-bold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-2xs border border-zinc-200 dark:border-zinc-700 transition cursor-pointer"
             >
               ⚽ Bombardirlər
             </button>
             <button
               onClick=${(e) => handleSendMessage(e, 'Son keçirilən oyunların nəticələri necə olub?')}
-              className="bg-white dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-zinc-700 hover:text-emerald-600 dark:hover:text-emerald-400 text-zinc-800 dark:text-zinc-200 font-bold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-2xs border border-zinc-200 dark:border-zinc-700 transition cursor-pointer"
+              className="bg-white dark:bg-zinc-800 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-600 dark:hover:text-purple-300 text-zinc-800 dark:text-zinc-200 font-bold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-2xs border border-zinc-200 dark:border-zinc-700 transition cursor-pointer"
             >
               📅 Son Matçlar
             </button>
@@ -176,11 +176,11 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
               <div key=${idx} className=${`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className=${`max-w-[85%] p-3 rounded-2xl text-xs leading-relaxed ${
                   m.role === 'user'
-                    ? 'bg-emerald-600 text-white rounded-br-none shadow-xs'
+                    ? 'bg-purple-600 text-white rounded-br-none shadow-xs'
                     : 'bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 rounded-bl-none shadow-2xs whitespace-pre-line'
                 }`}>
                   ${m.role === 'model' && html`
-                    <div className="text-[9px] font-black uppercase text-emerald-600 dark:text-emerald-400 mb-1 flex items-center gap-1">
+                    <div className="text-[9px] font-black uppercase text-purple-600 dark:text-purple-400 mb-1 flex items-center gap-1">
                       <i className="fas fa-robot text-[10px]"></i> BTL Bot
                     </div>
                   `}
@@ -192,7 +192,7 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
             ${isLoading && html`
               <div className="flex justify-start">
                 <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-3 text-xs rounded-bl-none shadow-2xs flex items-center gap-2 text-zinc-700 dark:text-zinc-300 font-bold">
-                  <i className="fas fa-spinner fa-spin text-emerald-500"></i>
+                  <i className="fas fa-spinner fa-spin text-purple-500"></i>
                   <span>Məlumatlar analiz edilir...</span>
                 </div>
               </div>
@@ -207,13 +207,13 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
               value=${query}
               onChange=${(e) => setQuery(e.target.value)}
               placeholder=${lang === 'en' ? 'Ask a question...' : 'Turnir barədə sual yazın...'}
-              className="flex-1 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl p-2.5 font-medium focus:outline-none focus:border-emerald-500 transition placeholder-zinc-400"
+              className="flex-1 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 text-xs rounded-xl p-2.5 font-medium focus:outline-none focus:border-purple-500 transition placeholder-zinc-400"
               disabled=${isLoading}
             />
             <button
               type="submit"
               disabled=${isLoading || !query.trim()}
-              className="w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center text-xs transition shadow-xs disabled:opacity-40 cursor-pointer"
+              className="w-9 h-9 rounded-xl bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center text-xs transition shadow-xs disabled:opacity-40 cursor-pointer"
             >
               <i className="fas fa-paper-plane"></i>
             </button>

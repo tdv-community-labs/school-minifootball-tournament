@@ -90,7 +90,7 @@ export default function GlobalSearchModal({
         
         <!-- Search Input Header -->
         <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-3 bg-zinc-50 dark:bg-zinc-950/60 transition-colors duration-200">
-          <i className="fas fa-search text-lg text-emerald-600 dark:text-emerald-400 shrink-0"></i>
+          <i className="fas fa-search text-lg text-purple-600 dark:text-purple-400 shrink-0"></i>
           
           <input
             ref=${inputRef}
@@ -102,7 +102,7 @@ export default function GlobalSearchModal({
           />
 
           ${loading && html`
-            <div className="animate-spin rounded-full h-4 w-4 border-2 border-emerald-500 border-t-transparent shrink-0"></div>
+            <div className="animate-spin rounded-full h-4 w-4 border-2 border-purple-600 border-t-transparent shrink-0"></div>
           `}
 
           ${query && html`
@@ -126,7 +126,7 @@ export default function GlobalSearchModal({
           <!-- Empty Query: Quick suggestions -->
           ${(!query || query.trim().length < 2) && html`
             <div className="py-6 text-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto text-xl border border-emerald-100 dark:border-emerald-800/40">
+              <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center mx-auto text-xl border border-purple-200 dark:border-purple-800/40">
                 <i className="fas fa-bolt"></i>
               </div>
               <div>
@@ -145,7 +145,7 @@ export default function GlobalSearchModal({
                   <button
                     key=${tag}
                     onClick=${() => setQuery(tag)}
-                    className="bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-zinc-700 hover:text-emerald-600 dark:hover:text-emerald-400 text-zinc-700 dark:text-zinc-200 text-xs font-bold px-3 py-1 rounded-xl transition border border-zinc-200 dark:border-zinc-700 cursor-pointer"
+                    className="bg-zinc-100 dark:bg-zinc-800 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-600 dark:hover:text-purple-300 text-zinc-700 dark:text-zinc-200 text-xs font-bold px-3 py-1 rounded-xl transition border border-zinc-200 dark:border-zinc-700 cursor-pointer"
                   >
                     ${tag}
                   </button>
@@ -323,7 +323,7 @@ export default function GlobalSearchModal({
             <span>•</span>
             <span><b>Ctrl+K</b> ${lang === 'az' ? 'açar' : 'opens'}</span>
           </span>
-          <span className="text-emerald-600 dark:text-emerald-400 font-bold">TDV BTL Mini-Football</span>
+          <span className="text-purple-600 dark:text-purple-400 font-bold">TDV BTL Mini-Football</span>
         </div>
 
       </div>

@@ -134,7 +134,7 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
           </div>
 
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-wider mb-1.5">
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[10px] font-black uppercase tracking-wider mb-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               ${lang === 'az' ? 'Vahid Ekosistem Profili • 1 Hesab = Bütün Ekosistem' : 'Unified Ecosystem Profile • 1 Account for All'}
             </div>
@@ -154,7 +154,7 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
             onClick=${() => { setTab('login'); setError(''); setSuccessMsg(''); }}
             className=${`flex-1 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
               tab === 'login'
-                ? 'bg-emerald-600 text-white shadow-xs'
+                ? 'bg-purple-600 text-white shadow-xs'
                 : 'text-zinc-400 hover:text-white'
             }`}
           >
@@ -166,7 +166,7 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
             onClick=${() => { setTab('register'); setError(''); setSuccessMsg(''); }}
             className=${`flex-1 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
               tab === 'register'
-                ? 'bg-emerald-600 text-white shadow-xs'
+                ? 'bg-purple-600 text-white shadow-xs'
                 : 'text-zinc-400 hover:text-white'
             }`}
           >
@@ -250,7 +250,7 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
             <button
               type="submit"
               disabled=${isLoading}
-              className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center space-x-2 cursor-pointer mt-1"
+              className="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center space-x-2 cursor-pointer mt-1"
             >
               ${isLoading ? html`<i className="fas fa-circle-notch fa-spin text-xs"></i>` : html`<i className="fas fa-arrow-right-to-bracket text-xs"></i>`}
               <span>${isLoading ? (lang === 'az' ? 'Yoxlanılır...' : 'Verifying...') : (lang === 'az' ? 'Turnirə Daxil Ol' : 'Enter Tournament')}</span>

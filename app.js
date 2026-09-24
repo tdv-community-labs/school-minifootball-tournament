@@ -127,15 +127,23 @@ export default function App() {
     const shouldBeDark = currentTheme === 'dark' || (currentTheme === 'system' && prefersDark);
     if (shouldBeDark) {
       document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      document.documentElement.style.colorScheme = 'dark';
       if (document.body) {
         document.body.classList.add('dark');
+        document.body.classList.remove('light');
         document.body.style.backgroundColor = '#09090b';
+        document.body.style.color = '#fafafa';
       }
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+      document.documentElement.style.colorScheme = 'light';
       if (document.body) {
         document.body.classList.remove('dark');
+        document.body.classList.add('light');
         document.body.style.backgroundColor = '#fafafa';
+        document.body.style.color = '#09090b';
       }
     }
   };
@@ -341,15 +349,15 @@ export default function App() {
             <!-- Left Logo Section: Dedicated Sports Product Logo -->
             <div className="flex items-center space-x-2.5 sm:space-x-3 shrink-0">
               <div className="flex items-center space-x-2.5 cursor-pointer shrink-0 group" onClick=${() => setActiveTab('dashboard')}>
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-green-500 flex items-center justify-center text-white shadow-lg shadow-emerald-600/25 shrink-0 group-hover:scale-105 transition-transform">
-                  <i className="fas fa-futbol text-lg"></i>
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-700 via-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-purple-600/30 shrink-0 group-hover:scale-105 transition-transform">
+                  <i className="fas fa-futbol text-lg text-white"></i>
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1.5">
                     <h1 className="text-sm sm:text-base md:text-lg font-black tracking-wider text-zinc-900 dark:text-white uppercase whitespace-nowrap m-0">
-                      ${t('appTitle', lang)} <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">${t('appSubtitle', lang)}</span>
+                      ${t('appTitle', lang)} <span className="text-purple-600 dark:text-purple-400 font-extrabold">${t('appSubtitle', lang)}</span>
                     </h1>
-                    <span className="hidden sm:inline-block text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    <span className="hidden sm:inline-block text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
                       LİQA
                     </span>
                   </div>
@@ -370,11 +378,11 @@ export default function App() {
                     onClick=${() => setActiveTab(item.id)}
                     className=${`px-3.5 py-1.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-150 flex items-center space-x-2 cursor-pointer ${
                       isActive 
-                        ? 'bg-white dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 shadow-sm border border-zinc-200/60 dark:border-white/[0.08]' 
+                        ? 'bg-white dark:bg-zinc-800 text-purple-600 dark:text-purple-400 shadow-sm border border-purple-200/80 dark:border-purple-800/40' 
                         : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-white/50 dark:hover:bg-zinc-900/50'
                     }`}
                   >
-                    <i className=${`${item.icon} text-xs ${isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-400 dark:text-zinc-500'}`}></i>
+                    <i className=${`${item.icon} text-xs ${isActive ? 'text-purple-600 dark:text-purple-400' : 'text-zinc-400 dark:text-zinc-500'}`}></i>
                     <span>${item.label}</span>
                   </button>
                 `;
@@ -409,7 +417,7 @@ export default function App() {
                 title=${lang === 'az' ? 'Axtarış (Ctrl+K)' : 'Search (Ctrl+K)'}
                 className="flex items-center space-x-1.5 bg-zinc-100 dark:bg-zinc-900/80 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 p-2 sm:px-3 sm:py-1.5 rounded-xl border border-zinc-200/80 dark:border-white/[0.08] text-xs font-bold transition cursor-pointer"
               >
-                <i className="fas fa-search text-emerald-500 text-xs"></i>
+                <i className="fas fa-search text-purple-600 dark:text-purple-400 text-xs"></i>
                 <span className="hidden sm:inline text-[11px] font-bold tracking-wide">${lang === 'az' ? 'Axtar...' : 'Search...'}</span>
               </button>
 
@@ -421,7 +429,7 @@ export default function App() {
                   onClick=${() => handleLangChange('en')}
                   className=${`px-2 py-1 rounded-lg text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer ${
                     lang === 'en'
-                      ? 'bg-white dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 shadow-xs'
+                      ? 'bg-white dark:bg-zinc-800 text-purple-600 dark:text-purple-400 shadow-xs'
                       : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
                   }`}
                 >
@@ -434,7 +442,7 @@ export default function App() {
                   onClick=${() => handleLangChange('az')}
                   className=${`px-2 py-1 rounded-lg text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer ${
                     lang === 'az'
-                      ? 'bg-white dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 shadow-xs'
+                      ? 'bg-white dark:bg-zinc-800 text-purple-600 dark:text-purple-400 shadow-xs'
                       : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
                   }`}
                 >
@@ -451,7 +459,7 @@ export default function App() {
                   onClick=${() => handleThemeChange('system')}
                   className=${`p-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     theme === 'system'
-                      ? 'bg-white dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 shadow-xs'
+                      ? 'bg-white dark:bg-zinc-800 text-purple-600 dark:text-purple-400 shadow-xs'
                       : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
                   }`}
                 >
@@ -475,7 +483,7 @@ export default function App() {
                   onClick=${() => handleThemeChange('dark')}
                   className=${`p-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     theme === 'dark'
-                      ? 'bg-white dark:bg-zinc-800 text-indigo-500 shadow-xs'
+                      ? 'bg-white dark:bg-zinc-800 text-purple-400 shadow-xs'
                       : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
                   }`}
                 >
@@ -506,7 +514,7 @@ export default function App() {
                 setIsSearchOpen(true);
                 setIsMobileMenuOpen(false);
               }}
-              className="w-full text-left px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center space-x-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-emerald-600 dark:text-emerald-400 cursor-pointer"
+              className="w-full text-left px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center space-x-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-purple-600 dark:text-purple-400 cursor-pointer"
             >
               <i className="fas fa-search"></i>
               <span>${lang === 'az' ? 'Turnirdə Axtarış...' : 'Search Tournament...'}</span>
@@ -523,7 +531,7 @@ export default function App() {
                     }}
                     className=${`w-full text-left px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center space-x-3 cursor-pointer ${
                       isActive 
-                        ? 'bg-emerald-600 text-white shadow-xs' 
+                        ? 'bg-purple-600 text-white shadow-xs' 
                         : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
                     }`}
                   >
@@ -532,6 +540,77 @@ export default function App() {
                   </button>
                 `;
               })}
+            </div>
+
+            <!-- Mobile Language & Theme Controls Row -->
+            <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
+              <!-- Language Switcher -->
+              <div className="flex items-center bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-0.5 space-x-0.5">
+                <button
+                  type="button"
+                  onClick=${() => handleLangChange('en')}
+                  className=${`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center space-x-1 cursor-pointer ${
+                    lang === 'en'
+                      ? 'bg-white dark:bg-zinc-700 text-purple-600 dark:text-purple-400 shadow-xs'
+                      : 'text-zinc-500 dark:text-zinc-400'
+                  }`}
+                >
+                  <span>🇬🇧</span>
+                  <span className="text-[10px] uppercase font-bold">EN</span>
+                </button>
+                <button
+                  type="button"
+                  onClick=${() => handleLangChange('az')}
+                  className=${`px-2.5 py-1 rounded-lg text-xs font-bold transition flex items-center space-x-1 cursor-pointer ${
+                    lang === 'az'
+                      ? 'bg-white dark:bg-zinc-700 text-purple-600 dark:text-purple-400 shadow-xs'
+                      : 'text-zinc-500 dark:text-zinc-400'
+                  }`}
+                >
+                  <span>🇦🇿</span>
+                  <span className="text-[10px] uppercase font-bold">AZ</span>
+                </button>
+              </div>
+
+              <!-- Theme Switcher -->
+              <div className="flex items-center bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-0.5 space-x-0.5">
+                <button
+                  type="button"
+                  title="Sistem"
+                  onClick=${() => handleThemeChange('system')}
+                  className=${`p-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    theme === 'system'
+                      ? 'bg-white dark:bg-zinc-700 text-purple-600 dark:text-purple-400 shadow-xs'
+                      : 'text-zinc-500 dark:text-zinc-400'
+                  }`}
+                >
+                  <i className="fas fa-desktop text-xs"></i>
+                </button>
+                <button
+                  type="button"
+                  title="İşıqlı"
+                  onClick=${() => handleThemeChange('light')}
+                  className=${`p-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    theme === 'light'
+                      ? 'bg-white dark:bg-zinc-700 text-amber-500 shadow-xs'
+                      : 'text-zinc-500 dark:text-zinc-400'
+                  }`}
+                >
+                  <i className="fas fa-sun text-xs"></i>
+                </button>
+                <button
+                  type="button"
+                  title="Qaranlıq"
+                  onClick=${() => handleThemeChange('dark')}
+                  className=${`p-1.5 px-2 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    theme === 'dark'
+                      ? 'bg-white dark:bg-zinc-700 text-purple-400 shadow-xs'
+                      : 'text-zinc-500 dark:text-zinc-400'
+                  }`}
+                >
+                  <i className="fas fa-moon text-xs"></i>
+                </button>
+              </div>
             </div>
           </div>
         `}
@@ -543,8 +622,8 @@ export default function App() {
             <!-- Season Selector Pill -->
             ${years.length > 0 && html`
               <div className="relative inline-flex items-center shrink-0">
-                <div className="flex items-center gap-1.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:border-emerald-500/50 rounded-xl px-3 py-1.5 shadow-2xs transition-all cursor-pointer">
-                  <i className="far fa-calendar-alt text-emerald-500 text-xs"></i>
+                <div className="flex items-center gap-1.5 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:border-purple-500/50 rounded-xl px-3 py-1.5 shadow-2xs transition-all cursor-pointer">
+                  <i className="far fa-calendar-alt text-purple-600 dark:text-purple-400 text-xs"></i>
                   <span className="text-xs font-black text-zinc-900 dark:text-zinc-100 tracking-wide whitespace-nowrap">${activeYear}</span>
                   <i className="fas fa-chevron-down text-[9px] text-zinc-400 ml-0.5"></i>
                 </div>
@@ -579,8 +658,8 @@ export default function App() {
                     onClick=${() => setActiveDivision(div.id)}
                     className=${`px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-150 cursor-pointer ${
                       isSelected 
-                        ? 'bg-emerald-600 text-white shadow-xs border border-emerald-500/40' 
-                        : 'bg-white dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200/80 dark:border-zinc-700/60'
+                        ? 'bg-purple-600 text-white shadow-xs border border-purple-500/40' 
+                        : 'bg-white dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200/80 dark:border-zinc-700/60 hover:border-purple-300'
                     }`}
                   >
                     ${div.label}
@@ -886,7 +965,7 @@ export default function App() {
               }}
               className=${`flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${
                 isActive
-                  ? 'text-emerald-600 dark:text-emerald-400 font-black bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20'
+                  ? 'text-purple-600 dark:text-purple-400 font-black bg-purple-500/10 dark:bg-purple-500/15 border border-purple-500/20'
                   : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 font-bold'
               }`}
             >

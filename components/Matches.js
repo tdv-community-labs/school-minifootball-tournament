@@ -255,7 +255,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
               onClick=${() => setSelectedStage(st.id)}
               className=${`px-4 py-2 rounded-xl text-xs font-extrabold tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer ${
                 selectedStage === st.id 
-                  ? 'bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 font-black shadow-xs border border-zinc-200/80 dark:border-zinc-700/80' 
+                  ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 font-black shadow-xs border border-purple-200/80 dark:border-purple-800/80' 
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
               }`}
             >
@@ -269,7 +269,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         ${isLoading ? html`
           <div className="col-span-1 md:col-span-2 text-center py-16 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800">
-            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-emerald-500 mx-auto mb-3"></div>
+            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-600 mx-auto mb-3"></div>
             <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400">${lang === 'az' ? 'Oyunlar yüklənir...' : 'Loading matches...'}</p>
           </div>
         ` : filteredMatches.length === 0 
@@ -290,13 +290,13 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
               <div 
                 key=${match.id}
                 onClick=${() => setSelectedMatch(match)}
-                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/40 dark:hover:border-emerald-500/40 rounded-3xl overflow-hidden shadow-xs hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between"
+                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 dark:hover:border-purple-500/40 rounded-3xl overflow-hidden shadow-xs hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between"
               >
                 <!-- Match Card Top -->
                 <div className="p-4 sm:p-6 bg-zinc-50/50 dark:bg-zinc-900/60 border-b border-zinc-100 dark:border-zinc-800/60">
                   <div className="flex justify-between items-center mb-3 sm:mb-4 gap-2">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-[11px] sm:text-xs font-black text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
+                      <span className="text-[11px] sm:text-xs font-black text-purple-700 dark:text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
                         ${match.stage}
                       </span>
                       ${match.videoTitle && html`
@@ -406,7 +406,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                       ${match.playerStats?.length || 0} Oyunçu reytinqi
                     </span>
                   </div>
-                  <span className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-extrabold transition-colors flex items-center space-x-1.5">
+                  <span className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-extrabold transition-colors flex items-center space-x-1.5">
                     <span>Sofascore Analizi</span>
                     <i className="fas fa-chevron-right text-[9px]"></i>
                   </span>

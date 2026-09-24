@@ -536,7 +536,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             onClick=${() => setViewMode('table')}
             className=${`px-4 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wide transition-all whitespace-nowrap flex items-center space-x-2 cursor-pointer ${
               viewMode === 'table' 
-                ? 'bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-xs border border-zinc-200/80 dark:border-zinc-700/80 font-black' 
+                ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 shadow-xs border border-purple-200/80 dark:border-purple-800/80 font-black' 
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
@@ -548,7 +548,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             onClick=${() => setViewMode('bracket')}
             className=${`px-4 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wide transition-all whitespace-nowrap flex items-center space-x-2 cursor-pointer ${
               viewMode === 'bracket' 
-                ? 'bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-xs border border-zinc-200/80 dark:border-zinc-700/80 font-black' 
+                ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 shadow-xs border border-purple-200/80 dark:border-purple-800/80 font-black' 
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
@@ -571,7 +571,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 onClick=${() => setSelectedGroup('ALL')}
                 className=${`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer ${
                   selectedGroup === 'ALL'
-                    ? 'bg-emerald-600 text-white shadow-xs'
+                    ? 'bg-purple-600 text-white shadow-xs'
                     : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/70 dark:hover:bg-zinc-800'
                 }`}
               >
@@ -583,7 +583,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   onClick=${() => setSelectedGroup(grp)}
                   className=${`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition flex items-center gap-2 cursor-pointer ${
                     selectedGroup === grp
-                      ? 'bg-emerald-600 text-white shadow-xs'
+                      ? 'bg-purple-600 text-white shadow-xs'
                       : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/70 dark:hover:bg-zinc-800'
                   }`}
                 >

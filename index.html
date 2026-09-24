@@ -43,46 +43,76 @@
       try {
         const theme = localStorage.getItem('btl_theme') || localStorage.getItem('tdv_theme') || 'system';
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (theme === 'dark' || (theme === 'system' && prefersDark)) {
+        const isDark = theme === 'dark' || (theme === 'system' && prefersDark);
+        if (isDark) {
           document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+          document.documentElement.style.colorScheme = 'dark';
         } else {
           document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+          document.documentElement.style.colorScheme = 'light';
         }
       } catch (e) {}
     })();
+  </script>
 
-    // 2. Pre-configure Tailwind CDN
-    window.tailwind = {
-      config: {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'system-ui', 'sans-serif'],
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#faf5ff',
+              100: '#f3e8ff',
+              200: '#e9d5ff',
+              300: '#d8b4fe',
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7e22ce',
+              800: '#6b21a8',
+              900: '#581c87',
+              950: '#3b0764',
             },
-            colors: {
-              zinc: {
-                950: '#09090b',
-                900: '#18181b',
-                800: '#27272a',
-                700: '#3f3f46',
-                600: '#52525b',
-                500: '#71717a',
-                400: '#a1a1aa',
-                300: '#d4d4d8',
-                200: '#e4e4e7',
-                100: '#f4f4f5',
-                50: '#fafafa',
-              }
+            purple: {
+              50: '#faf5ff',
+              100: '#f3e8ff',
+              200: '#e9d5ff',
+              300: '#d8b4fe',
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7e22ce',
+              800: '#6b21a8',
+              900: '#581c87',
+              950: '#3b0764',
+            },
+            zinc: {
+              950: '#09090b',
+              900: '#18181b',
+              800: '#27272a',
+              700: '#3f3f46',
+              600: '#52525b',
+              500: '#71717a',
+              400: '#a1a1aa',
+              300: '#d4d4d8',
+              200: '#e4e4e7',
+              100: '#f4f4f5',
+              50: '#fafafa',
             }
           }
         }
       }
     };
   </script>
-
-  <!-- Tailwind CSS Play CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- ESM Import Maps for compile-free React & HTM -->
   <script type="importmap">
@@ -95,7 +125,7 @@
     }
   </script>
 </head>
-<body class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-200 font-sans">
+<body class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased selection:bg-purple-600 selection:text-white transition-colors duration-200 font-sans">
   <!-- TDV Community Labs Ecosystem Global Bar -->
   <aside id="tdv-ecosystem-topbar" aria-label="TDV Community Labs Ecosystem Bar" class="bg-white/95 dark:bg-zinc-950/95 border-b border-zinc-200 dark:border-zinc-800 py-1.5 px-3 sm:px-4 text-[11px] sticky top-0 z-50 transition-colors duration-200 shadow-sm" style="font-family: 'Inter', system-ui, sans-serif;">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
