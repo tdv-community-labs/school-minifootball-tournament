@@ -25,7 +25,8 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
   const [activeTab, setActiveTab] = useState('shotmap'); // 'shotmap' | 'lineup' | 'heatmap' | 'stats' | 'video'
   const [selectedShotIndex, setSelectedShotIndex] = useState(0);
   const [shotFilter, setShotFilter] = useState('all'); // 'all' | 'goal' | 'saved' | 'teamA' | 'teamB'
-  const [heatmapFilter, setHeatmapFilter] = useState('all'); // 'all' | 'teamA' | 'teamB'
+  const [heatmapFilter, setHeatmapFilter] = useState('all'); // 'all' | 'teamA' | 'teamB' | 'player'
+  const [selectedHeatmapPlayer, setSelectedHeatmapPlayer] = useState('Murad Abdullayev');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [copyFeedback, setCopyFeedback] = useState(false);
 
@@ -672,35 +673,53 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
           <!-- TAB 2: 5V5 HEYƏT VƏ DÜZÜLÜŞ (LINEUP) -->
           <!-- ================================================================= -->
           ${activeTab === 'lineup' && html`
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
+            <div className="space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-[10px] font-black uppercase tracking-wider mb-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Rəsmi 5v5 Minifutbol Standartı
+                  </div>
                   <h3 className="text-sm font-black uppercase tracking-wider text-purple-300 flex items-center gap-2">
-                    <i className="fas fa-users text-emerald-400"></i> Minifutbol Taktiki Düzülüşü (5+1 Formatı)
+                    <i className="fas fa-users text-emerald-400"></i> 5v5 Minifutbol Taktiki Düzülüşü (1-2-1 Romb)
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Meydança üzərində hər iki komandanın 5 oyunçusu və qapıçısı, fərdi Sofascore reytinqləri ilə</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Meydançada hər komandadan 5 oyunçu (1 Qapıçı + 4 Sahə Oyunçusu) və ehtiyat skamyası</p>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-bold">
-                  <span className="flex items-center gap-1 text-red-400">● ${match.teamA}</span>
+                <div className="flex items-center gap-2 text-xs font-bold bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
+                  <span className="flex items-center gap-1.5 text-red-400 font-black"><span className="w-2.5 h-2.5 rounded-full bg-red-500"></span> ${match.teamA}</span>
                   <span className="text-slate-500">vs</span>
-                  <span className="flex items-center gap-1 text-sky-400">● ${match.teamB}</span>
+                  <span className="flex items-center gap-1.5 text-sky-400 font-black"><span className="w-2.5 h-2.5 rounded-full bg-sky-500"></span> ${match.teamB}</span>
                 </div>
               </div>
 
               <!-- Horizontal Full Pitch (Minifootball 40m x 20m) -->
               <div 
-                className="w-full h-96 sm:h-[440px] bg-gradient-to-r from-[#0d2a1b] via-[#143e27] to-[#0d2a1b] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-2xl p-4"
+                className="w-full h-96 sm:h-[440px] bg-gradient-to-r from-[#0a2316] via-[#123823] to-[#0a2316] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-2xl p-4"
                 style=${{ touchAction: 'pan-y' }}
               >
-                <!-- Pitch Markings -->
-                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r-2 border-white/40"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-36 rounded-full border-2 border-white/40"></div>
+                <!-- Authentic Turf Mowing Stripes (Qazon Zolaqları) -->
+                <div className="absolute inset-0 opacity-15 pointer-events-none" style=${{
+                  backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 40px, transparent 40px, transparent 80px)'
+                }}></div>
+
+                <!-- Pitch Markings (5v5 Futsal / Minifootball Standard: 40m x 20m) -->
+                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r-2 border-white/50"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-white/50"></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white shadow-xs"></div>
 
-                <div className="absolute left-0 top-1/4 bottom-1/4 w-24 sm:w-32 border-r-2 border-y-2 border-white/50 bg-white/5"></div>
-                <div className="absolute right-0 top-1/4 bottom-1/4 w-24 sm:w-32 border-l-2 border-y-2 border-white/50 bg-white/5"></div>
+                <!-- 6m Curved Penalty Arcs (D-Qövsü) -->
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-28 sm:w-36 h-48 sm:h-56 border-r-2 border-y-2 border-white/50 rounded-r-full bg-white/5 pointer-events-none"></div>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-28 sm:w-36 h-48 sm:h-56 border-l-2 border-y-2 border-white/50 rounded-l-full bg-white/5 pointer-events-none"></div>
 
-                <!-- Team A Lineup (Red) -->
+                <!-- 6m Penalty Kick Spots -->
+                <div className="absolute top-1/2 left-[15%] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow pointer-events-none" title="6m Penalti Nöqtəsi"></div>
+                <div className="absolute top-1/2 right-[15%] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow pointer-events-none" title="6m Penalti Nöqtəsi"></div>
+
+                <!-- 3m x 2m Goal Nets -->
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full w-4 h-24 border-y-2 border-l-2 border-white/80 bg-white/10 rounded-l"></div>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full w-4 h-24 border-y-2 border-r-2 border-white/80 bg-white/10 rounded-r"></div>
+
+                <!-- Team A Lineup (Red - 5 Players in 1-2-1 Diamond) -->
                 ${analytics.lineupA.map(p => html`
                   <div
                     key=${p.id}
@@ -709,7 +728,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group transition-transform hover:scale-125 z-20"
                   >
                     <div className="relative">
-                      <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-red-600 text-white font-black text-xs sm:text-sm flex items-center justify-center border-2 border-white shadow-xl group-hover:ring-2 group-hover:ring-emerald-400">
+                      <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-red-600 text-white font-black text-xs sm:text-sm flex items-center justify-center border-2 border-white shadow-xl group-hover:ring-2 group-hover:ring-purple-400">
                         ${p.number}
                       </div>
                       <span className=${`absolute -bottom-1 -right-1 text-[9px] sm:text-[10px] font-black px-1 sm:px-1.5 py-0.2 rounded-md shadow-md ${getSofascoreBadgeStyle(p.rating)}`}>
@@ -720,11 +739,11 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     <span className="text-[10px] sm:text-xs font-extrabold text-white mt-1 drop-shadow-md text-center max-w-[90px] truncate">
                       ${p.name}
                     </span>
-                    <span className="text-[8px] sm:text-[9px] font-bold text-red-200 opacity-80">${p.pos}</span>
+                    <span className="text-[8px] sm:text-[9px] font-bold text-red-200 opacity-90">${p.roleName || p.pos}</span>
                   </div>
                 `)}
 
-                <!-- Team B Lineup (Sky) -->
+                <!-- Team B Lineup (Sky - 5 Players in 1-2-1 Diamond) -->
                 ${analytics.lineupB.map(p => html`
                   <div
                     key=${p.id}
@@ -733,7 +752,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-pointer group transition-transform hover:scale-125 z-20"
                   >
                     <div className="relative">
-                      <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-sky-600 text-white font-black text-xs sm:text-sm flex items-center justify-center border-2 border-white shadow-xl group-hover:ring-2 group-hover:ring-emerald-400">
+                      <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-sky-600 text-white font-black text-xs sm:text-sm flex items-center justify-center border-2 border-white shadow-xl group-hover:ring-2 group-hover:ring-purple-400">
                         ${p.number}
                       </div>
                       <span className=${`absolute -bottom-1 -right-1 text-[9px] sm:text-[10px] font-black px-1 sm:px-1.5 py-0.2 rounded-md shadow-md ${getSofascoreBadgeStyle(p.rating)}`}>
@@ -743,36 +762,106 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     <span className="text-[10px] sm:text-xs font-extrabold text-white mt-1 drop-shadow-md text-center max-w-[90px] truncate">
                       ${p.name}
                     </span>
-                    <span className="text-[8px] sm:text-[9px] font-bold text-sky-200 opacity-80">${p.pos}</span>
+                    <span className="text-[8px] sm:text-[9px] font-bold text-sky-200 opacity-90">${p.roleName || p.pos}</span>
                   </div>
                 `)}
+
+                <div className="absolute bottom-3 left-4 bg-black/75 backdrop-blur-md px-3 py-1 rounded-xl text-[10px] font-bold text-slate-300 border border-slate-800">
+                  Formasiya: 1-2-1 Romb (GK + 1 Fix + 2 Ala + 1 Pivot)
+                </div>
+              </div>
+
+              <!-- Substitutes Bench (Ehtiyat Skamyası) -->
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Team A Bench -->
+                <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5">
+                  <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-xs">
+                    <span className="font-black text-red-400 flex items-center gap-1.5">
+                      <i className="fas fa-chair text-slate-500"></i> ${match.teamA} Ehtiyat Skamyası
+                    </span>
+                    <span className="text-[10px] font-bold text-slate-400">${(analytics.benchA || []).length} Oyunçu</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    ${(analytics.benchA || []).length === 0 ? html`
+                      <span className="text-xs text-slate-500 italic py-1">Ehtiyat oyunçu qeyd olunmayıb</span>
+                    ` : analytics.benchA.map(sub => html`
+                      <div key=${sub.id} className="flex items-center gap-2 bg-slate-800/80 px-2.5 py-1.5 rounded-xl border border-slate-700/60">
+                        <span className="w-5 h-5 rounded-full bg-red-600/30 text-red-300 border border-red-500/40 text-[10px] font-black flex items-center justify-center">
+                          ${sub.number}
+                        </span>
+                        <span className="text-xs font-bold text-white">${sub.name}</span>
+                        <span className=${`text-[9px] font-black px-1 py-0.2 rounded ${getSofascoreBadgeStyle(sub.rating)}`}>
+                          ${sub.rating}
+                        </span>
+                      </div>
+                    `)}
+                  </div>
+                </div>
+
+                <!-- Team B Bench -->
+                <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5">
+                  <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-xs">
+                    <span className="font-black text-sky-400 flex items-center gap-1.5">
+                      <i className="fas fa-chair text-slate-500"></i> ${match.teamB} Ehtiyat Skamyası
+                    </span>
+                    <span className="text-[10px] font-bold text-slate-400">${(analytics.benchB || []).length} Oyunçu</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    ${(analytics.benchB || []).length === 0 ? html`
+                      <span className="text-xs text-slate-500 italic py-1">Ehtiyat oyunçu qeyd olunmayıb</span>
+                    ` : analytics.benchB.map(sub => html`
+                      <div key=${sub.id} className="flex items-center gap-2 bg-slate-800/80 px-2.5 py-1.5 rounded-xl border border-slate-700/60">
+                        <span className="w-5 h-5 rounded-full bg-sky-600/30 text-sky-300 border border-sky-500/40 text-[10px] font-black flex items-center justify-center">
+                          ${sub.number}
+                        </span>
+                        <span className="text-xs font-bold text-white">${sub.name}</span>
+                        <span className=${`text-[9px] font-black px-1 py-0.2 rounded ${getSofascoreBadgeStyle(sub.rating)}`}>
+                          ${sub.rating}
+                        </span>
+                      </div>
+                    `)}
+                  </div>
+                </div>
               </div>
 
               <!-- Player Detail Card when clicked -->
               ${selectedPlayer && html`
-                <div className="bg-slate-900 border border-purple-700/60 rounded-2xl p-4 flex items-center justify-between gap-4 animate-fadeIn">
+                <div className="bg-slate-900/95 border border-purple-500/50 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fadeIn shadow-xl">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-purple-900 text-white font-black text-base flex items-center justify-center border border-purple-500">
+                    <div className="w-12 h-12 rounded-2xl bg-purple-900/80 text-white font-black text-lg flex items-center justify-center border border-purple-500 shadow-md">
                       ${selectedPlayer.number}
                     </div>
                     <div>
-                      <h4 className="text-sm font-black text-white flex items-center gap-2">
+                      <h4 className="text-sm sm:text-base font-black text-white flex items-center gap-2">
                         <span>${selectedPlayer.name}</span>
-                        <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-bold">${selectedPlayer.pos}</span>
+                        <span className="text-[10px] bg-purple-950 text-purple-300 border border-purple-800 px-2 py-0.5 rounded font-bold">${selectedPlayer.roleName || selectedPlayer.pos}</span>
                       </h4>
-                      <p className="text-xs text-slate-400 font-semibold">
-                        ${selectedPlayer.goals ? `⚽ ${selectedPlayer.goals} Qol ` : ''}
-                        ${selectedPlayer.assists ? `👟 ${selectedPlayer.assists} Ötürmə ` : ''}
-                        ${selectedPlayer.saves ? `🧤 ${selectedPlayer.saves} Qapıçı Seyvi ` : ''}
+                      <p className="text-xs text-slate-400 font-semibold mt-0.5">
+                        ${selectedPlayer.goals ? `⚽ ${selectedPlayer.goals} Qol  ` : ''}
+                        ${selectedPlayer.assists ? `👟 ${selectedPlayer.assists} Ötürmə  ` : ''}
+                        ${selectedPlayer.saves ? `🧤 ${selectedPlayer.saves} Qapıçı Seyvi  ` : ''}
                         ${selectedPlayer.redCard ? `🟥 Qırmızı Vərəqə (${selectedPlayer.redCard})` : ''}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-400 font-bold">Sofascore Reytinqi:</span>
-                    <span className=${`text-sm font-black px-3 py-1 rounded-xl shadow-lg ${getSofascoreBadgeStyle(selectedPlayer.rating)}`}>
-                      ${selectedPlayer.rating}
-                    </span>
+                  <div className="flex items-center gap-3 self-end sm:self-auto">
+                    <button
+                      onClick=${() => {
+                        setHeatmapFilter('player');
+                        setSelectedHeatmapPlayer(selectedPlayer.name);
+                        setActiveTab('heatmap');
+                      }}
+                      className="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black text-xs transition cursor-pointer flex items-center gap-1.5 shadow-md shadow-purple-600/20 active:scale-95"
+                    >
+                      <i className="fas fa-fire-flame-curved text-amber-300"></i>
+                      <span>İstilik Xəritəsində Bax</span>
+                    </button>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs text-slate-400 font-bold hidden sm:inline">Reytinq:</span>
+                      <span className=${`text-sm font-black px-3 py-1 rounded-xl shadow-lg ${getSofascoreBadgeStyle(selectedPlayer.rating)}`}>
+                        ${selectedPlayer.rating}
+                      </span>
+                    </div>
                   </div>
                 </div>
               `}
@@ -783,75 +872,351 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
           <!-- TAB 3: İSTİLİK XƏRİTƏSİ (HEATMAP) -->
           <!-- ================================================================= -->
           ${activeTab === 'heatmap' && html`
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="space-y-5">
+              <!-- Top Header & Heatmap Filters -->
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                 <div>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-[10px] font-black uppercase tracking-wider mb-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
+                    Termal Sensor • 40m × 20m 5v5 Arena
+                  </div>
                   <h3 className="text-sm font-black uppercase tracking-wider text-purple-300 flex items-center gap-2">
-                    <i className="fas fa-fire-flame-curved text-red-500"></i> Meydança İstilik Xəritəsi (Pitch Heatmap)
+                    <i className="fas fa-fire-flame-curved text-red-500"></i> Meydança İstilik Xəritəsi & Taktiki Zonalar
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Komandaların təzyiq, hücum sıxlığı və əks-hücum zonaları</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Komandaların təzyiq sıxlığı, cinah hücumları və fərdi oyunçu hərəkət radiusu</p>
                 </div>
 
-                <!-- Filter Selector -->
-                <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 p-1 rounded-xl">
+                <!-- Filter Selector Tabs -->
+                <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 p-1 rounded-2xl flex-wrap">
                   <button
                     onClick=${() => setHeatmapFilter('all')}
-                    className=${`px-3 py-1 text-xs font-black rounded-lg transition cursor-pointer ${
-                      heatmapFilter === 'all' ? 'bg-purple-900 text-white shadow' : 'text-slate-400 hover:text-white'
+                    className=${`px-3 py-1.5 text-xs font-black rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
+                      heatmapFilter === 'all' ? 'bg-purple-900 text-white shadow-md shadow-purple-900/30' : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    Ümumi
+                    <span>Ümumi</span>
                   </button>
                   <button
                     onClick=${() => setHeatmapFilter('teamA')}
-                    className=${`px-3 py-1 text-xs font-black rounded-lg transition cursor-pointer ${
-                      heatmapFilter === 'teamA' ? 'bg-red-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                    className=${`px-3 py-1.5 text-xs font-black rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
+                      heatmapFilter === 'teamA' ? 'bg-red-600 text-white shadow-md shadow-red-600/30' : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    ${match.teamA} Təzyiqi
+                    <span className="w-2 h-2 rounded-full bg-white"></span>
+                    <span>${match.teamA}</span>
                   </button>
                   <button
                     onClick=${() => setHeatmapFilter('teamB')}
-                    className=${`px-3 py-1 text-xs font-black rounded-lg transition cursor-pointer ${
-                      heatmapFilter === 'teamB' ? 'bg-sky-600 text-white shadow' : 'text-slate-400 hover:text-white'
+                    className=${`px-3 py-1.5 text-xs font-black rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
+                      heatmapFilter === 'teamB' ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30' : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    ${match.teamB} Əks-hücum
+                    <span className="w-2 h-2 rounded-full bg-white"></span>
+                    <span>${match.teamB}</span>
+                  </button>
+                  <button
+                    onClick=${() => setHeatmapFilter('player')}
+                    className=${`px-3 py-1.5 text-xs font-black rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
+                      heatmapFilter === 'player' ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <i className="fas fa-user text-[11px]"></i>
+                    <span>Oyunçu</span>
                   </button>
                 </div>
               </div>
 
-              <!-- Heatmap Pitch Canvas -->
+              <!-- Individual Player Selector (When 'player' filter is active) -->
+              ${heatmapFilter === 'player' && html`
+                <div className="bg-slate-900/95 border border-slate-800 rounded-2xl p-3 sm:p-4 space-y-3 animate-fadeIn">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-extrabold text-slate-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <i className="fas fa-hand-pointer text-amber-400"></i> Fərdi Taktiki İstilik Xəritəsi Üçün Oyunçu Seçin:
+                    </span>
+                    <span className="text-[10px] text-purple-400 font-bold">5v5 Heyətlər</span>
+                  </div>
+
+                  <!-- Player Chips: Team A & Team B starting 5 -->
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                    ${[...analytics.lineupA, ...analytics.lineupB].map(p => {
+                      const isA = analytics.lineupA.some(a => a.id === p.id);
+                      const isSelected = selectedHeatmapPlayer === p.name;
+                      return html`
+                        <button
+                          key=${p.id}
+                          onClick=${() => setSelectedHeatmapPlayer(p.name)}
+                          className=${`px-2.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer border ${
+                            isSelected
+                              ? 'bg-purple-600 text-white border-purple-400 shadow-md scale-105 ring-2 ring-purple-400/40'
+                              : isA
+                              ? 'bg-red-950/40 text-red-200 border-red-800/60 hover:bg-red-900/40'
+                              : 'bg-sky-950/40 text-sky-200 border-sky-800/60 hover:bg-sky-900/40'
+                          }`}
+                        >
+                          <span className=${`w-4 h-4 rounded-full text-[9px] flex items-center justify-center font-bold ${
+                            isA ? 'bg-red-500 text-white' : 'bg-sky-500 text-white'
+                          }`}>
+                            ${p.number}
+                          </span>
+                          <span className="truncate max-w-[110px] sm:max-w-none">${p.name}</span>
+                          <span className="text-[9px] opacity-75 font-normal">(${p.pos})</span>
+                        </button>
+                      `;
+                    })}
+                  </div>
+
+                  <!-- Selected Player Performance & Movement Metrics -->
+                  ${(() => {
+                    const heatData = analytics.heatmapData?.playerHeatmaps?.[selectedHeatmapPlayer];
+                    if (!heatData) return null;
+                    return html`
+                      <div className="mt-2 pt-3 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+                        <div className="bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/50">
+                          <span className="text-[10px] font-bold text-slate-400 block uppercase">Taktiki Mövqe</span>
+                          <span className="text-xs font-black text-amber-300 mt-0.5 block truncate">${heatData.role}</span>
+                        </div>
+                        <div className="bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/50">
+                          <span className="text-[10px] font-bold text-slate-400 block uppercase">Topla Təmas</span>
+                          <span className="text-xs font-black text-emerald-400 mt-0.5 block">${heatData.touches} Təmas</span>
+                        </div>
+                        <div className="bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/50">
+                          <span className="text-[10px] font-bold text-slate-400 block uppercase">Döyüşlərdə Qələbə</span>
+                          <span className="text-xs font-black text-sky-300 mt-0.5 block">${heatData.duelsWon}</span>
+                        </div>
+                        <div className="bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/50">
+                          <span className="text-[10px] font-bold text-slate-400 block uppercase">Maks. Sürət</span>
+                          <span className="text-xs font-black text-purple-300 mt-0.5 block">${heatData.maxSpeed}</span>
+                        </div>
+                      </div>
+                    `;
+                  })()}
+                </div>
+              `}
+
+              <!-- Authentic 5v5 Minifootball Pitch (40m x 20m) with HD Thermal Heatmap -->
               <div 
-                className="w-full h-80 sm:h-96 bg-[#0e2c1d] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-2xl flex items-center justify-center"
+                className="w-full h-84 sm:h-[420px] bg-gradient-to-r from-[#071d12] via-[#0d2a1b] to-[#071d12] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-2xl flex items-center justify-center p-4"
                 style=${{ touchAction: 'pan-y' }}
               >
-                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r-2 border-white/40"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-white/40"></div>
-                <div className="absolute left-0 top-1/4 bottom-1/4 w-24 sm:w-32 border-r-2 border-y-2 border-white/50"></div>
-                <div className="absolute right-0 top-1/4 bottom-1/4 w-24 sm:w-32 border-l-2 border-y-2 border-white/50"></div>
+                <!-- Alternating Mower Turf Stripes -->
+                <div className="absolute inset-0 opacity-15 pointer-events-none" style=${{
+                  backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 40px, transparent 40px, transparent 80px)'
+                }}></div>
 
-                <!-- Team A Heat (Red / Orange) -->
-                ${(heatmapFilter === 'all' || heatmapFilter === 'teamA') && html`
-                  <div>
-                    <div className="absolute right-14 top-1/3 w-36 h-36 rounded-full bg-red-600/50 blur-2xl pointer-events-none animate-pulse"></div>
-                    <div className="absolute right-8 top-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-amber-400/60 blur-xl pointer-events-none"></div>
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-44 h-32 rounded-full bg-red-500/40 blur-2xl pointer-events-none"></div>
-                    <div className="absolute right-28 top-1/4 w-28 h-28 rounded-full bg-rose-500/40 blur-xl pointer-events-none"></div>
+                <!-- Standard 5v5 Pitch Markings -->
+                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r-2 border-white/50"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-2 border-white/50"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-white shadow-xs"></div>
+
+                <!-- 6m Curved D-Box Penalty Areas -->
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-28 sm:w-36 h-48 sm:h-56 border-r-2 border-y-2 border-white/50 rounded-r-full bg-white/5 pointer-events-none"></div>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-28 sm:w-36 h-48 sm:h-56 border-l-2 border-y-2 border-white/50 rounded-l-full bg-white/5 pointer-events-none"></div>
+
+                <!-- 6m & 10m Penalty Spots -->
+                <div className="absolute top-1/2 left-[15%] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/80 pointer-events-none"></div>
+                <div className="absolute top-1/2 right-[15%] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/80 pointer-events-none"></div>
+
+                <!-- DYNAMIC MULTI-TIER THERMAL HEATMAP LAYERS -->
+                ${(() => {
+                  let points = [];
+                  if (heatmapFilter === 'all') {
+                    points = [
+                      ...(analytics.heatmapData?.teamA || []).map(p => ({ ...p, color: 'red' })),
+                      ...(analytics.heatmapData?.teamB || []).map(p => ({ ...p, color: 'blue' }))
+                    ];
+                  } else if (heatmapFilter === 'teamA') {
+                    points = (analytics.heatmapData?.teamA || []).map(p => ({ ...p, color: 'red' }));
+                  } else if (heatmapFilter === 'teamB') {
+                    points = (analytics.heatmapData?.teamB || []).map(p => ({ ...p, color: 'blue' }));
+                  } else if (heatmapFilter === 'player') {
+                    const pHeat = analytics.heatmapData?.playerHeatmaps?.[selectedHeatmapPlayer];
+                    points = (pHeat?.points || []).map(p => ({ ...p, color: pHeat.team === match.teamA ? 'red' : 'blue' }));
+                  }
+
+                  return html`
+                    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                      ${points.map((pt, i) => {
+                        const isRed = pt.color === 'red';
+                        const size = pt.radius * 2;
+                        return html`
+                          <div
+                            key=${`heat_${i}`}
+                            style=${{
+                              left: `${pt.x}%`,
+                              top: `${pt.y}%`,
+                              width: `${size}px`,
+                              height: `${size}px`,
+                              transform: 'translate(-50%, -50%)',
+                            }}
+                            className="absolute rounded-full"
+                          >
+                            <!-- Core Hot Spot -->
+                            <div className=${`w-full h-full rounded-full blur-2xl opacity-80 ${
+                              isRed 
+                                ? 'bg-gradient-to-tr from-rose-600 via-amber-500 to-yellow-300' 
+                                : 'bg-gradient-to-tr from-blue-600 via-cyan-400 to-emerald-300'
+                            }`}></div>
+                            <!-- Concentrated Pulse Center -->
+                            <div className=${`absolute inset-1/4 rounded-full blur-xl opacity-90 animate-pulse ${
+                              isRed ? 'bg-red-500' : 'bg-cyan-400'
+                            }`}></div>
+                          </div>
+                        `;
+                      })}
+                    </div>
+                  `;
+                })()}
+
+                <!-- Player Active Territory Center Tag (In Player Mode) -->
+                ${heatmapFilter === 'player' && html`
+                  <div className="absolute top-4 left-4 bg-slate-950/85 backdrop-blur-md border border-purple-500/50 px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span className="text-xs font-black text-white">${selectedHeatmapPlayer}</span>
+                    <span className="text-[10px] text-purple-300 font-bold">
+                      ${analytics.heatmapData?.playerHeatmaps?.[selectedHeatmapPlayer]?.dominantZone || 'Meydança Mərkəzi'}
+                    </span>
                   </div>
                 `}
 
-                <!-- Team B Heat (Cyan / Blue) -->
-                ${(heatmapFilter === 'all' || heatmapFilter === 'teamB') && html`
-                  <div>
-                    <div className="absolute left-20 top-1/4 w-32 h-32 rounded-full bg-cyan-400/40 blur-2xl pointer-events-none"></div>
-                    <div className="absolute left-10 top-1/2 -translate-y-1/2 w-28 h-28 rounded-full bg-blue-600/50 blur-xl pointer-events-none"></div>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 w-20 h-28 rounded-full bg-sky-400/50 blur-lg pointer-events-none"></div>
-                  </div>
-                `}
+                <div className="absolute bottom-3 right-4 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl text-[10px] font-bold text-slate-300 border border-slate-800 shadow-md">
+                  Minifutbol Meydançası (40m × 20m) • 5v5
+                </div>
 
-                <div className="absolute bottom-3 right-4 bg-black/70 backdrop-blur-md px-3 py-1 rounded-xl text-[10px] font-bold text-slate-300">
-                  TDV BTL Minifutbol Meydançası (40m × 20m)
+                <!-- Heat Intensity Color Legend -->
+                <div className="absolute bottom-3 left-4 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-800 shadow-md flex items-center gap-2 text-[10px] font-bold text-slate-300">
+                  <span className="text-[9px] uppercase tracking-wider text-slate-400">İntensivlik:</span>
+                  <div className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500" title="Zəif"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" title="Orta"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400" title="Yüksək"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" title="Maksimal Təzyiq"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TACTICAL ATTACK CHANNELS & THIRD TERRITORY BARS -->
+              ${(() => {
+                const zones = analytics.heatmapData?.tacticalZones || {
+                  flanksA: { left: 34, center: 48, right: 18 },
+                  flanksB: { left: 45, center: 36, right: 19 },
+                  thirdsA: { def: 20, mid: 42, att: 38 },
+                  thirdsB: { def: 42, mid: 36, att: 22 }
+                };
+
+                return html`
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Flank Attack Distribution -->
+                    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-3">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h4 className="text-xs font-black uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
+                          <i className="fas fa-arrows-split-up-and-left text-emerald-400"></i> Cinah Hücum Kanalları (Flanks)
+                        </h4>
+                        <span className="text-[10px] text-slate-400 font-bold">${match.teamA} vs ${match.teamB}</span>
+                      </div>
+
+                      <div className="space-y-2.5 text-xs">
+                        <!-- Left Flank -->
+                        <div>
+                          <div className="flex justify-between items-center font-bold mb-1 text-[11px]">
+                            <span className="text-red-400 font-black">${zones.flanksA.left}%</span>
+                            <span className="text-slate-300">Sol Cinah (Left Channel)</span>
+                            <span className="text-sky-400 font-black">${zones.flanksB.left}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 h-2 rounded-full flex overflow-hidden">
+                            <div className="bg-red-500 h-full" style=${{ width: `${zones.flanksA.left}%` }}></div>
+                            <div className="bg-sky-500 h-full" style=${{ width: `${zones.flanksB.left}%` }}></div>
+                          </div>
+                        </div>
+
+                        <!-- Center -->
+                        <div>
+                          <div className="flex justify-between items-center font-bold mb-1 text-[11px]">
+                            <span className="text-red-400 font-black">${zones.flanksA.center}%</span>
+                            <span className="text-slate-300 font-black text-amber-300">Mərkəz / Göbək (Center)</span>
+                            <span className="text-sky-400 font-black">${zones.flanksB.center}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 h-2 rounded-full flex overflow-hidden">
+                            <div className="bg-red-500 h-full" style=${{ width: `${zones.flanksA.center}%` }}></div>
+                            <div className="bg-sky-500 h-full" style=${{ width: `${zones.flanksB.center}%` }}></div>
+                          </div>
+                        </div>
+
+                        <!-- Right Flank -->
+                        <div>
+                          <div className="flex justify-between items-center font-bold mb-1 text-[11px]">
+                            <span className="text-red-400 font-black">${zones.flanksA.right}%</span>
+                            <span className="text-slate-300">Sağ Cinah (Right Channel)</span>
+                            <span className="text-sky-400 font-black">${zones.flanksB.right}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 h-2 rounded-full flex overflow-hidden">
+                            <div className="bg-red-500 h-full" style=${{ width: `${zones.flanksA.right}%` }}></div>
+                            <div className="bg-sky-500 h-full" style=${{ width: `${zones.flanksB.right}%` }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Pitch Thirds Control -->
+                    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-3">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <h4 className="text-xs font-black uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
+                          <i className="fas fa-layer-group text-sky-400"></i> Meydança Zonaları Nəzarəti (Thirds)
+                        </h4>
+                        <span className="text-[10px] text-slate-400 font-bold">Sahə Təzyiqi</span>
+                      </div>
+
+                      <div className="space-y-2.5 text-xs">
+                        <div>
+                          <div className="flex justify-between items-center font-bold mb-1 text-[11px]">
+                            <span className="text-red-400 font-black">${zones.thirdsA.def}%</span>
+                            <span className="text-slate-300">Müdafiə Zonası (Defensive 3rd)</span>
+                            <span className="text-sky-400 font-black">${zones.thirdsB.def}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 h-2 rounded-full flex overflow-hidden">
+                            <div className="bg-red-500 h-full" style=${{ width: `${zones.thirdsA.def}%` }}></div>
+                            <div className="bg-sky-500 h-full" style=${{ width: `${zones.thirdsB.def}%` }}></div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between items-center font-bold mb-1 text-[11px]">
+                            <span className="text-red-400 font-black">${zones.thirdsA.mid}%</span>
+                            <span className="text-slate-300">Mərkəz Keçid (Middle 3rd)</span>
+                            <span className="text-sky-400 font-black">${zones.thirdsB.mid}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 h-2 rounded-full flex overflow-hidden">
+                            <div className="bg-red-500 h-full" style=${{ width: `${zones.thirdsA.mid}%` }}></div>
+                            <div className="bg-sky-500 h-full" style=${{ width: `${zones.thirdsB.mid}%` }}></div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between items-center font-bold mb-1 text-[11px]">
+                            <span className="text-red-400 font-black">${zones.thirdsA.att}%</span>
+                            <span className="text-slate-300">Hücum & Qapı Önü (Attacking 3rd)</span>
+                            <span className="text-sky-400 font-black">${zones.thirdsB.att}%</span>
+                          </div>
+                          <div className="w-full bg-slate-800 h-2 rounded-full flex overflow-hidden">
+                            <div className="bg-red-500 h-full" style=${{ width: `${zones.thirdsA.att}%` }}></div>
+                            <div className="bg-sky-500 h-full" style=${{ width: `${zones.thirdsB.att}%` }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              })()}
+
+              <!-- 5v5 Minifootball Tactical Guide Banner -->
+              <div className="p-4 rounded-2xl bg-purple-950/40 border border-purple-800/50 flex items-start gap-3 text-xs text-purple-200">
+                <i className="fas fa-info-circle text-purple-400 text-base shrink-0 mt-0.5"></i>
+                <div className="space-y-1">
+                  <span className="font-black uppercase tracking-wider text-purple-300 block">
+                    5v5 Minifutbol Taktiki İcmalı:
+                  </span>
+                  <p className="leading-relaxed font-medium">
+                    TDV BTL turnirində oyunlar rəsmi 40m × 20m meydançada 5v5 formatında keçirilir. Komandalar 1-2-1 Romb (Futsal) sistemi ilə oynayaraq yüksək temp, sürətli cinah hücumları və cərimə qövsü önündə sıx presinq tətbiq edirlər. Yuxarıdakı istilik xəritəsi zərbə və topla təmas koordinatlarının dəqiq termal paylanmasını əks etdirir.
+                  </p>
                 </div>
               </div>
             </div>
@@ -868,7 +1233,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   <span className="font-black text-sm text-red-400">${match.teamA}</span>
                 </div>
                 <h4 className="text-xs font-black uppercase tracking-wider text-purple-300 text-center">
-                  Rəsmi Matç Müqayisəsi (Sofascore)
+                  Rəsmi Matç Müqayisəsi (Sofascore 5v5)
                 </h4>
                 <div className="flex items-center gap-2">
                   <span className="font-black text-sm text-sky-400">${match.teamB}</span>
@@ -885,9 +1250,9 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   { label: 'Qapıçı Qurtarışları (Seyv)', a: stats.gkSavesA || 0, b: stats.gkSavesB || 0 },
                   { label: 'Real Qol Epizodları (Big Chances)', a: stats.bigChancesA || 0, b: stats.bigChancesB || 0 },
                   { label: 'Topa Sahib Olma (%)', a: `${stats.possessionA || 50}%`, b: `${stats.possessionB || 50}%`, isPct: true },
-                  { label: 'Qət edilən məsafə', a: stats.distanceCoveredA || '92.9 km', b: stats.distanceCoveredB || '92.5 km', isString: true },
-                  { label: 'Dəqiq Ötürmələr', a: stats.passesA || 320, b: stats.passesB || 290 },
-                  { label: 'Top Alma Uğuru (Tackles)', a: stats.tacklesA || 14, b: stats.tacklesB || 12 },
+                  { label: 'Qət edilən məsafə (5v5)', a: stats.distanceCoveredA || '13.4 km', b: stats.distanceCoveredB || '12.8 km', isString: true },
+                  { label: 'Dəqiq Ötürmələr', a: stats.passesA || 215, b: stats.passesB || 168 },
+                  { label: 'Top Alma Uğuru (Tackles)', a: stats.tacklesA || 14, b: stats.tacklesB || 18 },
                   { label: 'Künc Zərbələri', a: stats.cornersA || 5, b: stats.cornersB || 4 },
                   { label: 'Qayda Pozuntuları (Follar)', a: stats.foulsA || 11, b: stats.foulsB || 5 }
                 ].map(item => {

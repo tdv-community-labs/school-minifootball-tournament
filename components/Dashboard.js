@@ -20,6 +20,7 @@ import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle } from '../services/database.js';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, isMatchDivision } from '../services/i18n.js';
+import MatchAnalyticsModal from './MatchAnalyticsModal.js';
 
 const html = htm.bind(React.createElement);
 
@@ -37,10 +38,13 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
   const [topScorers, setTopScorers] = useState([]);
   const [topAssists, setTopAssists] = useState([]);
   const [recentMatches, setRecentMatches] = useState([]);
+  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [allPlayersList, setAllPlayersList] = useState([]);
 
   useEffect(() => {
     const loadDashboardData = async () => {
       const allPlayers = await db.getPlayers(activeYear);
+      setAllPlayersList(allPlayers || []);
       const allMatches = await db.getMatches(activeYear);
       const standings = await db.getStandings(activeDivision, activeYear);
 
@@ -104,13 +108,16 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
           <img src="assets/tdv-logo.jpg" alt="" className="w-48 h-48 rounded-full object-cover filter brightness-125" />
         </div>
         <div className="relative z-10 max-w-2xl">
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-500/25 border border-purple-400/40 px-3 py-1 text-xs font-bold text-purple-200 uppercase tracking-widest">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               ${fallbackGetDivisionLabel(activeDivision, lang)}
             </span>
             <span className="inline-block rounded-full bg-amber-500/20 border border-amber-400/30 px-3 py-1 text-xs font-bold text-amber-300 uppercase tracking-widest">
               TDV BTL LİQA
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-purple-600/30 border border-purple-400/50 px-3 py-1 text-xs font-bold text-purple-200 uppercase tracking-widest">
+              <span>⚡</span> 5v5 Minifutbol
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">
@@ -230,14 +237,19 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                   </div>
                 ` 
               : recentMatches.map(match => html`
-                  <div key=${match.id} className="p-3 sm:p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 hover:bg-purple-50/40 dark:hover:bg-zinc-800/80 border border-zinc-200/60 dark:border-zinc-700/60 transition-colors flex justify-between items-center gap-2">
+                  <div 
+                    key=${match.id} 
+                    onClick=${() => setSelectedMatch(match)}
+                    className="p-3 sm:p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 hover:bg-purple-50/50 dark:hover:bg-zinc-800/80 border border-zinc-200/60 dark:border-zinc-700/60 hover:border-purple-400/50 dark:hover:border-purple-500/50 transition-all flex justify-between items-center gap-2 cursor-pointer group shadow-2xs hover:shadow-xs"
+                    title=${lang === 'az' ? '5v5 Matç Analizi və İstilik Xəritəsinə bax' : 'View 5v5 Match Analytics & Heatmap'}
+                  >
                     <span className="text-[9px] sm:text-[10px] font-black text-purple-700 dark:text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-lg uppercase whitespace-nowrap shrink-0">
                       ${match.stage}
                     </span>
                     <div className="flex flex-col items-center justify-center flex-1 min-w-0">
                       <div className="flex items-center justify-center space-x-2 sm:space-x-4 w-full">
                         <span className="font-extrabold text-xs sm:text-sm md:text-base text-zinc-900 dark:text-zinc-100 w-12 sm:w-16 text-right truncate">${match.teamA}</span>
-                        <div className="bg-zinc-900 dark:bg-zinc-950 text-white border border-zinc-700/50 rounded-lg px-2.5 sm:px-3 py-0.5 sm:py-1 font-black text-xs sm:text-sm md:text-base shadow-xs shrink-0">
+                        <div className="bg-zinc-900 dark:bg-zinc-950 text-white border border-zinc-700/50 group-hover:border-purple-500/60 rounded-lg px-2.5 sm:px-3 py-0.5 sm:py-1 font-black text-xs sm:text-sm md:text-base shadow-xs shrink-0 transition-colors">
                           ${match.scoreA} - ${match.scoreB}
                         </div>
                         <span className="font-extrabold text-xs sm:text-sm md:text-base text-zinc-900 dark:text-zinc-100 w-12 sm:w-16 text-left truncate">${match.teamB}</span>
@@ -246,7 +258,13 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                         <span className="text-[8px] sm:text-[9px] text-purple-600 dark:text-purple-400 font-extrabold mt-0.5">${t('penaltyShootout')} ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
                       `}
                     </div>
-                    <span className="text-xs text-zinc-400 dark:text-zinc-500 hidden md:inline shrink-0">${match.date || t('dateNotSet')}</span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-xs text-zinc-400 dark:text-zinc-500 hidden md:inline shrink-0">${match.date || t('dateNotSet')}</span>
+                      <span className="px-2 py-1 rounded-lg bg-purple-500/10 group-hover:bg-purple-600 group-hover:text-white text-purple-600 dark:text-purple-400 text-[10px] font-black border border-purple-500/20 transition-all flex items-center gap-1 shadow-2xs">
+                        <i className="fas fa-fire-alt text-[9px]"></i>
+                        <span className="hidden sm:inline">5v5</span> Analiz
+                      </span>
+                    </div>
                   </div>
                 `)}
           </div>
@@ -335,6 +353,17 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
         </div>
 
       </div>
+
+      <!-- Match Details & Sofascore Analytics Modal (Shotmap, Goal POV, 5v5 Heatmap & Lineup) -->
+      ${Boolean(selectedMatch) && html`
+        <${MatchAnalyticsModal}
+          match=${selectedMatch}
+          isOpen=${Boolean(selectedMatch)}
+          onClose=${() => setSelectedMatch(null)}
+          allPlayers=${allPlayersList}
+          lang=${lang}
+        />
+      `}
     </div>
   `;
 }

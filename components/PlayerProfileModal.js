@@ -169,6 +169,113 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
               </div>
             </div>
 
+            <!-- 5v5 Minifootball Positional Territory & Career Heatmap -->
+            ${(() => {
+              const isKeeper = Boolean(profile.isKeeper);
+              const posStr = (profile.positions || []).join(' ').toLowerCase();
+              const isDef = !isKeeper && /müdafiə|df|arxa|fix/i.test(posStr);
+              const isMid = !isKeeper && !isDef && /yarımmüdafiə|mf|orta|cinah|ala/i.test(posStr);
+              const isFwd = !isKeeper && !isDef && !isMid; // default striker/pivot
+
+              const roleTitle = isKeeper 
+                ? (lang === 'az' ? 'Qapıçı (GK)' : 'Goalkeeper')
+                : isDef
+                ? (lang === 'az' ? 'Müdafiəçi / Son Adam (Fix)' : 'Defender / Anchor')
+                : isMid
+                ? (lang === 'az' ? 'Yarımmüdafiəçi / Cinah (Ala)' : 'Midfielder / Wing')
+                : (lang === 'az' ? 'Mərkəz Hücumçu (Pivot)' : 'Striker / Pivot');
+
+              const zoneDesc = isKeeper
+                ? (lang === 'az' ? '6-metrlik cərimə qövsü və qapı xətti mühafizəsi' : '6m penalty arc and goal line command')
+                : isDef
+                ? (lang === 'az' ? 'Müdafiə üçdə-biri və geridən oyun quruculuğu' : 'Defensive third and deep playmaking')
+                : isMid
+                ? (lang === 'az' ? 'Orta xətt, keçid kanalları və cinah reydləri' : 'Midfield transition channels and wing runs')
+                : (lang === 'az' ? 'Rəqib cərimə sahəsi, 90-a zərbələr və bitiricilik' : 'Opponent box, finishing and target hold-up');
+
+              return html`
+                <div className="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60 p-4 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-700/60">
+                    <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white flex items-center gap-1.5">
+                      <i className="fas fa-fire-flame-curved text-red-500"></i>
+                      <span>${lang === 'az' ? '5v5 Meydança İştirakı və Mövqe Xəritəsi' : '5v5 Positional Territory & Career Heatmap'}</span>
+                    </h4>
+                    <span className="text-[10px] font-bold text-purple-600 dark:text-purple-400 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-full uppercase tracking-wider self-start sm:self-auto">
+                      40m × 20m 5v5 Arena
+                    </span>
+                  </div>
+
+                  <!-- Mini 5v5 Pitch with Positional Thermal Heat Layer -->
+                  <div className="w-full h-36 sm:h-44 bg-gradient-to-r from-[#0a2316] via-[#123823] to-[#0a2316] rounded-xl border border-emerald-500/50 relative overflow-hidden flex items-center justify-center p-2 shadow-inner">
+                    <!-- Turf Stripes -->
+                    <div className="absolute inset-0 opacity-15 pointer-events-none" style=${{
+                      backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 30px, transparent 30px, transparent 60px)'
+                    }}></div>
+
+                    <!-- 5v5 Pitch Lines -->
+                    <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0 border-r border-white/40"></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border border-white/40"></div>
+                    
+                    <!-- 6m D-Boxes -->
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-14 sm:w-18 h-24 sm:h-28 border-r border-y border-white/40 rounded-r-full bg-white/5"></div>
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-14 sm:w-18 h-24 sm:h-28 border-l border-y border-white/40 rounded-l-full bg-white/5"></div>
+
+                    <!-- Positional Heat Aura -->
+                    ${isKeeper && html`
+                      <div className="absolute left-6 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-amber-500/60 blur-xl animate-pulse pointer-events-none"></div>
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-red-600/70 blur-md pointer-events-none"></div>
+                    `}
+
+                    ${isDef && html`
+                      <div className="absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-24 rounded-full bg-rose-500/60 blur-xl animate-pulse pointer-events-none"></div>
+                      <div className="absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-amber-400/70 blur-md pointer-events-none"></div>
+                    `}
+
+                    ${isMid && html`
+                      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-28 rounded-full bg-purple-500/50 blur-xl animate-pulse pointer-events-none"></div>
+                      <div className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-24 h-16 rounded-full bg-amber-400/60 blur-md pointer-events-none"></div>
+                    `}
+
+                    ${isFwd && html`
+                      <div className="absolute right-8 top-1/2 -translate-y-1/2 w-28 h-24 rounded-full bg-rose-600/70 blur-xl animate-pulse pointer-events-none"></div>
+                      <div className="absolute right-12 top-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-yellow-400/80 blur-md pointer-events-none"></div>
+                    `}
+
+                    <!-- Center Badge -->
+                    <div className="absolute top-2 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10 text-[10px] font-black text-white flex items-center gap-1.5 shadow-sm">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                      <span>${roleTitle}</span>
+                    </div>
+
+                    <div className="absolute bottom-2 right-2.5 bg-black/75 backdrop-blur-md px-2 py-0.5 rounded text-[9px] font-bold text-slate-300">
+                      TDV BTL Minifutbol
+                    </div>
+                  </div>
+
+                  <!-- Tactical Info Sub-grid -->
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <div className="p-2.5 rounded-xl bg-zinc-100/70 dark:bg-zinc-700/40 border border-zinc-200/60 dark:border-zinc-600/40">
+                      <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase block">
+                        ${lang === 'az' ? 'Əsas Fəaliyyət Sahəsi' : 'Dominant Pitch Zone'}
+                      </span>
+                      <span className="text-xs font-black text-zinc-900 dark:text-white mt-0.5 block truncate">
+                        ${zoneDesc}
+                      </span>
+                    </div>
+
+                    <div className="p-2.5 rounded-xl bg-zinc-100/70 dark:bg-zinc-700/40 border border-zinc-200/60 dark:border-zinc-600/40">
+                      <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase block">
+                        ${lang === 'az' ? 'Taktiki Sistem' : 'Tactical System'}
+                      </span>
+                      <span className="text-xs font-black text-purple-600 dark:text-purple-400 mt-0.5 block truncate">
+                        5v5 (1-2-1 Romb / Futsal Qaydaları)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              `;
+            })()}
+
             <!-- Season Breakdown Table -->
             <div className="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60 p-4">
               <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white mb-3 flex items-center gap-1.5">

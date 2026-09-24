@@ -243,8 +243,13 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       <!-- Title & Filters -->
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-black text-zinc-900 dark:text-white font-sans">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">${lang === 'az' ? 'Mərhələlər üzrə oyunlar və Sofascore reytinqləri' : 'Stage fixtures and Sofascore player ratings'}</p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h2 className="text-2xl font-black text-zinc-900 dark:text-white font-sans">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
+            <span className="inline-flex items-center gap-1 rounded-full bg-purple-500/15 border border-purple-500/30 px-2.5 py-0.5 text-xs font-bold text-purple-700 dark:text-purple-300">
+              ⚡ 5v5 Minifutbol
+            </span>
+          </div>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">${lang === 'az' ? 'Mərhələlər üzrə 5v5 oyunlar və Sofascore reytinqləri' : 'Stage fixtures, 5v5 lineups and Sofascore ratings'}</p>
         </div>
         
         <!-- Stage Tabs -->
@@ -406,8 +411,9 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                       ${match.playerStats?.length || 0} Oyunçu reytinqi
                     </span>
                   </div>
-                  <span className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-extrabold transition-colors flex items-center space-x-1.5">
-                    <span>Sofascore Analizi</span>
+                  <span className="text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300 font-extrabold transition-colors flex items-center space-x-1.5">
+                    <i className="fas fa-fire-alt text-amber-500 text-[10px]"></i>
+                    <span>5v5 Analiz & Heatmap</span>
                     <i className="fas fa-chevron-right text-[9px]"></i>
                   </span>
                 </div>

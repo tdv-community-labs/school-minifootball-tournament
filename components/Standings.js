@@ -513,9 +513,12 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
       <!-- Top Title & View Switcher -->
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-wrap gap-y-1">
             <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-black text-xs px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-zinc-200 dark:border-zinc-700">
               ${getDivisionLabel(activeDivision)}
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-purple-500/15 border border-purple-500/30 px-2.5 py-0.5 text-xs font-bold text-purple-700 dark:text-purple-300">
+              ⚡ 5v5 Minifutbol
             </span>
             <span className="text-zinc-300 dark:text-zinc-700 text-xs">•</span>
             <span className="text-zinc-500 dark:text-zinc-400 text-xs font-bold">${activeYear}</span>
