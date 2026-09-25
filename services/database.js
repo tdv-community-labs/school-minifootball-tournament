@@ -59,7 +59,41 @@ export {
   getDivisionsForYear 
 };
 
+// ── In-memory + localStorage TTL Cache Layer ──────────────────────────────
+const _memCache = new Map(); // key -> { data, expiresAt }
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+function getCached(key) {
+  const entry = _memCache.get(key);
+  if (entry && entry.expiresAt > Date.now()) return entry.data;
+  _memCache.delete(key);
+  // Try localStorage fallback
+  try {
+    const lsVal = localStorage.getItem('tdv_cache_' + key);
+    if (lsVal) {
+      const parsed = JSON.parse(lsVal);
+      if (parsed.expiresAt > Date.now()) {
+        _memCache.set(key, parsed);
+        return parsed.data;
+      }
+    }
+  } catch {}
+  return null;
+}
+
+function setCached(key, data) {
+  const entry = { data, expiresAt: Date.now() + CACHE_TTL_MS };
+  _memCache.set(key, entry);
+  try { localStorage.setItem('tdv_cache_' + key, JSON.stringify(entry)); } catch {}
+}
+
+function invalidateCache(key) {
+  _memCache.delete(key);
+  try { localStorage.removeItem('tdv_cache_' + key); } catch {}
+}
+
 // Initialize Firebase if useRealFirebase toggle is true
+
 let firestore = null;
 if (useRealFirebase) {
   try {
@@ -852,6 +886,10 @@ export const db = {
 
   // Classes CRUD
   getClasses: async (year) => {
+    const cacheKey = 'classes_' + (year || 'all');
+    const cached = getCached(cacheKey);
+    if (cached) return cached;
+
     if (year && ARCHIVE_YEARS.includes(year)) {
       const archiveClasses = ARCHIVE_CLASSES.filter(c => c.year === year);
       let customClasses = [];
@@ -859,7 +897,9 @@ export const db = {
         const localClasses = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
         customClasses = localClasses.filter(c => c.year === year && c.isCustom);
       } catch (e) {}
-      return customClasses.length > 0 ? [...archiveClasses, ...customClasses] : archiveClasses;
+      const result = customClasses.length > 0 ? [...archiveClasses, ...customClasses] : archiveClasses;
+      setCached(cacheKey, result);
+      return result;
     }
 
     let list = [];
@@ -883,11 +923,16 @@ export const db = {
     const customClasses = list.filter(c => ARCHIVE_YEARS.includes(c.year) && c.isCustom);
     const combined = [...ARCHIVE_CLASSES, ...customClasses, ...nonArchiveClasses];
 
+    let result;
     if (year) {
-      return combined.filter(c => c.year === year);
+      result = combined.filter(c => c.year === year);
+    } else {
+      result = combined;
     }
-    return combined;
+    setCached(cacheKey, result);
+    return result;
   },
+
 
 
   addClass: async (cls) => {
@@ -906,6 +951,8 @@ export const db = {
     const classes = JSON.parse(localStorage.getItem('minifootball_classes') || '[]');
     classes.push(newClass);
     localStorage.setItem('minifootball_classes', JSON.stringify(classes));
+    invalidateCache('classes_all');
+    invalidateCache('classes_' + newClass.year);
     recalculateData();
     return newClass;
   },
@@ -922,12 +969,15 @@ export const db = {
     const classToDelete = classes.find(c => c.id === id);
     classes = classes.filter(c => c.id !== id);
     localStorage.setItem('minifootball_classes', JSON.stringify(classes));
-    
+    invalidateCache('classes_all');
     if (classToDelete) {
+      invalidateCache('classes_' + classToDelete.year);
       let players = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
       const playersToDelete = players.filter(p => p.class === classToDelete.name && p.year === classToDelete.year);
       players = players.filter(p => p.class !== classToDelete.name || p.year !== classToDelete.year);
       localStorage.setItem('minifootball_players', JSON.stringify(players));
+      invalidateCache('players_all');
+      invalidateCache('players_' + classToDelete.year);
 
       if (useRealFirebase && firestore) {
         try {
@@ -940,8 +990,13 @@ export const db = {
     recalculateData();
   },
 
+
   // Players CRUD
   getPlayers: async (year) => {
+    const cacheKey = 'players_' + (year || 'all');
+    const cached = getCached(cacheKey);
+    if (cached) return cached;
+
     if (year && ARCHIVE_YEARS.includes(year)) {
       const archivePlayers = ARCHIVE_PLAYERS.filter(p => p.year === year && !p.isOwnGoal && !/avtoqol|özünə qol|ö\.q|ozune qol/i.test(p.name || ''));
       let customPlayers = [];
@@ -949,8 +1004,11 @@ export const db = {
         const localPlayers = JSON.parse(localStorage.getItem('minifootball_players') || '[]');
         customPlayers = localPlayers.filter(p => p.year === year && p.isCustom);
       } catch (e) {}
-      return customPlayers.length > 0 ? [...archivePlayers, ...customPlayers] : archivePlayers;
+      const result = customPlayers.length > 0 ? [...archivePlayers, ...customPlayers] : archivePlayers;
+      setCached(cacheKey, result);
+      return result;
     }
+
 
     if (useRealFirebase && firestore) {
       console.log(`Firebase: Fetching players, classes, and matches for year: ${year || 'all'}...`);
@@ -1006,6 +1064,7 @@ export const db = {
           filtered = computed.players.filter(p => p.year === year);
         }
         console.log(`Firebase: Returning ${filtered.length} players for year ${year || 'all'}.`);
+        setCached(cacheKey, filtered);
         return filtered;
       } catch (err) {
         console.warn("Firebase: getPlayers failed or quota reached, falling back to local archive & storage:", err);
@@ -1019,6 +1078,7 @@ export const db = {
     if (year) {
       valid = valid.filter(p => p.year === year);
     }
+    setCached(cacheKey, valid);
     return valid;
   },
 
@@ -1040,6 +1100,7 @@ export const db = {
       ...player
     };
     if (useRealFirebase && firestore) {
+
       try {
         await setDoc(doc(firestore, "players", newPlayer.id), newPlayer);
       } catch (err) {

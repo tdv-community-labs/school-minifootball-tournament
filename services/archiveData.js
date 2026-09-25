@@ -1,5 +1,6 @@
+// Single source of truth: archive_2022_2023.json
+
 /**
- * ============================================================================
  * FAYL ADI: services/archiveData.js
  * MƏQSƏDİ: Turnirin Tarixi İllər Üzrə Statik Arxiv Bazası (2017-2024)
  * 

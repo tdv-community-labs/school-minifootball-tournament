@@ -12,3 +12,11 @@ package-lock.json
 .env.production.local
 *.env
 env.js
+
+# Python cache
+tools/__pycache__/
+*.pyc
+__pycache__/
+tools/__pycache__/
+*.pyc
+__pycache__/
