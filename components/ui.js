@@ -111,3 +111,5 @@ export const EmptyState = ({
     </div>
   `;
 };
+
+export const Skeleton = ({ className = 'h-4 w-full' }) => { return React.createElement('div', { className: 'skeleton-pulse rounded-md ' + className }); };
