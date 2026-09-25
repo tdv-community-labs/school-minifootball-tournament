@@ -83,10 +83,10 @@ export default function GlobalSearchModal({
 
   return html`
     <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-zinc-950/80 backdrop-blur-md flex items-start justify-center p-3 sm:p-6 pt-12 sm:pt-20 animate-fadeIn transition-colors duration-200"
+      className="fixed inset-0 z-50 overflow-y-auto bg-zinc-950/80 backdrop-blur-[16px] flex items-start justify-center p-3 sm:p-6 pt-12 sm:pt-20 transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] transition-colors duration-200"
       onClick=${(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl max-w-2xl w-full shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col max-h-[85vh] transition-colors duration-200">
+      <div className="bg-white dark:bg-zinc-900 rounded-[20px] max-w-2xl w-full shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col max-h-[85vh] transition-colors duration-200">
         
         <!-- Search Input Header -->
         <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-3 bg-zinc-50 dark:bg-zinc-950/60 transition-colors duration-200">
@@ -115,7 +115,7 @@ export default function GlobalSearchModal({
             </button>
           `}
 
-          <span className="hidden sm:inline text-[10px] font-black uppercase text-zinc-500 dark:text-zinc-400 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-md">
+          <span className="hidden sm:inline text-[10px] font-black uppercase text-zinc-500 dark:text-zinc-400 bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 rounded-[8px]">
             ESC
           </span>
         </div>
@@ -126,7 +126,7 @@ export default function GlobalSearchModal({
           <!-- Empty Query: Quick suggestions -->
           ${(!query || query.trim().length < 2) && html`
             <div className="py-6 text-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center mx-auto text-xl border border-purple-200 dark:border-purple-800/40">
+              <div className="w-12 h-12 rounded-[20px] bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center mx-auto text-xl border border-purple-200 dark:border-purple-800/40">
                 <i className="fas fa-bolt"></i>
               </div>
               <div>
@@ -145,7 +145,7 @@ export default function GlobalSearchModal({
                   <button
                     key=${tag}
                     onClick=${() => setQuery(tag)}
-                    className="bg-zinc-100 dark:bg-zinc-800 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-600 dark:hover:text-purple-300 text-zinc-700 dark:text-zinc-200 text-xs font-bold px-3 py-1 rounded-xl transition border border-zinc-200 dark:border-zinc-700 cursor-pointer"
+                    className="bg-zinc-100 dark:bg-zinc-800 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-600 dark:hover:text-purple-300 text-zinc-700 dark:text-zinc-200 text-xs font-bold px-3 py-1 rounded-[8px] transition border border-zinc-200 dark:border-zinc-700 cursor-pointer"
                   >
                     ${tag}
                   </button>
@@ -186,11 +186,11 @@ export default function GlobalSearchModal({
                       onClose();
                       if (onSelectPlayer) onSelectPlayer(p.name);
                     }}
-                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between gap-3 shadow-2xs"
+                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-[20px] border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between gap-3 shadow-2xs"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-10 h-10 rounded-xl bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center font-black text-sm shrink-0">
-                        ${p.isKeeper ? '🧤' : '🏃'}
+                      <div className="w-10 h-10 rounded-[8px] bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center font-black text-sm shrink-0">
+                        ${p.isKeeper ? '<span className="inline-block align-middle mr-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="inline-block opacity-80"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 11V4a2 2 0 0 0-4 0v7M10 11V5a2 2 0 0 0-4 0v6M6 11V7a2 2 0 0 0-4 0v9a8 8 0 0 0 16 0v-4a2 2 0 0 0-4 0v-1"></path></svg></span>' : '<span className="inline-block align-middle mr-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="inline-block opacity-80"><path d="M13 4v.01M14 8l3-3M9 9l3-4M14 8l-3 4-3-3M14 8v4l-4 4M9 17l2-4"></path></svg></span>'}
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5 flex-wrap">
@@ -209,11 +209,11 @@ export default function GlobalSearchModal({
 
                     <div className="flex items-center gap-2 shrink-0">
                       ${p.totalGoals > 0 && html`
-                        <span className="goal-badge px-2 py-0.5 rounded-lg text-xs font-black">
-                          ⚽ ${p.totalGoals}
+                        <span className="goal-badge px-2 py-0.5 rounded-[8px] text-xs font-black">
+                          <span className="inline-block align-middle mr-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="inline-block opacity-80"><circle cx="12" cy="12" r="10"/></svg></span> ${p.totalGoals}
                         </span>
                       `}
-                      <span className=${`text-xs font-black px-2 py-0.5 rounded-md ${getSofascoreBadgeStyle(p.overallRating)}`}>
+                      <span className=${`text-xs font-black px-2 py-0.5 rounded-[8px] ${getSofascoreBadgeStyle(p.overallRating)}`}>
                         ${p.overallRating}
                       </span>
                       <i className="fas fa-chevron-right text-[10px] text-zinc-400 group-hover:text-emerald-600 transition pl-1"></i>
@@ -243,11 +243,11 @@ export default function GlobalSearchModal({
                       onClose();
                       if (onSelectClass) onSelectClass(c.name, c.years[0], c.division);
                     }}
-                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-sky-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
+                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-sky-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-[20px] border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
                   >
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-950/70 text-sky-800 dark:text-sky-300 flex items-center justify-center font-black text-xs">
-                        🛡️
+                      <div className="w-8 h-8 rounded-[8px] bg-sky-100 dark:bg-sky-950/70 text-sky-800 dark:text-sky-300 flex items-center justify-center font-black text-xs">
+                        <span className="inline-block align-middle mr-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="inline-block opacity-80"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>
                       </div>
                       <div>
                         <h5 className="font-extrabold text-xs text-zinc-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition">
@@ -258,7 +258,7 @@ export default function GlobalSearchModal({
                         </p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-sky-700 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/50 px-2 py-0.5 rounded-md border border-sky-200 dark:border-sky-800/50">
+                    <span className="text-[10px] font-bold text-sky-700 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/50 px-2 py-0.5 rounded-[8px] border border-sky-200 dark:border-sky-800/50">
                       ${lang === 'az' ? 'Cədvələ Bax' : 'View'} →
                     </span>
                   </div>
@@ -286,7 +286,7 @@ export default function GlobalSearchModal({
                       onClose();
                       if (onSelectMatch) onSelectMatch(m);
                     }}
-                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-2xl border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
+                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-[20px] border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
                   >
                     <div>
                       <div className="flex items-center gap-2">
