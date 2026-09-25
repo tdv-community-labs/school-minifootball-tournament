@@ -6,7 +6,7 @@
  */
 
 const SESSION_KEY = 'tdv_ecosystem_session_v1';
-const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
+const BROKER_URL = 'https://tdv-hub.vercel.app/sso-broker.html';
 
 export const DEFAULT_SEEDED_USERS = [
   {
