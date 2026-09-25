@@ -1,11 +1,55 @@
 /**
  * TDV Community Labs - Vahid Ekosistem Profili və SSO Xidməti (Unified Ecosystem SSO)
- * TDV Sports (Futbol Turniri) üçün Vahid Sessiya İdarəedicisi
- * Tək bir profil bütün ekosistemə (E-School, TDV Sports, Games, Mafia) bəs edir!
+ * TDV Sports (Futbol Turniri) üçün Vahid Sessiya və İdentifikasiya İdarəedicisi
+ * Yalnız qeydiyyatdan keçmiş istifadəçilər daxil ola bilər.
+ * 1 Portalda daxil olduqda bütün digər portallarda (E-School, Sports, Hub, Games, Mafia) avtomatik aktiv qalır.
  */
 
 const SESSION_KEY = 'tdv_ecosystem_session_v1';
 const BROKER_URL = 'https://tdv-community-hubs.vercel.app/sso-broker.html';
+
+export const DEFAULT_SEEDED_USERS = [
+  {
+    userId: 'tdv-seed-orxan',
+    username: 'orxan',
+    fullName: 'Orxan Əliyev',
+    grade: 10,
+    schoolClass: '10A',
+    role: 'player',
+    pin: '1000',
+    avatar: '⚽'
+  },
+  {
+    userId: 'tdv-seed-murad',
+    username: 'murad',
+    fullName: 'Murad Məmmədov',
+    grade: 11,
+    schoolClass: '11B',
+    role: 'player',
+    pin: '1100',
+    avatar: '⚡'
+  },
+  {
+    userId: 'tdv-seed-elvin',
+    username: 'elvin_coach',
+    fullName: 'Elvin Müəllim',
+    grade: 0,
+    schoolClass: 'Məşqçi',
+    role: 'coach',
+    pin: '2026',
+    avatar: '👨‍🏫'
+  },
+  {
+    userId: 'tdv-seed-admin',
+    username: 'admin',
+    fullName: 'TDV İnzibatçı',
+    grade: 0,
+    schoolClass: 'Rəhbərlik',
+    role: 'admin',
+    pin: 'admin2026',
+    avatar: '👑'
+  }
+];
 
 let brokerIframe = null;
 let brokerReady = false;
@@ -73,6 +117,37 @@ export const authService = {
   },
 
   /**
+   * Qeydiyyatdan keçmiş bütün istifadəçiləri qaytarır (əgər yoxdursa ilkin baza toxumlarını qeyd edir)
+   */
+  getRegisteredUsers() {
+    if (typeof window === 'undefined') return DEFAULT_SEEDED_USERS;
+    try {
+      const raw = localStorage.getItem('tdv_registered_users_v1');
+      if (raw) {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list) && list.length > 0) return list;
+      }
+    } catch(e) {}
+    try {
+      localStorage.setItem('tdv_registered_users_v1', JSON.stringify(DEFAULT_SEEDED_USERS));
+    } catch(e) {}
+    return DEFAULT_SEEDED_USERS;
+  },
+
+  /**
+   * İstifadəçi adı və ya tam ada görə bazada axtarış aparır
+   */
+  findUser(query) {
+    if (!query) return null;
+    const clean = query.trim().toLowerCase();
+    const users = this.getRegisteredUsers();
+    return users.find(u =>
+      (u.username && u.username.toLowerCase() === clean) ||
+      (u.fullName && u.fullName.toLowerCase() === clean)
+    ) || null;
+  },
+
+  /**
    * Cari aktiv vahid profili oxuyur.
    */
   getSession() {
@@ -97,7 +172,7 @@ export const authService = {
           const cleanUrl = window.location.pathname + (newSearch ? '?' + newSearch : '') + window.location.hash;
           window.history.replaceState({}, document.title, cleanUrl);
           
-          sendToBroker({ type: 'TDV_SSO_SET', session: sessionData });
+          sendToBroker({ type: 'TDV_SSO_SET', session: sessionData, users: this.getRegisteredUsers() });
           this.updateOutboundLinks(sessionData);
           return sessionData;
         }
@@ -127,16 +202,31 @@ export const authService = {
 
   syncFromBroker() {
     if (typeof window === 'undefined') return;
-    const reqId = 'sync_sport_' + Date.now();
+    const reqId = 'sync_sport_' + Math.random().toString(36).slice(2);
 
     const handler = (e) => {
       if (!e.origin.includes('vercel.app') && !e.origin.includes('localhost')) return;
       if (e.data && e.data.type === 'TDV_SSO_DATA' && e.data.requestId === reqId) {
         window.removeEventListener('message', handler);
+        // İstifadəçi siyahısını birləşdir
+        if (e.data.users && Array.isArray(e.data.users) && e.data.users.length > 0) {
+          const currentUsers = this.getRegisteredUsers();
+          const userMap = new Map();
+          currentUsers.forEach(u => { if (u && u.username) userMap.set(u.username.toLowerCase(), u); });
+          e.data.users.forEach(u => { if (u && u.username) userMap.set(u.username.toLowerCase(), u); });
+          const merged = Array.from(userMap.values());
+          try {
+            localStorage.setItem('tdv_registered_users_v1', JSON.stringify(merged));
+          } catch(err) {}
+        }
+        // Aktiv sessiyanı qəbul et
         if (e.data.session) {
-          localStorage.setItem(SESSION_KEY, JSON.stringify(e.data.session));
-          this.updateOutboundLinks(e.data.session);
-          this.notify(e.data.session);
+          const current = localStorage.getItem(SESSION_KEY);
+          if (!current) {
+            localStorage.setItem(SESSION_KEY, JSON.stringify(e.data.session));
+            this.updateOutboundLinks(e.data.session);
+            this.notify(e.data.session);
+          }
         }
       }
     };
@@ -146,30 +236,44 @@ export const authService = {
   },
 
   /**
-   * Tək Vahid Profil ilə Daxilolma
+   * Tək Vahid Profil ilə Daxilolma - QEYDİYYAT VƏ ŞİFRƏ YOXLAMASI İLƏ
    */
   login(username, teamClass = '10A', pin = '', role = 'player') {
     const trimmed = (username || '').trim();
-    if (!trimmed) throw new Error('Zəhmət olmasa adınızı və ya istifadəçi adınızı daxil edin.');
+    if (!trimmed) throw new Error('Zəhmət olmasa istifadəçi adınızı və ya adınızı daxil edin.');
 
-    const cleanClass = teamClass || '10A';
-    const gradeMatch = cleanClass.match(/\d+/);
-    const grade = gradeMatch ? Number(gradeMatch[0]) : 10;
-    const avatar = role === 'coach' ? '👨‍🏫' : '⚽';
+    // 1. Qeydiyyat yoxlaması
+    const user = this.findUser(trimmed);
+    if (!user) {
+      throw new Error(`⚠️ '${trimmed}' adlı qeydiyyatdan keçmiş istifadəçi tapılmadı! Yalnız qeydiyyatdan keçmiş istifadəçilər daxil ola bilər. Zəhmət olmasa 'Qeydiyyat' bölməsindən profil yaradın.`);
+    }
+
+    // 2. PIN / Şifrə yoxlaması
+    const cleanPin = pin ? String(pin).trim() : (typeof teamClass === 'string' && /^\d{4}$/.test(teamClass) ? teamClass : '');
+    if (user.pin && user.pin.trim() !== '') {
+      if (!cleanPin || cleanPin !== user.pin.trim()) {
+        throw new Error('❌ Daxil edilmiş PIN kod və ya şifrə yanlışdır!');
+      }
+    }
+
+    const cleanClass = user.schoolClass || (typeof teamClass === 'string' && !/^\d{4}$/.test(teamClass) ? teamClass : '10A');
+    const grade = user.grade || (cleanClass.match(/\d+/) ? Number(cleanClass.match(/\d+/)[0]) : 10);
+    const finalRole = user.role || role || (cleanClass === 'Məşqçi' ? 'coach' : 'player');
+    const avatar = user.avatar || (finalRole === 'coach' ? '👨‍🏫' : '⚽');
 
     const session = {
-      userId: 'tdv-usr-' + Date.now().toString(36),
-      username: trimmed,
-      fullName: trimmed,
+      userId: user.userId || ('tdv-usr-' + Date.now().toString(36)),
+      username: user.username,
+      fullName: user.fullName || user.username,
       grade: grade,
       schoolClass: cleanClass,
-      role: role || 'player',
+      role: finalRole,
       avatar: avatar,
       ecosystem: {
         eschool: { active: true, grade: grade },
-        sports: { team: cleanClass, role: role || 'player' },
-        games: { nickname: trimmed },
-        mafia: { tier: 'TIER_1', roleTitle: 'Klub Oyunçusu' }
+        sports: { team: cleanClass, role: finalRole },
+        games: { nickname: user.username },
+        mafia: { tier: 'TIER_1', roleTitle: finalRole === 'coach' ? 'Məşqçi' : 'Klub Oyunçusu' }
       },
       token: 'tdv_token_' + Math.random().toString(36).substring(2) + Date.now().toString(36),
       createdAt: Date.now(),
@@ -178,7 +282,7 @@ export const authService = {
 
     try {
       localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-      sendToBroker({ type: 'TDV_SSO_SET', session: session });
+      sendToBroker({ type: 'TDV_SSO_SET', session: session, users: this.getRegisteredUsers() });
       this.updateOutboundLinks(session);
       this.notify(session);
     } catch (e) {}
@@ -193,25 +297,50 @@ export const authService = {
     const trimmedUser = (username || '').trim();
     const trimmedName = (fullName || '').trim() || trimmedUser;
     if (!trimmedUser) throw new Error('Zəhmət olmasa istifadəçi adı daxil edin.');
+    if (!trimmedName) throw new Error('Zəhmət olmasa ad və soyadınızı daxil edin.');
+
+    const cleanPin = String(pin || '').trim();
+    if (!cleanPin) {
+      throw new Error('Zəhmət olmasa hesabınız üçün 4 rəqəmli PIN kod və ya şifrə təyin edin.');
+    }
+
+    // Təkrarlanan istifadəçi adı yoxlaması
+    const existing = this.findUser(trimmedUser);
+    if (existing) {
+      throw new Error(`⚠️ '${trimmedUser}' istifadəçi adı artıq qeydiyyatdan keçib! Zəhmət olmasa 'Daxil Ol' bölməsinə keçin və ya fərqli ad seçin.`);
+    }
 
     const cleanClass = teamClass || '10A';
     const gradeMatch = cleanClass.match(/\d+/);
     const grade = gradeMatch ? Number(gradeMatch[0]) : 10;
-    const finalAvatar = avatar || (role === 'coach' ? '👨‍🏫' : '⚽');
+    const finalRole = role || (cleanClass === 'Məşqçi' ? 'coach' : 'player');
+    const finalAvatar = avatar || (finalRole === 'coach' ? '👨‍🏫' : '⚽');
 
-    const session = {
+    const newUser = {
       userId: 'tdv-usr-' + Date.now().toString(36),
       username: trimmedUser,
       fullName: trimmedName,
       grade: grade,
       schoolClass: cleanClass,
-      role: role || 'player',
+      role: finalRole,
+      avatar: finalAvatar,
+      pin: cleanPin,
+      createdAt: Date.now()
+    };
+
+    const session = {
+      userId: newUser.userId,
+      username: trimmedUser,
+      fullName: trimmedName,
+      grade: grade,
+      schoolClass: cleanClass,
+      role: finalRole,
       avatar: finalAvatar,
       ecosystem: {
         eschool: { active: true, grade: grade },
-        sports: { team: cleanClass, role: role || 'player' },
+        sports: { team: cleanClass, role: finalRole },
         games: { nickname: trimmedUser },
-        mafia: { tier: 'TIER_1', roleTitle: 'Klub Oyunçusu' }
+        mafia: { tier: 'TIER_1', roleTitle: finalRole === 'coach' ? 'Məşqçi' : 'Klub Oyunçusu' }
       },
       token: 'tdv_token_' + Math.random().toString(36).substring(2) + Date.now().toString(36),
       createdAt: Date.now(),
@@ -219,9 +348,8 @@ export const authService = {
     };
 
     try {
-      const regUsersRaw = localStorage.getItem('tdv_registered_users_v1');
-      const regUsers = regUsersRaw ? JSON.parse(regUsersRaw) : [];
-      regUsers.push({ ...session, pin: pin || '' });
+      const regUsers = this.getRegisteredUsers();
+      regUsers.push(newUser);
       localStorage.setItem('tdv_registered_users_v1', JSON.stringify(regUsers));
       localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 
@@ -235,12 +363,15 @@ export const authService = {
 
   loginWithDemo(type = 'player-10a') {
     if (type === 'player-11b') {
-      return this.login('Murad Məmmədov', '11B', '1100', 'player');
+      return this.login('murad', '11B', '1100', 'player');
     }
     if (type === 'coach') {
-      return this.login('Elvin Müəllim', 'Məşqçi', 'coach2026', 'coach');
+      return this.login('elvin_coach', 'Məşqçi', '2026', 'coach');
     }
-    return this.login('Orxan Əliyev', '10A', '1000', 'player');
+    if (type === 'admin') {
+      return this.login('admin', 'Rəhbərlik', 'admin2026', 'admin');
+    }
+    return this.login('orxan', '10A', '1000', 'player');
   },
 
   logout() {

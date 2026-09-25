@@ -177,9 +177,20 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
 
         <!-- Bildirişlər -->
         ${error && html`
-          <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/25 text-red-300 text-xs font-semibold flex items-center space-x-2 animate-fadeIn">
-            <i className="fas fa-triangle-exclamation text-red-400"></i>
-            <span>${error}</span>
+          <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-semibold flex flex-col gap-1.5 animate-fadeIn">
+            <div className="flex items-center space-x-2">
+              <i className="fas fa-triangle-exclamation text-red-400 shrink-0"></i>
+              <span className="leading-snug">${error}</span>
+            </div>
+            ${(error.includes('qeydiyyat tapılmadı') || error.includes('qeydiyyatdan keçməyib')) && html`
+              <button 
+                type="button" 
+                onClick=${() => { setTab('register'); setRegUsername(loginUsername); setRegFullName(loginUsername); setError(''); }}
+                className="self-start text-[11px] font-black text-amber-300 hover:text-amber-200 underline mt-0.5 cursor-pointer flex items-center gap-1"
+              >
+                <span>👉 İndi qeydiyyatdan keçin və vahid profil yaradın</span>
+              </button>
+            `}
           </div>
         `}
         ${successMsg && html`
