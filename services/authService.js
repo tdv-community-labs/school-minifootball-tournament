@@ -187,6 +187,14 @@ export const authService = {
       if (raw) {
         const session = JSON.parse(raw);
         if (session && session.expiresAt && session.expiresAt > Date.now()) {
+          // VACİB TƏMİZLƏMƏ: Əgər bu köhnə/keşdə qalmış 'ADMIN00' və s. qeydiyyatda olmayan xəyal hesabdırsa, dərhal sil!
+          const userExists = this.findUser(session.username);
+          if (!userExists) {
+            console.warn(`[SSO] Qeydiyyatda olmayan köhnə keş profili tapıldı (${session.username}), silinir və brokerdən yenilənir...`);
+            localStorage.removeItem(SESSION_KEY);
+            this.syncFromBroker();
+            return null;
+          }
           this.updateOutboundLinks(session);
           return session;
         } else if (session) {
@@ -213,19 +221,54 @@ export const authService = {
           const currentUsers = this.getRegisteredUsers();
           const userMap = new Map();
           currentUsers.forEach(u => { if (u && u.username) userMap.set(u.username.toLowerCase(), u); });
-          e.data.users.forEach(u => { if (u && u.username) userMap.set(u.username.toLowerCase(), u); });
+          e.data.users.forEach(u => { if (u && u.username) userMap.set(u.username.toLowerCase(), u)); });
           const merged = Array.from(userMap.values());
           try {
             localStorage.setItem('tdv_registered_users_v1', JSON.stringify(merged));
           } catch(err) {}
         }
-        // Aktiv sessiyanı qəbul et
+        
+        // Aktiv sessiyanı qəbul et və müqayisə et
         if (e.data.session) {
-          const current = localStorage.getItem(SESSION_KEY);
-          if (!current) {
+          const currentRaw = localStorage.getItem(SESSION_KEY);
+          let shouldUpdate = false;
+          if (!currentRaw) {
+            shouldUpdate = true;
+          } else {
+            try {
+              const currentObj = JSON.parse(currentRaw);
+              const currentValid = this.findUser(currentObj.username);
+              // Əgər cari lokal hesab bazada yoxdursa (məs: köhnə ADMIN00), dərhal brokerdəki yeni hesabla əvəzlə!
+              if (!currentValid) {
+                shouldUpdate = true;
+              } else if (currentObj.username !== e.data.session.username) {
+                // Fərqli hesab daxil olubsa və broker sessiyası daha yenidirsə
+                if (e.data.session.createdAt && (!currentObj.createdAt || e.data.session.createdAt >= currentObj.createdAt)) {
+                  shouldUpdate = true;
+                }
+              }
+            } catch(err) {
+              shouldUpdate = true;
+            }
+          }
+
+          if (shouldUpdate) {
             localStorage.setItem(SESSION_KEY, JSON.stringify(e.data.session));
             this.updateOutboundLinks(e.data.session);
             this.notify(e.data.session);
+          }
+        } else {
+          // Əgər brokerdə sessiya yoxdursa, amma lokaldakı hesab qeydiyyatsızdırsa, sil
+          const currentRaw = localStorage.getItem(SESSION_KEY);
+          if (currentRaw) {
+            try {
+              const currentObj = JSON.parse(currentRaw);
+              if (!this.findUser(currentObj.username)) {
+                localStorage.removeItem(SESSION_KEY);
+                this.updateOutboundLinks(null);
+                this.notify(null);
+              }
+            } catch(err) {}
           }
         }
       }
