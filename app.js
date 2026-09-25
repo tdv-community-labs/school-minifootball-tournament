@@ -374,10 +374,10 @@ export default function App() {
                 <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-700 via-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-purple-600/30 shrink-0 group-hover:scale-105 transition-transform">
                   <i className="fas fa-futbol text-lg text-white"></i>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h1 className="text-sm sm:text-base md:text-lg font-black tracking-wider text-zinc-900 dark:text-white uppercase whitespace-nowrap m-0">
-                      ${t('appTitle', lang)} <span className="text-purple-600 dark:text-purple-400 font-extrabold">${t('appSubtitle', lang)}</span>
+                    <h1 className="text-sm sm:text-base md:text-lg font-black tracking-wider text-zinc-900 dark:text-white uppercase truncate m-0">
+                      <span className="hidden sm:inline">${t('appTitle', lang)} </span><span className="text-purple-600 dark:text-purple-400 font-extrabold">${t('appSubtitle', lang)}</span>
                     </h1>
                     <span className="hidden sm:inline-block text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
                       LİQA
@@ -412,10 +412,10 @@ export default function App() {
             </nav>
 
             <!-- Right Controls: always visible (desktop + mobile) -->
-            <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
+            <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
               <!-- Active User Profile Chip & Logout -->
               ${userSession ? html`
-                <div className="flex items-center gap-1.5 sm:gap-2 bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] px-2.5 py-1 rounded-xl shadow-xs">
+                <div className="flex items-center gap-1 sm:gap-2 bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] px-2 sm:px-2.5 py-1 rounded-xl shadow-xs">
                   <span className="text-sm">${userSession.avatar || '⚽'}</span>
                   <div className="flex flex-col text-left leading-tight hidden md:flex">
                     <span className="text-[11px] font-black text-zinc-900 dark:text-zinc-100 truncate max-w-[100px]">${userSession.fullName || userSession.username}</span>
