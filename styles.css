@@ -1,3 +1,103 @@
+
+/* 
+  =============================================================
+  TDV ECOSYSTEM DESIGN TOKENS (Linear / Vercel / Stripe Grade)
+  =============================================================
+*/
+:root {
+  /* LIGHT MODE SURFACES (Alabaster & Pure White) */
+  --surface-bg: #F8FAFC;
+  --surface-card: #FFFFFF;
+  --surface-elevated: #F1F5F9;
+  
+  /* BORDERS */
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  
+  /* SHADOWS (Surface elevation, not heavy black boxes) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
+
+  /* SPRING PHYSICS & ANIMATIONS */
+  --transition-spring: 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-spring-slow: 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.dark {
+  /* DARK MODE SURFACES (Deep Charcoal / Slate) */
+  --surface-bg: #090A0F;
+  --surface-card: #0F1117;
+  --surface-elevated: #161922;
+  
+  /* BORDERS */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  
+  /* SHADOWS (Dark mode uses almost no shadow, relies on border & elevation) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* Base resets for optical perfection */
+body {
+  background-color: var(--surface-bg);
+  transition: background-color var(--transition-spring), color var(--transition-spring);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography refinements */
+.tabular-nums { font-variant-numeric: tabular-nums; }
+.tracking-tight { letter-spacing: -0.02em; }
+.max-w-65ch { max-width: 65ch; }
+
+/* Concentric Border Radius Utility Math */
+.radius-card { border-radius: 20px; padding: 12px; }
+.radius-inner { border-radius: 8px; /* 20 - 12 = 8 */ }
+
+/* Micro-interactions: Buttons */
+.btn-spring {
+  transition: all var(--transition-spring);
+}
+.btn-spring:active {
+  transform: scale(0.98);
+}
+
+/* Micro-interactions: Cards */
+.card-spring {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-spring);
+}
+.card-spring:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Skeleton Loading (No Layout Shifts) */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-pulse {
+  background: linear-gradient(90deg, var(--surface-elevated) 25%, var(--border-subtle) 50%, var(--surface-elevated) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: inherit;
+}
+
+/* Ensure minimum touch targets for mobile */
+@media (max-width: 768px) {
+  button, a.tap-target, .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 /* TDV Community Labs - Sports Minifootball Tournament
    Official Dual-Theme Design System (zinc-950 / zinc-50) & WCAG AA Contrast Standards */
 
