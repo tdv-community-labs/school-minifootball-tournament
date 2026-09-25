@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="az" class="max-w-[100vw] overflow-x-clip">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
   <meta name="supported-color-schemes" content="light dark">
   <title>TDV BTL Sports • Minifutbol Turniri</title>
@@ -141,7 +141,7 @@
     }
   </script>
 </head>
-<body class="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased selection:bg-purple-600 selection:text-white transition-colors duration-200 font-sans">
+<body class="min-h-[100dvh] max-w-[100vw] overflow-x-clip bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased selection:bg-purple-600 selection:text-white transition-colors duration-200 font-sans">
   <!-- TDV Community Labs Ecosystem Global Bar -->
   <aside id="tdv-ecosystem-topbar" aria-label="TDV Community Labs Ecosystem Bar" class="bg-white/95 dark:bg-zinc-950/95 border-b border-zinc-200 dark:border-zinc-800 py-1.5 px-3 sm:px-4 text-[11px] sticky top-0 z-50 transition-colors duration-200 shadow-sm" style="font-family: 'Inter', system-ui, sans-serif;">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
@@ -182,9 +182,9 @@
     </div>
   </aside>
 
-  <div id="root">
+  <div id="root" class="min-h-[100dvh] max-w-[100vw] overflow-x-clip flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
     <!-- Initial Spinner while modules load -->
-    <div class="min-h-screen flex flex-col items-center justify-center bg-zinc-950 text-white space-y-4">
+    <div class="min-h-[100dvh] flex flex-col items-center justify-center bg-zinc-950 text-white space-y-4">
       <div class="relative flex items-center justify-center">
         <div class="animate-spin rounded-full h-14 w-14 border-4 border-emerald-500/30 border-t-emerald-500"></div>
         <i class="fas fa-futbol absolute text-xl text-emerald-400"></i>

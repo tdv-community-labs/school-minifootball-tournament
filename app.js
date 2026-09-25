@@ -362,7 +362,7 @@ export default function App() {
   }
 
   return html`
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans flex flex-col transition-colors duration-200">
+    <div className="min-h-[100dvh] max-w-[100vw] overflow-x-clip bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans flex flex-col transition-colors duration-200">
       <!-- Top Premium Navbar (Branded TDV Sports) -->
       <header className="sticky top-[33px] sm:top-[35px] z-40 bg-white/90 dark:bg-[#09090b]/85 backdrop-blur-xl border-b border-zinc-200/80 dark:border-white/[0.08] transition-all duration-200 no-print flex flex-col">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full no-scrollbar">
@@ -694,7 +694,7 @@ export default function App() {
       </header>
 
       <!-- Main Content Area -->
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-28 sm:pb-8">
+      <main className="flex-1 min-w-0 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-28 sm:pb-8 overflow-x-clip">
         <${ErrorBoundary} key=${activeTab + '_' + activeDivision + '_' + activeYear}>
           ${renderContent()}
         </${ErrorBoundary}>
