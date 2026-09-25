@@ -38,6 +38,22 @@
       });
     }
 
+    // Safety net: catch any uncaught script or module errors and replace spinning loader
+    window.addEventListener('error', function(e) {
+      console.error('TDV Sports System Error:', e);
+      const root = document.getElementById('root');
+      if (root && root.innerHTML.includes('animate-spin')) {
+        root.innerHTML = `
+          <div class="min-h-screen flex flex-col items-center justify-center bg-zinc-950 text-white p-6 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-rose-500/20 text-rose-500 flex items-center justify-center text-2xl mb-4">⚠️</div>
+            <h1 class="text-lg font-bold mb-1">Məlumat Yüklənmə Bildirişi</h1>
+            <p class="text-xs text-zinc-400 max-w-md mb-4">${escapeHTML(e.message || 'Səhifə yenilənir...')}</p>
+            <button onclick="location.reload()" class="px-4 py-2 bg-emerald-600 rounded-xl text-xs font-bold hover:bg-emerald-500 transition cursor-pointer">Yenidən Yüklə</button>
+          </div>
+        `;
+      }
+    });
+
     // 1. Instant theme hydration to prevent FOUC
     (function() {
       try {
@@ -187,10 +203,25 @@
     import htm from 'htm';
     import App from './app.js';
 
-    const html = htm.bind(React.createElement);
-    const container = document.getElementById('root');
-    const root = createRoot(container);
-    root.render(html`<${App} />`);
+    try {
+      const html = htm.bind(React.createElement);
+      const container = document.getElementById('root');
+      const root = createRoot(container);
+      root.render(html`<${App} />`);
+    } catch (err) {
+      console.error('Fatal initialization error:', err);
+      const root = document.getElementById('root');
+      if (root) {
+        root.innerHTML = `
+          <div class="min-h-screen flex flex-col items-center justify-center bg-zinc-950 text-white p-6 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-rose-500/20 text-rose-500 flex items-center justify-center text-2xl mb-4">⚠️</div>
+            <h1 class="text-lg font-bold mb-1">Turnir Yüklənmə Bildirişi</h1>
+            <p class="text-xs text-zinc-400 max-w-md mb-4">${escapeHTML(err.message || 'Xəta baş verdi.')}</p>
+            <button onclick="location.reload()" class="px-4 py-2 bg-emerald-600 rounded-xl text-xs font-bold hover:bg-emerald-500 transition cursor-pointer">Yenidən Yüklə</button>
+          </div>
+        `;
+      }
+    }
   </script>
 </body>
 </html>

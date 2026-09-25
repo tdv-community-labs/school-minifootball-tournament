@@ -221,7 +221,7 @@ export const authService = {
           const currentUsers = this.getRegisteredUsers();
           const userMap = new Map();
           currentUsers.forEach(u => { if (u && u.username) userMap.set(u.username.toLowerCase(), u); });
-          e.data.users.forEach(u => { if (u && u.username) userMap.set(u.username.toLowerCase(), u)); });
+          e.data.users.forEach(u => { if (u && u.username) userMap.set(u.username.toLowerCase(), u); });
           const merged = Array.from(userMap.values());
           try {
             localStorage.setItem('tdv_registered_users_v1', JSON.stringify(merged));

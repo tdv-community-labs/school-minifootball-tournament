@@ -35,10 +35,10 @@ console.log('--- 1. JavaScript Syntax Verification ---');
 for (const file of filesToCheck) {
   if (fs.existsSync(file)) {
     try {
-      execSync(`node --check "${file}"`);
+      execSync(`node --experimental-vm-modules -e "const vm = require('vm'); const fs = require('fs'); new vm.SourceTextModule(fs.readFileSync('${file.replace(/\\/g, '/')}', 'utf8'));"`, { stdio: 'pipe' });
       console.log(`  ✓ ${file}`);
     } catch (e) {
-      console.error(`  ✗ ${file}: Syntax Error!`);
+      console.error(`  ✗ ${file}: Syntax Error!\n${e.stderr ? e.stderr.toString() : e.message}`);
       failed = true;
     }
   } else {
