@@ -500,67 +500,49 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       <!-- Title -->
       <div>
         <h2 className="text-2xl font-black text-purple-950 font-sans">Admin Panel</h2>
-        <p className="text-sm text-gray-500">TDV BTL Futbol Turnirinin idarə edilməsi</p>
+        <p className="text-sm text-gray-500 tabular-nums tracking-tight">TDV BTL Futbol Turnirinin idarə edilməsi</p>
       </div>
 
       <!-- Navigation Tabs -->
-      <div className="flex border-b border-gray-200 overflow-x-auto">
+      <div className="flex border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto">
         <button
           onClick=${() => setAdminTab('matches')}
-          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${
-            adminTab === 'matches' 
-              ? 'border-purple-900 text-purple-950' 
-              : 'border-transparent text-gray-500 hover:text-purple-950'
+          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${ adminTab === 'matches' ? 'border-purple-900 text-purple-950' : 'border-transparent text-gray-500 hover:text-purple-950 tabular-nums tracking-tight'
           }`}
         >
           Oyunlar / Hesablar
         </button>
         <button
           onClick=${() => setAdminTab('players')}
-          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${
-            adminTab === 'players' 
-              ? 'border-purple-900 text-purple-950' 
-              : 'border-transparent text-gray-500 hover:text-purple-950'
+          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${ adminTab === 'players' ? 'border-purple-900 text-purple-950' : 'border-transparent text-gray-500 hover:text-purple-950 tabular-nums tracking-tight'
           }`}
         >
           Oyunçular
         </button>
         <button
           onClick=${() => setAdminTab('classes')}
-          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${
-            adminTab === 'classes' 
-              ? 'border-purple-900 text-purple-950' 
-              : 'border-transparent text-gray-500 hover:text-purple-950'
+          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${ adminTab === 'classes' ? 'border-purple-900 text-purple-950' : 'border-transparent text-gray-500 hover:text-purple-950 tabular-nums tracking-tight'
           }`}
         >
           Siniflər
         </button>
         <button
           onClick=${() => setAdminTab('years')}
-          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${
-            adminTab === 'years' 
-              ? 'border-purple-900 text-purple-950' 
-              : 'border-transparent text-gray-500 hover:text-purple-950'
+          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${ adminTab === 'years' ? 'border-purple-900 text-purple-950' : 'border-transparent text-gray-500 hover:text-purple-950 tabular-nums tracking-tight'
           }`}
         >
           Tədris İlləri
         </button>
         <button
           onClick=${() => setAdminTab('system')}
-          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${
-            adminTab === 'system' 
-              ? 'border-purple-900 text-purple-950' 
-              : 'border-transparent text-gray-500 hover:text-purple-950'
+          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${ adminTab === 'system' ? 'border-purple-900 text-purple-950' : 'border-transparent text-gray-500 hover:text-purple-950 tabular-nums tracking-tight'
           }`}
         >
           Sistem
         </button>
         <button
           onClick=${() => setAdminTab('ai-doctor')}
-          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap flex items-center gap-1.5 ${
-            adminTab === 'ai-doctor' 
-              ? 'border-purple-900 text-purple-950 bg-purple-50/50' 
-              : 'border-transparent text-gray-500 hover:text-purple-950'
+          className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap flex items-center gap-1.5 ${ adminTab === 'ai-doctor' ? 'border-purple-900 text-purple-950 bg-purple-50/50' : 'border-transparent text-gray-500 hover:text-purple-950 tabular-nums tracking-tight'
           }`}
         >
           <i className="fas fa-robot text-purple-600"></i>
@@ -577,7 +559,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       ${adminTab === 'matches' && html`
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <!-- Left: Add/Edit Match form -->
-          <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+          <div className="lg:col-span-4 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">
               ${editingMatch ? 'Matçı Redaktə Et' : 'Yeni Matç Əlavə Et'}
             </h3>
@@ -587,7 +569,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <select
                   value=${matchForm.division}
                   onChange=${(e) => setMatchForm({ ...matchForm, division: e.target.value, teamA: '', teamB: '' })}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
                 >
                   <option value="6">6-cı Siniflər</option>
                   <option value="7">7-ci Siniflər</option>
@@ -605,7 +587,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <select
                   value=${matchForm.stage}
                   onChange=${(e) => setMatchForm({ ...matchForm, stage: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-purple-950"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                 >
                   <option value="Qrup Mərhələsi">Qrup Mərhələsi</option>
                   <option value="16/1 Final">16/1 Final</option>
@@ -624,7 +606,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     required
                     value=${matchForm.teamA}
                     onChange=${(e) => setMatchForm({ ...matchForm, teamA: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold"
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
                   >
                     <option value="">Seçin</option>
                     ${classesForSelectedMatchDivision.map(c => html`<option key=${c.id} value=${c.name}>${c.name}</option>`)}
@@ -636,7 +618,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     required
                     value=${matchForm.teamB}
                     onChange=${(e) => setMatchForm({ ...matchForm, teamB: e.target.value })}
-                    className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold"
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
                   >
                     <option value="">Seçin</option>
                     ${classesForSelectedMatchDivision.map(c => html`<option key=${c.id} value=${c.name}>${c.name}</option>`)}
@@ -653,7 +635,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     required
                     value=${matchForm.scoreA}
                     onChange=${(e) => setMatchForm({ ...matchForm, scoreA: Number(e.target.value) })}
-                    className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5"
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                   />
                 </div>
                 <div>
@@ -664,13 +646,13 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     required
                     value=${matchForm.scoreB}
                     onChange=${(e) => setMatchForm({ ...matchForm, scoreB: Number(e.target.value) })}
-                    className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5"
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                   />
                 </div>
               </div>
 
               ${matchForm.scoreA === matchForm.scoreB && html`
-                <div className="bg-purple-50 p-3 rounded-2xl border border-purple-100/50 space-y-2 animate-fadeIn">
+                <div className="bg-purple-50 p-2.5 rounded-2xl border border-purple-100/50 space-y-2 animate-fadeIn">
                   <p className="text-[9px] font-black text-purple-900 uppercase tracking-widest">Penaltilər (Heç-heçə)</p>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
@@ -680,7 +662,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                         min="0"
                         value=${matchForm.penaltyScoreA}
                         onChange=${(e) => setMatchForm({ ...matchForm, penaltyScoreA: e.target.value })}
-                        className="w-full bg-white border border-gray-200 text-xs rounded-xl p-2 text-center font-bold"
+                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5 text-center font-bold min-h-[44px] tabular-nums tracking-tight"
                       />
                     </div>
                     <div>
@@ -690,7 +672,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                         min="0"
                         value=${matchForm.penaltyScoreB}
                         onChange=${(e) => setMatchForm({ ...matchForm, penaltyScoreB: e.target.value })}
-                        className="w-full bg-white border border-gray-200 text-xs rounded-xl p-2 text-center font-bold"
+                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5 text-center font-bold min-h-[44px] tabular-nums tracking-tight"
                       />
                     </div>
                   </div>
@@ -703,7 +685,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   type="date"
                   value=${matchForm.date}
                   onChange=${(e) => setMatchForm({ ...matchForm, date: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                 />
               </div>
 
@@ -714,14 +696,14 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   placeholder="https://www.youtube.com/embed/..."
                   value=${matchForm.videoUrl}
                   onChange=${(e) => setMatchForm({ ...matchForm, videoUrl: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                 />
               </div>
 
               <div className="flex space-x-2 pt-2">
                 <button
                   type="submit"
-                  className="flex-1 bg-purple-900 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-purple-800 transition"
+                  className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] flex-1 bg-purple-900 text-white font-bold py-2.5 text-xs hover:bg-purple-800 transition tabular-nums tracking-tight"
                 >
                   ${editingMatch ? 'Yadda Saxla' : 'Matç Əlavə Et'}
                 </button>
@@ -732,7 +714,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                       setEditingMatch(false);
                       setMatchForm({ id: null, stage: 'Qrup Mərhələsi', division: '11', teamA: '', teamB: '', scoreA: 0, scoreB: 0, penaltyScoreA: '', penaltyScoreB: '', date: '', videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ' });
                     }}
-                    className="bg-gray-150 text-gray-700 font-bold py-2.5 px-4 rounded-xl text-xs hover:bg-gray-200 transition"
+                    className="bg-gray-150 text-gray-700 font-bold py-2.5 px-4 rounded-[8px] text-xs hover:bg-gray-200 transition min-h-[44px] tabular-nums tracking-tight"
                   >
                     Ləğv Et
                   </button>
@@ -742,7 +724,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           </div>
 
           <!-- Right: Matches list -->
-          <div className="lg:col-span-8 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
+          <div className="lg:col-span-8 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Matç Siyahısı</h3>
             <table className="w-full text-left border-collapse">
               <thead>
@@ -755,15 +737,15 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <th className="pb-3 text-right">Əməliyyatlar</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 text-xs">
+              <tbody className="divide-y divide-gray-100 text-xs tabular-nums tracking-tight">
                 ${matches.map(m => html`
                   <tr key=${m.id} className="hover:bg-purple-50/20 transition">
-                    <td className="py-3 text-center font-bold text-green-700 bg-green-50 rounded px-1.5">${m.division}</td>
+                    <td className="py-3 text-center font-bold text-green-700 bg-green-50 rounded px-1.5 tabular-nums tracking-tight">${m.division}</td>
                     <td className="py-3 font-semibold text-gray-500">${m.stage}</td>
                     <td className="py-3 font-extrabold text-purple-950">${m.teamA} vs ${m.teamB}</td>
                     <td className="py-3 text-center">
                       <div className="flex flex-col items-center">
-                        <span className="bg-purple-950 text-white font-bold px-2 py-0.5 rounded text-[11px] whitespace-nowrap">
+                        <span className="bg-purple-950 text-white font-bold px-2 py-0.5 rounded text-[11px] whitespace-nowrap tabular-nums tracking-tight">
                           ${m.scoreA} - ${m.scoreB}
                         </span>
                         ${(m.penaltyScoreA !== null && m.penaltyScoreA !== undefined && m.penaltyScoreA !== '') && html`
@@ -775,19 +757,19 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     <td className="py-3 text-right space-x-2 whitespace-nowrap">
                       <button
                         onClick=${() => handleOpenRatingsModal(m)}
-                        className="bg-green-100 text-green-800 font-bold px-2 py-1 rounded hover:bg-green-200 transition text-[10px]"
+                        className="bg-green-100 text-green-800 font-bold p-2.5 rounded hover:bg-green-200 transition text-[10px] tabular-nums tracking-tight"
                       >
-                        🏅 Reytinq
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/></svg> Reytinq
                       </button>
                       <button
                         onClick=${() => handleEditMatchClick(m)}
-                        className="bg-purple-100 text-purple-900 font-bold px-2 py-1 rounded hover:bg-purple-200 transition text-[10px]"
+                        className="bg-purple-100 text-purple-900 font-bold p-2.5 rounded hover:bg-purple-200 transition text-[10px] tabular-nums tracking-tight"
                       >
                         Düzəliş
                       </button>
                       <button
                         onClick=${() => handleDeleteMatch(m.id)}
-                        className="bg-red-100 text-red-700 font-bold px-2 py-1 rounded hover:bg-red-200 transition text-[10px]"
+                        className="bg-red-100 text-red-700 font-bold p-2.5 rounded hover:bg-red-200 transition text-[10px] tabular-nums tracking-tight"
                       >
                         Sil
                       </button>
@@ -804,7 +786,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       ${adminTab === 'players' && html`
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <!-- Left: Add/Edit Player form -->
-          <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+          <div className="lg:col-span-4 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">
               ${editingPlayer ? 'Oyunçunu Redaktə Et' : 'Yeni Oyunçu Əlavə Et'}
             </h3>
@@ -817,7 +799,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   placeholder="Məs: Rəşad Nağıyev"
                   value=${playerForm.name}
                   onChange=${(e) => setPlayerForm({ ...playerForm, name: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                 />
               </div>
 
@@ -827,7 +809,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   required
                   value=${playerForm.class}
                   onChange=${(e) => setPlayerForm({ ...playerForm, class: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-purple-950"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                 >
                   ${classes.length === 0 
                     ? html`<option value="">Sinif tapılmadı! Öncə sinif yaradın.</option>` 
@@ -845,7 +827,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <select
                   value=${playerForm.position}
                   onChange=${(e) => setPlayerForm({ ...playerForm, position: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-purple-950"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                 >
                   <option value="Hücumçu">Hücumçu</option>
                   <option value="Yarımmüdafiəçi">Yarımmüdafiəçi</option>
@@ -857,7 +839,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               <div className="flex space-x-2 pt-2">
                 <button
                   type="submit"
-                  className="flex-1 bg-purple-900 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-purple-800 transition"
+                  className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] flex-1 bg-purple-900 text-white font-bold py-2.5 text-xs hover:bg-purple-800 transition tabular-nums tracking-tight"
                 >
                   ${editingPlayer ? 'Yadda Saxla' : 'Oyunçu Əlavə Et'}
                 </button>
@@ -868,7 +850,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                       setEditingPlayer(false);
                       setPlayerForm({ id: null, name: '', class: classes[0]?.name || '', position: 'Hücumçu' });
                     }}
-                    className="bg-gray-150 text-gray-700 font-bold py-2.5 px-4 rounded-xl text-xs hover:bg-gray-200 transition"
+                    className="bg-gray-150 text-gray-700 font-bold py-2.5 px-4 rounded-[8px] text-xs hover:bg-gray-200 transition min-h-[44px] tabular-nums tracking-tight"
                   >
                     Ləğv Et
                   </button>
@@ -878,7 +860,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           </div>
 
           <!-- Right: Players list -->
-          <div className="lg:col-span-8 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
+          <div className="lg:col-span-8 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Oyunçu Siyahısı</h3>
             <table className="w-full text-left border-collapse">
               <thead>
@@ -893,26 +875,26 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <th className="pb-3 text-right">Əməliyyatlar</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 text-xs">
+              <tbody className="divide-y divide-gray-100 text-xs tabular-nums tracking-tight">
                 ${players.map(p => html`
                   <tr key=${p.id} className="hover:bg-purple-50/20 transition">
                     <td className="py-3 font-extrabold text-purple-950">${p.name}</td>
-                    <td className="py-3 text-center text-purple-900 font-bold">${p.class}</td>
+                    <td className="py-3 text-center text-purple-900 font-bold tabular-nums tracking-tight">${p.class}</td>
                     <td className="py-3 text-center text-gray-500 font-semibold">${p.division}</td>
                     <td className="py-3 text-center text-gray-500">${p.position}</td>
-                    <td className="py-3 text-center font-bold">${p.matchesPlayed}</td>
+                    <td className="py-3 text-center font-bold tabular-nums tracking-tight">${p.matchesPlayed}</td>
                     <td className="py-3 text-center font-semibold text-gray-600">${p.goals} / ${p.assists}</td>
                     <td className="py-3 text-center font-black text-purple-900">${p.overallRating}</td>
                     <td className="py-3 text-right space-x-2">
                       <button
                         onClick=${() => handleEditPlayerClick(p)}
-                        className="bg-purple-100 text-purple-900 font-bold px-2 py-1 rounded hover:bg-purple-200 transition text-[10px]"
+                        className="bg-purple-100 text-purple-900 font-bold p-2.5 rounded hover:bg-purple-200 transition text-[10px] tabular-nums tracking-tight"
                       >
                         Redaktə
                       </button>
                       <button
                         onClick=${() => handleDeletePlayer(p.id)}
-                        className="bg-red-100 text-red-700 font-bold px-2 py-1 rounded hover:bg-red-200 transition text-[10px]"
+                        className="bg-red-100 text-red-700 font-bold p-2.5 rounded hover:bg-red-200 transition text-[10px] tabular-nums tracking-tight"
                       >
                         Sil
                       </button>
@@ -929,7 +911,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       ${adminTab === 'classes' && html`
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <!-- Left: Add Class Form -->
-          <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+          <div className="lg:col-span-4 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Yeni Sinif Əlavə Et</h3>
             <form onSubmit=${handleSaveClass} className="space-y-4">
               <div>
@@ -940,7 +922,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   placeholder="Məs: 10-A, 8-B"
                   value=${classForm.name}
                   onChange=${(e) => setClassForm({ ...classForm, name: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 uppercase font-bold"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 uppercase font-bold min-h-[44px] tabular-nums tracking-tight"
                 />
               </div>
 
@@ -949,7 +931,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <select
                   value=${classForm.division}
                   onChange=${(e) => setClassForm({ ...classForm, division: e.target.value })}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-purple-950"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                 >
                   <option value="6">6-cı Siniflər</option>
                   <option value="7">7-ci Siniflər</option>
@@ -965,7 +947,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full bg-purple-900 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-purple-800 transition"
+                  className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] w-full bg-purple-900 text-white font-bold py-2.5 text-xs hover:bg-purple-800 transition tabular-nums tracking-tight"
                 >
                   Sinif Əlavə Et
                 </button>
@@ -974,7 +956,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           </div>
 
           <!-- Right: Classes list -->
-          <div className="lg:col-span-8 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
+          <div className="lg:col-span-8 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Sinif Siyahısı</h3>
             <table className="w-full text-left border-collapse">
               <thead>
@@ -984,19 +966,19 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <th className="pb-3 text-right">Əməliyyatlar</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 text-xs">
+              <tbody className="divide-y divide-gray-100 text-xs tabular-nums tracking-tight">
                 ${classes.map(c => html`
                   <tr key=${c.id} className="hover:bg-purple-50/20 transition">
-                    <td className="py-3 font-extrabold text-purple-950 text-sm">${c.name}</td>
+                    <td className="py-3 font-extrabold text-purple-950 text-sm tabular-nums tracking-tight">${c.name}</td>
                     <td className="py-3 text-center">
-                      <span className="bg-purple-100 text-purple-950 font-bold px-3 py-1 rounded-full text-[10px]">
+                      <span className="bg-purple-100 text-purple-950 font-bold p-2.5 rounded-full text-[10px] tabular-nums tracking-tight">
                         ${getDivisionLabel(c.division)}
                       </span>
                     </td>
                     <td className="py-3 text-right">
                       <button
                         onClick=${() => handleDeleteClass(c.id)}
-                        className="bg-red-100 text-red-700 font-bold px-2 py-1 rounded hover:bg-red-200 transition text-[10px]"
+                        className="bg-red-100 text-red-700 font-bold p-2.5 rounded hover:bg-red-200 transition text-[10px] tabular-nums tracking-tight"
                       >
                         Sil
                       </button>
@@ -1013,7 +995,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       ${adminTab === 'years' && html`
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <!-- Left: Add Year Form -->
-          <div className="lg:col-span-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+          <div className="lg:col-span-4 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Yeni Tədris İli Əlavə Et</h3>
             <form onSubmit=${handleAddYear} className="space-y-4">
               <div>
@@ -1024,7 +1006,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   placeholder="Məs: 2026-2027"
                   value=${newYearInput}
                   onChange=${(e) => setNewYearInput(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
                 />
                 <p className="text-[10px] text-gray-400 mt-1">İl formatını "YYYY-YYYY" şəklində yazmağınız tövsiyə olunur.</p>
               </div>
@@ -1032,7 +1014,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full bg-purple-900 text-white font-bold py-2.5 rounded-xl text-xs hover:bg-purple-800 transition"
+                  className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] w-full bg-purple-900 text-white font-bold py-2.5 text-xs hover:bg-purple-800 transition tabular-nums tracking-tight"
                 >
                   Tədris İli Əlavə Et
                 </button>
@@ -1041,7 +1023,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           </div>
 
           <!-- Right: Years list -->
-          <div className="lg:col-span-8 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
+          <div className="lg:col-span-8 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
             <h3 className="text-base font-extrabold text-purple-950 mb-4 font-sans">Mövcud Tədris İlləri</h3>
             <table className="w-full text-left border-collapse">
               <thead>
@@ -1050,11 +1032,11 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <th className="pb-3 text-right">Əməliyyatlar</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 text-xs">
+              <tbody className="divide-y divide-gray-100 text-xs tabular-nums tracking-tight">
                 ${yearsList.map(y => html`
                   <tr key=${y} className="hover:bg-purple-50/20 transition">
-                    <td className="py-3 font-extrabold text-purple-950 text-sm flex items-center">
-                      <i className="fas fa-calendar-alt text-purple-900 mr-2 text-sm"></i>
+                    <td className="py-3 font-extrabold text-purple-950 text-sm flex items-center tabular-nums tracking-tight">
+                      <i className="fas fa-calendar-alt text-purple-900 mr-2 text-sm tabular-nums tracking-tight"></i>
                       <span>${y}</span>
                       ${y === activeYear && html`
                         <span className="ml-2 bg-green-100 text-green-800 font-extrabold text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">Aktiv</span>
@@ -1063,7 +1045,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     <td className="py-3 text-right">
                       <button
                         onClick=${() => handleDeleteYear(y)}
-                        className="bg-red-100 text-red-700 font-bold px-2 py-1 rounded hover:bg-red-200 transition text-[10px]"
+                        className="bg-red-100 text-red-700 font-bold p-2.5 rounded hover:bg-red-200 transition text-[10px] tabular-nums tracking-tight"
                       >
                         Sil
                       </button>
@@ -1078,14 +1060,14 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
       <!-- TAB 5: SYSTEM PARAMETERS -->
       ${adminTab === 'system' && html`
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm max-w-lg">
+        <div className="bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm max-w-lg">
           <h3 className="text-base font-extrabold text-purple-950 mb-4">Sistem Parametrləri</h3>
-          <div className="space-y-4 text-xs font-semibold text-gray-600">
+          <div className="space-y-4 text-xs font-semibold text-gray-600 tabular-nums tracking-tight">
             <p>
               TDV BTL Futbol Turniri məlumatlarının idarə edilməsi üçün sistem alətləri:
             </p>
-            <div className="bg-purple-50 text-purple-950 border border-purple-100 rounded-2xl p-4 space-y-2">
-              <h4 className="font-extrabold text-sm text-purple-900">Məlumatların idarə olunması qaydası</h4>
+            <div className="bg-purple-50 text-purple-950 border border-purple-100 rounded-2xl p-2.5 space-y-2">
+              <h4 className="font-extrabold text-sm text-purple-900 tabular-nums tracking-tight">Məlumatların idarə olunması qaydası</h4>
               <p className="text-[11px] leading-relaxed">
                 İstənilən matç əlavə edildikdə və ya silindikdə siniflər üzrə turnir cədvəli və oyunçu statistikaları avtomatik yenidən hesablanır. Yalnız 'Qrup Mərhələsi' matçlarının xalları turnir cədvəlinə yazılır.
               </p>
@@ -1094,7 +1076,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
             <div className="pt-4 flex flex-col space-y-3">
               <button
                 onClick=${handleResetSystem}
-                className="bg-red-600 text-white font-bold py-3 rounded-2xl text-xs hover:bg-red-700 transition shadow-sm"
+                className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-red-600 text-white font-bold py-3 -2xl text-xs hover:bg-red-700 transition shadow-sm tabular-nums tracking-tight"
               >
                 <i className="fas fa-trash-alt mr-2"></i> Sistem Məlumatlarını Sıfırla (Default Seeding)
               </button>
@@ -1103,10 +1085,10 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               </p>
               
               
-              <div className="border-t border-gray-200 my-2"></div>
+              <div className="border-t border-zinc-200 dark:border-zinc-800 my-2"></div>
               
-              <div className="bg-green-50 text-green-950 border border-green-100 rounded-2xl p-4 space-y-2">
-                <h4 className="font-extrabold text-sm text-green-900 flex items-center">
+              <div className="bg-green-50 text-green-950 border border-green-100 rounded-2xl p-2.5 space-y-2">
+                <h4 className="font-extrabold text-sm text-green-900 flex items-center tabular-nums tracking-tight">
                   <i className="fas fa-file-import mr-2 text-base"></i> Arxiv / JSON Məlumat Yüklə
                 </h4>
                 <p className="text-[11px] leading-relaxed text-slate-600">
@@ -1116,15 +1098,15 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   type="file"
                   accept=".json"
                   onChange=${handleImportJSON}
-                  className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-black file:bg-green-100 file:text-green-800 hover:file:bg-green-200 cursor-pointer pt-1"
+                  className="rounded-[8px] p-2.5.5 min-h-[44px] focus:ring-1 focus:ring-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50/50 -[8px] min-h-[44px] block w-full text-xs text-slate-500 file:mr-4 file: file: file: file:border-0 file:text-xs file:font-black file:bg-green-100 file:text-green-800 hover:file:bg-green-200 cursor-pointer pt-1 tabular-nums tracking-tight"
                 />
               </div>
 
-              <div className="border-t border-gray-200 my-2"></div>
+              <div className="border-t border-zinc-200 dark:border-zinc-800 my-2"></div>
               
               <button
                 onClick=${handleLogout}
-                className="bg-purple-950 text-white font-bold py-3 rounded-2xl text-xs hover:bg-purple-900 transition shadow-sm"
+                className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-purple-950 text-white font-bold py-3 -2xl text-xs hover:bg-purple-900 transition shadow-sm tabular-nums tracking-tight"
               >
                 <i className="fas fa-sign-out-alt mr-2"></i> Admin Panelindən Çıxış (Sessiyanı Bağla)
               </button>
@@ -1143,12 +1125,12 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           <div className="bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 text-white rounded-3xl p-6 shadow-md relative overflow-hidden">
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-[11px] font-bold tracking-wider uppercase mb-2 backdrop-blur-sm">
+                <div className="inline-flex items-center gap-2 p-2.5 bg-white dark:bg-zinc-950/10 rounded-full text-[11px] font-bold tracking-wider uppercase mb-2 backdrop-blur-sm tabular-nums tracking-tight">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                   Ağıllı Avto-Tənzimləmə & Diaqnostika
                 </div>
                 <h3 className="text-xl font-black">Turnir İntellekt Mərkəzi (AI Tuner)</h3>
-                <p className="text-xs text-purple-200 mt-1 max-w-xl leading-relaxed">
+                <p className="text-xs text-purple-200 mt-1 max-w-xl leading-relaxed tabular-nums tracking-tight">
                   Turnir bazasındakı xallar, qollar, dublikat oyunçular, qrup uyğunsuzluqları və sinif kateqoriyaları avtomatik təhlil edilir və 1 kliklə bərpa olunur. Əlavə olaraq Google Gemini 3.8 / 3.7 AI ilə dərin audit apara bilərsiniz.
                 </p>
               </div>
@@ -1156,7 +1138,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               <div className="flex items-center gap-3">
                 <button
                   onClick=${handleRunHealthAudit}
-                  className="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-4 py-2.5 rounded-2xl transition border border-white/20 flex items-center gap-2"
+                  className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-white dark:bg-zinc-950/10 hover:bg-white dark:bg-zinc-950/20 text-white text-xs font-bold p-2.5.5 -2xl transition border border-white/20 flex items-center gap-2 tabular-nums tracking-tight"
                 >
                   <i className="fas fa-rotate"></i>
                   <span>Yenidən Yoxla</span>
@@ -1164,7 +1146,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <button
                   onClick=${handleAutoRepair}
                   disabled=${isHealing}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-purple-950 text-xs font-black px-5 py-2.5 rounded-2xl transition shadow-md flex items-center gap-2 disabled:opacity-50"
+                  className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-emerald-500 hover:bg-emerald-400 text-purple-950 text-xs font-black px-5 py-2.5 -2xl transition shadow-md flex items-center gap-2 disabled:opacity-50 tabular-nums tracking-tight"
                 >
                   <i className=${`fas ${isHealing ? 'fa-spinner fa-spin' : 'fa-wrench'}`}></i>
                   <span>${isHealing ? 'Bərpa edilir...' : 'İndi Avto-Bərpa Et'}</span>
@@ -1175,10 +1157,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
           <!-- Heal Status Toast/Banner -->
           ${healMessage && html`
-            <div className=${`p-4 rounded-2xl text-xs font-bold flex items-center gap-3 animate-fadeIn ${
-              healMessage.type === 'success' 
-                ? 'bg-emerald-50 text-emerald-900 border border-emerald-200' 
-                : 'bg-red-50 text-red-900 border border-red-200'
+            <div className=${`p-2.5 rounded-2xl text-xs font-bold flex items-center gap-3 animate-fadeIn ${ healMessage.type === 'success' ? 'bg-emerald-50 text-emerald-900 border border-emerald-200' : 'bg-red-50 text-red-900 border border-red-200 tabular-nums tracking-tight'
             }`}>
               <i className=${`fas ${healMessage.type === 'success' ? 'fa-check-circle text-emerald-600' : 'fa-exclamation-circle text-red-600'} text-base`}></i>
               <span className="flex-1">${healMessage.text}</span>
@@ -1193,10 +1172,10 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
             <div className="lg:col-span-7 space-y-6">
               
               <!-- Health Score Card -->
-              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-zinc-950 rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
+                    <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2 tabular-nums tracking-tight">
                       <i className="fas fa-heart-pulse text-rose-500"></i>
                       Baza Sağlamlıq Vəziyyəti (${activeYear})
                     </h4>
@@ -1205,12 +1184,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
                   ${healthReport && html`
                     <div className="flex items-center gap-2">
-                      <div className=${`text-xl font-black px-3.5 py-1 rounded-2xl ${
-                        healthReport.healthScore >= 95 
-                          ? 'bg-emerald-100 text-emerald-800' 
-                          : healthReport.healthScore >= 80 
-                            ? 'bg-amber-100 text-amber-800' 
-                            : 'bg-rose-100 text-rose-800'
+                      <div className=${`text-xl font-black px-3.5 py-1 rounded-2xl ${ healthReport.healthScore >= 95 ? 'bg-emerald-100 text-emerald-800' : healthReport.healthScore >= 80 ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'
                       }`}>
                         ${healthReport.healthScore}%
                       </div>
@@ -1221,16 +1195,16 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <!-- Stats summary badges -->
                 ${healthReport && html`
                   <div className="grid grid-cols-3 gap-2 pt-2">
-                    <div className="bg-purple-50 rounded-2xl p-3 text-center">
-                      <div className="text-[10px] uppercase font-bold text-purple-600">Xətalar</div>
+                    <div className="bg-purple-50 rounded-2xl p-2.5 text-center">
+                      <div className="text-[10px] uppercase font-bold text-purple-600 tabular-nums tracking-tight">Xətalar</div>
                       <div className="text-lg font-black text-purple-950">${healthReport.summary?.errors ?? healthReport.stats?.errorCount ?? 0}</div>
                     </div>
-                    <div className="bg-amber-50 rounded-2xl p-3 text-center">
-                      <div className="text-[10px] uppercase font-bold text-amber-600">Xəbərdarlıqlar</div>
+                    <div className="bg-amber-50 rounded-2xl p-2.5 text-center">
+                      <div className="text-[10px] uppercase font-bold text-amber-600 tabular-nums tracking-tight">Xəbərdarlıqlar</div>
                       <div className="text-lg font-black text-amber-950">${healthReport.summary?.warnings ?? healthReport.stats?.warningCount ?? 0}</div>
                     </div>
-                    <div className="bg-sky-50 rounded-2xl p-3 text-center">
-                      <div className="text-[10px] uppercase font-bold text-sky-600">Tövsiyələr</div>
+                    <div className="bg-sky-50 rounded-2xl p-2.5 text-center">
+                      <div className="text-[10px] uppercase font-bold text-sky-600 tabular-nums tracking-tight">Tövsiyələr</div>
                       <div className="text-lg font-black text-sky-950">${healthReport.summary?.info ?? healthReport.stats?.infoCount ?? 0}</div>
                     </div>
                   </div>
@@ -1238,43 +1212,33 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
                 <!-- Issue List -->
                 <div className="space-y-2 pt-2">
-                  <div className="text-xs font-bold text-gray-700">Aşkar Edilən Məsələlər:</div>
+                  <div className="text-xs font-bold text-gray-700 tabular-nums tracking-tight">Aşkar Edilən Məsələlər:</div>
                   ${!healthReport ? html`
-                    <div className="py-6 text-center text-xs text-gray-400">
+                    <div className="py-6 text-center text-xs text-gray-400 tabular-nums tracking-tight">
                       <i className="fas fa-spinner fa-spin mr-2"></i> Diaqnostika aparılır...
                     </div>
                   ` : healthReport.issues.length === 0 ? html`
-                    <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold flex-shrink-0">
+                    <div className="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-[8px] bg-emerald-500 text-white flex items-center justify-center font-bold flex-shrink-0 min-h-[44px] tabular-nums tracking-tight">
                         <i className="fas fa-check"></i>
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-emerald-900">Bütün məlumatlar tam qaydasındadır!</div>
+                        <div className="text-xs font-bold text-emerald-900 tabular-nums tracking-tight">Bütün məlumatlar tam qaydasındadır!</div>
                         <div className="text-[11px] text-emerald-700">Qrup cədvəlləri, matç hesabları, xallar və oyunçu profilləri bütövdür.</div>
                       </div>
                     </div>
                   ` : html`
                     <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
                       ${healthReport.issues.map((issue, idx) => html`
-                        <div key=${idx} className=${`p-3 rounded-2xl border text-xs flex items-start gap-2.5 ${
-                          issue.severity === 'error'
-                            ? 'bg-rose-50/70 border-rose-200 text-rose-950'
-                            : issue.severity === 'warning'
-                              ? 'bg-amber-50/70 border-amber-200 text-amber-950'
-                              : 'bg-sky-50/70 border-sky-200 text-sky-950'
+                        <div key=${idx} className=${`p-2.5 rounded-2xl border text-xs flex items-start gap-2.5 ${ issue.severity === 'error' ? 'bg-rose-50/70 border-rose-200 text-rose-950' : issue.severity === 'warning' ? 'bg-amber-50/70 border-amber-200 text-amber-950' : 'bg-sky-50/70 border-sky-200 text-sky-950 tabular-nums tracking-tight'
                         }`}>
-                          <i className=${`fas ${
-                            issue.severity === 'error'
-                              ? 'fa-circle-xmark text-rose-500'
-                              : issue.severity === 'warning'
-                                ? 'fa-triangle-exclamation text-amber-500'
-                                : 'fa-circle-info text-sky-500'
+                          <i className=${`fas ${ issue.severity === 'error' ? 'fa-circle-xmark text-rose-500' : issue.severity === 'warning' ? 'fa-triangle-exclamation text-amber-500' : 'fa-circle-info text-sky-500'
                           } mt-0.5`}></i>
                           <div className="flex-1 min-w-0">
-                            <div className="font-bold flex items-center gap-2">
+                            <div className="font-bold flex items-center gap-2 tabular-nums tracking-tight">
                               <span>${issue.description}</span>
                               ${issue.autoFixable && html`
-                                <span className="text-[9px] px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded-md font-black uppercase">Avto-bərpa</span>
+                                <span className="text-[9px] px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded-[8px] font-black uppercase min-h-[44px]">Avto-bərpa</span>
                               `}
                             </div>
                             ${issue.details && html`
@@ -1289,10 +1253,10 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               </div>
 
               <!-- Gemini AI Deep Audit -->
-              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-zinc-950 rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
+                    <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2 tabular-nums tracking-tight">
                       <i className="fas fa-brain text-purple-600"></i>
                       Google Gemini 3.8 / 3.7 Dərin Turnir Auditi
                     </h4>
@@ -1301,7 +1265,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <button
                     onClick=${handleRunAiAudit}
                     disabled=${isAiAuditing}
-                    className="bg-purple-900 hover:bg-purple-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-2 disabled:opacity-50"
+                    className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-purple-900 hover:bg-purple-800 text-white font-bold text-xs p-2.5 transition flex items-center gap-2 disabled:opacity-50 tabular-nums tracking-tight"
                   >
                     <i className=${`fas ${isAiAuditing ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`}></i>
                     <span>${isAiAuditing ? 'Analiz Edilir...' : 'AI Analizi Başlat'}</span>
@@ -1309,14 +1273,14 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 </div>
 
                 ${aiAuditResult && html`
-                  <div className="p-4 bg-purple-50/50 border border-purple-100 rounded-2xl text-xs space-y-2 animate-fadeIn max-h-80 overflow-y-auto">
-                    <div className="flex items-center justify-between text-purple-900 font-bold border-b border-purple-100 pb-2">
+                  <div className="p-2.5 bg-purple-50/50 border border-purple-100 rounded-2xl text-xs space-y-2 animate-fadeIn max-h-80 overflow-y-auto tabular-nums tracking-tight">
+                    <div className="flex items-center justify-between text-purple-900 font-bold border-b border-purple-100 pb-2 tabular-nums tracking-tight">
                       <span><i className="fas fa-sparkles text-amber-500 mr-1.5"></i> AI Nəticəsi:</span>
-                      <button onClick=${() => setAiAuditResult('')} className="text-gray-400 hover:text-gray-600 text-xs">
+                      <button onClick=${() => setAiAuditResult('')} className="text-gray-400 hover:text-gray-600 text-xs tabular-nums tracking-tight">
                         <i className="fas fa-times"></i>
                       </button>
                     </div>
-                    <div className="text-gray-700 whitespace-pre-line leading-relaxed text-[11px] font-mono">
+                    <div className="text-gray-700 whitespace-pre-line leading-relaxed text-[11px] font-mono tabular-nums tracking-tight">
                       ${aiAuditResult}
                     </div>
                   </div>
@@ -1329,9 +1293,9 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
             <div className="lg:col-span-5 space-y-6">
               
               <!-- Gemini API Key & Security Config Card -->
-              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-zinc-950 rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
-                  <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
+                  <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2 tabular-nums tracking-tight">
                     <i className="fas fa-shield-halved text-purple-600"></i>
                     AI & Kibertəhlükəsizlik Konfiqurasiyası
                   </h4>
@@ -1349,7 +1313,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     <select
                       value=${selectedAiModel}
                       onChange=${(e) => setSelectedAiModel(e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-purple-950"
+                      className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                     >
                       <option value="gemini-3.8-flash">Gemini 3.8 Flash — Ən Yeni & Sürətli (Tövsiyə olunur)</option>
                       <option value="gemini-3.7-flash">Gemini 3.7 Flash — Sürətli & Sabit (Ehtiyat)</option>
@@ -1365,21 +1329,21 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     <select
                       value=${keyStorageMode}
                       onChange=${(e) => setKeyStorageMode(e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-gray-700"
+                      className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-gray-700 min-h-[44px] tabular-nums tracking-tight"
                     >
-                      <option value="session">🔒 Müvəqqəti Sessiya (Tövsiyə olunur — Tab bağlananda silinir)</option>
-                      <option value="local">💾 Brauzerdə Saxla (Yalnız şəxsi kompüterdə)</option>
+                      <option value="session"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Müvəqqəti Sessiya (Tövsiyə olunur — Tab bağlananda silinir)</option>
+                      <option value="local"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Brauzerdə Saxla (Yalnız şəxsi kompüterdə)</option>
                     </select>
                   </div>
 
                   <!-- Public Chatbot Key (1 Key for visitors) -->
-                  <div className="bg-purple-50/50 p-3 rounded-2xl border border-purple-100 space-y-2">
+                  <div className="bg-purple-50/50 p-2.5 rounded-2xl border border-purple-100 space-y-2">
                     <label className="block text-[10px] font-black text-purple-950 uppercase flex items-center justify-between">
                       <span className="flex items-center gap-1.5">
                         <i className="fas fa-comments text-purple-600"></i>
                         1. İctimai Ziyarətçi Çatbot Açarı
                       </span>
-                      <span className="text-[9px] px-2 py-0.5 rounded-full bg-purple-200 text-purple-900 font-bold">
+                      <span className="text-[9px] px-2 py-0.5 rounded-full bg-purple-200 text-purple-900 font-bold tabular-nums tracking-tight">
                         Bütün Qonaqlar
                       </span>
                     </label>
@@ -1389,12 +1353,12 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                         value=${publicChatKey}
                         onChange=${(e) => setPublicChatKey(e.target.value)}
                         placeholder="Gemini API AÃ§arÄ±nÄ± daxil edin..."
-                        className="w-full bg-white border border-purple-200 text-xs rounded-xl p-2.5 pr-10 font-mono"
+                        className="w-full bg-white dark:bg-zinc-950 border border-purple-200 text-xs rounded-[8px] p-2.5.5 pr-10 font-mono min-h-[44px] tabular-nums tracking-tight"
                       />
                       <button
                         type="button"
                         onClick=${() => setShowApiKey(!showApiKey)}
-                        className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 text-xs"
+                        className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 text-xs tabular-nums tracking-tight"
                         title=${showApiKey ? 'Gizlət' : 'Göstər'}
                       >
                         <i className=${`fas ${showApiKey ? 'fa-eye-slash' : 'fa-eye'}`}></i>
@@ -1406,13 +1370,13 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   </div>
 
                   <!-- Guardian / Diagnostic Key Pool (3 Keys for site protection) -->
-                  <div className="bg-indigo-50/50 p-3 rounded-2xl border border-indigo-100 space-y-2.5">
+                  <div className="bg-indigo-50/50 p-2.5 rounded-2xl border border-indigo-100 space-y-2.5">
                     <label className="block text-[10px] font-black text-indigo-950 uppercase flex items-center justify-between">
                       <span className="flex items-center gap-1.5">
                         <i className="fas fa-shield-heart text-indigo-600"></i>
                         2. Saytı Yoxlamaq və Qorumaq üçün Açar Hovuzu (3 Açar)
                       </span>
-                      <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
+                      <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold tabular-nums tracking-tight">
                         Avto-Rotasiya Aktiv
                       </span>
                     </label>
@@ -1420,13 +1384,13 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     <div className="space-y-2">
                       ${guardianKeys.map((key, i) => html`
                         <div key=${i} className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold text-indigo-900 w-14 shrink-0">Açar ${i + 1}:</span>
+                          <span className="text-[10px] font-bold text-indigo-900 w-14 shrink-0 tabular-nums tracking-tight">Açar ${i + 1}:</span>
                           <input
                             type=${showApiKey ? 'text' : 'password'}
                             value=${key}
                             onChange=${(e) => handleGuardianKeyChange(i, e.target.value)}
                             placeholder=${`Qoruyucu AÃ§ar (Qoruyucu Açar ${i + 1})`}
-                            className="flex-1 bg-white border border-indigo-200 text-xs rounded-xl p-2 font-mono"
+                            className="flex-1 bg-white dark:bg-zinc-950 border border-indigo-200 text-xs rounded-[8px] p-2.5 font-mono min-h-[44px] tabular-nums tracking-tight"
                           />
                         </div>
                       `)}
@@ -1447,7 +1411,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                       value=${aiProxyUrl}
                       onChange=${(e) => setAiProxyUrl(e.target.value)}
                       placeholder="https://tdv-gemini-proxy.workers.dev"
-                      className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-mono placeholder-gray-300"
+                      className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-mono placeholder-gray-300 min-h-[44px] tabular-nums tracking-tight"
                     />
                     <p className="text-[10px] text-gray-400 mt-1">
                       Cloudflare Worker proxy istifadə etdikdə brauzerdə açar heç vaxt görünmür.
@@ -1459,13 +1423,13 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     <button
                       type="button"
                       onClick=${handlePurgeApiKey}
-                      className="text-[11px] text-rose-600 hover:text-rose-800 font-bold px-3 py-2 rounded-xl transition hover:bg-rose-50 border border-transparent hover:border-rose-200"
+                      className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] text-[11px] text-rose-600 hover:text-rose-800 font-bold p-2.5 transition hover:bg-rose-50 border border-transparent hover:border-rose-200 tabular-nums tracking-tight"
                     >
                       <i className="fas fa-trash-can mr-1"></i> Açarı Təmizlə
                     </button>
                     <button
                       type="submit"
-                      className="bg-purple-950 hover:bg-purple-900 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-sm"
+                      className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-purple-950 hover:bg-purple-900 text-white font-bold text-xs px-5 py-2.5 transition shadow-sm tabular-nums tracking-tight"
                     >
                       Yadda Saxla
                     </button>
@@ -1473,20 +1437,20 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 </form>
 
                 <!-- Security Best Practices Guide Accordion -->
-                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2 text-[11px]">
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-2.5.5 space-y-2 text-[11px]">
                   <div className="font-extrabold text-slate-800 flex items-center gap-1.5">
                     <i className="fas fa-shield-virus text-purple-600"></i>
                     Kibertəhlükəsizlik: Açarı Necə Qorumalı?
                   </div>
                   <ul className="space-y-1.5 text-slate-600 pl-1 list-disc list-inside">
                     <li>
-                      <strong>HTTP Referrer Məhdudiyyəti:</strong> Google Cloud / AI Studio-da açarı yalnız domeninizə bağlayın (məs: <code className="bg-white px-1 py-0.5 rounded text-[10px] font-mono">https://orxan.github.io/*</code>). Beləliklə, kimsə açarı kopyalasa belə işlədə bilməz.
+                      <strong>HTTP Referrer Məhdudiyyəti:</strong> Google Cloud / AI Studio-da açarı yalnız domeninizə bağlayın (məs: <code className="bg-white dark:bg-zinc-950 px-1 py-0.5 rounded text-[10px] font-mono tabular-nums tracking-tight">https://orxan.github.io/*</code>). Beləliklə, kimsə açarı kopyalasa belə işlədə bilməz.
                     </li>
                     <li>
                       <strong>API İcazəsi:</strong> Açarı yalnız "Gemini API" üçün aktiv edin.
                     </li>
                     <li>
-                      <strong>Serverless Worker:</strong> Layihənin <code className="bg-white px-1 py-0.5 rounded text-[10px] font-mono">serverless/gemini-proxy-worker.js</code> şablonunu Cloudflare Worker-ə ataraq açarı 100% gizli saxlaya bilərsiniz.
+                      <strong>Serverless Worker:</strong> Layihənin <code className="bg-white dark:bg-zinc-950 px-1 py-0.5 rounded text-[10px] font-mono tabular-nums tracking-tight">serverless/gemini-proxy-worker.js</code> şablonunu Cloudflare Worker-ə ataraq açarı 100% gizli saxlaya bilərsiniz.
                     </li>
                   </ul>
                   <div className="pt-1">
@@ -1494,7 +1458,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                       href="https://aistudio.google.com/app/apikey"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-purple-600 hover:underline font-bold inline-flex items-center gap-1"
+                      className="text-purple-600 hover:underline font-bold inline-flex items-center gap-1 tabular-nums tracking-tight"
                     >
                       <i className="fas fa-external-link-alt text-[10px]"></i> Google AI Studio Konsolu
                     </a>
@@ -1504,9 +1468,9 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               </div>
 
               <!-- Interactive AI Chat / Tuner Console -->
-              <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4 flex flex-col h-[520px]">
+              <div className="bg-white dark:bg-zinc-950 rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4 flex flex-col h-[520px]">
                 <div className="border-b border-gray-100 pb-3">
-                  <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
+                  <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2 tabular-nums tracking-tight">
                     <i className="fas fa-comments text-purple-600"></i>
                     AI Tənzimləyici Konsol
                   </h4>
@@ -1518,42 +1482,39 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <button
                     type="button"
                     onClick=${() => handleSendAiChat(null, "Turnir cədvəlini və lider komandaları analiz et")}
-                    className="text-[10px] bg-purple-50 text-purple-900 hover:bg-purple-100 px-2.5 py-1 rounded-lg font-semibold transition"
+                    className="text-[10px] bg-purple-50 text-purple-900 hover:bg-purple-100 px-2.5 py-1 rounded-[8px] font-semibold transition min-h-[44px]"
                   >
-                    🏆 Liderləri analiz et
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/></svg> Liderləri analiz et
                   </button>
                   <button
                     type="button"
                     onClick=${() => handleSendAiChat(null, "Bombardirlər və asist liderləri kimlərdir?")}
-                    className="text-[10px] bg-purple-50 text-purple-900 hover:bg-purple-100 px-2.5 py-1 rounded-lg font-semibold transition"
+                    className="text-[10px] bg-purple-50 text-purple-900 hover:bg-purple-100 px-2.5 py-1 rounded-[8px] font-semibold transition min-h-[44px]"
                   >
-                    ⚽ Bombardirlər
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/></svg> Bombardirlər
                   </button>
                   <button
                     type="button"
                     onClick=${() => handleSendAiChat(null, "Turnirdə hansı matçlar oynanılmayıb və ya çatışmır?")}
-                    className="text-[10px] bg-purple-50 text-purple-900 hover:bg-purple-100 px-2.5 py-1 rounded-lg font-semibold transition"
+                    className="text-[10px] bg-purple-50 text-purple-900 hover:bg-purple-100 px-2.5 py-1 rounded-[8px] font-semibold transition min-h-[44px]"
                   >
-                    🔍 Çatışmayan matçlar
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/></svg> Çatışmayan matçlar
                   </button>
                 </div>
 
                 <!-- Chat Messages Scroll Area -->
-                <div className="flex-1 overflow-y-auto space-y-3 pr-1 text-xs">
+                <div className="flex-1 overflow-y-auto space-y-3 pr-1 text-xs tabular-nums tracking-tight">
                   ${aiChatHistory.length === 0 ? html`
-                    <div className="h-full flex flex-col items-center justify-center text-center text-gray-400 p-4">
+                    <div className="h-full flex flex-col items-center justify-center text-center text-gray-400 p-2.5">
                       <i className="fas fa-robot text-3xl mb-2 text-purple-300"></i>
-                      <p className="font-bold text-gray-600 text-xs">Turnir AI Köməkçisi Hazırdır</p>
+                      <p className="font-bold text-gray-600 text-xs tabular-nums tracking-tight">Turnir AI Köməkçisi Hazırdır</p>
                       <p className="text-[10px] text-gray-400 mt-1 max-w-xs">
                         Turnir gedişatı, xallar, matçlar və statistikalar barədə istənilən sualı yaza bilərsiniz.
                       </p>
                     </div>
                   ` : aiChatHistory.map((msg, i) => html`
                     <div key=${i} className=${`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className=${`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${
-                        msg.role === 'user'
-                          ? 'bg-purple-950 text-white rounded-br-none'
-                          : 'bg-gray-100 text-gray-800 rounded-bl-none whitespace-pre-line'
+                      <div className=${`max-w-[85%] rounded-2xl p-2.5 text-xs leading-relaxed ${ msg.role === 'user' ? 'bg-purple-950 text-white rounded-br-none' : 'bg-zinc-100 dark:bg-zinc-800 text-gray-800 rounded-bl-none whitespace-pre-line tabular-nums tracking-tight'
                       }`}>
                         ${msg.role === 'model' && html`
                           <div className="text-[9px] font-black uppercase text-purple-700 mb-1 flex items-center gap-1">
@@ -1567,7 +1528,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
                   ${isAiChatLoading && html`
                     <div className="flex justify-start">
-                      <div className="bg-purple-50 text-purple-900 rounded-2xl p-3 text-xs rounded-bl-none flex items-center gap-2">
+                      <div className="bg-purple-50 text-purple-900 rounded-2xl p-2.5 text-xs rounded-bl-none flex items-center gap-2 tabular-nums tracking-tight">
                         <i className="fas fa-spinner fa-spin"></i>
                         <span>AI cavab hazırlayır...</span>
                       </div>
@@ -1582,13 +1543,13 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     value=${aiChatQuery}
                     onChange=${(e) => setAiChatQuery(e.target.value)}
                     placeholder="Turnir haqqında sual yazın..."
-                    className="flex-1 bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-medium"
+                    className="flex-1 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-medium min-h-[44px] tabular-nums tracking-tight"
                     disabled=${isAiChatLoading}
                   />
                   <button
                     type="submit"
                     disabled=${isAiChatLoading || !aiChatQuery.trim()}
-                    className="bg-purple-950 hover:bg-purple-900 text-white font-bold px-4 rounded-xl text-xs transition disabled:opacity-50"
+                    className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-purple-950 hover:bg-purple-900 text-white font-bold px-4 text-xs transition disabled:opacity-50 tabular-nums tracking-tight"
                   >
                     <i className="fas fa-paper-plane"></i>
                   </button>
@@ -1603,20 +1564,20 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
       <!-- MODAL FOR EDITING PLAYER RATINGS FOR A SELECTED MATCH -->
       ${selectedMatchForRatings && html`
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-purple-950/40 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-2xl animate-fadeIn">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-purple-950/40 backdrop-blur-sm flex items-center justify-center p-2.5">
+          <div className="bg-white dark:bg-zinc-950 rounded-3xl max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-2xl animate-fadeIn">
             
             <!-- Modal Header -->
             <div className="bg-purple-900 text-white p-5 rounded-t-3xl flex justify-between items-center">
               <div>
-                <span className="text-xs font-bold text-green-400 uppercase">Matç Reytinqləri</span>
+                <span className="text-xs font-bold text-green-400 uppercase tabular-nums tracking-tight">Matç Reytinqləri</span>
                 <h4 className="text-lg font-black mt-1">
                   ${selectedMatchForRatings.teamA} vs ${selectedMatchForRatings.teamB} (${selectedMatchForRatings.stage})
                 </h4>
               </div>
               <button
                 onClick=${() => setSelectedMatchForRatings(null)}
-                className="bg-purple-950 text-white hover:bg-red-600 transition w-8 h-8 rounded-full flex items-center justify-center font-bold"
+                className="bg-purple-950 text-white hover:bg-red-600 transition w-8 h-8 rounded-full flex items-center justify-center font-bold tabular-nums tracking-tight"
               >
                 <i className="fas fa-times"></i>
               </button>
@@ -1624,7 +1585,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
             <!-- Modal Content (Table input) -->
             <div className="p-6">
-              <p className="text-xs text-gray-500 mb-4 font-semibold">
+              <p className="text-xs text-gray-500 mb-4 font-semibold tabular-nums tracking-tight">
                 Matçda oynayan futbolçuların xallarını, qol/asist/ötürmə statistikalarını daxil edin.
               </p>
               
@@ -1635,21 +1596,21 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                       <th className="py-2.5 px-3">Oyunçu / Mövqe</th>
                       <th className="py-2.5 px-2 text-center">Sinif</th>
                       <th className="py-2.5 px-2 text-center w-24">Reytinq (boş=avtomatik)</th>
-                      <th className="py-2.5 px-2 text-center w-14">⚽Qol</th>
-                      <th className="py-2.5 px-2 text-center w-14">👟Asist</th>
-                      <th className="py-2.5 px-2 text-center w-14">🧤Qurt.</th>
-                      <th className="py-2.5 px-2 text-center w-14">🟡Sarı</th>
-                      <th className="py-2.5 px-2 text-center w-14">🔴Qırm.</th>
+                      <th className="py-2.5 px-2 text-center w-14"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/></svg>Qol</th>
+                      <th className="py-2.5 px-2 text-center w-14"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/></svg>Asist</th>
+                      <th className="py-2.5 px-2 text-center w-14"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/></svg>Qurt.</th>
+                      <th className="py-2.5 px-2 text-center w-14"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/></svg>Sarı</th>
+                      <th className="py-2.5 px-2 text-center w-14"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/></svg>Qırm.</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100 text-xs">
+                  <tbody className="divide-y divide-gray-100 text-xs tabular-nums tracking-tight">
                     ${matchPlayerStats.map(stat => html`
                       <tr key=${stat.playerId} className="hover:bg-purple-50/20 transition">
                         <td className="py-2.5 px-3">
-                          <div className="font-bold text-purple-950">${stat.name}</div>
+                          <div className="font-bold text-purple-950 tabular-nums tracking-tight">${stat.name}</div>
                           <div className="text-[10px] text-gray-400">${stat.position || '—'}</div>
                         </td>
-                        <td className="py-2.5 px-2 text-center text-gray-500 font-bold">${stat.class}</td>
+                        <td className="py-2.5 px-2 text-center text-gray-500 font-bold tabular-nums tracking-tight">${stat.class}</td>
                         <td className="py-2.5 px-2 text-center">
                           <input
                             type="number"
@@ -1659,33 +1620,33 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                             placeholder="Auto"
                             value=${stat.rating ?? ''}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'rating', e.target.value === '' ? null : e.target.value)}
-                            className="w-16 bg-gray-50 border border-gray-200 text-center font-black rounded-lg p-1 text-purple-900 placeholder-gray-300"
+                            className="w-16 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center font-black rounded-[8px] p-2.5 text-purple-900 placeholder-gray-300 min-h-[44px]"
                           />
                         </td>
                         <td className="py-2.5 px-2 text-center">
                           <input type="number" min="0" value=${stat.goals}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'goals', e.target.value)}
-                            className="w-12 bg-gray-50 border border-gray-200 text-center rounded-lg p-1" />
+                            className="w-12 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center rounded-[8px] p-2.5 min-h-[44px]" />
                         </td>
                         <td className="py-2.5 px-2 text-center">
                           <input type="number" min="0" value=${stat.assists}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'assists', e.target.value)}
-                            className="w-12 bg-gray-50 border border-gray-200 text-center rounded-lg p-1" />
+                            className="w-12 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center rounded-[8px] p-2.5 min-h-[44px]" />
                         </td>
                         <td className="py-2.5 px-2 text-center">
                           <input type="number" min="0" value=${stat.saves}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'saves', e.target.value)}
-                            className="w-12 bg-sky-50 border border-sky-200 text-center rounded-lg p-1" />
+                            className="w-12 bg-sky-50 border border-sky-200 text-center rounded-[8px] p-2.5 min-h-[44px]" />
                         </td>
                         <td className="py-2.5 px-2 text-center">
                           <input type="number" min="0" value=${stat.yellowCards}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'yellowCards', e.target.value)}
-                            className="w-12 bg-yellow-50 border border-yellow-200 text-center rounded-lg p-1" />
+                            className="w-12 bg-yellow-50 border border-yellow-200 text-center rounded-[8px] p-2.5 min-h-[44px]" />
                         </td>
                         <td className="py-2.5 px-2 text-center">
                           <input type="number" min="0" value=${stat.redCards}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'redCards', e.target.value)}
-                            className="w-12 bg-red-50 border border-red-200 text-center rounded-lg p-1" />
+                            className="w-12 bg-red-50 border border-red-200 text-center rounded-[8px] p-2.5 min-h-[44px]" />
                         </td>
                       </tr>
                     `)}
@@ -1695,16 +1656,16 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
             </div>
 
             <!-- Modal Footer -->
-            <div className="p-4 bg-gray-50 rounded-b-3xl text-right space-x-2">
+            <div className="p-2.5 bg-zinc-50 dark:bg-zinc-900 rounded-b-3xl text-right space-x-2">
               <button
                 onClick=${() => setSelectedMatchForRatings(null)}
-                className="bg-gray-200 text-gray-700 hover:bg-gray-300 font-bold px-6 py-2.5 rounded-xl text-xs transition"
+                className="bg-gray-200 text-gray-700 hover:bg-gray-300 font-bold px-6 py-2.5 rounded-[8px] text-xs transition min-h-[44px] tabular-nums tracking-tight"
               >
                 Ləğv Et
               </button>
               <button
                 onClick=${handleSaveRatings}
-                className="bg-purple-900 hover:bg-purple-800 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition"
+                className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-purple-900 hover:bg-purple-800 text-white font-bold px-6 py-2.5 text-xs transition tabular-nums tracking-tight"
               >
                 Yadda Saxla
               </button>
