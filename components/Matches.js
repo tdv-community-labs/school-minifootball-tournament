@@ -12,6 +12,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
+import { Skeleton } from './ui.js?v=2026';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js?v=20260912_0120';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js?v=20260912_0120';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260912_0120';
@@ -216,17 +217,17 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 flex-wrap">
             <h6 className="font-bold text-purple-950 text-xs truncate">${player.name}</h6>
-            ${player.isKeeper ? html`<span className="text-[9px] bg-sky-100 text-sky-700 font-black px-1.5 py-0.5 rounded uppercase">🧤 Qapıçı</span>` : null}
+            ${player.isKeeper ? html`<span className="text-[9px] bg-sky-100 text-sky-700 font-black px-1.5 py-0.5 rounded uppercase"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="inline-block mr-1 opacity-70"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 11V4a2 2 0 0 0-4 0v7M10 11V5a2 2 0 0 0-4 0v6M6 11V7a2 2 0 0 0-4 0v9a8 8 0 0 0 16 0v-4a2 2 0 0 0-4 0v-1"></path></svg> Qapıçı</span>` : null}
           </div>
           <p className="text-[10px] text-gray-400">${player.position || '—'}</p>
           <div className="flex flex-wrap gap-2 text-[10px] text-gray-500 font-semibold mt-1">
             ${player.isKeeper
-              ? html`<span>🧤 Qurtarış: ${player.saves || 0}</span>`
-              : html`<span>⚽ Qol: ${player.goals || 0}</span>`
+              ? html`<span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="inline-block mr-1 opacity-70"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 11V4a2 2 0 0 0-4 0v7M10 11V5a2 2 0 0 0-4 0v6M6 11V7a2 2 0 0 0-4 0v9a8 8 0 0 0 16 0v-4a2 2 0 0 0-4 0v-1"></path></svg> Qurtarış: ${player.saves || 0}</span>`
+              : html`<span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="inline-block mr-1 opacity-70"><circle cx="12" cy="12" r="10"></circle><path d="M12 12l3.5-2m-7 4l3.5-2m0 0v4m-3.5-2h7"></path></svg> Qol: ${player.goals || 0}</span>`
             }
             <span>👟 Asist: ${player.assists || 0}</span>
-            ${(player.yellowCards || 0) > 0 ? html`<span className="text-yellow-500">🟡 ×${player.yellowCards}</span>` : null}
-            ${(player.redCards    || 0) > 0 ? html`<span className="text-red-600">🔴 ×${player.redCards}</span>`    : null}
+            ${(player.yellowCards || 0) > 0 ? html`<span className="text-yellow-500"><span className="inline-block w-2.5 h-3.5 rounded-[2px] bg-yellow-500 mr-1 shadow-sm"></span> ×${player.yellowCards}</span>` : null}
+            ${(player.redCards    || 0) > 0 ? html`<span className="text-red-600"><span className="inline-block w-2.5 h-3.5 rounded-[2px] bg-red-600 mr-1 shadow-sm"></span> ×${player.redCards}</span>`    : null}
           </div>
         </div>
         <!-- Rating badge -->
@@ -244,9 +245,9 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="text-2xl font-black text-zinc-900 dark:text-white font-sans tabular-nums tracking-tight">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
+            <h2 className="text-4xl tabular-nums tracking-tight font-black text-zinc-900 dark:text-white font-sans tabular-nums tracking-tight">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
             <span className="inline-flex items-center gap-1 rounded-full bg-purple-500/15 border border-purple-500/30 px-2.5 py-0.5 text-xs font-bold text-purple-700 dark:text-purple-300">
-              ⚡ 5v5 Minifutbol
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" className="inline-block mr-1 opacity-70"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> 5v5 Minifutbol
             </span>
           </div>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">${lang === 'az' ? 'Mərhələlər üzrə 5v5 oyunlar və Sofascore reytinqləri' : 'Stage fixtures, 5v5 lineups and Sofascore ratings'}</p>
@@ -352,7 +353,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
 
                     <!-- Score Box -->
                     <div className="flex flex-col items-center px-1 sm:px-2 shrink-0">
-                      <div className="bg-zinc-900 dark:bg-zinc-950 text-white rounded-2xl px-4 sm:px-6 py-2 font-mono font-black text-2xl sm:text-3xl shadow-xs border border-zinc-700/60 flex flex-col items-center tracking-tight tabular-nums tracking-tight tabular-nums tracking-tight">
+                      <div className="bg-zinc-900 dark:bg-zinc-950 text-white rounded-2xl px-4 sm:px-6 py-2 font-mono font-black text-4xl tabular-nums tracking-tight sm:text-5xl tabular-nums tracking-tight shadow-xs border border-zinc-700/60 flex flex-col items-center tracking-tight tabular-nums tracking-tight tabular-nums tracking-tight">
                         <span>${match.scoreA} - ${match.scoreB}</span>
                         ${(match.penaltyScoreA !== null && match.penaltyScoreA !== undefined && match.penaltyScoreA !== '') && html`
                           <span className="text-[9px] sm:text-[10px] text-emerald-400 font-extrabold mt-0.5">pen. ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>

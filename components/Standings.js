@@ -12,6 +12,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
+import { Skeleton } from './ui.js?v=2026';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js?v=20260912_0120';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js?v=20260912_0120';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260912_0120';
@@ -892,7 +893,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
                   <span className="text-[10px] text-zinc-400 font-bold tabular-nums">${lang === 'az' ? 'Qollar:' : 'Goals:'}</span>
                   <span className="goal-badge text-xs font-black px-2.5 py-0.5 rounded-md shadow-xs">
-                    ⚽ ${topScorer ? topScorer.goals : 0} ${t('goals')}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="inline-block mr-1 opacity-70"><circle cx="12" cy="12" r="10"></circle><path d="M12 12l3.5-2m-7 4l3.5-2m0 0v4m-3.5-2h7"></path></svg> ${topScorer ? topScorer.goals : 0} ${t('goals')}
                   </span>
                 </div>
               </div>
