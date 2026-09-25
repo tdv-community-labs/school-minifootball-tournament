@@ -12,6 +12,7 @@
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
 import { db, getSofascoreBadgeStyle } from '../services/database.js';
+import { EmptyState, Skeleton } from './ui.js?v=2026';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, isMatchDivision } from '../services/i18n.js';
 
 const html = htm.bind(React.createElement);
@@ -21,6 +22,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
   const [classes, setClasses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClass, setSelectedClass] = useState('All');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadPlayersData = async () => {
@@ -28,6 +30,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
       const allClasses = await db.getClasses(activeYear);
       setPlayers(allPlayers);
       setClasses(allClasses);
+      setLoading(false);
     };
     loadPlayersData();
   }, [activeDivision, activeYear]);
@@ -72,7 +75,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
     <div className="space-y-6 animate-fadeIn">
       <!-- Title & Header -->
       <div>
-        <h2 className="text-2xl font-black text-zinc-900 dark:text-white font-sans">${t('playersTitle')} — ${getDivisionLabel(activeDivision)}</h2>
+        <h2 className="text-2xl font-black text-zinc-900 dark:text-white font-sans tabular-nums tracking-tight">${t('playersTitle')} — ${getDivisionLabel(activeDivision)}</h2>
         <p className="text-sm text-zinc-500 dark:text-zinc-400">${lang === 'az' ? 'Sofascore reytinq sistemi ilə hesablanmış performans statistikası' : 'Performance statistics evaluated with the Sofascore rating engine'}</p>
       </div>
 
@@ -108,7 +111,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         ${sortedPlayers.length === 0 
           ? html`
-              <div className="col-span-3 text-center py-12 text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800">
+              <div className="col-span-3 text-center py-12 text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 tabular-nums tracking-tight">
                 ${t('noPlayersFound')}
               </div>
             `
@@ -143,18 +146,18 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
                   <div className="flex justify-between items-start mb-4 sm:mb-6 gap-2">
                     <div>
                       <div className="flex flex-wrap items-center gap-1.5 mt-1">
-                        <span className="text-[10px] font-black text-zinc-800 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700/60 px-2 py-0.5 rounded-lg uppercase tracking-wider">
+                        <span className="text-[10px] font-black text-zinc-800 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700/60 px-2 py-0.5 rounded-lg uppercase tracking-wider tabular-nums tracking-tight">
                           ${player.class} Sinfi
                         </span>
                         ${isKeeper ? html`
-                          <span className="text-[10px] font-black text-sky-700 dark:text-sky-300 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-lg uppercase tracking-wider">
-                            🧤 ${lang === 'az' ? 'Qapıçı' : 'Goalkeeper'}
+                          <span className="text-[10px] font-black text-sky-700 dark:text-sky-300 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-lg uppercase tracking-wider tabular-nums tracking-tight">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 11V4a2 2 0 0 0-4 0v7M10 11V5a2 2 0 0 0-4 0v6M6 11V7a2 2 0 0 0-4 0v9a8 8 0 0 0 16 0v-4a2 2 0 0 0-4 0v-1"></path></svg> ${lang === 'az' ? 'Qapıçı' : 'Goalkeeper'}
                           </span>
                         ` : null}
                       </div>
                       <h3
                         onClick=${() => onOpenPlayerProfile && onOpenPlayerProfile(player.name)}
-                        className="text-base font-black text-zinc-900 dark:text-white mt-1.5 leading-snug cursor-pointer hover:underline hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                        className="text-base font-black text-zinc-900 dark:text-white mt-1.5 leading-snug cursor-pointer hover:underline hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5 tabular-nums tracking-tight"
                         title=${lang === 'az' ? 'Karyera profilinə bax' : 'View career profile'}
                       >
                         ${player.name}
@@ -171,7 +174,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
                   </div>
 
                   <!-- Stats row -->
-                  <div className="grid grid-cols-3 gap-2 bg-zinc-50 dark:bg-zinc-800/60 p-3 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60 text-center">
+                  <div className="grid grid-cols-3 gap-2 bg-zinc-50 dark:bg-zinc-800/60 p-3 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60 text-center tabular-nums tracking-tight">
                     <div>
                       <span className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider block">${t('matchesPlayed')}</span>
                       <span className="text-base font-extrabold text-zinc-900 dark:text-white">${player.matchesPlayed || 0}</span>
@@ -180,17 +183,17 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
                       ${isKeeper
                         ? html`
                           <span className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider block">${lang === 'az' ? 'Qurtarış' : 'Saves'}</span>
-                          <span className="text-base font-extrabold text-sky-600 dark:text-sky-400">🧤 ${player.saves || 0}</span>
+                          <span className="text-base font-extrabold text-sky-600 dark:text-sky-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 11V4a2 2 0 0 0-4 0v7M10 11V5a2 2 0 0 0-4 0v6M6 11V7a2 2 0 0 0-4 0v9a8 8 0 0 0 16 0v-4a2 2 0 0 0-4 0v-1"></path></svg> ${player.saves || 0}</span>
                         `
                         : html`
                           <span className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider block">${t('goals')}</span>
-                          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">⚽ ${player.goals || 0}</span>
+                          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><circle cx="12" cy="12" r="10"/><path d="M12 12l3.5-2m-7 4l3.5-2m0 0v4m-3.5-2h7"></path></svg> ${player.goals || 0}</span>
                         `
                       }
                     </div>
                     <div>
                       <span className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider block">${t('assists')}</span>
-                      <span className="text-base font-extrabold text-zinc-900 dark:text-white">👟 ${player.assists || 0}</span>
+                      <span className="text-base font-extrabold text-zinc-900 dark:text-white"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><path d="M4 16v-2.38C4 11.5 5.97 10 8 10h.88c1.33 0 2.6-.53 3.54-1.46L13.8 7.15A2 2 0 0 1 15.2 6.57h1.46c.74 0 1.34.6 1.34 1.34V9.6c0 .48.16.94.46 1.3l2.08 2.6c.3.37.46.83.46 1.3v1.2c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2z"></path></svg> ${player.assists || 0}</span>
                     </div>
                   </div>
                 </div>
