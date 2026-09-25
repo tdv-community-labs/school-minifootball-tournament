@@ -72,7 +72,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
           <div className="flex items-start justify-between relative z-10 gap-2">
             <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
               <!-- Jersey / Avatar Badge -->
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xl sm:text-2xl shadow-xs text-emerald-400 font-black shrink-0">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-[20px] p-2 bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xl sm:text-2xl shadow-xs text-emerald-400 font-black shrink-0">
                 ${profile?.isKeeper ? '🧤' : '🏃'}
               </div>
               
@@ -86,7 +86,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
                   </span>
                 </div>
 
-                <h2 className="text-xl sm:text-3xl font-black mt-1 text-white tracking-tight truncate">
+                <h2 className="text-xl sm:text-3xl font-black tabular-nums tracking-tight mt-1 text-white tracking-tight truncate">
                   ${profile ? profile.name : playerName}
                 </h2>
                 <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5 font-medium truncate">
@@ -98,7 +98,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
             <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
               <!-- Career Rating Badge -->
               ${profile && html`
-                <div className=${`w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center font-black shadow-xs ${getSofascoreBadgeStyle(profile.careerRating)}`}>
+                <div className=${`w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-[20px] p-2 flex flex-col items-center justify-center font-black shadow-xs ${getSofascoreBadgeStyle(profile.careerRating)}`}>
                   <span className="text-sm sm:text-lg leading-none">${profile.careerRating}</span>
                   <span className="text-[7px] sm:text-[8px] font-medium opacity-80 mt-0.5">Sofascore</span>
                 </div>
@@ -132,38 +132,38 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
             
             <!-- Stat Highlights Grid (4 cards) -->
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-2xl text-center shadow-2xs">
+              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-[20px] p-2 text-center shadow-2xs">
                 <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 block">
                   ⚽ ${lang === 'az' ? 'Karyera Qolları' : 'Career Goals'}
                 </span>
-                <span className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white mt-1 block">
+                <span className="text-2xl sm:text-3xl font-black tabular-nums tracking-tight text-zinc-900 dark:text-white mt-1 block">
                   ${profile.totalGoals}
                 </span>
               </div>
 
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-2xl text-center shadow-2xs">
+              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-[20px] p-2 text-center shadow-2xs">
                 <span className="text-[10px] font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300 block">
                   👟 ${lang === 'az' ? 'Asistlər' : 'Assists'}
                 </span>
-                <span className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white mt-1 block">
+                <span className="text-2xl sm:text-3xl font-black tabular-nums tracking-tight text-zinc-900 dark:text-white mt-1 block">
                   ${profile.totalAssists}
                 </span>
               </div>
 
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-2xl text-center shadow-2xs">
+              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-[20px] p-2 text-center shadow-2xs">
                 <span className="text-[10px] font-black uppercase tracking-wider text-sky-700 dark:text-sky-400 block">
                   🏟️ ${lang === 'az' ? 'Matç Sayı' : 'Matches'}
                 </span>
-                <span className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white mt-1 block">
+                <span className="text-2xl sm:text-3xl font-black tabular-nums tracking-tight text-zinc-900 dark:text-white mt-1 block">
                   ${profile.totalMatches}
                 </span>
               </div>
 
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-2xl text-center shadow-2xs">
+              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-[20px] p-2 text-center shadow-2xs">
                 <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-400 block">
                   📈 ${lang === 'az' ? 'Qol/Oyun' : 'Goal Ratio'}
                 </span>
-                <span className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white mt-1 block">
+                <span className="text-2xl sm:text-3xl font-black tabular-nums tracking-tight text-zinc-900 dark:text-white mt-1 block">
                   ${profile.goalRatio}
                 </span>
               </div>
@@ -194,7 +194,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
                 : (lang === 'az' ? 'Rəqib cərimə sahəsi, 90-a zərbələr və bitiricilik' : 'Opponent box, finishing and target hold-up');
 
               return html`
-                <div className="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60 p-4 space-y-3">
+                <div className="bg-zinc-50 dark:bg-zinc-800/40 rounded-[20px] p-2 border border-zinc-200/80 dark:border-zinc-700/60 p-4 space-y-3">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-700/60">
                     <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white flex items-center gap-1.5">
                       <i className="fas fa-fire-flame-curved text-red-500"></i>
@@ -242,7 +242,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
                     `}
 
                     <!-- Center Badge -->
-                    <div className="absolute top-2 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10 text-[10px] font-black text-white flex items-center gap-1.5 shadow-sm">
+                    <div className="absolute top-2 left-2.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-[8px] border border-white/10 text-[10px] font-black text-white flex items-center gap-1.5 shadow-sm">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                       <span>${roleTitle}</span>
                     </div>
@@ -277,7 +277,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
             })()}
 
             <!-- Season Breakdown Table -->
-            <div className="bg-zinc-50 dark:bg-zinc-800/40 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60 p-4">
+            <div className="bg-zinc-50 dark:bg-zinc-800/40 rounded-[20px] p-2 border border-zinc-200/80 dark:border-zinc-700/60 p-4">
               <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white mb-3 flex items-center gap-1.5">
                 <i className="fas fa-history text-emerald-500"></i>
                 <span>${lang === 'az' ? 'Mövsümlər Üzrə Çıxış Tarixçəsi' : 'Season-by-Season Performance'}</span>
@@ -348,7 +348,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
 
                       <div className="flex items-center gap-2 text-right">
                         ${m.goals > 0 && html`
-                          <span className="goal-badge px-2 py-0.5 rounded-lg text-xs font-black">
+                          <span className="goal-badge px-2 py-0.5 rounded-[8px] text-xs font-black">
                             ⚽ ${m.goals} ${lang === 'az' ? 'Qol' : 'Goals'}
                           </span>
                         `}

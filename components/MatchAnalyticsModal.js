@@ -151,13 +151,13 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
         <!-- STICKY TOP APP BAR (Safe-area aware, high-contrast back button) -->
         <header 
-          className="sticky top-0 z-50 bg-[#0d1527]/98 backdrop-blur-md border-b border-slate-800/80 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-2xl"
+          className="sticky top-0 z-50 bg-[#0d1527]/98 backdrop-blur-md border-b border-slate-800/80 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-sm border border-zinc-200 dark:border-zinc-800"
           style=${{ paddingTop: 'max(10px, env(safe-area-inset-top, 10px))' }}
         >
           <!-- Sol: Yüksək Kontrastlı Geri Düyməsi -->
           <button
             onClick=${handleBack}
-            className="flex items-center gap-2 bg-emerald-600/25 hover:bg-emerald-600/40 text-emerald-400 hover:text-emerald-300 border border-emerald-500/50 px-3.5 sm:px-4 py-2 rounded-2xl font-black text-xs sm:text-sm transition-all shadow-md active:scale-95 cursor-pointer"
+            className="flex items-center gap-2 bg-emerald-600/25 hover:bg-emerald-600/40 text-emerald-400 hover:text-emerald-300 border border-emerald-500/50 px-3.5 sm:px-4 py-2 rounded-[20px] p-2 font-black text-xs sm:text-sm transition-all shadow-md active:scale-95 cursor-pointer"
             title="Oyunlar siyahısına qayıt"
           >
             <i className="fas fa-arrow-left text-xs sm:text-sm"></i>
@@ -180,7 +180,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
           <div className="flex items-center gap-2">
             <button
               onClick=${handleCopyLink}
-              className="p-2 sm:px-3 sm:py-2 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-emerald-400 text-xs font-bold transition border border-slate-800 flex items-center gap-1.5 cursor-pointer"
+              className="p-2 sm:px-3 sm:py-2 rounded-[20px] p-2 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-emerald-400 text-xs font-bold transition border border-slate-800 flex items-center gap-1.5 cursor-pointer"
               title="Matç linkini kopyala"
             >
               <i className="fas fa-share-alt text-xs"></i>
@@ -188,7 +188,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
             </button>
             <button
               onClick=${onClose}
-              className="p-2 sm:p-2.5 rounded-2xl bg-slate-900 hover:bg-rose-950 text-slate-300 hover:text-rose-400 transition border border-slate-800 cursor-pointer flex items-center justify-center w-9 h-9"
+              className="p-2 sm:p-2.5 rounded-[20px] p-2 bg-slate-900 hover:bg-rose-950 text-slate-300 hover:text-rose-400 transition border border-slate-800 cursor-pointer flex items-center justify-center w-9 h-9"
               title="Bağla"
             >
               <i className="fas fa-times text-sm"></i>
@@ -214,7 +214,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
               <!-- Team A -->
               <div className="flex-1 text-center sm:text-right">
                 <div className="inline-flex flex-col items-center sm:items-end">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-red-600/20 border-2 border-red-500/60 text-red-400 flex items-center justify-center font-black text-lg sm:text-2xl shadow-lg mb-1">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[20px] p-2 bg-red-600/20 border-2 border-red-500/60 text-red-400 flex items-center justify-center font-black text-lg sm:text-2xl shadow-lg mb-1">
                     ${match.teamA}
                   </div>
                   <h3 className="text-base sm:text-xl font-black text-white truncate max-w-[120px] sm:max-w-[180px]">
@@ -226,7 +226,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
               <!-- Score Center Box -->
               <div className="flex flex-col items-center px-2 shrink-0">
-                <div className="bg-gradient-to-br from-purple-950 to-slate-900 border-2 border-emerald-500/80 text-white rounded-3xl px-5 sm:px-8 py-2 sm:py-3 font-black text-2xl sm:text-4xl shadow-2xl tracking-tight flex items-center gap-3">
+                <div className="bg-gradient-to-br from-purple-950 to-slate-900 border-2 border-emerald-500/80 text-white rounded-3xl px-5 sm:px-8 py-2 sm:py-3 font-black text-2xl sm:text-4xl shadow-sm border border-zinc-200 dark:border-zinc-800 tracking-tight flex items-center gap-3">
                   <span className="text-white">${match.scoreA}</span>
                   <span className="text-emerald-400 font-mono text-xl sm:text-2xl">-</span>
                   <span className="text-white">${match.scoreB}</span>
@@ -244,7 +244,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
               <!-- Team B -->
               <div className="flex-1 text-center sm:text-left">
                 <div className="inline-flex flex-col items-center sm:items-start">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-sky-600/20 border-2 border-sky-500/60 text-sky-400 flex items-center justify-center font-black text-lg sm:text-2xl shadow-lg mb-1">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[20px] p-2 bg-sky-600/20 border-2 border-sky-500/60 text-sky-400 flex items-center justify-center font-black text-lg sm:text-2xl shadow-lg mb-1">
                     ${match.teamB}
                   </div>
                   <h3 className="text-base sm:text-xl font-black text-white truncate max-w-[120px] sm:max-w-[180px]">
@@ -297,7 +297,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
             <div className="space-y-4 sm:space-y-5">
               
               <!-- STADION BAŞLIĞI VƏ SÜRƏTLİ FİLTRLƏR -->
-              <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 sm:p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 shadow-md">
+              <div className="bg-slate-900/90 border border-slate-800 rounded-[20px] p-2 p-3 sm:p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 shadow-md">
                 <div>
                   <h3 className="text-sm font-black uppercase tracking-wider text-purple-300 flex items-center gap-2">
                     <i className="fas fa-bullseye text-emerald-400"></i> Sofascore Stadion Zərbələri & Qapı POV
@@ -319,7 +319,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     <button
                       key=${f.id}
                       onClick=${() => { setShotFilter(f.id); setSelectedShotIndex(0); }}
-                      className=${`px-2.5 py-1 rounded-xl text-[11px] font-black transition cursor-pointer ${
+                      className=${`px-2.5 py-1 rounded-[8px] text-[11px] font-black transition cursor-pointer ${
                         shotFilter === f.id
                           ? `${f.color} shadow-md ring-2 ring-emerald-400/50`
                           : 'bg-slate-800 text-slate-400 hover:text-white'
@@ -334,7 +334,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
               <!-- ============================================================= -->
               <!-- VAHİD STADİON VƏ BİRLƏŞDİRİLMİŞ 3D QAPI POV-U -->
               <!-- ============================================================= -->
-              <div className="bg-slate-950 border-2 border-emerald-600/60 rounded-3xl overflow-hidden shadow-2xl relative">
+              <div className="bg-slate-950 border-2 border-emerald-600/60 rounded-3xl overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800 relative">
                 
                 <!-- Stadium Header Bar -->
                 <div className="bg-slate-900/90 px-3.5 py-2 border-b border-slate-800 flex items-center justify-between text-[11px] font-bold text-slate-300">
@@ -377,7 +377,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     </div>
 
                     <!-- 3D Goalmouth Box Frame -->
-                    <div className="relative w-full h-24 sm:h-28 rounded-t-lg bg-gradient-to-b from-black/85 via-slate-950/95 to-emerald-950/70 border-t-4 border-x-4 border-slate-100 shadow-2xl overflow-visible">
+                    <div className="relative w-full h-24 sm:h-28 rounded-t-lg bg-gradient-to-b from-black/85 via-slate-950/95 to-emerald-950/70 border-t-4 border-x-4 border-slate-100 shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-visible">
                       
                       <!-- 3D Metallic Crossbar (Üst Tir) -->
                       <div className="absolute -top-1.5 -left-1.5 -right-1.5 h-3 bg-gradient-to-r from-slate-300 via-white to-slate-300 rounded shadow-md border-b border-slate-400 flex items-center justify-center">
@@ -424,7 +424,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                           }`}></span>
 
                           <!-- Main Ball Marker -->
-                          <div className=${`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-sm shadow-2xl border-2 border-white relative font-black ${
+                          <div className=${`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-sm shadow-sm border border-zinc-200 dark:border-zinc-800 border-2 border-white relative font-black ${
                             currentShot.outcome === 'goal'
                               ? 'bg-emerald-500 text-slate-950 shadow-emerald-400/90'
                               : currentShot.outcome === 'saved'
@@ -557,7 +557,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   })}
 
                   <!-- Bottom Legend Badge -->
-                  <div className="absolute bottom-2 left-3 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3 py-1 rounded-xl text-[10px] font-bold text-slate-300 border border-slate-800">
+                  <div className="absolute bottom-2 left-3 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3 py-1 rounded-[8px] text-[10px] font-bold text-slate-300 border border-slate-800">
                     <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500"></span> Qol</span>
                     <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-sky-500"></span> Seyv</span>
                     <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-slate-400"></span> Blok</span>
@@ -571,13 +571,13 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
               <!-- SOFASCORE SHOT NAVIGATOR & EPISODE BREAKDOWN CARD -->
               <!-- ============================================================= -->
               ${currentShot && html`
-                <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-4">
+                <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-sm border border-zinc-200 dark:border-zinc-800 space-y-4">
                   
                   <!-- Navigator Header: < Player Name Minute > -->
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                     <button
                       onClick=${handlePrevShot}
-                      className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition font-black text-xs cursor-pointer active:scale-95 min-h-[44px]"
+                      className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-[20px] p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition font-black text-xs cursor-pointer active:scale-95 min-h-[44px]"
                       title="Əvvəlki Zərbə"
                     >
                       <i className="fas fa-chevron-left text-sm"></i>
@@ -585,7 +585,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     </button>
 
                     <div className="flex items-center gap-2.5 sm:gap-3 text-center">
-                      <div className=${`w-10 h-10 rounded-2xl flex items-center justify-center text-sm font-black border-2 shadow-lg ${
+                      <div className=${`w-10 h-10 rounded-[20px] p-2 flex items-center justify-center text-sm font-black border-2 shadow-lg ${
                         currentShot.team === match.teamA ? 'bg-red-600/30 border-red-500 text-red-300' : 'bg-sky-600/30 border-sky-500 text-sky-300'
                       }`}>
                         ${currentShot.number || '⚽'}
@@ -610,7 +610,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
                     <button
                       onClick=${handleNextShot}
-                      className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition font-black text-xs cursor-pointer active:scale-95 min-h-[44px]"
+                      className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-[20px] p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition font-black text-xs cursor-pointer active:scale-95 min-h-[44px]"
                       title="Növbəti Zərbə"
                     >
                       <span className="hidden sm:inline">Növbəti</span>
@@ -621,17 +621,17 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   <!-- Deep Shot Metrics Grid -->
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs">
                     
-                    <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                    <div className="bg-slate-800/60 p-3 rounded-[20px] p-2 border border-slate-700/60">
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">xG (Gözlənilən Qol)</span>
                       <span className="text-lg font-black text-amber-400 font-mono">${currentShot.xg}</span>
                     </div>
 
-                    <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                    <div className="bg-slate-800/60 p-3 rounded-[20px] p-2 border border-slate-700/60">
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">xGOT (Dəqiqlik)</span>
                       <span className="text-lg font-black text-emerald-400 font-mono">${currentShot.xgot || '0.00'}</span>
                     </div>
 
-                    <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                    <div className="bg-slate-800/60 p-3 rounded-[20px] p-2 border border-slate-700/60">
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">Zərbə Nəticəsi</span>
                       <span className=${`inline-flex items-center gap-1 text-[11px] font-black px-2 py-0.5 rounded-md mt-0.5 ${getOutcomeBadge(currentShot.outcome).bg}`}>
                         <i className=${`fas ${getOutcomeBadge(currentShot.outcome).icon} text-[9px]`}></i>
@@ -639,22 +639,22 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                       </span>
                     </div>
 
-                    <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                    <div className="bg-slate-800/60 p-3 rounded-[20px] p-2 border border-slate-700/60">
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">Qol Zonası</span>
                       <span className="text-xs font-black text-emerald-300 truncate block mt-0.5">${currentShot.goalZone}</span>
                     </div>
 
-                    <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                    <div className="bg-slate-800/60 p-3 rounded-[20px] p-2 border border-slate-700/60">
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">Zərbə Növü</span>
                       <span className="text-xs font-black text-slate-200 block mt-0.5">${currentShot.shotType}</span>
                     </div>
 
-                    <div className="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                    <div className="bg-slate-800/60 p-3 rounded-[20px] p-2 border border-slate-700/60">
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">Oyun Vəziyyəti</span>
                       <span className="text-xs font-black text-slate-200 block mt-0.5">${currentShot.situation}</span>
                     </div>
 
-                    <div className="col-span-2 bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60">
+                    <div className="col-span-2 bg-slate-800/60 p-3 rounded-[20px] p-2 border border-slate-700/60">
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">Epizod Təsviri</span>
                       <span className="text-xs font-semibold text-slate-300 block mt-0.5" title=${currentShot.desc}>
                         ${currentShot.desc}
@@ -685,7 +685,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   </h3>
                   <p className="text-xs text-slate-400 mt-0.5">Meydançada hər komandadan 5 oyunçu (1 Qapıçı + 4 Sahə Oyunçusu) və ehtiyat skamyası</p>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-bold bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
+                <div className="flex items-center gap-2 text-xs font-bold bg-slate-900 px-3 py-1.5 rounded-[8px] border border-slate-800">
                   <span className="flex items-center gap-1.5 text-red-400 font-black"><span className="w-2.5 h-2.5 rounded-full bg-red-500"></span> ${match.teamA}</span>
                   <span className="text-slate-500">vs</span>
                   <span className="flex items-center gap-1.5 text-sky-400 font-black"><span className="w-2.5 h-2.5 rounded-full bg-sky-500"></span> ${match.teamB}</span>
@@ -694,7 +694,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
               <!-- Horizontal Full Pitch (Minifootball 40m x 20m) -->
               <div 
-                className="w-full h-96 sm:h-[440px] bg-gradient-to-r from-[#0a2316] via-[#123823] to-[#0a2316] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-2xl p-4"
+                className="w-full h-96 sm:h-[440px] bg-gradient-to-r from-[#0a2316] via-[#123823] to-[#0a2316] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800 p-4"
                 style=${{ touchAction: 'pan-y' }}
               >
                 <!-- Authentic Turf Mowing Stripes (Qazon Zolaqları) -->
@@ -766,7 +766,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   </div>
                 `)}
 
-                <div className="absolute bottom-3 left-4 bg-black/75 backdrop-blur-md px-3 py-1 rounded-xl text-[10px] font-bold text-slate-300 border border-slate-800">
+                <div className="absolute bottom-3 left-4 bg-black/75 backdrop-blur-md px-3 py-1 rounded-[8px] text-[10px] font-bold text-slate-300 border border-slate-800">
                   Formasiya: 1-2-1 Romb (GK + 1 Fix + 2 Ala + 1 Pivot)
                 </div>
               </div>
@@ -774,7 +774,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
               <!-- Substitutes Bench (Ehtiyat Skamyası) -->
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Team A Bench -->
-                <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5">
+                <div className="bg-slate-900/90 border border-slate-800 rounded-[20px] p-2 p-3.5">
                   <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-xs">
                     <span className="font-black text-red-400 flex items-center gap-1.5">
                       <i className="fas fa-chair text-slate-500"></i> ${match.teamA} Ehtiyat Skamyası
@@ -785,7 +785,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     ${(analytics.benchA || []).length === 0 ? html`
                       <span className="text-xs text-slate-500 italic py-1">Ehtiyat oyunçu qeyd olunmayıb</span>
                     ` : analytics.benchA.map(sub => html`
-                      <div key=${sub.id} className="flex items-center gap-2 bg-slate-800/80 px-2.5 py-1.5 rounded-xl border border-slate-700/60">
+                      <div key=${sub.id} className="flex items-center gap-2 bg-slate-800/80 px-2.5 py-1.5 rounded-[8px] border border-slate-700/60">
                         <span className="w-5 h-5 rounded-full bg-red-600/30 text-red-300 border border-red-500/40 text-[10px] font-black flex items-center justify-center">
                           ${sub.number}
                         </span>
@@ -799,7 +799,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                 </div>
 
                 <!-- Team B Bench -->
-                <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5">
+                <div className="bg-slate-900/90 border border-slate-800 rounded-[20px] p-2 p-3.5">
                   <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-xs">
                     <span className="font-black text-sky-400 flex items-center gap-1.5">
                       <i className="fas fa-chair text-slate-500"></i> ${match.teamB} Ehtiyat Skamyası
@@ -810,7 +810,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     ${(analytics.benchB || []).length === 0 ? html`
                       <span className="text-xs text-slate-500 italic py-1">Ehtiyat oyunçu qeyd olunmayıb</span>
                     ` : analytics.benchB.map(sub => html`
-                      <div key=${sub.id} className="flex items-center gap-2 bg-slate-800/80 px-2.5 py-1.5 rounded-xl border border-slate-700/60">
+                      <div key=${sub.id} className="flex items-center gap-2 bg-slate-800/80 px-2.5 py-1.5 rounded-[8px] border border-slate-700/60">
                         <span className="w-5 h-5 rounded-full bg-sky-600/30 text-sky-300 border border-sky-500/40 text-[10px] font-black flex items-center justify-center">
                           ${sub.number}
                         </span>
@@ -826,9 +826,9 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
               <!-- Player Detail Card when clicked -->
               ${selectedPlayer && html`
-                <div className="bg-slate-900/95 border border-purple-500/50 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fadeIn shadow-xl">
+                <div className="bg-slate-900/95 border border-purple-500/50 rounded-[20px] p-2 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fadeIn shadow-xl">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-purple-900/80 text-white font-black text-lg flex items-center justify-center border border-purple-500 shadow-md">
+                    <div className="w-12 h-12 rounded-[20px] p-2 bg-purple-900/80 text-white font-black text-lg flex items-center justify-center border border-purple-500 shadow-md">
                       ${selectedPlayer.number}
                     </div>
                     <div>
@@ -851,14 +851,14 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                         setSelectedHeatmapPlayer(selectedPlayer.name);
                         setActiveTab('heatmap');
                       }}
-                      className="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black text-xs transition cursor-pointer flex items-center gap-1.5 shadow-md shadow-purple-600/20 active:scale-95"
+                      className="px-3.5 py-2 rounded-[8px] bg-purple-600 hover:bg-purple-500 text-white font-black text-xs transition cursor-pointer flex items-center gap-1.5 shadow-md shadow-purple-600/20 active:scale-95"
                     >
                       <i className="fas fa-fire-flame-curved text-amber-300"></i>
                       <span>İstilik Xəritəsində Bax</span>
                     </button>
                     <div className="flex items-center gap-1.5">
                       <span className="text-xs text-slate-400 font-bold hidden sm:inline">Reytinq:</span>
-                      <span className=${`text-sm font-black px-3 py-1 rounded-xl shadow-lg ${getSofascoreBadgeStyle(selectedPlayer.rating)}`}>
+                      <span className=${`text-sm font-black px-3 py-1 rounded-[8px] shadow-lg ${getSofascoreBadgeStyle(selectedPlayer.rating)}`}>
                         ${selectedPlayer.rating}
                       </span>
                     </div>
@@ -887,10 +887,10 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                 </div>
 
                 <!-- Filter Selector Tabs -->
-                <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 p-1 rounded-2xl flex-wrap">
+                <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 p-1 rounded-[20px] p-2 flex-wrap">
                   <button
                     onClick=${() => setHeatmapFilter('all')}
-                    className=${`px-3 py-1.5 text-xs font-black rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
+                    className=${`px-3 py-1.5 text-xs font-black rounded-[8px] transition cursor-pointer flex items-center gap-1.5 ${
                       heatmapFilter === 'all' ? 'bg-purple-900 text-white shadow-md shadow-purple-900/30' : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -898,7 +898,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   </button>
                   <button
                     onClick=${() => setHeatmapFilter('teamA')}
-                    className=${`px-3 py-1.5 text-xs font-black rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
+                    className=${`px-3 py-1.5 text-xs font-black rounded-[8px] transition cursor-pointer flex items-center gap-1.5 ${
                       heatmapFilter === 'teamA' ? 'bg-red-600 text-white shadow-md shadow-red-600/30' : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -907,7 +907,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   </button>
                   <button
                     onClick=${() => setHeatmapFilter('teamB')}
-                    className=${`px-3 py-1.5 text-xs font-black rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
+                    className=${`px-3 py-1.5 text-xs font-black rounded-[8px] transition cursor-pointer flex items-center gap-1.5 ${
                       heatmapFilter === 'teamB' ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30' : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -916,7 +916,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   </button>
                   <button
                     onClick=${() => setHeatmapFilter('player')}
-                    className=${`px-3 py-1.5 text-xs font-black rounded-xl transition cursor-pointer flex items-center gap-1.5 ${
+                    className=${`px-3 py-1.5 text-xs font-black rounded-[8px] transition cursor-pointer flex items-center gap-1.5 ${
                       heatmapFilter === 'player' ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30' : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -928,7 +928,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
               <!-- Individual Player Selector (When 'player' filter is active) -->
               ${heatmapFilter === 'player' && html`
-                <div className="bg-slate-900/95 border border-slate-800 rounded-2xl p-3 sm:p-4 space-y-3 animate-fadeIn">
+                <div className="bg-slate-900/95 border border-slate-800 rounded-[20px] p-2 p-3 sm:p-4 space-y-3 animate-fadeIn">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-extrabold text-slate-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
                       <i className="fas fa-hand-pointer text-amber-400"></i> Fərdi Taktiki İstilik Xəritəsi Üçün Oyunçu Seçin:
@@ -945,7 +945,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                         <button
                           key=${p.id}
                           onClick=${() => setSelectedHeatmapPlayer(p.name)}
-                          className=${`px-2.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer border ${
+                          className=${`px-2.5 py-1.5 rounded-[8px] text-xs font-black transition flex items-center gap-1.5 cursor-pointer border ${
                             isSelected
                               ? 'bg-purple-600 text-white border-purple-400 shadow-md scale-105 ring-2 ring-purple-400/40'
                               : isA
@@ -971,19 +971,19 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     if (!heatData) return null;
                     return html`
                       <div className="mt-2 pt-3 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
-                        <div className="bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/50">
+                        <div className="bg-slate-800/50 p-2.5 rounded-[8px] border border-slate-700/50">
                           <span className="text-[10px] font-bold text-slate-400 block uppercase">Taktiki Mövqe</span>
                           <span className="text-xs font-black text-amber-300 mt-0.5 block truncate">${heatData.role}</span>
                         </div>
-                        <div className="bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/50">
+                        <div className="bg-slate-800/50 p-2.5 rounded-[8px] border border-slate-700/50">
                           <span className="text-[10px] font-bold text-slate-400 block uppercase">Topla Təmas</span>
                           <span className="text-xs font-black text-emerald-400 mt-0.5 block">${heatData.touches} Təmas</span>
                         </div>
-                        <div className="bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/50">
+                        <div className="bg-slate-800/50 p-2.5 rounded-[8px] border border-slate-700/50">
                           <span className="text-[10px] font-bold text-slate-400 block uppercase">Döyüşlərdə Qələbə</span>
                           <span className="text-xs font-black text-sky-300 mt-0.5 block">${heatData.duelsWon}</span>
                         </div>
-                        <div className="bg-slate-800/50 p-2.5 rounded-xl border border-slate-700/50">
+                        <div className="bg-slate-800/50 p-2.5 rounded-[8px] border border-slate-700/50">
                           <span className="text-[10px] font-bold text-slate-400 block uppercase">Maks. Sürət</span>
                           <span className="text-xs font-black text-purple-300 mt-0.5 block">${heatData.maxSpeed}</span>
                         </div>
@@ -995,7 +995,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
               <!-- Authentic 5v5 Minifootball Pitch (40m x 20m) with HD Thermal Heatmap -->
               <div 
-                className="w-full h-84 sm:h-[420px] bg-gradient-to-r from-[#071d12] via-[#0d2a1b] to-[#071d12] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-2xl flex items-center justify-center p-4"
+                className="w-full h-84 sm:h-[420px] bg-gradient-to-r from-[#071d12] via-[#0d2a1b] to-[#071d12] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800 flex items-center justify-center p-4"
                 style=${{ touchAction: 'pan-y' }}
               >
                 <!-- Alternating Mower Turf Stripes -->
@@ -1069,7 +1069,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
                 <!-- Player Active Territory Center Tag (In Player Mode) -->
                 ${heatmapFilter === 'player' && html`
-                  <div className="absolute top-4 left-4 bg-slate-950/85 backdrop-blur-md border border-purple-500/50 px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-2">
+                  <div className="absolute top-4 left-4 bg-slate-950/85 backdrop-blur-md border border-purple-500/50 px-3 py-1.5 rounded-[8px] shadow-lg flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
                     <span className="text-xs font-black text-white">${selectedHeatmapPlayer}</span>
                     <span className="text-[10px] text-purple-300 font-bold">
@@ -1078,12 +1078,12 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   </div>
                 `}
 
-                <div className="absolute bottom-3 right-4 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl text-[10px] font-bold text-slate-300 border border-slate-800 shadow-md">
+                <div className="absolute bottom-3 right-4 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-[8px] text-[10px] font-bold text-slate-300 border border-slate-800 shadow-md">
                   Minifutbol Meydançası (40m × 20m) • 5v5
                 </div>
 
                 <!-- Heat Intensity Color Legend -->
-                <div className="absolute bottom-3 left-4 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-800 shadow-md flex items-center gap-2 text-[10px] font-bold text-slate-300">
+                <div className="absolute bottom-3 left-4 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-[8px] border border-slate-800 shadow-md flex items-center gap-2 text-[10px] font-bold text-slate-300">
                   <span className="text-[9px] uppercase tracking-wider text-slate-400">İntensivlik:</span>
                   <div className="flex items-center gap-1">
                     <span className="w-2.5 h-2.5 rounded-full bg-blue-500" title="Zəif"></span>
@@ -1106,7 +1106,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                 return html`
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Flank Attack Distribution -->
-                    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-3">
+                    <div className="bg-slate-900/90 border border-slate-800 rounded-[20px] p-2 p-4 space-y-3">
                       <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                         <h4 className="text-xs font-black uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
                           <i className="fas fa-arrows-split-up-and-left text-emerald-400"></i> Cinah Hücum Kanalları (Flanks)
@@ -1157,7 +1157,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     </div>
 
                     <!-- Pitch Thirds Control -->
-                    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-3">
+                    <div className="bg-slate-900/90 border border-slate-800 rounded-[20px] p-2 p-4 space-y-3">
                       <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                         <h4 className="text-xs font-black uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
                           <i className="fas fa-layer-group text-sky-400"></i> Meydança Zonaları Nəzarəti (Thirds)
@@ -1208,7 +1208,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
               })()}
 
               <!-- 5v5 Minifootball Tactical Guide Banner -->
-              <div className="p-4 rounded-2xl bg-purple-950/40 border border-purple-800/50 flex items-start gap-3 text-xs text-purple-200">
+              <div className="p-4 rounded-[20px] p-2 bg-purple-950/40 border border-purple-800/50 flex items-start gap-3 text-xs text-purple-200">
                 <i className="fas fa-info-circle text-purple-400 text-base shrink-0 mt-0.5"></i>
                 <div className="space-y-1">
                   <span className="font-black uppercase tracking-wider text-purple-300 block">
@@ -1262,7 +1262,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   const pctA = Math.round((valA / total) * 100);
                   const pctB = 100 - pctA;
                   return html`
-                    <div key=${item.label} className="bg-slate-800/40 p-3 rounded-2xl border border-slate-700/40">
+                    <div key=${item.label} className="bg-slate-800/40 p-3 rounded-[20px] p-2 border border-slate-700/40">
                       <div className="flex justify-between items-center text-xs font-black mb-1.5">
                         <span className="text-red-400 text-sm">${item.a}</span>
                         <span className="text-slate-300 font-bold uppercase text-[10px] tracking-wide">${item.label}</span>
@@ -1284,7 +1284,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
           <!-- ================================================================= -->
           ${activeTab === 'video' && match.videoUrl && html`
             <div className="space-y-4">
-              <div className="aspect-video w-full rounded-2xl overflow-hidden border border-purple-800/60 shadow-2xl bg-black">
+              <div className="aspect-video w-full rounded-[20px] p-2 overflow-hidden border border-purple-800/60 shadow-sm border border-zinc-200 dark:border-zinc-800 bg-black">
                 <iframe
                   src=${match.videoUrl.replace('watch?v=', 'embed/')}
                   title="Matç Video Yayımı"
@@ -1295,7 +1295,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
               </div>
 
               <!-- Video Timeline Events -->
-              <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+              <div className="bg-slate-900/90 border border-slate-800 rounded-[20px] p-2 p-4">
                 <h4 className="text-xs font-black uppercase text-purple-300 tracking-wider mb-2 flex items-center gap-1.5">
                   <i className="fas fa-clock text-emerald-400"></i> Video Zaman Nişanələri (Qollar və Hadisələr)
                 </h4>
@@ -1312,7 +1312,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     { min: '11:00', desc: '⚽ 10A Qol (Murad Het-trik, 5-4)', color: 'text-emerald-400' },
                     { min: '17:19', desc: '🟥 10A Qırmızı Vərəqə (Fərid)', color: 'text-rose-400' }
                   ].map(e => html`
-                    <div key=${e.min} className="bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/60 flex items-center justify-between">
+                    <div key=${e.min} className="bg-slate-800/60 p-2.5 rounded-[8px] border border-slate-700/60 flex items-center justify-between">
                       <span className="font-extrabold text-[11px] text-slate-300">${e.desc}</span>
                       <span className="font-mono text-xs font-black text-amber-400 ml-2">${e.min}</span>
                     </div>
@@ -1335,7 +1335,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
             </span>
             <button
               onClick=${handleBack}
-              className="px-5 sm:px-6 py-2 rounded-xl bg-purple-900 hover:bg-purple-800 text-white font-black text-xs transition shadow-lg cursor-pointer"
+              className="px-5 sm:px-6 py-2 rounded-[8px] bg-purple-900 hover:bg-purple-800 text-white font-black text-xs transition shadow-lg cursor-pointer"
             >
               ${lang === 'az' ? 'Geri Qayıt' : 'Back'}
             </button>

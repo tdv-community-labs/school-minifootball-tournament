@@ -337,11 +337,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const renderBracketMatchCard = (match, label, index) => {
     if (!match) {
       return html`
-        <div className="border-2 border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50/40 dark:bg-zinc-900/30 rounded-2xl p-3 flex flex-col justify-center items-center h-[102px] w-60 text-center select-none">
+        <div className="border-2 border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50/40 dark:bg-zinc-900/30 rounded-[20px] p-3 flex flex-col justify-center items-center h-[102px] w-60 text-center select-none tabular-nums">
           <span className="text-[9px] text-zinc-400 dark:text-zinc-500 font-black uppercase tracking-wider">
             ${label} #${index + 1}
           </span>
-          <span className="text-[11px] text-zinc-400 dark:text-zinc-500 font-bold mt-1 flex items-center gap-1">
+          <span className="text-[11px] text-zinc-400 dark:text-zinc-500 font-bold mt-1 flex items-center gap-1 tabular-nums">
             <i className="fas fa-hourglass-start text-[10px]"></i> Təyin edilməyib
           </span>
         </div>
@@ -360,7 +360,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
     return html`
       <div 
         onClick=${() => setSelectedMatch(match)}
-        className=${`group bg-white dark:bg-zinc-900 border rounded-2xl p-2.5 shadow-xs hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between w-60 min-h-[104px] relative select-none ${
+        className=${`group bg-white dark:bg-zinc-900 border rounded-[20px] p-2.5 shadow-xs hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between w-60 min-h-[104px] relative select-none ${
           isFinished ? 'border-zinc-200 dark:border-zinc-800' : 'border-zinc-200/80 dark:border-zinc-800/80'
         }`}
       >
@@ -381,7 +381,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
         </div>
 
         <!-- Team A Row -->
-        <div className=${`flex items-center justify-between px-2.5 py-1.5 rounded-xl border transition-all ${
+        <div className=${`flex items-center justify-between px-2.5 py-1.5 rounded-[8px] border transition-all ${
           (isTeamAWinner || (isFinalStage && match.teamA === '?'))
             ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-900 dark:text-emerald-200 font-black shadow-2xs'
             : isTeamALoser
@@ -407,7 +407,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
               ${isTeamALoser ? html`
                 <span className="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded shrink-0 shadow-2xs" title="Məğlub (L)">L</span>
               ` : null}
-              <span className="text-xs truncate font-bold text-zinc-900 dark:text-zinc-100">
+              <span className="text-xs truncate font-bold text-zinc-900 dark:text-zinc-100 tabular-nums">
                 ${match.teamA}
               </span>
             </div>
@@ -416,7 +416,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           
           <div className="flex items-center space-x-1 shrink-0">
             ${hasPenalties && html`
-              <span className="text-[9px] text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 px-1 py-0.2 rounded font-bold">
+              <span className="text-[9px] text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 px-1 py-0.2 rounded font-bold tabular-nums">
                 (${match.penaltyScoreA})
               </span>
             `}
@@ -433,7 +433,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
         </div>
 
         <!-- Team B Row -->
-        <div className=${`flex items-center justify-between px-2.5 py-1.5 rounded-xl border transition-all ${
+        <div className=${`flex items-center justify-between px-2.5 py-1.5 rounded-[8px] border transition-all ${
           (isTeamBWinner || (isFinalStage && match.teamB === '?'))
             ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-900 dark:text-emerald-200 font-black shadow-2xs'
             : isTeamBLoser
@@ -459,7 +459,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
               ${isTeamBLoser ? html`
                 <span className="bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.2 rounded shrink-0 shadow-2xs" title="Məğlub (L)">L</span>
               ` : null}
-              <span className="text-xs truncate font-bold text-zinc-900 dark:text-zinc-100">
+              <span className="text-xs truncate font-bold text-zinc-900 dark:text-zinc-100 tabular-nums">
                 ${match.teamB}
               </span>
             </div>
@@ -468,7 +468,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
 
           <div className="flex items-center space-x-1 shrink-0">
             ${hasPenalties && html`
-              <span className="text-[9px] text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 px-1 py-0.2 rounded font-bold">
+              <span className="text-[9px] text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 px-1 py-0.2 rounded font-bold tabular-nums">
                 (${match.penaltyScoreB})
               </span>
             `}
@@ -517,11 +517,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-black text-xs px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-zinc-200 dark:border-zinc-700">
               ${getDivisionLabel(activeDivision)}
             </span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-purple-500/15 border border-purple-500/30 px-2.5 py-0.5 text-xs font-bold text-purple-700 dark:text-purple-300">
+            <span className="inline-flex items-center gap-1 rounded-full bg-purple-500/15 border border-purple-500/30 px-2.5 py-0.5 text-xs font-bold text-purple-700 dark:text-purple-300 tabular-nums">
               ⚡ 5v5 Minifutbol
             </span>
             <span className="text-zinc-300 dark:text-zinc-700 text-xs">•</span>
-            <span className="text-zinc-500 dark:text-zinc-400 text-xs font-bold">${activeYear}</span>
+            <span className="text-zinc-500 dark:text-zinc-400 text-xs font-bold tabular-nums">${activeYear}</span>
           </div>
           <h2 className="text-2xl font-black text-zinc-900 dark:text-white mt-1">
             ${t('standingsTitle')}
@@ -534,10 +534,10 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
         </div>
         
         <!-- View Switcher Tabs -->
-        <div className="flex bg-zinc-100 dark:bg-zinc-800/80 p-1.5 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 shadow-xs">
+        <div className="flex bg-zinc-100 dark:bg-zinc-800/80 p-1.5 rounded-[20px] border border-zinc-200 dark:border-zinc-700/60 shadow-xs">
           <button
             onClick=${() => setViewMode('table')}
-            className=${`px-4 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wide transition-all whitespace-nowrap flex items-center space-x-2 cursor-pointer ${
+            className=${`px-4 py-2 rounded-[8px] text-xs font-extrabold uppercase tracking-wide transition-all whitespace-nowrap flex items-center space-x-2 cursor-pointer ${
               viewMode === 'table' 
                 ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 shadow-xs border border-purple-200/80 dark:border-purple-800/80 font-black' 
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
@@ -549,7 +549,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           
           <button
             onClick=${() => setViewMode('bracket')}
-            className=${`px-4 py-2 rounded-xl text-xs font-extrabold uppercase tracking-wide transition-all whitespace-nowrap flex items-center space-x-2 cursor-pointer ${
+            className=${`px-4 py-2 rounded-[8px] text-xs font-extrabold uppercase tracking-wide transition-all whitespace-nowrap flex items-center space-x-2 cursor-pointer ${
               viewMode === 'bracket' 
                 ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 shadow-xs border border-purple-200/80 dark:border-purple-800/80 font-black' 
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
@@ -569,10 +569,10 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           
           <!-- Group Selector Filter Pills -->
           ${hasMultipleGroups && html`
-            <div className="flex flex-wrap items-center gap-2 p-1.5 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 w-fit">
+            <div className="flex flex-wrap items-center gap-2 p-1.5 bg-zinc-100 dark:bg-zinc-900 rounded-[20px] border border-zinc-200 dark:border-zinc-800 w-fit">
               <button
                 onClick=${() => setSelectedGroup('ALL')}
-                className=${`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer ${
+                className=${`px-4 py-2 rounded-[8px] text-xs font-black uppercase tracking-wider transition cursor-pointer ${
                   selectedGroup === 'ALL'
                     ? 'bg-purple-600 text-white shadow-xs'
                     : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/70 dark:hover:bg-zinc-800'
@@ -584,7 +584,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 <button
                   key=${grp}
                   onClick=${() => setSelectedGroup(grp)}
-                  className=${`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition flex items-center gap-2 cursor-pointer ${
+                  className=${`px-4 py-2 rounded-[8px] text-xs font-black uppercase tracking-wider transition flex items-center gap-2 cursor-pointer ${
                     selectedGroup === grp
                       ? 'bg-purple-600 text-white shadow-xs'
                       : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/70 dark:hover:bg-zinc-800'
@@ -603,7 +603,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           `}
 
           ${table.length === 0 ? html`
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center text-zinc-400 dark:text-zinc-500 shadow-xs">
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center text-zinc-400 dark:text-zinc-500 shadow-xs tabular-nums">
               ${t('tableEmptyNotice')}
             </div>
           ` : groupsToDisplay.map(grp => {
@@ -626,7 +626,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                         <h3 className="text-base font-black tracking-wide">
                           ${groupTitle}
                         </h3>
-                        <span className="text-xs text-zinc-400 font-bold">
+                        <span className="text-xs text-zinc-400 font-bold tabular-nums">
                           (${groupTeams.length} ${lang === 'az' ? 'Sinif' : 'Classes'})
                         </span>
                       </div>
@@ -644,33 +644,33 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     <table className="w-full text-left border-collapse standings-table bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200">
                       <thead>
                         <tr className="bg-zinc-50 dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 text-[11px] sm:text-xs font-black tracking-wider uppercase border-b border-zinc-200 dark:border-zinc-800">
-                          <th className="py-3 px-2 sm:py-4 sm:px-6 text-center w-8 sm:w-14">#</th>
+                          <th className="py-3 px-2 sm:py-4 sm:px-6 text-center w-8 sm:w-14 tabular-nums">#</th>
                           <th className="py-3 px-2 sm:py-4 sm:px-4 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" onClick=${() => handleSort('class')}>
                             ${t('colTeam')} ${sortField === 'class' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" onClick=${() => handleSort('played')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors tabular-nums" onClick=${() => handleSort('played')}>
                             ${t('colPlayed')} ${sortField === 'played' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" onClick=${() => handleSort('won')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors tabular-nums" onClick=${() => handleSort('won')}>
                             ${t('colWon')} ${sortField === 'won' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" onClick=${() => handleSort('drawn')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors tabular-nums" onClick=${() => handleSort('drawn')}>
                             ${t('colDrawn')} ${sortField === 'drawn' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" onClick=${() => handleSort('lost')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors tabular-nums" onClick=${() => handleSort('lost')}>
                             ${t('colLost')} ${sortField === 'lost' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors hidden md:table-cell" onClick=${() => handleSort('goalsFor')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors hidden md:table-cell tabular-nums" onClick=${() => handleSort('goalsFor')}>
                             ${t('colGF')} ${sortField === 'goalsFor' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors hidden md:table-cell" onClick=${() => handleSort('goalsAgainst')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors hidden md:table-cell tabular-nums" onClick=${() => handleSort('goalsAgainst')}>
                             ${t('colGA')} ${sortField === 'goalsAgainst' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" title="Top Fərqi (Vurulan - Buraxılan)" onClick=${() => handleSort('goalDifference')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-4 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors tabular-nums" title="Top Fərqi (Vurulan - Buraxılan)" onClick=${() => handleSort('goalDifference')}>
                             ${t('colGD')} ${sortField === 'goalDifference' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
-                          <th className="py-3 px-2 sm:py-4 sm:px-3 text-center hidden md:table-cell font-black tracking-wider uppercase">Forma</th>
-                          <th className="py-3 px-2 sm:py-4 sm:px-6 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" onClick=${() => handleSort('points')}>
+                          <th className="py-3 px-2 sm:py-4 sm:px-3 text-center hidden md:table-cell font-black tracking-wider uppercase tabular-nums">Forma</th>
+                          <th className="py-3 px-2 sm:py-4 sm:px-6 text-center cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors tabular-nums" onClick=${() => handleSort('points')}>
                             ${t('colPoints')} ${sortField === 'points' ? (sortAsc ? '▲' : '▼') : ''}
                           </th>
                         </tr>
@@ -679,7 +679,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                         ${groupTeams.length === 0 
                           ? html`
                               <tr>
-                                <td colSpan="11" className="py-8 text-center text-zinc-400 dark:text-zinc-500">
+                                <td colSpan="11" className="py-8 text-center text-zinc-400 dark:text-zinc-500 tabular-nums">
                                   ${t('tableEmptyNotice')}
                                 </td>
                               </tr>
@@ -697,12 +697,12 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
 
                               return html`
                                 <tr key=${row.class} className=${`transition-colors duration-150 ${rowClass}`}>
-                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center font-black">
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center font-black tabular-nums">
                                     ${isFirst 
                                       ? html`<span className="bg-emerald-500 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full inline-flex items-center justify-center text-[11px] sm:text-xs font-black shadow-xs">1</span>`
                                       : isSecond && hasMultipleGroups
                                       ? html`<span className="bg-emerald-600 text-white w-5 h-5 sm:w-6 sm:h-6 rounded-full inline-flex items-center justify-center text-[11px] sm:text-xs font-black shadow-xs">2</span>`
-                                      : html`<span className="text-zinc-500 dark:text-zinc-400 font-bold text-[11px] sm:text-xs">${index + 1}</span>`
+                                      : html`<span className="text-zinc-500 dark:text-zinc-400 font-bold text-[11px] sm:text-xs tabular-nums">${index + 1}</span>`
                                     }
                                   </td>
                                   <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 font-black flex items-center gap-1.5 sm:gap-2">
@@ -717,12 +717,12 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                                       </span>
                                     `}
                                   </td>
-                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center font-bold text-zinc-700 dark:text-zinc-200">${row.played}</td>
-                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-emerald-600 dark:text-emerald-400 font-extrabold">${row.won}</td>
-                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-zinc-500 dark:text-zinc-400 font-semibold">${row.drawn}</td>
-                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-rose-600 dark:text-rose-400 font-extrabold">${row.lost}</td>
-                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-zinc-600 dark:text-zinc-300 font-medium hidden md:table-cell">${row.goalsFor}</td>
-                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-zinc-600 dark:text-zinc-300 font-medium hidden md:table-cell">${row.goalsAgainst}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center font-bold text-zinc-700 dark:text-zinc-200 tabular-nums tabular-nums">${row.played}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-emerald-600 dark:text-emerald-400 font-extrabold tabular-nums">${row.won}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-zinc-500 dark:text-zinc-400 font-semibold tabular-nums">${row.drawn}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-rose-600 dark:text-rose-400 font-extrabold tabular-nums">${row.lost}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-zinc-600 dark:text-zinc-300 font-medium hidden md:table-cell tabular-nums">${row.goalsFor}</td>
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-4 text-center text-zinc-600 dark:text-zinc-300 font-medium hidden md:table-cell tabular-nums">${row.goalsAgainst}</td>
                                   <td 
                                     className=${`py-2.5 px-2 sm:py-3.5 sm:px-4 text-center font-black ${
                                       row.goalDifference > 0 ? 'text-emerald-600 dark:text-emerald-400' :
@@ -733,7 +733,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                                   >
                                     ${row.goalDifference > 0 ? `+${row.goalDifference}` : row.goalDifference}
                                   </td>
-                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-3 text-center hidden md:table-cell">
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-3 text-center hidden md:table-cell tabular-nums">
                                     <div className="flex items-center justify-center gap-1">
                                       ${getTeamForm(row.class).map((f, i) => html`
                                         <span key=${i} className=${`w-4 h-4 rounded text-[8px] font-mono font-black inline-flex items-center justify-center text-white shadow-2xs ${
@@ -744,7 +744,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                                       `)}
                                     </div>
                                   </td>
-                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-6 text-center">
+                                  <td className="py-2.5 px-2 sm:py-3.5 sm:px-6 text-center tabular-nums">
                                     <span className="inline-block min-w-[1.75rem] sm:min-w-[2rem] py-0.5 sm:py-1 px-1.5 sm:px-2.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-black text-xs sm:text-sm shadow-2xs border border-zinc-200 dark:border-zinc-700">
                                       ${row.points}
                                     </span>
@@ -763,14 +763,14 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           }
 
           <!-- Abbreviations Legend -->
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900/60 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900/60 p-4 rounded-[20px] border border-zinc-200 dark:border-zinc-800">
             <div><span className="text-zinc-900 dark:text-zinc-200 font-extrabold mr-1">O:</span> ${lang === 'az' ? 'Oyun Sayı' : 'Played'}</div>
             <div><span className="text-emerald-600 dark:text-emerald-400 font-extrabold mr-1">Q:</span> ${lang === 'az' ? 'Qələbə' : 'Won'}</div>
             <div><span className="text-zinc-700 dark:text-zinc-300 font-extrabold mr-1">H:</span> ${lang === 'az' ? 'Heç-heçə' : 'Drawn'}</div>
             <div><span className="text-rose-600 dark:text-rose-400 font-extrabold mr-1">M:</span> ${lang === 'az' ? 'Məğlubiyyət' : 'Lost'}</div>
             <div><span className="text-zinc-900 dark:text-zinc-200 font-extrabold mr-1">TF:</span> ${lang === 'az' ? 'Top Fərqi' : 'Goal Diff'}</div>
             <div className="hidden md:block"><span className="text-zinc-900 dark:text-zinc-200 font-extrabold mr-1">VQ/BQ:</span> ${lang === 'az' ? 'Vuruldu / Buraxıldı' : 'GF / GA'}</div>
-            <div className="col-span-2 md:col-span-6 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 font-bold">
+            <div className="col-span-2 md:col-span-6 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 font-bold tabular-nums">
               <i className="fas fa-info-circle text-emerald-600 dark:text-emerald-400"></i>
               <span>${lang === 'az' ? 'Aydınlaşdırma: "TF" (+34 və s.) tək bir oyunçunun qolu deyil, komandanın vurduğu və buraxdığı qollar arasındakı Top Fərqidir (məs: 43 vurulub - 9 buraxılıb = +34 TF).' : 'Clarification: "GD" (+34 etc.) is Team Goal Difference, not individual player goals (e.g. 43 scored - 9 conceded = +34 GD).'}</span>
             </div>
@@ -788,7 +788,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             
             <!-- Champion & Runner-Up Showcase (Lg: 5 cols) -->
-            <div className="lg:col-span-5 bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-600 text-purple-950 p-6 rounded-3xl shadow-lg border border-amber-300 relative overflow-hidden flex flex-col justify-between">
+            <div className="lg:col-span-5 bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-600 text-purple-950 p-6 rounded-3xl shadow-sm border border-amber-300 relative overflow-hidden flex flex-col justify-between">
               <div className="absolute -right-6 -bottom-6 text-amber-200/25 text-9xl font-black select-none pointer-events-none">
                 <i className="fas fa-trophy"></i>
               </div>
@@ -807,7 +807,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   ${championTeam ? `${championTeam} Sinfi` : 'Müəyyənləşdirilir'}
                 </h3>
                 
-                <p className="text-xs font-bold text-purple-950/80 mt-1.5">
+                <p className="text-xs font-bold text-purple-950/80 mt-1.5 tabular-nums">
                   ${championTeam 
                     ? `${getDivisionLabel(activeDivision)} Çempionu və Qızıl Medal Sahibi` 
                     : 'Pley-off final oyunu tamamlandıqdan sonra çempion burada elan ediləcək'}
@@ -816,7 +816,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
 
               <!-- Podiums for 2nd and 3rd -->
               <div className="grid grid-cols-2 gap-2.5 mt-5 relative z-10 pt-3 border-t border-amber-400/60">
-                <div className="bg-purple-950/20 backdrop-blur-xs p-2.5 rounded-2xl border border-white/20">
+                <div className="bg-purple-950/20 backdrop-blur-xs p-2.5 rounded-[20px] border border-white/20">
                   <span className="text-[9px] font-black uppercase text-purple-950 block flex items-center gap-1">
                     <i className="fas fa-medal text-slate-200"></i> 2-ci Yer (Finalçı)
                   </span>
@@ -825,7 +825,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   </p>
                 </div>
 
-                <div className="bg-purple-950/20 backdrop-blur-xs p-2.5 rounded-2xl border border-white/20">
+                <div className="bg-purple-950/20 backdrop-blur-xs p-2.5 rounded-[20px] border border-white/20">
                   <span className="text-[9px] font-black uppercase text-purple-950 block flex items-center gap-1">
                     <i className="fas fa-award text-amber-800"></i> 3-cü Yer (Bürünc)
                   </span>
@@ -846,7 +846,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     <span className="text-[10px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
                       <i className="fas fa-star"></i> MVP
                     </span>
-                    <span className="text-[9px] font-bold text-zinc-400">Ən Dəyərli</span>
+                    <span className="text-[9px] font-bold text-zinc-400 tabular-nums">Ən Dəyərli</span>
                   </div>
                   <h4
                     onClick=${() => mvpPlayer && onOpenPlayerProfile && onOpenPlayerProfile(mvpPlayer.name)}
@@ -861,7 +861,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 </div>
 
                 <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-                  <span className="text-[10px] text-zinc-400 font-bold">Sofascore:</span>
+                  <span className="text-[10px] text-zinc-400 font-bold tabular-nums">Sofascore:</span>
                   <span className=${`text-xs font-black px-2 py-0.5 rounded-md ${getSofascoreBadgeStyle(mvpPlayer?.overallRating || 6.5)}`}>
                     ${mvpPlayer ? mvpPlayer.overallRating : '-'}
                   </span>
@@ -875,7 +875,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
                       <i className="fas fa-shoe-prints"></i> Bombardir
                     </span>
-                    <span className="text-[9px] font-bold text-zinc-400">Qızıl Butsa</span>
+                    <span className="text-[9px] font-bold text-zinc-400 tabular-nums">Qızıl Butsa</span>
                   </div>
                   <h4
                     onClick=${() => topScorer && onOpenPlayerProfile && onOpenPlayerProfile(topScorer.name)}
@@ -890,7 +890,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 </div>
 
                 <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-                  <span className="text-[10px] text-zinc-400 font-bold">${lang === 'az' ? 'Qollar:' : 'Goals:'}</span>
+                  <span className="text-[10px] text-zinc-400 font-bold tabular-nums">${lang === 'az' ? 'Qollar:' : 'Goals:'}</span>
                   <span className="goal-badge text-xs font-black px-2.5 py-0.5 rounded-md shadow-xs">
                     ⚽ ${topScorer ? topScorer.goals : 0} ${t('goals')}
                   </span>
@@ -904,7 +904,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     <span className="text-[10px] font-black text-sky-600 dark:text-sky-400 uppercase tracking-widest bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
                       <i className="fas fa-mitten"></i> Qapıçı
                     </span>
-                    <span className="text-[9px] font-bold text-zinc-400">Qızıl Əlcək</span>
+                    <span className="text-[9px] font-bold text-zinc-400 tabular-nums">Qızıl Əlcək</span>
                   </div>
                   <h4
                     onClick=${() => bestGoalkeeper && onOpenPlayerProfile && onOpenPlayerProfile(bestGoalkeeper.name)}
@@ -919,7 +919,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 </div>
 
                 <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-                  <span className="text-[10px] text-zinc-400 font-bold">Reytinq:</span>
+                  <span className="text-[10px] text-zinc-400 font-bold tabular-nums">Reytinq:</span>
                   <span className=${`text-xs font-black px-2 py-0.5 rounded-md ${getSofascoreBadgeStyle(bestGoalkeeper?.overallRating || 6.5)}`}>
                     ${bestGoalkeeper ? bestGoalkeeper.overallRating : '-'}
                   </span>
@@ -952,12 +952,12 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800">
               ${dreamTeam.length === 0 
-                ? html`<div className="col-span-5 text-center text-xs text-zinc-400 dark:text-zinc-500 py-2">Hələ qeydə alınmış oyunçu statistikası yoxdur.</div>`
+                ? html`<div className="col-span-5 text-center text-xs text-zinc-400 dark:text-zinc-500 py-2 tabular-nums">Hələ qeydə alınmış oyunçu statistikası yoxdur.</div>`
                 : dreamTeam.map((player, i) => html`
                     <div
                       key=${player.id || i}
                       onClick=${() => onOpenPlayerProfile && onOpenPlayerProfile(player.name)}
-                      className="bg-zinc-50 dark:bg-zinc-800/60 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60 transition-all flex items-center justify-between space-x-2 cursor-pointer"
+                      className="bg-zinc-50 dark:bg-zinc-800/60 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-3 rounded-[20px] border border-zinc-200/80 dark:border-zinc-700/60 transition-all flex items-center justify-between space-x-2 cursor-pointer"
                       title=${lang === 'az' ? 'Karyera profilinə bax' : 'View career profile'}
                     >
                       <div className="flex items-center space-x-2 truncate">
@@ -985,8 +985,8 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           <!-- ════════════════════════════════════════════════════════════════════ -->
           ${playoffMatches.length === 0 && !showEmptyPreview 
             ? html`
-                <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-10 text-center shadow-xs space-y-4 transition-colors duration-200">
-                  <div className="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-2xl flex items-center justify-center mx-auto text-2xl border border-zinc-200 dark:border-zinc-700">
+                <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-10 text-center shadow-xs space-y-4 transition-colors duration-200 tabular-nums">
+                  <div className="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-[20px] flex items-center justify-center mx-auto text-2xl border border-zinc-200 dark:border-zinc-700">
                     <i className="fas fa-sitemap"></i>
                   </div>
                   <div className="max-w-md mx-auto">
@@ -998,7 +998,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   <div>
                     <button
                       onClick=${() => setShowEmptyPreview(true)}
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition inline-flex items-center gap-2 shadow-xs cursor-pointer"
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2.5 rounded-[8px] transition inline-flex items-center gap-2 shadow-xs cursor-pointer tabular-nums"
                     >
                       <i className="fas fa-eye"></i> Pley-off Torunun Boş Şablonuna Bax
                     </button>
@@ -1010,10 +1010,10 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   
                   <!-- Tournament Track Switcher (For seasons with multiple playoff tournaments like 2017-2018) -->
                   ${activeYear === '2017-2018' && html`
-                    <div className="flex flex-wrap items-center gap-2 mb-4 p-1.5 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-2xs w-fit">
+                    <div className="flex flex-wrap items-center gap-2 mb-4 p-1.5 bg-white dark:bg-zinc-900 rounded-[20px] border border-zinc-200 dark:border-zinc-800 shadow-2xs w-fit">
                       <button
                         onClick=${() => setTournamentTrack('main')}
-                        className=${`px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 ${
+                        className=${`px-3.5 py-1.5 rounded-[8px] text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 ${
                           tournamentTrack === 'main'
                             ? 'bg-emerald-600 text-white shadow-xs'
                             : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -1024,7 +1024,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                       </button>
                       <button
                         onClick=${() => setTournamentTrack('group_cup')}
-                        className=${`px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 ${
+                        className=${`px-3.5 py-1.5 rounded-[8px] text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 ${
                           tournamentTrack === 'group_cup'
                             ? 'bg-emerald-600 text-white shadow-xs'
                             : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -1038,7 +1038,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
 
                   <!-- Instruction banner -->
                   <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-zinc-200 dark:border-zinc-800 mb-6 text-xs text-zinc-500 dark:text-zinc-400 font-semibold">
-                    <span className="flex items-center gap-1.5 text-zinc-900 dark:text-white font-bold">
+                    <span className="flex items-center gap-1.5 text-zinc-900 dark:text-white font-bold tabular-nums">
                       <i className="fas fa-info-circle text-emerald-500"></i>
                       <span>İstənilən oyuna klikləyərək matç detallarına, video icmalına və Sofascore oyunçu reytinqlərinə baxa bilərsiniz.</span>
                     </span>
@@ -1053,7 +1053,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     <!-- COLUMN 1: 16/1 FINAL (If present) -->
                     ${hasStage16 && html`
                       <div className="flex flex-col justify-between">
-                        <div className="text-center mb-4">
+                        <div className="text-center mb-4 tabular-nums">
                           <span className="text-[10px] font-black text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
                             <i className="fas fa-shield-alt mr-1 text-emerald-600 dark:text-emerald-400"></i> 16/1 Final
                           </span>
@@ -1071,7 +1071,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     <!-- COLUMN 2: 8/1 FINAL (If present) -->
                     ${hasStage8 && html`
                       <div className="flex flex-col justify-between">
-                        <div className="text-center mb-4">
+                        <div className="text-center mb-4 tabular-nums">
                           <span className="text-[10px] font-black text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
                             <i className="fas fa-shield-halved mr-1 text-emerald-600 dark:text-emerald-400"></i> 8/1 Final
                           </span>
@@ -1089,7 +1089,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                     <!-- COLUMN 3: 4/1 FINAL (Dörddəbir Final) -->
                     ${hasStage4 && html`
                       <div className="flex flex-col justify-between">
-                        <div className="text-center mb-4">
+                        <div className="text-center mb-4 tabular-nums">
                           <span className="text-[10px] font-black text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
                             <i className="fas fa-cubes mr-1 text-emerald-600 dark:text-emerald-400"></i> 4/1 Final
                           </span>
@@ -1106,7 +1106,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
 
                     <!-- COLUMN 4: YARIMFİNAL (Semifinals) -->
                     <div className="flex flex-col justify-between">
-                      <div className="text-center mb-4">
+                      <div className="text-center mb-4 tabular-nums">
                         <span className="text-[10px] font-black text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
                           <i className="fas fa-flag-checkered mr-1 text-emerald-600 dark:text-emerald-400"></i> Yarımfinal
                         </span>
@@ -1125,11 +1125,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                       
                       <!-- Grand Final Card -->
                       <div>
-                        <div className="text-center mb-4">
-                          <span className="text-[10px] font-black text-white bg-zinc-900 dark:bg-zinc-950 border border-zinc-700 px-3.5 py-1 rounded-full uppercase tracking-widest shadow-md flex items-center justify-center gap-1.5 mx-auto w-max">
+                        <div className="text-center mb-4 tabular-nums">
+                          <span className="text-[10px] font-black text-white bg-zinc-900 dark:bg-zinc-950 border border-zinc-700 px-3.5 py-1 rounded-full uppercase tracking-widest shadow-sm flex items-center justify-center gap-1.5 mx-auto w-max">
                             <i className="fas fa-trophy text-amber-400"></i> BÖYÜK FİNAL
                           </span>
-                          <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold block mt-1">Çempionluq Matçı</span>
+                          <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold block mt-1 tabular-nums">Çempionluq Matçı</span>
                         </div>
 
                         <div className="relative">
@@ -1140,7 +1140,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                       <!-- 3rd Place Match (If registered or available) -->
                       ${stageThirdMatches.length > 0 && html`
                         <div className="pt-4 border-t border-dashed border-zinc-200 dark:border-zinc-800">
-                          <div className="text-center mb-3">
+                          <div className="text-center mb-3 tabular-nums">
                             <span className="text-[9px] font-black text-amber-900 dark:text-amber-300 bg-amber-500/10 border border-amber-500/20 px-3 py-0.5 rounded-full uppercase tracking-wider shadow-2xs inline-block">
                               <i className="fas fa-award text-amber-500 mr-1"></i> 3-cü Yer Uğrunda
                             </span>

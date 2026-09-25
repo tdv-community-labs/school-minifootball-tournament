@@ -212,7 +212,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
   const renderPlayerRow = (player) => {
     const badge = getSofascoreBadgeStyle(player.rating);
     return html`
-      <div key=${player.playerId} className="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+      <div key=${player.playerId} className="flex justify-between items-center bg-white p-3 rounded-[20px] p-2 border border-gray-100 ">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 flex-wrap">
             <h6 className="font-bold text-purple-950 text-xs truncate">${player.name}</h6>
@@ -230,7 +230,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
           </div>
         </div>
         <!-- Rating badge -->
-        <span className=${"min-w-[2.75rem] h-11 rounded-xl flex flex-col items-center justify-center font-black text-xs ml-3 px-1 " + badge}>
+        <span className=${"min-w-[2.75rem] h-11 rounded-[20px] p-2 flex flex-col items-center justify-center font-black text-xs ml-3 px-1 " + badge}>
           <span className="text-sm leading-none">${player.rating}</span>
           <span className="text-[8px] opacity-75 mt-0.5">Rating</span>
         </span>
@@ -244,7 +244,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="text-2xl font-black text-zinc-900 dark:text-white font-sans">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
+            <h2 className="text-2xl font-black text-zinc-900 dark:text-white font-sans tabular-nums tracking-tight">${t('matchesTitle')} — ${fallbackGetDivisionLabel(activeDivision, lang)}</h2>
             <span className="inline-flex items-center gap-1 rounded-full bg-purple-500/15 border border-purple-500/30 px-2.5 py-0.5 text-xs font-bold text-purple-700 dark:text-purple-300">
               ⚡ 5v5 Minifutbol
             </span>
@@ -258,7 +258,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
             <button
               key=${st.id}
               onClick=${() => setSelectedStage(st.id)}
-              className=${`px-4 py-2 rounded-xl text-xs font-extrabold tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer ${
+              className=${`px-4 py-2 rounded-[20px] p-2 text-xs font-extrabold tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer ${
                 selectedStage === st.id 
                   ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 font-black shadow-xs border border-purple-200/80 dark:border-purple-800/80' 
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
@@ -352,7 +352,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
 
                     <!-- Score Box -->
                     <div className="flex flex-col items-center px-1 sm:px-2 shrink-0">
-                      <div className="bg-zinc-900 dark:bg-zinc-950 text-white rounded-2xl px-4 sm:px-6 py-2 font-mono font-black text-2xl sm:text-3xl shadow-xs border border-zinc-700/60 flex flex-col items-center tracking-tight">
+                      <div className="bg-zinc-900 dark:bg-zinc-950 text-white rounded-2xl px-4 sm:px-6 py-2 font-mono font-black text-2xl sm:text-3xl shadow-xs border border-zinc-700/60 flex flex-col items-center tracking-tight tabular-nums tracking-tight tabular-nums tracking-tight">
                         <span>${match.scoreA} - ${match.scoreB}</span>
                         ${(match.penaltyScoreA !== null && match.penaltyScoreA !== undefined && match.penaltyScoreA !== '') && html`
                           <span className="text-[9px] sm:text-[10px] text-emerald-400 font-extrabold mt-0.5">pen. ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>

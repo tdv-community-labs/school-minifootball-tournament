@@ -218,7 +218,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
       </div>
 
       <!-- Recent Match Results & Top Stats Grid -->
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         
         <!-- Left: Recent Matches -->
         <div className="lg:col-span-7 bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-xs border border-zinc-200 dark:border-zinc-800 transition-colors duration-200">
@@ -271,7 +271,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
         </div>
 
         <!-- Right: Stat Leaders (Goals & Assists) -->
-        <div className="lg:col-span-5 grid grid-cols-1 gap-6">
+        <div className="lg:col-span-5 grid grid-cols-1 gap-4">
           <!-- Top Goalscorers -->
           <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-xs border border-zinc-200 dark:border-zinc-800 transition-colors duration-200">
             <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center">
