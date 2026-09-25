@@ -1149,7 +1149,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 </div>
                 <h3 className="text-xl font-black">Turnir İntellekt Mərkəzi (AI Tuner)</h3>
                 <p className="text-xs text-purple-200 mt-1 max-w-xl leading-relaxed">
-                  Turnir bazasındakı xallar, qollar, dublikat oyunçular, qrup uyğunsuzluqları və sinif kateqoriyaları avtomatik təhlil edilir və 1 kliklə bərpa olunur. Əlavə olaraq Google Gemini 2.5 AI ilə dərin audit apara bilərsiniz.
+                  Turnir bazasındakı xallar, qollar, dublikat oyunçular, qrup uyğunsuzluqları və sinif kateqoriyaları avtomatik təhlil edilir və 1 kliklə bərpa olunur. Əlavə olaraq Google Gemini 3.8 / 3.7 AI ilə dərin audit apara bilərsiniz.
                 </p>
               </div>
 
@@ -1294,7 +1294,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   <div>
                     <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2">
                       <i className="fas fa-brain text-purple-600"></i>
-                      Google Gemini 2.5 Dərin Turnir Auditi
+                      Google Gemini 3.8 / 3.7 Dərin Turnir Auditi
                     </h4>
                     <p className="text-[11px] text-gray-500 mt-0.5">Turnir strukturunu, liderləri və anomaliyaları süni intellektlə analiz edin</p>
                   </div>
@@ -1351,7 +1351,8 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                       onChange=${(e) => setSelectedAiModel(e.target.value)}
                       className="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 font-bold text-purple-950"
                     >
-                      <option value="gemini-3.7-flash">Gemini 3.7 Flash — Ən Yeni & Sürətli (Tövsiyə olunur)</option>
+                      <option value="gemini-3.8-flash">Gemini 3.8 Flash — Ən Yeni & Sürətli (Tövsiyə olunur)</option>
+                      <option value="gemini-3.7-flash">Gemini 3.7 Flash — Sürətli & Sabit (Ehtiyat)</option>
                       <option value="gemini-2.5-flash">Gemini 2.5 Flash — Standart Hibrid</option>
                     </select>
                   </div>

@@ -16,7 +16,8 @@
  *   - components/PublicAiChatbot.js (İctimai AI çatbotu)
  * ============================================================================
  */
-export const DEFAULT_MODEL = 'gemini-3.7-flash';
+export const DEFAULT_MODEL = 'gemini-3.8-flash';
+export const SECONDARY_MODEL = 'gemini-3.7-flash';
 export const FALLBACK_MODEL = 'gemini-2.5-flash';
 
 // Ætraf MÃ¼hit DÉ™yiÅŸÉ™nlÉ™rindÉ™n tÉ™hlÃ¼kÉ™siz oxuma (window.ENV, process.env vÉ™ ya localStorage)
@@ -104,12 +105,26 @@ const executeSingleGeminiCall = async (prompt, key, model, systemInstruction) =>
     return text;
   };
 
+  const isTemporaryUnavailable = (err) => {
+    return err.status === 503 || err.status === 404 || /high demand|unavailable|unsupported|not found|overloaded|resource has been exhausted/i.test(err?.message || '');
+  };
+
   try {
     return await doReq(model);
   } catch (err) {
-    // If 3.7 model fails with 503 (overloaded) or 404/unsupported, fallback immediately to 2.5 Flash
-    if (model === DEFAULT_MODEL && (err.status === 503 || err.status === 404 || /high demand|unavailable|unsupported/i.test(err.message))) {
-      console.warn(`${DEFAULT_MODEL} məşğuldur (${err.message}), ${FALLBACK_MODEL} modelinə keçilir...`);
+    if (model === DEFAULT_MODEL && isTemporaryUnavailable(err)) {
+      console.warn(`${DEFAULT_MODEL} əlçatmazdır (${err.message}), ${SECONDARY_MODEL} modelinə keçilir...`);
+      try {
+        return await doReq(SECONDARY_MODEL);
+      } catch (err2) {
+        if (isTemporaryUnavailable(err2)) {
+          console.warn(`${SECONDARY_MODEL} də əlçatmazdır (${err2.message}), ${FALLBACK_MODEL} modelinə keçilir...`);
+          return await doReq(FALLBACK_MODEL);
+        }
+        throw err2;
+      }
+    } else if (model === SECONDARY_MODEL && isTemporaryUnavailable(err)) {
+      console.warn(`${SECONDARY_MODEL} əlçatmazdır (${err.message}), ${FALLBACK_MODEL} modelinə keçilir...`);
       return await doReq(FALLBACK_MODEL);
     }
     throw err;

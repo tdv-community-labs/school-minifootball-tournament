@@ -48,7 +48,7 @@ export default {
 
       const body = await request.json();
       const prompt = body.prompt;
-      const model = body.model || "gemini-3.7-flash";
+      const primaryModel = body.model || "gemini-3.8-flash";
       const systemInstruction = body.systemInstruction || "Sən TDV BTL Mini-Futbol ekspertisən.";
 
       if (!prompt) {
@@ -58,33 +58,51 @@ export default {
         });
       }
 
-      const googleUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const callModel = async (targetModel) => {
+        const googleUrl = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`;
+        const payload = {
+          contents: [{ parts: [{ text: prompt }] }],
+          systemInstruction: { parts: [{ text: systemInstruction }] },
+          generationConfig: {
+            temperature: 0.2,
+            maxOutputTokens: 2500,
+          },
+        };
 
-      const payload = {
-        contents: [{ parts: [{ text: prompt }] }],
-        systemInstruction: { parts: [{ text: systemInstruction }] },
-        generationConfig: {
-          temperature: 0.2,
-          maxOutputTokens: 2500,
-        },
+        const res = await fetch(googleUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          const err = new Error(errData?.error?.message || "Google API xətası");
+          err.status = res.status;
+          throw err;
+        }
+
+        const resData = await res.json();
+        return resData?.candidates?.[0]?.content?.parts?.[0]?.text || "Cavab boşdur.";
       };
 
-      const googleRes = await fetch(googleUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!googleRes.ok) {
-        const errData = await googleRes.json().catch(() => ({}));
-        return new Response(JSON.stringify({ error: errData?.error?.message || "Google API xətası" }), {
-          status: googleRes.status,
-          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-        });
+      let text;
+      try {
+        text = await callModel(primaryModel);
+      } catch (err) {
+        if ((err.status === 503 || err.status === 404) && primaryModel === "gemini-3.8-flash") {
+          try {
+            text = await callModel("gemini-3.7-flash");
+          } catch (err2) {
+            text = await callModel("gemini-2.5-flash");
+          }
+        } else {
+          return new Response(JSON.stringify({ error: err.message }), {
+            status: err.status || 500,
+            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+          });
+        }
       }
-
-      const resData = await googleRes.json();
-      const text = resData?.candidates?.[0]?.content?.parts?.[0]?.text || "Cavab boşdur.";
 
       return new Response(JSON.stringify({ text }), {
         status: 200,
