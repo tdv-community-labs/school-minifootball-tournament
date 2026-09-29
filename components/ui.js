@@ -11,7 +11,7 @@ const html = htm.bind(React.createElement);
  */
 export const Badge = ({ children, variant = 'default', className = '' }) => {
   const variants = {
-    default: 'bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700/60',
+    default: 'bg-zinc-100 dark:bg-[#050505] text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-white/20',
     primary: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
     brand: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20',
     success: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
@@ -50,7 +50,7 @@ export const Button = ({
 
   const variantClasses = {
     primary: 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm hover:shadow-emerald-500/25 border border-emerald-500/40 active:scale-[0.98]',
-    secondary: 'bg-zinc-100 dark:bg-zinc-800/80 hover:bg-zinc-200 dark:hover:bg-zinc-700/80 text-zinc-800 dark:text-zinc-200 border border-zinc-200/80 dark:border-white/[0.08] active:scale-[0.98]',
+    secondary: 'bg-zinc-100 dark:bg-[#050505] hover:bg-zinc-200 dark:hover:bg-zinc-700/80 text-zinc-800 dark:text-zinc-200 border border-zinc-200/80 dark:border-white/[0.08] active:scale-[0.98]',
     outline: 'bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 active:scale-[0.98]',
     ghost: 'bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 border border-transparent',
     danger: 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/20 active:scale-[0.98]'
@@ -82,7 +82,7 @@ export const Card = ({
   return html`
     <div
       onClick=${onClick}
-      className=${`p-5 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs transition-all duration-200 ${
+      className=${`p-5 rounded-3xl bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200/80 dark:border-white/10/80 shadow-xs transition-all duration-200 ${
         hover ? 'hover:-translate-y-0.5 hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700' : ''
       } ${onClick ? 'cursor-pointer' : ''} ${className}`}
     >
@@ -102,7 +102,7 @@ export const EmptyState = ({
 }) => {
   return html`
     <div className="py-14 px-6 text-center max-w-sm mx-auto flex flex-col items-center justify-center animate-fadeIn">
-      <div className="w-14 h-14 rounded-3xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/60 flex items-center justify-center text-xl text-zinc-400 dark:text-zinc-500 mb-3.5 shadow-inner">
+      <div className="w-14 h-14 rounded-3xl bg-zinc-100 dark:bg-[#050505] border border-zinc-200 dark:border-white/20 flex items-center justify-center text-xl text-zinc-400 dark:text-zinc-500 mb-3.5 shadow-inner">
         <i className=${icon}></i>
       </div>
       <h3 className="text-sm font-black text-zinc-900 dark:text-zinc-100 mb-1">${title}</h3>

@@ -151,7 +151,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
         <!-- STICKY TOP APP BAR (Safe-area aware, high-contrast back button) -->
         <header 
-          className="sticky top-0 z-50 bg-[#0d1527]/98 backdrop-blur-md border-b border-slate-800/80 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-sm border border-zinc-200 dark:border-zinc-800"
+          className="sticky top-0 z-50 bg-[#0d1527]/98 backdrop-blur-md border-b border-slate-800/80 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-sm border border-zinc-200 dark:border-white/10"
           style=${{ paddingTop: 'max(10px, env(safe-area-inset-top, 10px))' }}
         >
           <!-- Sol: Yüksək Kontrastlı Geri Düyməsi -->
@@ -226,7 +226,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
               <!-- Score Center Box -->
               <div className="flex flex-col items-center px-2 shrink-0">
-                <div className="bg-gradient-to-br from-purple-950 to-slate-900 border-2 border-emerald-500/80 text-white rounded-3xl px-5 sm:px-8 py-2 sm:py-3 font-black text-2xl sm:text-4xl shadow-sm border border-zinc-200 dark:border-zinc-800 tracking-tight flex items-center gap-3">
+                <div className="bg-gradient-to-br from-purple-950 to-slate-900 border-2 border-emerald-500/80 text-white rounded-3xl px-5 sm:px-8 py-2 sm:py-3 font-black text-2xl sm:text-4xl shadow-sm border border-zinc-200 dark:border-white/10 tracking-tight flex items-center gap-3">
                   <span className="text-white">${match.scoreA}</span>
                   <span className="text-emerald-400 font-mono text-xl sm:text-2xl">-</span>
                   <span className="text-white">${match.scoreB}</span>
@@ -334,7 +334,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
               <!-- ============================================================= -->
               <!-- VAHİD STADİON VƏ BİRLƏŞDİRİLMİŞ 3D QAPI POV-U -->
               <!-- ============================================================= -->
-              <div className="bg-slate-950 border-2 border-emerald-600/60 rounded-3xl overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800 relative">
+              <div className="bg-slate-950 border-2 border-emerald-600/60 rounded-3xl overflow-hidden shadow-sm border border-zinc-200 dark:border-white/10 relative">
                 
                 <!-- Stadium Header Bar -->
                 <div className="bg-slate-900/90 px-3.5 py-2 border-b border-slate-800 flex items-center justify-between text-[11px] font-bold text-slate-300">
@@ -377,7 +377,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                     </div>
 
                     <!-- 3D Goalmouth Box Frame -->
-                    <div className="relative w-full h-24 sm:h-28 rounded-t-lg bg-gradient-to-b from-black/85 via-slate-950/95 to-emerald-950/70 border-t-4 border-x-4 border-slate-100 shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-visible">
+                    <div className="relative w-full h-24 sm:h-28 rounded-t-lg bg-gradient-to-b from-black/85 via-slate-950/95 to-emerald-950/70 border-t-4 border-x-4 border-slate-100 shadow-sm border border-zinc-200 dark:border-white/10 overflow-visible">
                       
                       <!-- 3D Metallic Crossbar (Üst Tir) -->
                       <div className="absolute -top-1.5 -left-1.5 -right-1.5 h-3 bg-gradient-to-r from-slate-300 via-white to-slate-300 rounded shadow-md border-b border-slate-400 flex items-center justify-center">
@@ -424,7 +424,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                           }`}></span>
 
                           <!-- Main Ball Marker -->
-                          <div className=${`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-sm shadow-sm border border-zinc-200 dark:border-zinc-800 border-2 border-white relative font-black ${
+                          <div className=${`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-sm shadow-sm border border-zinc-200 dark:border-white/10 border-2 border-white relative font-black ${
                             currentShot.outcome === 'goal'
                               ? 'bg-emerald-500 text-slate-950 shadow-emerald-400/90'
                               : currentShot.outcome === 'saved'
@@ -571,7 +571,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
               <!-- SOFASCORE SHOT NAVIGATOR & EPISODE BREAKDOWN CARD -->
               <!-- ============================================================= -->
               ${currentShot && html`
-                <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-sm border border-zinc-200 dark:border-zinc-800 space-y-4">
+                <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-sm border border-zinc-200 dark:border-white/10 space-y-4">
                   
                   <!-- Navigator Header: < Player Name Minute > -->
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -694,7 +694,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
               <!-- Horizontal Full Pitch (Minifootball 40m x 20m) -->
               <div 
-                className="w-full h-96 sm:h-[440px] bg-gradient-to-r from-[#0a2316] via-[#123823] to-[#0a2316] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800 p-4"
+                className="w-full h-96 sm:h-[440px] bg-gradient-to-r from-[#0a2316] via-[#123823] to-[#0a2316] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-sm border border-zinc-200 dark:border-white/10 p-4"
                 style=${{ touchAction: 'pan-y' }}
               >
                 <!-- Authentic Turf Mowing Stripes (Qazon Zolaqları) -->
@@ -995,7 +995,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
               <!-- Authentic 5v5 Minifootball Pitch (40m x 20m) with HD Thermal Heatmap -->
               <div 
-                className="w-full h-84 sm:h-[420px] bg-gradient-to-r from-[#071d12] via-[#0d2a1b] to-[#071d12] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800 flex items-center justify-center p-4"
+                className="w-full h-84 sm:h-[420px] bg-gradient-to-r from-[#071d12] via-[#0d2a1b] to-[#071d12] rounded-3xl border-2 border-emerald-500/60 relative overflow-hidden shadow-sm border border-zinc-200 dark:border-white/10 flex items-center justify-center p-4"
                 style=${{ touchAction: 'pan-y' }}
               >
                 <!-- Alternating Mower Turf Stripes -->
@@ -1284,7 +1284,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
           <!-- ================================================================= -->
           ${activeTab === 'video' && match.videoUrl && html`
             <div className="space-y-4">
-              <div className="aspect-video w-full rounded-[20px] p-2 overflow-hidden border border-purple-800/60 shadow-sm border border-zinc-200 dark:border-zinc-800 bg-black">
+              <div className="aspect-video w-full rounded-[20px] p-2 overflow-hidden border border-purple-800/60 shadow-sm border border-zinc-200 dark:border-white/10 bg-black">
                 <iframe
                   src=${match.videoUrl.replace('watch?v=', 'embed/')}
                   title="Matç Video Yayımı"

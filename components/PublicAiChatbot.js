@@ -123,7 +123,7 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
 
       <!-- Chat Window Modal -->
       ${isOpen && html`
-        <div className="pointer-events-auto w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[380px] h-[460px] sm:h-[520px] max-h-[72vh] bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 flex flex-col overflow-hidden animate-fadeIn transition-colors duration-200">
+        <div className="pointer-events-auto w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[380px] h-[460px] sm:h-[520px] max-h-[72vh] bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl shadow-2xl border border-zinc-200 dark:border-white/10 flex flex-col overflow-hidden animate-fadeIn transition-colors duration-200">
           
           <!-- Header -->
           <div className="bg-gradient-to-r from-purple-950 via-purple-900 to-zinc-950 text-white p-4 flex items-center justify-between border-b border-purple-800/40">
@@ -149,7 +149,7 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
           </div>
 
           <!-- Quick Suggestion Pills -->
-          <div className="bg-zinc-50 dark:bg-zinc-950/80 border-b border-zinc-200 dark:border-zinc-800 px-3 py-2 flex items-center gap-1.5 overflow-x-auto text-[10px] transition-colors duration-200">
+          <div className="bg-zinc-50 dark:bg-[#030303]/80 border-b border-zinc-200 dark:border-white/10 px-3 py-2 flex items-center gap-1.5 overflow-x-auto text-[10px] transition-colors duration-200">
             <button
               onClick=${(e) => handleSendMessage(e, 'Bu il kimlər liderdir və cədvəldə vəziyyət necədir?')}
               className="bg-white dark:bg-zinc-800 hover:bg-purple-50 dark:hover:bg-purple-950/50 hover:text-purple-600 dark:hover:text-purple-300 text-zinc-800 dark:text-zinc-200 font-bold px-2.5 py-1 rounded-xl whitespace-nowrap shadow-2xs border border-zinc-200 dark:border-zinc-700 transition cursor-pointer"
@@ -171,7 +171,7 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
           </div>
 
           <!-- Messages Scroll View -->
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 text-xs bg-zinc-50/50 dark:bg-zinc-950/40 transition-colors duration-200">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 text-xs bg-zinc-50/50 dark:bg-[#030303]/40 transition-colors duration-200">
             ${messages.map((m, idx) => html`
               <div key=${idx} className=${`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className=${`max-w-[85%] p-3 rounded-2xl text-xs leading-relaxed ${
@@ -201,7 +201,7 @@ export default function PublicAiChatbot({ activeYear = '2022-2023', activeDivisi
           </div>
 
           <!-- Chat Input -->
-          <form onSubmit=${handleSendMessage} className="p-3 bg-white dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-2 transition-colors duration-200">
+          <form onSubmit=${handleSendMessage} className="p-3 bg-white dark:bg-[#080808] dark:backdrop-blur-xl border-t border-zinc-200 dark:border-white/10 flex items-center gap-2 transition-colors duration-200">
             <input
               type="text"
               value=${query}

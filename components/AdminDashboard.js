@@ -504,7 +504,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       </div>
 
       <!-- Navigation Tabs -->
-      <div className="flex border-b border-zinc-200 dark:border-zinc-800 overflow-x-auto">
+      <div className="flex border-b border-zinc-200 dark:border-white/10 overflow-x-auto">
         <button
           onClick=${() => setAdminTab('matches')}
           className=${`py-2.5 px-4 font-bold text-xs uppercase tracking-wide border-b-2 transition whitespace-nowrap ${ adminTab === 'matches' ? 'border-purple-900 text-purple-950' : 'border-transparent text-gray-500 hover:text-purple-950 tabular-nums tracking-tight'
@@ -559,7 +559,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       ${adminTab === 'matches' && html`
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <!-- Left: Add/Edit Match form -->
-          <div className="lg:col-span-4 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm">
+          <div className="lg:col-span-4 bg-white dark:bg-[#030303] p-6 rounded-3xl border border-gray-100 shadow-sm">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">
               ${editingMatch ? 'Matçı Redaktə Et' : 'Yeni Matç Əlavə Et'}
             </h3>
@@ -569,7 +569,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <select
                   value=${matchForm.division}
                   onChange=${(e) => setMatchForm({ ...matchForm, division: e.target.value, teamA: '', teamB: '' })}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
                 >
                   <option value="6">6-cı Siniflər</option>
                   <option value="7">7-ci Siniflər</option>
@@ -587,7 +587,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <select
                   value=${matchForm.stage}
                   onChange=${(e) => setMatchForm({ ...matchForm, stage: e.target.value })}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                 >
                   <option value="Qrup Mərhələsi">Qrup Mərhələsi</option>
                   <option value="16/1 Final">16/1 Final</option>
@@ -606,7 +606,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     required
                     value=${matchForm.teamA}
                     onChange=${(e) => setMatchForm({ ...matchForm, teamA: e.target.value })}
-                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
+                    className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
                   >
                     <option value="">Seçin</option>
                     ${classesForSelectedMatchDivision.map(c => html`<option key=${c.id} value=${c.name}>${c.name}</option>`)}
@@ -618,7 +618,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     required
                     value=${matchForm.teamB}
                     onChange=${(e) => setMatchForm({ ...matchForm, teamB: e.target.value })}
-                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
+                    className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
                   >
                     <option value="">Seçin</option>
                     ${classesForSelectedMatchDivision.map(c => html`<option key=${c.id} value=${c.name}>${c.name}</option>`)}
@@ -635,7 +635,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     required
                     value=${matchForm.scoreA}
                     onChange=${(e) => setMatchForm({ ...matchForm, scoreA: Number(e.target.value) })}
-                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
+                    className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                   />
                 </div>
                 <div>
@@ -646,7 +646,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     required
                     value=${matchForm.scoreB}
                     onChange=${(e) => setMatchForm({ ...matchForm, scoreB: Number(e.target.value) })}
-                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
+                    className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                   />
                 </div>
               </div>
@@ -662,7 +662,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                         min="0"
                         value=${matchForm.penaltyScoreA}
                         onChange=${(e) => setMatchForm({ ...matchForm, penaltyScoreA: e.target.value })}
-                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5 text-center font-bold min-h-[44px] tabular-nums tracking-tight"
+                        className="w-full bg-white dark:bg-[#030303] border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5 text-center font-bold min-h-[44px] tabular-nums tracking-tight"
                       />
                     </div>
                     <div>
@@ -672,7 +672,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                         min="0"
                         value=${matchForm.penaltyScoreB}
                         onChange=${(e) => setMatchForm({ ...matchForm, penaltyScoreB: e.target.value })}
-                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5 text-center font-bold min-h-[44px] tabular-nums tracking-tight"
+                        className="w-full bg-white dark:bg-[#030303] border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5 text-center font-bold min-h-[44px] tabular-nums tracking-tight"
                       />
                     </div>
                   </div>
@@ -685,7 +685,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   type="date"
                   value=${matchForm.date}
                   onChange=${(e) => setMatchForm({ ...matchForm, date: e.target.value })}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                 />
               </div>
 
@@ -696,7 +696,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   placeholder="https://www.youtube.com/embed/..."
                   value=${matchForm.videoUrl}
                   onChange=${(e) => setMatchForm({ ...matchForm, videoUrl: e.target.value })}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                 />
               </div>
 
@@ -724,7 +724,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           </div>
 
           <!-- Right: Matches list -->
-          <div className="lg:col-span-8 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
+          <div className="lg:col-span-8 bg-white dark:bg-[#030303] p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Matç Siyahısı</h3>
             <table className="w-full text-left border-collapse">
               <thead>
@@ -786,7 +786,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       ${adminTab === 'players' && html`
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <!-- Left: Add/Edit Player form -->
-          <div className="lg:col-span-4 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm">
+          <div className="lg:col-span-4 bg-white dark:bg-[#030303] p-6 rounded-3xl border border-gray-100 shadow-sm">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">
               ${editingPlayer ? 'Oyunçunu Redaktə Et' : 'Yeni Oyunçu Əlavə Et'}
             </h3>
@@ -799,7 +799,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   placeholder="Məs: Rəşad Nağıyev"
                   value=${playerForm.name}
                   onChange=${(e) => setPlayerForm({ ...playerForm, name: e.target.value })}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 min-h-[44px] tabular-nums tracking-tight"
                 />
               </div>
 
@@ -809,7 +809,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   required
                   value=${playerForm.class}
                   onChange=${(e) => setPlayerForm({ ...playerForm, class: e.target.value })}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                 >
                   ${classes.length === 0 
                     ? html`<option value="">Sinif tapılmadı! Öncə sinif yaradın.</option>` 
@@ -827,7 +827,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <select
                   value=${playerForm.position}
                   onChange=${(e) => setPlayerForm({ ...playerForm, position: e.target.value })}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                 >
                   <option value="Hücumçu">Hücumçu</option>
                   <option value="Yarımmüdafiəçi">Yarımmüdafiəçi</option>
@@ -860,7 +860,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           </div>
 
           <!-- Right: Players list -->
-          <div className="lg:col-span-8 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
+          <div className="lg:col-span-8 bg-white dark:bg-[#030303] p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Oyunçu Siyahısı</h3>
             <table className="w-full text-left border-collapse">
               <thead>
@@ -911,7 +911,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       ${adminTab === 'classes' && html`
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <!-- Left: Add Class Form -->
-          <div className="lg:col-span-4 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm">
+          <div className="lg:col-span-4 bg-white dark:bg-[#030303] p-6 rounded-3xl border border-gray-100 shadow-sm">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Yeni Sinif Əlavə Et</h3>
             <form onSubmit=${handleSaveClass} className="space-y-4">
               <div>
@@ -922,7 +922,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   placeholder="Məs: 10-A, 8-B"
                   value=${classForm.name}
                   onChange=${(e) => setClassForm({ ...classForm, name: e.target.value })}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 uppercase font-bold min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 uppercase font-bold min-h-[44px] tabular-nums tracking-tight"
                 />
               </div>
 
@@ -931,7 +931,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 <select
                   value=${classForm.division}
                   onChange=${(e) => setClassForm({ ...classForm, division: e.target.value })}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                 >
                   <option value="6">6-cı Siniflər</option>
                   <option value="7">7-ci Siniflər</option>
@@ -956,7 +956,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           </div>
 
           <!-- Right: Classes list -->
-          <div className="lg:col-span-8 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
+          <div className="lg:col-span-8 bg-white dark:bg-[#030303] p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Sinif Siyahısı</h3>
             <table className="w-full text-left border-collapse">
               <thead>
@@ -995,7 +995,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       ${adminTab === 'years' && html`
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <!-- Left: Add Year Form -->
-          <div className="lg:col-span-4 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm">
+          <div className="lg:col-span-4 bg-white dark:bg-[#030303] p-6 rounded-3xl border border-gray-100 shadow-sm">
             <h3 className="text-base font-extrabold text-purple-950 mb-4">Yeni Tədris İli Əlavə Et</h3>
             <form onSubmit=${handleAddYear} className="space-y-4">
               <div>
@@ -1006,7 +1006,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   placeholder="Məs: 2026-2027"
                   value=${newYearInput}
                   onChange=${(e) => setNewYearInput(e.target.value)}
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
+                  className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold min-h-[44px] tabular-nums tracking-tight"
                 />
                 <p className="text-[10px] text-gray-400 mt-1">İl formatını "YYYY-YYYY" şəklində yazmağınız tövsiyə olunur.</p>
               </div>
@@ -1023,7 +1023,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           </div>
 
           <!-- Right: Years list -->
-          <div className="lg:col-span-8 bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
+          <div className="lg:col-span-8 bg-white dark:bg-[#030303] p-6 rounded-3xl border border-gray-100 shadow-sm overflow-x-auto">
             <h3 className="text-base font-extrabold text-purple-950 mb-4 font-sans">Mövcud Tədris İlləri</h3>
             <table className="w-full text-left border-collapse">
               <thead>
@@ -1060,7 +1060,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
 
       <!-- TAB 5: SYSTEM PARAMETERS -->
       ${adminTab === 'system' && html`
-        <div className="bg-white dark:bg-zinc-950 p-6 rounded-3xl border border-gray-100 shadow-sm max-w-lg">
+        <div className="bg-white dark:bg-[#030303] p-6 rounded-3xl border border-gray-100 shadow-sm max-w-lg">
           <h3 className="text-base font-extrabold text-purple-950 mb-4">Sistem Parametrləri</h3>
           <div className="space-y-4 text-xs font-semibold text-gray-600 tabular-nums tracking-tight">
             <p>
@@ -1085,7 +1085,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               </p>
               
               
-              <div className="border-t border-zinc-200 dark:border-zinc-800 my-2"></div>
+              <div className="border-t border-zinc-200 dark:border-white/10 my-2"></div>
               
               <div className="bg-green-50 text-green-950 border border-green-100 rounded-2xl p-2.5 space-y-2">
                 <h4 className="font-extrabold text-sm text-green-900 flex items-center tabular-nums tracking-tight">
@@ -1102,7 +1102,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                 />
               </div>
 
-              <div className="border-t border-zinc-200 dark:border-zinc-800 my-2"></div>
+              <div className="border-t border-zinc-200 dark:border-white/10 my-2"></div>
               
               <button
                 onClick=${handleLogout}
@@ -1125,7 +1125,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
           <div className="bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 text-white rounded-3xl p-6 shadow-md relative overflow-hidden">
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <div className="inline-flex items-center gap-2 p-2.5 bg-white dark:bg-zinc-950/10 rounded-full text-[11px] font-bold tracking-wider uppercase mb-2 backdrop-blur-sm tabular-nums tracking-tight">
+                <div className="inline-flex items-center gap-2 p-2.5 bg-white dark:bg-[#030303]/10 rounded-full text-[11px] font-bold tracking-wider uppercase mb-2 backdrop-blur-sm tabular-nums tracking-tight">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                   Ağıllı Avto-Tənzimləmə & Diaqnostika
                 </div>
@@ -1138,7 +1138,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               <div className="flex items-center gap-3">
                 <button
                   onClick=${handleRunHealthAudit}
-                  className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-white dark:bg-zinc-950/10 hover:bg-white dark:bg-zinc-950/20 text-white text-xs font-bold p-2.5.5 -2xl transition border border-white/20 flex items-center gap-2 tabular-nums tracking-tight"
+                  className="btn-spring active:scale-[0.98] min-h-[44px] -[8px] bg-white dark:bg-[#030303]/10 hover:bg-white dark:bg-[#030303]/20 text-white text-xs font-bold p-2.5.5 -2xl transition border border-white/20 flex items-center gap-2 tabular-nums tracking-tight"
                 >
                   <i className="fas fa-rotate"></i>
                   <span>Yenidən Yoxla</span>
@@ -1172,7 +1172,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
             <div className="lg:col-span-7 space-y-6">
               
               <!-- Health Score Card -->
-              <div className="bg-white dark:bg-zinc-950 rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-[#030303] rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2 tabular-nums tracking-tight">
@@ -1253,7 +1253,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               </div>
 
               <!-- Gemini AI Deep Audit -->
-              <div className="bg-white dark:bg-zinc-950 rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-[#030303] rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2 tabular-nums tracking-tight">
@@ -1293,7 +1293,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
             <div className="lg:col-span-5 space-y-6">
               
               <!-- Gemini API Key & Security Config Card -->
-              <div className="bg-white dark:bg-zinc-950 rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+              <div className="bg-white dark:bg-[#030303] rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2 tabular-nums tracking-tight">
                     <i className="fas fa-shield-halved text-purple-600"></i>
@@ -1313,7 +1313,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     <select
                       value=${selectedAiModel}
                       onChange=${(e) => setSelectedAiModel(e.target.value)}
-                      className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
+                      className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold text-purple-950 min-h-[44px] tabular-nums tracking-tight"
                     >
                       <option value="gemini-3.8-flash">Gemini 3.8 Flash — Ən Yeni & Sürətli (Tövsiyə olunur)</option>
                       <option value="gemini-3.7-flash">Gemini 3.7 Flash — Sürətli & Sabit (Ehtiyat)</option>
@@ -1329,7 +1329,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     <select
                       value=${keyStorageMode}
                       onChange=${(e) => setKeyStorageMode(e.target.value)}
-                      className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-bold text-gray-700 min-h-[44px] tabular-nums tracking-tight"
+                      className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-bold text-gray-700 min-h-[44px] tabular-nums tracking-tight"
                     >
                       <option value="session"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Müvəqqəti Sessiya (Tövsiyə olunur — Tab bağlananda silinir)</option>
                       <option value="local"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="inline-block opacity-80 mr-1.5 align-middle"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Brauzerdə Saxla (Yalnız şəxsi kompüterdə)</option>
@@ -1353,7 +1353,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                         value=${publicChatKey}
                         onChange=${(e) => setPublicChatKey(e.target.value)}
                         placeholder="Gemini API AÃ§arÄ±nÄ± daxil edin..."
-                        className="w-full bg-white dark:bg-zinc-950 border border-purple-200 text-xs rounded-[8px] p-2.5.5 pr-10 font-mono min-h-[44px] tabular-nums tracking-tight"
+                        className="w-full bg-white dark:bg-[#030303] border border-purple-200 text-xs rounded-[8px] p-2.5.5 pr-10 font-mono min-h-[44px] tabular-nums tracking-tight"
                       />
                       <button
                         type="button"
@@ -1390,7 +1390,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                             value=${key}
                             onChange=${(e) => handleGuardianKeyChange(i, e.target.value)}
                             placeholder=${`Qoruyucu AÃ§ar (Qoruyucu Açar ${i + 1})`}
-                            className="flex-1 bg-white dark:bg-zinc-950 border border-indigo-200 text-xs rounded-[8px] p-2.5 font-mono min-h-[44px] tabular-nums tracking-tight"
+                            className="flex-1 bg-white dark:bg-[#030303] border border-indigo-200 text-xs rounded-[8px] p-2.5 font-mono min-h-[44px] tabular-nums tracking-tight"
                           />
                         </div>
                       `)}
@@ -1411,7 +1411,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                       value=${aiProxyUrl}
                       onChange=${(e) => setAiProxyUrl(e.target.value)}
                       placeholder="https://tdv-gemini-proxy.workers.dev"
-                      className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-mono placeholder-gray-300 min-h-[44px] tabular-nums tracking-tight"
+                      className="w-full bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-mono placeholder-gray-300 min-h-[44px] tabular-nums tracking-tight"
                     />
                     <p className="text-[10px] text-gray-400 mt-1">
                       Cloudflare Worker proxy istifadə etdikdə brauzerdə açar heç vaxt görünmür.
@@ -1444,13 +1444,13 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                   </div>
                   <ul className="space-y-1.5 text-slate-600 pl-1 list-disc list-inside">
                     <li>
-                      <strong>HTTP Referrer Məhdudiyyəti:</strong> Google Cloud / AI Studio-da açarı yalnız domeninizə bağlayın (məs: <code className="bg-white dark:bg-zinc-950 px-1 py-0.5 rounded text-[10px] font-mono tabular-nums tracking-tight">https://orxan.github.io/*</code>). Beləliklə, kimsə açarı kopyalasa belə işlədə bilməz.
+                      <strong>HTTP Referrer Məhdudiyyəti:</strong> Google Cloud / AI Studio-da açarı yalnız domeninizə bağlayın (məs: <code className="bg-white dark:bg-[#030303] px-1 py-0.5 rounded text-[10px] font-mono tabular-nums tracking-tight">https://orxan.github.io/*</code>). Beləliklə, kimsə açarı kopyalasa belə işlədə bilməz.
                     </li>
                     <li>
                       <strong>API İcazəsi:</strong> Açarı yalnız "Gemini API" üçün aktiv edin.
                     </li>
                     <li>
-                      <strong>Serverless Worker:</strong> Layihənin <code className="bg-white dark:bg-zinc-950 px-1 py-0.5 rounded text-[10px] font-mono tabular-nums tracking-tight">serverless/gemini-proxy-worker.js</code> şablonunu Cloudflare Worker-ə ataraq açarı 100% gizli saxlaya bilərsiniz.
+                      <strong>Serverless Worker:</strong> Layihənin <code className="bg-white dark:bg-[#030303] px-1 py-0.5 rounded text-[10px] font-mono tabular-nums tracking-tight">serverless/gemini-proxy-worker.js</code> şablonunu Cloudflare Worker-ə ataraq açarı 100% gizli saxlaya bilərsiniz.
                     </li>
                   </ul>
                   <div className="pt-1">
@@ -1468,7 +1468,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
               </div>
 
               <!-- Interactive AI Chat / Tuner Console -->
-              <div className="bg-white dark:bg-zinc-950 rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4 flex flex-col h-[520px]">
+              <div className="bg-white dark:bg-[#030303] rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4 flex flex-col h-[520px]">
                 <div className="border-b border-gray-100 pb-3">
                   <h4 className="font-extrabold text-sm text-purple-950 flex items-center gap-2 tabular-nums tracking-tight">
                     <i className="fas fa-comments text-purple-600"></i>
@@ -1543,7 +1543,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                     value=${aiChatQuery}
                     onChange=${(e) => setAiChatQuery(e.target.value)}
                     placeholder="Turnir haqqında sual yazın..."
-                    className="flex-1 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-[8px] p-2.5.5 font-medium min-h-[44px] tabular-nums tracking-tight"
+                    className="flex-1 bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-xs rounded-[8px] p-2.5.5 font-medium min-h-[44px] tabular-nums tracking-tight"
                     disabled=${isAiChatLoading}
                   />
                   <button
@@ -1565,7 +1565,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
       <!-- MODAL FOR EDITING PLAYER RATINGS FOR A SELECTED MATCH -->
       ${selectedMatchForRatings && html`
         <div className="fixed inset-0 z-50 overflow-y-auto bg-purple-950/40 backdrop-blur-sm flex items-center justify-center p-2.5">
-          <div className="bg-white dark:bg-zinc-950 rounded-3xl max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-2xl animate-fadeIn">
+          <div className="bg-white dark:bg-[#030303] rounded-3xl max-w-3xl w-full max-h-[85vh] overflow-y-auto shadow-2xl animate-fadeIn">
             
             <!-- Modal Header -->
             <div className="bg-purple-900 text-white p-5 rounded-t-3xl flex justify-between items-center">
@@ -1620,18 +1620,18 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
                             placeholder="Auto"
                             value=${stat.rating ?? ''}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'rating', e.target.value === '' ? null : e.target.value)}
-                            className="w-16 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center font-black rounded-[8px] p-2.5 text-purple-900 placeholder-gray-300 min-h-[44px]"
+                            className="w-16 bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-center font-black rounded-[8px] p-2.5 text-purple-900 placeholder-gray-300 min-h-[44px]"
                           />
                         </td>
                         <td className="py-2.5 px-2 text-center">
                           <input type="number" min="0" value=${stat.goals}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'goals', e.target.value)}
-                            className="w-12 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center rounded-[8px] p-2.5 min-h-[44px]" />
+                            className="w-12 bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-center rounded-[8px] p-2.5 min-h-[44px]" />
                         </td>
                         <td className="py-2.5 px-2 text-center">
                           <input type="number" min="0" value=${stat.assists}
                             onChange=${(e) => handlePlayerStatChange(stat.playerId, 'assists', e.target.value)}
-                            className="w-12 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center rounded-[8px] p-2.5 min-h-[44px]" />
+                            className="w-12 bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 text-center rounded-[8px] p-2.5 min-h-[44px]" />
                         </td>
                         <td className="py-2.5 px-2 text-center">
                           <input type="number" min="0" value=${stat.saves}
@@ -1656,7 +1656,7 @@ export default function AdminDashboard({ activeDivision, activeYear, onYearsChan
             </div>
 
             <!-- Modal Footer -->
-            <div className="p-2.5 bg-zinc-50 dark:bg-zinc-900 rounded-b-3xl text-right space-x-2">
+            <div className="p-2.5 bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl rounded-b-3xl text-right space-x-2">
               <button
                 onClick=${() => setSelectedMatchForRatings(null)}
                 className="bg-gray-200 text-gray-700 hover:bg-gray-300 font-bold px-6 py-2.5 rounded-[8px] text-xs transition min-h-[44px] tabular-nums tracking-tight"

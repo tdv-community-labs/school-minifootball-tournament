@@ -131,7 +131,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
 
       <!-- Quick Stats Bento Grid -->
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 shadow-xs border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 dark:hover:border-purple-500/40 transition-all flex items-center space-x-3.5">
+        <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-2xl p-4 sm:p-5 shadow-xs border border-zinc-200 dark:border-white/10 hover:border-purple-500/40 dark:hover:border-purple-500/40 transition-all flex items-center space-x-3.5">
           <div className="w-11 h-11 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 text-base sm:text-lg border border-purple-500/20">
             <i className="fas fa-users"></i>
           </div>
@@ -141,7 +141,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 shadow-xs border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/40 dark:hover:border-emerald-500/40 transition-all flex items-center space-x-3.5">
+        <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-2xl p-4 sm:p-5 shadow-xs border border-zinc-200 dark:border-white/10 hover:border-emerald-500/40 dark:hover:border-emerald-500/40 transition-all flex items-center space-x-3.5">
           <div className="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 text-base sm:text-lg border border-emerald-500/20">
             <i className="fas fa-running"></i>
           </div>
@@ -151,7 +151,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 shadow-xs border border-zinc-200 dark:border-zinc-800 hover:border-teal-500/40 dark:hover:border-teal-500/40 transition-all flex items-center space-x-3.5">
+        <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-2xl p-4 sm:p-5 shadow-xs border border-zinc-200 dark:border-white/10 hover:border-teal-500/40 dark:hover:border-teal-500/40 transition-all flex items-center space-x-3.5">
           <div className="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center shrink-0 text-base sm:text-lg border border-teal-500/20">
             <i className="fas fa-futbol"></i>
           </div>
@@ -161,7 +161,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-5 shadow-xs border border-zinc-200 dark:border-zinc-800 hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all flex items-center space-x-3.5">
+        <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-2xl p-4 sm:p-5 shadow-xs border border-zinc-200 dark:border-white/10 hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all flex items-center space-x-3.5">
           <div className="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 text-base sm:text-lg border border-amber-500/20">
             <i className="fas fa-trophy"></i>
           </div>
@@ -180,12 +180,12 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           ${topPlayers.length === 0 
             ? html`
-                <div className="col-span-3 text-center py-8 text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 border-dashed">
+                <div className="col-span-3 text-center py-8 text-zinc-400 dark:text-zinc-500 bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-2xl border border-zinc-200 dark:border-white/10 border-dashed">
                   <p className="text-sm font-semibold">${t('noMatchesYet')}</p>
                 </div>
               ` 
             : topPlayers.map((player, index) => html`
-                <div key=${player.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-xs flex justify-between items-center relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-500/40 dark:hover:border-purple-500/40">
+                <div key=${player.id} className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-2xl p-5 shadow-xs flex justify-between items-center relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-500/40 dark:hover:border-purple-500/40">
                   <div className="absolute top-0 left-0 w-1.5 h-full bg-purple-600"></div>
                   <div>
                     <div className="flex items-center space-x-2">
@@ -221,7 +221,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         
         <!-- Left: Recent Matches -->
-        <div className="lg:col-span-7 bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-xs border border-zinc-200 dark:border-zinc-800 transition-colors duration-200">
+        <div className="lg:col-span-7 bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl p-6 shadow-xs border border-zinc-200 dark:border-white/10 transition-colors duration-200">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-bold text-zinc-900 dark:text-white">${t('recentMatches')}</h3>
             <button onClick=${() => setActiveTab('matches')} className="text-xs font-bold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center space-x-1 cursor-pointer">
@@ -240,7 +240,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                   <div 
                     key=${match.id} 
                     onClick=${() => setSelectedMatch(match)}
-                    className="p-3 sm:p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 hover:bg-purple-50/50 dark:hover:bg-zinc-800/80 border border-zinc-200/60 dark:border-zinc-700/60 hover:border-purple-400/50 dark:hover:border-purple-500/50 transition-all flex justify-between items-center gap-2 cursor-pointer group shadow-2xs hover:shadow-xs"
+                    className="p-3 sm:p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 hover:bg-purple-50/50 dark:hover:bg-zinc-800/80 border border-zinc-200/60 dark:border-white/20 hover:border-purple-400/50 dark:hover:border-purple-500/50 transition-all flex justify-between items-center gap-2 cursor-pointer group shadow-2xs hover:shadow-xs"
                     title=${lang === 'az' ? '5v5 Matç Analizi və İstilik Xəritəsinə bax' : 'View 5v5 Match Analytics & Heatmap'}
                   >
                     <span className="text-[9px] sm:text-[10px] font-black text-purple-700 dark:text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-lg uppercase whitespace-nowrap shrink-0">
@@ -249,7 +249,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                     <div className="flex flex-col items-center justify-center flex-1 min-w-0">
                       <div className="flex items-center justify-center space-x-2 sm:space-x-4 w-full">
                         <span className="font-extrabold text-xs sm:text-sm md:text-base text-zinc-900 dark:text-zinc-100 w-12 sm:w-16 text-right truncate">${match.teamA}</span>
-                        <div className="bg-zinc-900 dark:bg-zinc-950 text-white border border-zinc-700/50 group-hover:border-purple-500/60 rounded-lg px-2.5 sm:px-3 py-0.5 sm:py-1 font-black text-xs sm:text-sm md:text-base shadow-xs shrink-0 transition-colors">
+                        <div className="bg-zinc-900 dark:bg-[#030303] text-white border border-zinc-700/50 group-hover:border-purple-500/60 rounded-lg px-2.5 sm:px-3 py-0.5 sm:py-1 font-black text-xs sm:text-sm md:text-base shadow-xs shrink-0 transition-colors">
                           ${match.scoreA} - ${match.scoreB}
                         </div>
                         <span className="font-extrabold text-xs sm:text-sm md:text-base text-zinc-900 dark:text-zinc-100 w-12 sm:w-16 text-left truncate">${match.teamB}</span>
@@ -273,7 +273,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
         <!-- Right: Stat Leaders (Goals & Assists) -->
         <div className="lg:col-span-5 grid grid-cols-1 gap-4">
           <!-- Top Goalscorers -->
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-xs border border-zinc-200 dark:border-zinc-800 transition-colors duration-200">
+          <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl p-6 shadow-xs border border-zinc-200 dark:border-white/10 transition-colors duration-200">
             <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center">
               <i className="fas fa-futbol text-purple-600 dark:text-purple-400 mr-2"></i> ${t('topScorers')}
             </h3>
@@ -315,7 +315,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
           </div>
 
           <!-- Top Assists -->
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-xs border border-zinc-200 dark:border-zinc-800 transition-colors duration-200">
+          <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl p-6 shadow-xs border border-zinc-200 dark:border-white/10 transition-colors duration-200">
             <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-3 flex items-center">
               <i className="fas fa-hands-helping text-emerald-500 mr-2"></i> ${t('topAssists')}
             </h3>

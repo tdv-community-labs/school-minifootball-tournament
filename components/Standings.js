@@ -338,7 +338,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
   const renderBracketMatchCard = (match, label, index) => {
     if (!match) {
       return html`
-        <div className="border-2 border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50/40 dark:bg-zinc-900/30 rounded-[20px] p-3 flex flex-col justify-center items-center h-[102px] w-60 text-center select-none tabular-nums">
+        <div className="border-2 border-dashed border-zinc-200 dark:border-white/10 bg-zinc-50/40 dark:bg-[#080808] dark:backdrop-blur-xl/30 rounded-[20px] p-3 flex flex-col justify-center items-center h-[102px] w-60 text-center select-none tabular-nums">
           <span className="text-[9px] text-zinc-400 dark:text-zinc-500 font-black uppercase tracking-wider">
             ${label} #${index + 1}
           </span>
@@ -361,8 +361,8 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
     return html`
       <div 
         onClick=${() => setSelectedMatch(match)}
-        className=${`group bg-white dark:bg-zinc-900 border rounded-[20px] p-2.5 shadow-xs hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between w-60 min-h-[104px] relative select-none ${
-          isFinished ? 'border-zinc-200 dark:border-zinc-800' : 'border-zinc-200/80 dark:border-zinc-800/80'
+        className=${`group bg-white dark:bg-[#080808] dark:backdrop-blur-xl border rounded-[20px] p-2.5 shadow-xs hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col justify-between w-60 min-h-[104px] relative select-none ${
+          isFinished ? 'border-zinc-200 dark:border-white/10' : 'border-zinc-200/80 dark:border-white/10/80'
         }`}
       >
         <!-- Stage & Status Tag -->
@@ -388,8 +388,8 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             : isTeamALoser
             ? 'bg-rose-500/10 border-rose-500/20 text-rose-900 dark:text-rose-200 font-semibold'
             : isFinished
-            ? 'bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200/60 dark:border-zinc-700/40 text-zinc-600 dark:text-zinc-400 font-medium'
-            : 'bg-zinc-50 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700/60 font-bold text-zinc-900 dark:text-zinc-100'
+            ? 'bg-zinc-50 dark:bg-white/5 dark:backdrop-blur-xl border-zinc-200/60 dark:border-zinc-700/40 text-zinc-600 dark:text-zinc-400 font-medium'
+            : 'bg-zinc-50 dark:bg-zinc-800/60 border-zinc-200 dark:border-white/20 font-bold text-zinc-900 dark:text-zinc-100'
         }`}>
           <div className="flex items-center space-x-2 truncate pr-1">
             <span className=${`w-5 h-5 rounded-md text-[9px] font-black flex items-center justify-center shrink-0 shadow-2xs ${
@@ -440,8 +440,8 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             : isTeamBLoser
             ? 'bg-rose-500/10 border-rose-500/20 text-rose-900 dark:text-rose-200 font-semibold'
             : isFinished
-            ? 'bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200/60 dark:border-zinc-700/40 text-zinc-600 dark:text-zinc-400 font-medium'
-            : 'bg-zinc-50 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700/60 font-bold text-zinc-900 dark:text-zinc-100'
+            ? 'bg-zinc-50 dark:bg-white/5 dark:backdrop-blur-xl border-zinc-200/60 dark:border-zinc-700/40 text-zinc-600 dark:text-zinc-400 font-medium'
+            : 'bg-zinc-50 dark:bg-zinc-800/60 border-zinc-200 dark:border-white/20 font-bold text-zinc-900 dark:text-zinc-100'
         }`}>
           <div className="flex items-center space-x-2 truncate pr-1">
             <span className=${`w-5 h-5 rounded-md text-[9px] font-black flex items-center justify-center shrink-0 shadow-2xs ${
@@ -535,12 +535,12 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
         </div>
         
         <!-- View Switcher Tabs -->
-        <div className="flex bg-zinc-100 dark:bg-zinc-800/80 p-1.5 rounded-[20px] border border-zinc-200 dark:border-zinc-700/60 shadow-xs">
+        <div className="flex bg-zinc-100 dark:bg-[#050505] p-1.5 rounded-[20px] border border-zinc-200 dark:border-white/20 shadow-xs">
           <button
             onClick=${() => setViewMode('table')}
             className=${`px-4 py-2 rounded-[8px] text-xs font-extrabold uppercase tracking-wide transition-all whitespace-nowrap flex items-center space-x-2 cursor-pointer ${
               viewMode === 'table' 
-                ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 shadow-xs border border-purple-200/80 dark:border-purple-800/80 font-black' 
+                ? 'bg-white dark:bg-[#080808] dark:backdrop-blur-xl text-purple-600 dark:text-purple-400 shadow-xs border border-purple-200/80 dark:border-purple-800/80 font-black' 
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
@@ -552,7 +552,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             onClick=${() => setViewMode('bracket')}
             className=${`px-4 py-2 rounded-[8px] text-xs font-extrabold uppercase tracking-wide transition-all whitespace-nowrap flex items-center space-x-2 cursor-pointer ${
               viewMode === 'bracket' 
-                ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 shadow-xs border border-purple-200/80 dark:border-purple-800/80 font-black' 
+                ? 'bg-white dark:bg-[#080808] dark:backdrop-blur-xl text-purple-600 dark:text-purple-400 shadow-xs border border-purple-200/80 dark:border-purple-800/80 font-black' 
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
@@ -570,7 +570,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           
           <!-- Group Selector Filter Pills -->
           ${hasMultipleGroups && html`
-            <div className="flex flex-wrap items-center gap-2 p-1.5 bg-zinc-100 dark:bg-zinc-900 rounded-[20px] border border-zinc-200 dark:border-zinc-800 w-fit">
+            <div className="flex flex-wrap items-center gap-2 p-1.5 bg-zinc-100 dark:bg-[#080808] dark:backdrop-blur-xl rounded-[20px] border border-zinc-200 dark:border-white/10 w-fit">
               <button
                 onClick=${() => setSelectedGroup('ALL')}
                 className=${`px-4 py-2 rounded-[8px] text-xs font-black uppercase tracking-wider transition cursor-pointer ${
@@ -604,7 +604,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           `}
 
           ${table.length === 0 ? html`
-            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 text-center text-zinc-400 dark:text-zinc-500 shadow-xs tabular-nums">
+            <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-3xl p-8 text-center text-zinc-400 dark:text-zinc-500 shadow-xs tabular-nums">
               ${t('tableEmptyNotice')}
             </div>
           ` : groupsToDisplay.map(grp => {
@@ -612,11 +612,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
               const groupTitle = t('group' + grp) || (lang === 'az' ? `Qrup ${grp}` : `Group ${grp}`);
 
               return html`
-                <div key=${grp} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl shadow-xs overflow-hidden animate-fadeIn transition-colors duration-200">
+                <div key=${grp} className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-3xl shadow-xs overflow-hidden animate-fadeIn transition-colors duration-200">
                   
                   <!-- Group Card Header -->
                   ${hasMultipleGroups && html`
-                    <div className="bg-zinc-900 dark:bg-zinc-950 text-white px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800">
+                    <div className="bg-zinc-900 dark:bg-[#030303] text-white px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800">
                       <div className="flex items-center gap-2.5">
                         <span className=${`w-3.5 h-3.5 rounded-full ring-4 ring-white/20 ${
                           grp === 'A' ? 'bg-emerald-400' :
@@ -642,9 +642,9 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   `}
 
                   <div className="overflow-x-auto no-scrollbar">
-                    <table className="w-full text-left border-collapse standings-table bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200">
+                    <table className="w-full text-left border-collapse standings-table bg-white dark:bg-[#080808] dark:backdrop-blur-xl text-zinc-800 dark:text-zinc-200">
                       <thead>
-                        <tr className="bg-zinc-50 dark:bg-zinc-950 text-zinc-600 dark:text-zinc-400 text-[11px] sm:text-xs font-black tracking-wider uppercase border-b border-zinc-200 dark:border-zinc-800">
+                        <tr className="bg-zinc-50 dark:bg-[#030303] text-zinc-600 dark:text-zinc-400 text-[11px] sm:text-xs font-black tracking-wider uppercase border-b border-zinc-200 dark:border-white/10">
                           <th className="py-3 px-2 sm:py-4 sm:px-6 text-center w-8 sm:w-14 tabular-nums">#</th>
                           <th className="py-3 px-2 sm:py-4 sm:px-4 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" onClick=${() => handleSort('class')}>
                             ${t('colTeam')} ${sortField === 'class' ? (sortAsc ? '▲' : '▼') : ''}
@@ -764,14 +764,14 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           }
 
           <!-- Abbreviations Legend -->
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900/60 p-4 rounded-[20px] border border-zinc-200 dark:border-zinc-800">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-[#080808] dark:backdrop-blur-xl/60 p-4 rounded-[20px] border border-zinc-200 dark:border-white/10">
             <div><span className="text-zinc-900 dark:text-zinc-200 font-extrabold mr-1">O:</span> ${lang === 'az' ? 'Oyun Sayı' : 'Played'}</div>
             <div><span className="text-emerald-600 dark:text-emerald-400 font-extrabold mr-1">Q:</span> ${lang === 'az' ? 'Qələbə' : 'Won'}</div>
             <div><span className="text-zinc-700 dark:text-zinc-300 font-extrabold mr-1">H:</span> ${lang === 'az' ? 'Heç-heçə' : 'Drawn'}</div>
             <div><span className="text-rose-600 dark:text-rose-400 font-extrabold mr-1">M:</span> ${lang === 'az' ? 'Məğlubiyyət' : 'Lost'}</div>
             <div><span className="text-zinc-900 dark:text-zinc-200 font-extrabold mr-1">TF:</span> ${lang === 'az' ? 'Top Fərqi' : 'Goal Diff'}</div>
             <div className="hidden md:block"><span className="text-zinc-900 dark:text-zinc-200 font-extrabold mr-1">VQ/BQ:</span> ${lang === 'az' ? 'Vuruldu / Buraxıldı' : 'GF / GA'}</div>
-            <div className="col-span-2 md:col-span-6 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 font-bold tabular-nums">
+            <div className="col-span-2 md:col-span-6 pt-2 border-t border-zinc-200 dark:border-white/10 text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 font-bold tabular-nums">
               <i className="fas fa-info-circle text-emerald-600 dark:text-emerald-400"></i>
               <span>${lang === 'az' ? 'Aydınlaşdırma: "TF" (+34 və s.) tək bir oyunçunun qolu deyil, komandanın vurduğu və buraxdığı qollar arasındakı Top Fərqidir (məs: 43 vurulub - 9 buraxılıb = +34 TF).' : 'Clarification: "GD" (+34 etc.) is Team Goal Difference, not individual player goals (e.g. 43 scored - 9 conceded = +34 GD).'}</span>
             </div>
@@ -841,7 +841,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
               
               <!-- MVP Card -->
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-4 shadow-xs flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
+              <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-3xl p-4 shadow-xs flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[10px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -861,7 +861,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   </p>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-white/10 flex items-center justify-between">
                   <span className="text-[10px] text-zinc-400 font-bold tabular-nums">Sofascore:</span>
                   <span className=${`text-xs font-black px-2 py-0.5 rounded-md ${getSofascoreBadgeStyle(mvpPlayer?.overallRating || 6.5)}`}>
                     ${mvpPlayer ? mvpPlayer.overallRating : '-'}
@@ -870,7 +870,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
               </div>
 
               <!-- Golden Boot (Bombardir) Card -->
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-4 shadow-xs flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
+              <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-3xl p-4 shadow-xs flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -890,7 +890,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   </p>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-white/10 flex items-center justify-between">
                   <span className="text-[10px] text-zinc-400 font-bold tabular-nums">${lang === 'az' ? 'Qollar:' : 'Goals:'}</span>
                   <span className="goal-badge text-xs font-black px-2.5 py-0.5 rounded-md shadow-xs">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="inline-block mr-1 opacity-70"><circle cx="12" cy="12" r="10"></circle><path d="M12 12l3.5-2m-7 4l3.5-2m0 0v4m-3.5-2h7"></path></svg> ${topScorer ? topScorer.goals : 0} ${t('goals')}
@@ -899,7 +899,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
               </div>
 
               <!-- Golden Glove (Qızıl Əlcək) Card -->
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-4 shadow-xs flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
+              <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-3xl p-4 shadow-xs flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[10px] font-black text-sky-600 dark:text-sky-400 uppercase tracking-widest bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -919,7 +919,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   </p>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+                <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-white/10 flex items-center justify-between">
                   <span className="text-[10px] text-zinc-400 font-bold tabular-nums">Reytinq:</span>
                   <span className=${`text-xs font-black px-2 py-0.5 rounded-md ${getSofascoreBadgeStyle(bestGoalkeeper?.overallRating || 6.5)}`}>
                     ${bestGoalkeeper ? bestGoalkeeper.overallRating : '-'}
@@ -931,7 +931,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           </div>
 
           <!-- DREAM TEAM (RƏMZİ 5-LİK) EXPANDER -->
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-4 shadow-xs transition-colors duration-200">
+          <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-3xl p-4 shadow-xs transition-colors duration-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-7 h-7 bg-amber-500/15 text-amber-600 dark:text-amber-400 rounded-lg flex items-center justify-center font-black text-xs border border-amber-500/20">
@@ -951,14 +951,14 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 mt-3 pt-3 border-t border-zinc-100 dark:border-white/10">
               ${dreamTeam.length === 0 
                 ? html`<div className="col-span-5 text-center text-xs text-zinc-400 dark:text-zinc-500 py-2 tabular-nums">Hələ qeydə alınmış oyunçu statistikası yoxdur.</div>`
                 : dreamTeam.map((player, i) => html`
                     <div
                       key=${player.id || i}
                       onClick=${() => onOpenPlayerProfile && onOpenPlayerProfile(player.name)}
-                      className="bg-zinc-50 dark:bg-zinc-800/60 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-3 rounded-[20px] border border-zinc-200/80 dark:border-zinc-700/60 transition-all flex items-center justify-between space-x-2 cursor-pointer"
+                      className="bg-zinc-50 dark:bg-zinc-800/60 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-3 rounded-[20px] border border-zinc-200/80 dark:border-white/20 transition-all flex items-center justify-between space-x-2 cursor-pointer"
                       title=${lang === 'az' ? 'Karyera profilinə bax' : 'View career profile'}
                     >
                       <div className="flex items-center space-x-2 truncate">
@@ -986,7 +986,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
           <!-- ════════════════════════════════════════════════════════════════════ -->
           ${playoffMatches.length === 0 && !showEmptyPreview 
             ? html`
-                <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-10 text-center shadow-xs space-y-4 transition-colors duration-200 tabular-nums">
+                <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-3xl p-10 text-center shadow-xs space-y-4 transition-colors duration-200 tabular-nums">
                   <div className="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-[20px] flex items-center justify-center mx-auto text-2xl border border-zinc-200 dark:border-zinc-700">
                     <i className="fas fa-sitemap"></i>
                   </div>
@@ -1007,11 +1007,11 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                 </div>
               `
             : html`
-                <div className="bg-zinc-50/60 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-xs overflow-x-auto no-scrollbar transition-colors duration-200">
+                <div className="bg-zinc-50/60 dark:bg-[#080808] dark:backdrop-blur-xl/40 border border-zinc-200 dark:border-white/10 rounded-3xl p-6 shadow-xs overflow-x-auto no-scrollbar transition-colors duration-200">
                   
                   <!-- Tournament Track Switcher (For seasons with multiple playoff tournaments like 2017-2018) -->
                   ${activeYear === '2017-2018' && html`
-                    <div className="flex flex-wrap items-center gap-2 mb-4 p-1.5 bg-white dark:bg-zinc-900 rounded-[20px] border border-zinc-200 dark:border-zinc-800 shadow-2xs w-fit">
+                    <div className="flex flex-wrap items-center gap-2 mb-4 p-1.5 bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-[20px] border border-zinc-200 dark:border-white/10 shadow-2xs w-fit">
                       <button
                         onClick=${() => setTournamentTrack('main')}
                         className=${`px-3.5 py-1.5 rounded-[8px] text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 ${
@@ -1038,7 +1038,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                   `}
 
                   <!-- Instruction banner -->
-                  <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-zinc-200 dark:border-zinc-800 mb-6 text-xs text-zinc-500 dark:text-zinc-400 font-semibold">
+                  <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-zinc-200 dark:border-white/10 mb-6 text-xs text-zinc-500 dark:text-zinc-400 font-semibold">
                     <span className="flex items-center gap-1.5 text-zinc-900 dark:text-white font-bold tabular-nums">
                       <i className="fas fa-info-circle text-emerald-500"></i>
                       <span>İstənilən oyuna klikləyərək matç detallarına, video icmalına və Sofascore oyunçu reytinqlərinə baxa bilərsiniz.</span>
@@ -1127,7 +1127,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                       <!-- Grand Final Card -->
                       <div>
                         <div className="text-center mb-4 tabular-nums">
-                          <span className="text-[10px] font-black text-white bg-zinc-900 dark:bg-zinc-950 border border-zinc-700 px-3.5 py-1 rounded-full uppercase tracking-widest shadow-sm flex items-center justify-center gap-1.5 mx-auto w-max">
+                          <span className="text-[10px] font-black text-white bg-zinc-900 dark:bg-[#030303] border border-zinc-700 px-3.5 py-1 rounded-full uppercase tracking-widest shadow-sm flex items-center justify-center gap-1.5 mx-auto w-max">
                             <i className="fas fa-trophy text-amber-400"></i> BÖYÜK FİNAL
                           </span>
                           <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold block mt-1 tabular-nums">Çempionluq Matçı</span>
@@ -1140,7 +1140,7 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
 
                       <!-- 3rd Place Match (If registered or available) -->
                       ${stageThirdMatches.length > 0 && html`
-                        <div className="pt-4 border-t border-dashed border-zinc-200 dark:border-zinc-800">
+                        <div className="pt-4 border-t border-dashed border-zinc-200 dark:border-white/10">
                           <div className="text-center mb-3 tabular-nums">
                             <span className="text-[9px] font-black text-amber-900 dark:text-amber-300 bg-amber-500/10 border border-amber-500/20 px-3 py-0.5 rounded-full uppercase tracking-wider shadow-2xs inline-block">
                               <i className="fas fa-award text-amber-500 mr-1"></i> 3-cü Yer Uğrunda

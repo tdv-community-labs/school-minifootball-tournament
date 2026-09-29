@@ -86,10 +86,10 @@ export default function GlobalSearchModal({
       className="fixed inset-0 z-50 overflow-y-auto bg-zinc-950/80 backdrop-blur-[16px] flex items-start justify-center p-3 sm:p-6 pt-12 sm:pt-20 transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] transition-colors duration-200"
       onClick=${(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-white dark:bg-zinc-900 rounded-[20px] max-w-2xl w-full shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col max-h-[85vh] transition-colors duration-200">
+      <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-[20px] max-w-2xl w-full shadow-2xl border border-zinc-200 dark:border-white/10 overflow-hidden flex flex-col max-h-[85vh] transition-colors duration-200">
         
         <!-- Search Input Header -->
-        <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-3 bg-zinc-50 dark:bg-zinc-950/60 transition-colors duration-200">
+        <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-white/10 flex items-center gap-3 bg-zinc-50 dark:bg-[#030303]/60 transition-colors duration-200">
           <i className="fas fa-search text-lg text-purple-600 dark:text-purple-400 shrink-0"></i>
           
           <input
@@ -170,7 +170,7 @@ export default function GlobalSearchModal({
           <!-- Section 1: PLAYERS -->
           ${results.players.length > 0 && html`
             <div className="space-y-2.5">
-              <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-white/10">
                 <span className="text-[11px] font-black uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
                   <i className="fas fa-running text-emerald-500"></i>
                   <span>${lang === 'az' ? 'Oyunçular' : 'Players'}</span>
@@ -186,7 +186,7 @@ export default function GlobalSearchModal({
                       onClose();
                       if (onSelectPlayer) onSelectPlayer(p.name);
                     }}
-                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-[20px] border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between gap-3 shadow-2xs"
+                    className="group bg-zinc-50 dark:bg-[#050505] hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-[20px] border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between gap-3 shadow-2xs"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="w-10 h-10 rounded-[8px] bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 flex items-center justify-center font-black text-sm shrink-0">
@@ -227,7 +227,7 @@ export default function GlobalSearchModal({
           <!-- Section 2: CLASSES / TEAMS -->
           ${results.classes.length > 0 && html`
             <div className="space-y-2.5">
-              <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-white/10">
                 <span className="text-[11px] font-black uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
                   <i className="fas fa-shield-alt text-sky-500"></i>
                   <span>${lang === 'az' ? 'Siniflər və Komandalar' : 'Classes & Teams'}</span>
@@ -243,7 +243,7 @@ export default function GlobalSearchModal({
                       onClose();
                       if (onSelectClass) onSelectClass(c.name, c.years[0], c.division);
                     }}
-                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-sky-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-[20px] border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
+                    className="group bg-zinc-50 dark:bg-[#050505] hover:bg-sky-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-[20px] border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
                   >
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-[8px] bg-sky-100 dark:bg-sky-950/70 text-sky-800 dark:text-sky-300 flex items-center justify-center font-black text-xs">
@@ -270,7 +270,7 @@ export default function GlobalSearchModal({
           <!-- Section 3: MATCHES -->
           ${results.matches.length > 0 && html`
             <div className="space-y-2.5">
-              <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center justify-between pb-1 border-b border-zinc-200 dark:border-white/10">
                 <span className="text-[11px] font-black uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
                   <i className="fas fa-futbol text-emerald-500"></i>
                   <span>${lang === 'az' ? 'Matçlar' : 'Matches'}</span>
@@ -286,7 +286,7 @@ export default function GlobalSearchModal({
                       onClose();
                       if (onSelectMatch) onSelectMatch(m);
                     }}
-                    className="group bg-zinc-50 dark:bg-zinc-800/80 hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-[20px] border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
+                    className="group bg-zinc-50 dark:bg-[#050505] hover:bg-emerald-50/50 dark:hover:bg-zinc-700/80 p-3 rounded-[20px] border border-zinc-200 dark:border-zinc-700/80 transition cursor-pointer flex items-center justify-between shadow-2xs"
                   >
                     <div>
                       <div className="flex items-center gap-2">
@@ -317,7 +317,7 @@ export default function GlobalSearchModal({
         </div>
 
         <!-- Search Modal Footer -->
-        <div className="p-3 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center text-[11px] text-zinc-500 dark:text-zinc-400 px-5 transition-colors duration-200">
+        <div className="p-3 bg-zinc-50 dark:bg-[#030303] border-t border-zinc-200 dark:border-white/10 flex justify-between items-center text-[11px] text-zinc-500 dark:text-zinc-400 px-5 transition-colors duration-200">
           <span className="flex items-center gap-2">
             <span><i className="fas fa-keyboard mr-1"></i> <b>ESC</b> ${lang === 'az' ? 'bağlayır' : 'closes'}</span>
             <span>•</span>

@@ -362,7 +362,7 @@ export default function App() {
   }
 
   return html`
-    <div className="min-h-[100dvh] max-w-[100vw] overflow-x-clip bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans flex flex-col transition-colors duration-200">
+    <div className="min-h-[100dvh] max-w-[100vw] overflow-x-clip bg-zinc-50 dark:bg-[#030303] text-zinc-900 dark:text-zinc-100 font-sans flex flex-col transition-colors duration-200">
       <!-- Top Premium Navbar (Branded TDV Sports) -->
       <header className="sticky top-[33px] sm:top-[35px] z-40 bg-white/90 dark:bg-[#09090b]/85 backdrop-blur-xl border-b border-zinc-200/80 dark:border-white/[0.08] transition-all duration-200 no-print flex flex-col">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full no-scrollbar">
@@ -391,7 +391,7 @@ export default function App() {
             </div>
 
             <!-- Desktop Nav Items -->
-            <nav className="hidden lg:flex items-center space-x-1 bg-zinc-100/80 dark:bg-zinc-950/60 border border-zinc-200/60 dark:border-white/[0.06] p-1 rounded-2xl backdrop-blur-md">
+            <nav className="hidden lg:flex items-center space-x-1 bg-zinc-100/80 dark:bg-[#030303]/60 border border-zinc-200/60 dark:border-white/[0.06] p-1 rounded-2xl backdrop-blur-md">
               ${navItems.map(item => {
                 const isActive = activeTab === item.id;
                 return html`
@@ -415,7 +415,7 @@ export default function App() {
             <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
               <!-- Active User Profile Chip & Logout -->
               ${userSession ? html`
-                <div className="flex items-center gap-1 sm:gap-2 bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] px-2 sm:px-2.5 py-1 rounded-xl shadow-xs">
+                <div className="flex items-center gap-1 sm:gap-2 bg-zinc-100 dark:bg-[#080808] dark:backdrop-blur-xl/80 border border-zinc-200/80 dark:border-white/[0.08] px-2 sm:px-2.5 py-1 rounded-xl shadow-xs">
                   <span className="text-sm">${userSession.avatar || '⚽'}</span>
                   <div className="flex flex-col text-left leading-tight hidden md:flex">
                     <span className="text-[11px] font-black text-zinc-900 dark:text-zinc-100 truncate max-w-[100px]">${userSession.fullName || userSession.username}</span>
@@ -437,14 +437,14 @@ export default function App() {
                 type="button"
                 onClick=${() => setIsSearchOpen(true)}
                 title=${lang === 'az' ? 'Axtarış (Ctrl+K)' : 'Search (Ctrl+K)'}
-                className="flex items-center space-x-1.5 bg-zinc-100 dark:bg-zinc-900/80 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 p-2 sm:px-3 sm:py-1.5 rounded-xl border border-zinc-200/80 dark:border-white/[0.08] text-xs font-bold transition cursor-pointer"
+                className="flex items-center space-x-1.5 bg-zinc-100 dark:bg-[#080808] dark:backdrop-blur-xl/80 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 p-2 sm:px-3 sm:py-1.5 rounded-xl border border-zinc-200/80 dark:border-white/[0.08] text-xs font-bold transition cursor-pointer"
               >
                 <i className="fas fa-search text-purple-600 dark:text-purple-400 text-xs"></i>
                 <span className="hidden sm:inline text-[11px] font-bold tracking-wide">${lang === 'az' ? 'Axtar...' : 'Search...'}</span>
               </button>
 
               <!-- Language Switcher -->
-              <div className="hidden sm:flex items-center bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] rounded-xl p-0.5 space-x-0.5">
+              <div className="hidden sm:flex items-center bg-zinc-100 dark:bg-[#080808] dark:backdrop-blur-xl/80 border border-zinc-200/80 dark:border-white/[0.08] rounded-xl p-0.5 space-x-0.5">
                 <button
                   type="button"
                   title="English"
@@ -474,7 +474,7 @@ export default function App() {
               </div>
 
               <!-- Theme Switcher -->
-              <div className="hidden sm:flex items-center bg-zinc-100 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-white/[0.08] rounded-xl p-0.5 space-x-0.5">
+              <div className="hidden sm:flex items-center bg-zinc-100 dark:bg-[#080808] dark:backdrop-blur-xl/80 border border-zinc-200/80 dark:border-white/[0.08] rounded-xl p-0.5 space-x-0.5">
                 <button
                   type="button"
                   title=${t('themeSystem', lang)}
@@ -517,7 +517,7 @@ export default function App() {
               <div className="flex sm:hidden items-center space-x-1">
                 <button
                   onClick=${() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="p-2 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 cursor-pointer"
+                  className="p-2 rounded-xl bg-zinc-100 dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200/80 dark:border-white/10 text-zinc-700 dark:text-zinc-300 cursor-pointer"
                 >
                   <i className=${`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-sm`}></i>
                 </button>
@@ -529,7 +529,7 @@ export default function App() {
 
         <!-- Mobile Menu (Dropdown) -->
         ${isMobileMenuOpen && html`
-          <div className="lg:hidden bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 px-4 pt-3 pb-5 space-y-3 shadow-lg">
+          <div className="lg:hidden bg-white dark:bg-[#080808] dark:backdrop-blur-xl border-b border-zinc-200 dark:border-white/10 px-4 pt-3 pb-5 space-y-3 shadow-lg">
             <button
               type="button"
               onClick=${() => {
@@ -565,7 +565,7 @@ export default function App() {
             </div>
 
             <!-- Mobile Language & Theme Controls Row -->
-            <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
+            <div className="pt-2 border-t border-zinc-200 dark:border-white/10 flex items-center justify-between gap-2">
               <!-- Language Switcher -->
               <div className="flex items-center bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-0.5 space-x-0.5">
                 <button
@@ -638,7 +638,7 @@ export default function App() {
         `}
 
         <!-- Tournament Controls Bar (Season & Division) -->
-        <div className="bg-zinc-50/95 dark:bg-zinc-900/90 border-t border-zinc-200/80 dark:border-zinc-800/80 py-2 sm:py-2.5 w-full backdrop-blur-md shadow-xs">
+        <div className="bg-zinc-50/95 dark:bg-[#080808] dark:backdrop-blur-xl/90 border-t border-zinc-200/80 dark:border-white/10/80 py-2 sm:py-2.5 w-full backdrop-blur-md shadow-xs">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar">
             
             <!-- Season Selector Pill -->
@@ -656,7 +656,7 @@ export default function App() {
                   title=${lang === 'az' ? 'Mövsümü seçin' : 'Select Season'}
                 >
                   ${years.map(y => html`
-                    <option key=${y} value=${y} className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white font-bold text-xs">
+                    <option key=${y} value=${y} className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl text-zinc-900 dark:text-white font-bold text-xs">
                       ${y} ${lang === 'az' ? 'Mövsümü' : 'Season'}
                     </option>
                   `)}
@@ -681,7 +681,7 @@ export default function App() {
                     className=${`px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-150 cursor-pointer ${
                       isSelected 
                         ? 'bg-purple-600 text-white shadow-xs border border-purple-500/40' 
-                        : 'bg-white dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200/80 dark:border-zinc-700/60 hover:border-purple-300'
+                        : 'bg-white dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200/80 dark:border-white/20 hover:border-purple-300'
                     }`}
                   >
                     ${div.label}
@@ -701,7 +701,7 @@ export default function App() {
       </main>
 
       <!-- Premium Footer -->
-      <footer className="bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-zinc-800/80 py-8 text-center text-xs font-semibold pb-24 sm:pb-8 transition-colors duration-200">
+      <footer className="bg-white/80 dark:bg-[#030303]/80 backdrop-blur-md text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-white/10/80 py-8 text-center text-xs font-semibold pb-24 sm:pb-8 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 pr-4 md:pr-48">
           <div className="flex items-center gap-2.5">
             <img src="assets/tdv-logo.jpg" alt="TDV BTL" className="w-6 h-6 rounded-full object-cover border border-amber-500/60 shadow-xs" />
@@ -710,7 +710,7 @@ export default function App() {
           <div className="flex items-center space-x-3">
             <button
               onClick=${() => setShowRulesModal(true)}
-              className="transition-colors duration-150 cursor-pointer flex items-center space-x-1.5 py-1.5 px-3 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/70 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200/80 dark:border-zinc-700/60 hover:text-emerald-600 dark:hover:text-emerald-400"
+              className="transition-colors duration-150 cursor-pointer flex items-center space-x-1.5 py-1.5 px-3 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/70 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200/80 dark:border-white/20 hover:text-emerald-600 dark:hover:text-emerald-400"
             >
               <i className="fas fa-book-open text-xs text-emerald-500"></i>
               <span className="font-bold">${t('rulesBtn', lang)}</span>
@@ -718,7 +718,7 @@ export default function App() {
             <span className="text-zinc-300 dark:text-zinc-700">•</span>
             <button
               onClick=${() => setShowContactModal(true)}
-              className="transition-colors duration-150 cursor-pointer flex items-center space-x-1.5 py-1.5 px-3 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/70 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200/80 dark:border-zinc-700/60 hover:text-emerald-600 dark:hover:text-emerald-400"
+              className="transition-colors duration-150 cursor-pointer flex items-center space-x-1.5 py-1.5 px-3 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800/70 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200/80 dark:border-white/20 hover:text-emerald-600 dark:hover:text-emerald-400"
             >
               <i className="fas fa-envelope text-xs text-emerald-500"></i>
               <span className="font-bold">${t('contactBtn', lang)}</span>
@@ -733,9 +733,9 @@ export default function App() {
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto animate-fadeIn"
           onClick=${(e) => { if (e.target === e.currentTarget) setShowRulesModal(false); }}
         >
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-zinc-800 text-left animate-scaleIn max-h-[90vh] flex flex-col transition-colors duration-200">
+          <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-white/10 text-left animate-scaleIn max-h-[90vh] flex flex-col transition-colors duration-200">
             <!-- Header -->
-            <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/10">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg border border-emerald-500/20">
                   <i className="fas fa-shield-alt"></i>
@@ -757,7 +757,7 @@ export default function App() {
             <!-- Scrollable Body -->
             <div className="overflow-y-auto py-4 space-y-4 pr-1 text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
               <!-- Tournament History & About Block -->
-              <div className="bg-zinc-50 dark:bg-zinc-800/40 p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60">
+              <div className="bg-zinc-50 dark:bg-white/5 dark:backdrop-blur-xl p-4 rounded-2xl border border-zinc-200/80 dark:border-white/20">
                 <h4 className="font-extrabold text-sm text-zinc-900 dark:text-white mb-1.5 flex items-center">
                   <i className="fas fa-info-circle mr-2 text-emerald-500"></i> ${lang === 'az' ? 'Turnir Haqqında Ümumi Məlumat' : 'About the Championship'}
                 </h4>
@@ -769,7 +769,7 @@ export default function App() {
               </div>
 
               <!-- Item 1 -->
-              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60">
+              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-white/10/60">
                 <h4 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100 mb-1 flex items-center">
                   <span className="mr-2">⏱️</span> ${t('rule1Title', lang)}
                 </h4>
@@ -777,7 +777,7 @@ export default function App() {
               </div>
 
               <!-- Item 2 -->
-              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60">
+              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-white/10/60">
                 <h4 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100 mb-1 flex items-center">
                   <span className="mr-2">📊</span> ${t('rule2Title', lang)}
                 </h4>
@@ -785,7 +785,7 @@ export default function App() {
               </div>
 
               <!-- Item 3 -->
-              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60">
+              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-white/10/60">
                 <h4 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100 mb-1 flex items-center">
                   <span className="mr-2">🎯</span> ${t('rule3Title', lang)}
                 </h4>
@@ -793,7 +793,7 @@ export default function App() {
               </div>
 
               <!-- Item 4 -->
-              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60">
+              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-white/10/60">
                 <h4 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100 mb-1 flex items-center">
                   <span className="mr-2">🟨</span> ${t('rule4Title', lang)}
                 </h4>
@@ -801,7 +801,7 @@ export default function App() {
               </div>
 
               <!-- Item 5 -->
-              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60">
+              <div className="bg-zinc-50/70 dark:bg-zinc-800/30 p-4 rounded-2xl border border-zinc-200/60 dark:border-white/10/60">
                 <h4 className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100 mb-1 flex items-center">
                   <span className="mr-2">🏆</span> ${t('rule5Title', lang)}
                 </h4>
@@ -810,7 +810,7 @@ export default function App() {
             </div>
 
             <!-- Footer Action -->
-            <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800 flex justify-end">
+            <div className="pt-4 border-t border-zinc-200 dark:border-white/10 flex justify-end">
               <button
                 onClick=${() => setShowRulesModal(false)}
                 className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-6 rounded-xl text-xs transition shadow-xs cursor-pointer"
@@ -828,7 +828,7 @@ export default function App() {
           className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn"
           onClick=${(e) => { if (e.target === e.currentTarget) setShowContactModal(false); }}
         >
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-zinc-800 text-center animate-scaleIn transition-colors duration-200">
+          <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-zinc-200 dark:border-white/10 text-center animate-scaleIn transition-colors duration-200">
             <div className="w-14 h-14 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl mx-auto mb-4 border border-emerald-500/20">
               <i className="fas fa-envelope-open-text"></i>
             </div>
@@ -839,7 +839,7 @@ export default function App() {
             </p>
 
             <!-- Contact Box -->
-            <div className="bg-zinc-50 dark:bg-zinc-800/60 p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-700/60 mb-6 text-left space-y-3">
+            <div className="bg-zinc-50 dark:bg-zinc-800/60 p-4 rounded-2xl border border-zinc-200/80 dark:border-white/20 mb-6 text-left space-y-3">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 rounded-xl bg-zinc-200/70 dark:bg-zinc-700/50 text-zinc-700 dark:text-zinc-300 flex items-center justify-center text-xs">
                   <i className="fas fa-at"></i>
@@ -888,7 +888,7 @@ export default function App() {
       <!-- Password Prompt Overlay Modal -->
       ${showPasswordPrompt && html`
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-zinc-200 dark:border-zinc-800 text-center animate-scaleIn transition-colors duration-200">
+          <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-zinc-200 dark:border-white/10 text-center animate-scaleIn transition-colors duration-200">
             <div className="w-12 h-12 bg-emerald-500/15 rounded-2xl flex items-center justify-center mx-auto mb-4 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
               <i className="fas fa-lock text-lg"></i>
             </div>
@@ -902,7 +902,7 @@ export default function App() {
                 placeholder="Şifrə"
                 value=${inputPassword}
                 onChange=${(e) => setInputPassword(e.target.value)}
-                className="w-full bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-300 dark:border-zinc-700 text-center text-sm rounded-xl p-3 font-bold text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-emerald-500 transition"
+                className="w-full bg-zinc-50 dark:bg-[#050505] border border-zinc-300 dark:border-zinc-700 text-center text-sm rounded-xl p-3 font-bold text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-emerald-500 transition"
               />
               ${authError && html`
                 <div className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs font-bold leading-tight animate-fadeIn">
@@ -973,7 +973,7 @@ export default function App() {
 
       <!-- Native Mobile Bottom Navigation Bar (Sofascore Standard) -->
       <nav 
-        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-200 dark:border-zinc-800/80 py-1.5 px-2 flex justify-around items-center shadow-lg transition-colors duration-200"
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#030303]/95 backdrop-blur-xl border-t border-zinc-200 dark:border-white/10/80 py-1.5 px-2 flex justify-around items-center shadow-lg transition-colors duration-200"
         style=${{ paddingBottom: 'max(8px, env(safe-area-inset-bottom, 8px))' }}
       >
         ${navItems.map(item => {

@@ -63,10 +63,10 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
       }}
       onClick=${(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-zinc-200 dark:border-zinc-800 relative flex flex-col transition-colors duration-200">
+      <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-zinc-200 dark:border-white/10 relative flex flex-col transition-colors duration-200">
         
         <!-- Modal Top Header Banner -->
-        <div className="relative bg-zinc-900 dark:bg-zinc-950 text-white p-4 sm:p-6 rounded-t-3xl border-b border-zinc-800 overflow-hidden">
+        <div className="relative bg-zinc-900 dark:bg-[#030303] text-white p-4 sm:p-6 rounded-t-3xl border-b border-zinc-800 overflow-hidden">
           <div className="absolute right-0 top-0 -mr-10 -mt-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
           
           <div className="flex items-start justify-between relative z-10 gap-2">
@@ -132,7 +132,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
             
             <!-- Stat Highlights Grid (4 cards) -->
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-[20px] p-2 text-center shadow-2xs">
+              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-white/20 p-4 rounded-[20px] p-2 text-center shadow-2xs">
                 <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 block">
                   ⚽ ${lang === 'az' ? 'Karyera Qolları' : 'Career Goals'}
                 </span>
@@ -141,7 +141,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
                 </span>
               </div>
 
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-[20px] p-2 text-center shadow-2xs">
+              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-white/20 p-4 rounded-[20px] p-2 text-center shadow-2xs">
                 <span className="text-[10px] font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300 block">
                   👟 ${lang === 'az' ? 'Asistlər' : 'Assists'}
                 </span>
@@ -150,7 +150,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
                 </span>
               </div>
 
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-[20px] p-2 text-center shadow-2xs">
+              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-white/20 p-4 rounded-[20px] p-2 text-center shadow-2xs">
                 <span className="text-[10px] font-black uppercase tracking-wider text-sky-700 dark:text-sky-400 block">
                   🏟️ ${lang === 'az' ? 'Matç Sayı' : 'Matches'}
                 </span>
@@ -159,7 +159,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
                 </span>
               </div>
 
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60 p-4 rounded-[20px] p-2 text-center shadow-2xs">
+              <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-white/20 p-4 rounded-[20px] p-2 text-center shadow-2xs">
                 <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-400 block">
                   📈 ${lang === 'az' ? 'Qol/Oyun' : 'Goal Ratio'}
                 </span>
@@ -194,8 +194,8 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
                 : (lang === 'az' ? 'Rəqib cərimə sahəsi, 90-a zərbələr və bitiricilik' : 'Opponent box, finishing and target hold-up');
 
               return html`
-                <div className="bg-zinc-50 dark:bg-zinc-800/40 rounded-[20px] p-2 border border-zinc-200/80 dark:border-zinc-700/60 p-4 space-y-3">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-700/60">
+                <div className="bg-zinc-50 dark:bg-white/5 dark:backdrop-blur-xl rounded-[20px] p-2 border border-zinc-200/80 dark:border-white/20 p-4 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-zinc-200 dark:border-white/20">
                     <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white flex items-center gap-1.5">
                       <i className="fas fa-fire-flame-curved text-red-500"></i>
                       <span>${lang === 'az' ? '5v5 Meydança İştirakı və Mövqe Xəritəsi' : '5v5 Positional Territory & Career Heatmap'}</span>
@@ -277,7 +277,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
             })()}
 
             <!-- Season Breakdown Table -->
-            <div className="bg-zinc-50 dark:bg-zinc-800/40 rounded-[20px] p-2 border border-zinc-200/80 dark:border-zinc-700/60 p-4">
+            <div className="bg-zinc-50 dark:bg-white/5 dark:backdrop-blur-xl rounded-[20px] p-2 border border-zinc-200/80 dark:border-white/20 p-4">
               <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white mb-3 flex items-center gap-1.5">
                 <i className="fas fa-history text-emerald-500"></i>
                 <span>${lang === 'az' ? 'Mövsümlər Üzrə Çıxış Tarixçəsi' : 'Season-by-Season Performance'}</span>
@@ -286,7 +286,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="text-zinc-500 dark:text-zinc-400 font-bold border-b border-zinc-200 dark:border-zinc-700/60 pb-2">
+                    <tr className="text-zinc-500 dark:text-zinc-400 font-bold border-b border-zinc-200 dark:border-white/20 pb-2">
                       <th className="py-2 px-3">${lang === 'az' ? 'Mövsüm' : 'Season'}</th>
                       <th className="py-2 px-3">${lang === 'az' ? 'Sinif' : 'Class'}</th>
                       <th className="py-2 px-3 text-center">${lang === 'az' ? 'Oyun' : 'Pld'}</th>
@@ -324,13 +324,13 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
               </h4>
 
               ${profile.matches.length === 0 ? html`
-                <p className="text-xs text-zinc-400 py-3 text-center border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl">
+                <p className="text-xs text-zinc-400 py-3 text-center border border-dashed border-zinc-200 dark:border-white/10 rounded-xl">
                   ${lang === 'az' ? 'Matç qolu qeydə alınmayıb.' : 'No detailed match goals logged.'}
                 </p>
               ` : html`
                 <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                   ${profile.matches.map(m => html`
-                    <div key=${m.id} className="bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/60 p-3 rounded-xl flex items-center justify-between shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-600 transition">
+                    <div key=${m.id} className="bg-white dark:bg-[#050505] border border-zinc-200 dark:border-white/20 p-3 rounded-xl flex items-center justify-between shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-600 transition">
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-[9px] font-black text-zinc-800 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-700 px-1.5 py-0.5 rounded uppercase">
@@ -367,7 +367,7 @@ export default function PlayerProfileModal({ playerName, onClose, lang = 'en', t
         </div>
 
         <!-- Modal Footer -->
-        <div className="p-4 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 rounded-b-3xl flex justify-between items-center text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="p-4 bg-zinc-50 dark:bg-[#030303] border-t border-zinc-200 dark:border-white/10 rounded-b-3xl flex justify-between items-center text-xs text-zinc-500 dark:text-zinc-400">
           <span>TDV BTL Football Cup • Sofascore Rating System</span>
           <button 
             onClick=${onClose}

@@ -254,14 +254,14 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
         </div>
         
         <!-- Stage Tabs -->
-        <div className="flex bg-zinc-100 dark:bg-zinc-800/80 p-1.5 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 overflow-x-auto max-w-full no-scrollbar shadow-xs">
+        <div className="flex bg-zinc-100 dark:bg-[#050505] p-1.5 rounded-2xl border border-zinc-200 dark:border-white/20 overflow-x-auto max-w-full no-scrollbar shadow-xs">
           ${stages.map(st => html`
             <button
               key=${st.id}
               onClick=${() => setSelectedStage(st.id)}
               className=${`px-4 py-2 rounded-[20px] p-2 text-xs font-extrabold tracking-wide uppercase transition-all whitespace-nowrap cursor-pointer ${
                 selectedStage === st.id 
-                  ? 'bg-white dark:bg-zinc-900 text-purple-600 dark:text-purple-400 font-black shadow-xs border border-purple-200/80 dark:border-purple-800/80' 
+                  ? 'bg-white dark:bg-[#080808] dark:backdrop-blur-xl text-purple-600 dark:text-purple-400 font-black shadow-xs border border-purple-200/80 dark:border-purple-800/80' 
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
               }`}
             >
@@ -274,13 +274,13 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
       <!-- Match Cards Grid -->
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         ${isLoading ? html`
-          <div className="col-span-1 md:col-span-2 text-center py-16 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800">
+          <div className="col-span-1 md:col-span-2 text-center py-16 bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl border border-dashed border-zinc-200 dark:border-white/10">
             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-600 mx-auto mb-3"></div>
             <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400">${lang === 'az' ? 'Oyunlar yüklənir...' : 'Loading matches...'}</p>
           </div>
         ` : filteredMatches.length === 0 
           ? html`
-              <div className="col-span-1 md:col-span-2 text-center py-12 text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800">
+              <div className="col-span-1 md:col-span-2 text-center py-12 text-zinc-400 dark:text-zinc-500 bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl border border-dashed border-zinc-200 dark:border-white/10">
                 ${t('noMatchesFound')}
               </div>
             `
@@ -296,10 +296,10 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
               <div 
                 key=${match.id}
                 onClick=${() => setSelectedMatch(match)}
-                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-purple-500/40 dark:hover:border-purple-500/40 rounded-3xl overflow-hidden shadow-xs hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between"
+                className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 hover:border-purple-500/40 dark:hover:border-purple-500/40 rounded-3xl overflow-hidden shadow-xs hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between hover:dark:border-purple-500/50 hover:dark:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-300"
               >
                 <!-- Match Card Top -->
-                <div className="p-4 sm:p-6 bg-zinc-50/50 dark:bg-zinc-900/60 border-b border-zinc-100 dark:border-zinc-800/60">
+                <div className="p-4 sm:p-6 bg-zinc-50/50 dark:bg-[#080808] dark:backdrop-blur-xl/60 border-b border-zinc-100 dark:border-white/10/60">
                   <div className="flex justify-between items-center mb-3 sm:mb-4 gap-2">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="text-[11px] sm:text-xs font-black text-purple-700 dark:text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-wider">
@@ -325,7 +325,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                         ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-950 dark:text-emerald-200 shadow-2xs'
                         : isTeamALoser
                         ? 'bg-rose-500/10 border-rose-500/20 text-rose-950 dark:text-rose-300'
-                        : 'bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200/70 dark:border-zinc-700/60'
+                        : 'bg-zinc-50 dark:bg-white/5 dark:backdrop-blur-xl border-zinc-200/70 dark:border-white/20'
                     }`}>
                       <div className="flex items-center justify-center gap-1 mb-1">
                         ${(isTeamAWinner || (isFinalStage && match.teamA === '?')) ? html`
@@ -353,7 +353,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
 
                     <!-- Score Box -->
                     <div className="flex flex-col items-center px-1 sm:px-2 shrink-0">
-                      <div className="bg-zinc-900 dark:bg-zinc-950 text-white rounded-2xl px-4 sm:px-6 py-2 font-mono font-black text-4xl tabular-nums tracking-tight sm:text-5xl tabular-nums tracking-tight shadow-xs border border-zinc-700/60 flex flex-col items-center tracking-tight tabular-nums tracking-tight tabular-nums tracking-tight">
+                      <div className="bg-zinc-900 dark:bg-[#030303] text-white rounded-2xl px-4 sm:px-6 py-2 font-mono font-black text-4xl tabular-nums tracking-tight sm:text-5xl tabular-nums tracking-tight shadow-xs border border-zinc-700/60 flex flex-col items-center tracking-tight tabular-nums tracking-tight tabular-nums tracking-tight">
                         <span>${match.scoreA} - ${match.scoreB}</span>
                         ${(match.penaltyScoreA !== null && match.penaltyScoreA !== undefined && match.penaltyScoreA !== '') && html`
                           <span className="text-[9px] sm:text-[10px] text-emerald-400 font-extrabold mt-0.5">pen. ${match.penaltyScoreA} - ${match.penaltyScoreB}</span>
@@ -376,7 +376,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                         ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-950 dark:text-emerald-200 shadow-2xs'
                         : isTeamBLoser
                         ? 'bg-rose-500/10 border-rose-500/20 text-rose-950 dark:text-rose-300'
-                        : 'bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200/70 dark:border-zinc-700/60'
+                        : 'bg-zinc-50 dark:bg-white/5 dark:backdrop-blur-xl border-zinc-200/70 dark:border-white/20'
                     }`}>
                       <div className="flex items-center justify-center gap-1 mb-1">
                         ${(isTeamBWinner || (isFinalStage && match.teamB === '?')) ? html`
@@ -405,7 +405,7 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
                 </div>
 
                 <!-- Match Card Bottom -->
-                <div className="px-4 sm:px-6 py-3 sm:py-4 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-800/80 flex justify-between items-center text-[11px] sm:text-xs font-bold text-zinc-700 dark:text-zinc-300">
+                <div className="px-4 sm:px-6 py-3 sm:py-4 bg-zinc-50 dark:bg-[#030303] border-t border-zinc-100 dark:border-white/10/80 flex justify-between items-center text-[11px] sm:text-xs font-bold text-zinc-700 dark:text-zinc-300">
                   <div className="flex items-center gap-2">
                     <span className="flex items-center text-zinc-500 dark:text-zinc-400">
                       <i className="fas fa-chart-line text-emerald-500 mr-1.5 text-xs sm:text-sm"></i>

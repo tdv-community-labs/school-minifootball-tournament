@@ -80,7 +80,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
       </div>
 
       <!-- Filters Panel -->
-      <div className="bg-white dark:bg-zinc-900 p-5 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col md:flex-row gap-4 justify-between items-stretch transition-colors duration-200">
+      <div className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl p-5 rounded-3xl border border-zinc-200 dark:border-white/10 shadow-xs flex flex-col md:flex-row gap-4 justify-between items-stretch transition-colors duration-200">
         <div className="relative flex-1">
           <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-zinc-400">
             <i className="fas fa-search text-xs"></i>
@@ -90,18 +90,18 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
             value=${searchTerm}
             onChange=${(e) => setSearchTerm(e.target.value)}
             placeholder=${t('searchPlayerPlaceholder')}
-            className="w-full bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs rounded-2xl focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 block pl-10 pr-3 py-3 transition"
+            className="w-full bg-zinc-50 dark:bg-[#050505] border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white placeholder-zinc-400 text-xs rounded-2xl focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 block pl-10 pr-3 py-3 transition"
           />
         </div>
         <div className="w-full md:w-64">
           <select
             value=${selectedClass}
             onChange=${(e) => setSelectedClass(e.target.value)}
-            className="w-full bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white text-xs rounded-2xl focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 block p-3 font-semibold transition cursor-pointer"
+            className="w-full bg-zinc-50 dark:bg-[#050505] border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white text-xs rounded-2xl focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 block p-3 font-semibold transition cursor-pointer"
           >
-            <option value="All" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">${t('filterClassAll')}</option>
+            <option value="All" className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl text-zinc-900 dark:text-white">${t('filterClassAll')}</option>
             ${activeClasses.map(cls => html`
-              <option key=${cls.id} value=${cls.name} className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">${cls.name} ${lang === 'az' ? 'Sinfi' : 'Grade'}</option>
+              <option key=${cls.id} value=${cls.name} className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl text-zinc-900 dark:text-white">${cls.name} ${lang === 'az' ? 'Sinfi' : 'Grade'}</option>
             `)}
           </select>
         </div>
@@ -111,7 +111,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         ${sortedPlayers.length === 0 
           ? html`
-              <div className="col-span-3 text-center py-12 text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 tabular-nums tracking-tight">
+              <div className="col-span-3 text-center py-12 text-zinc-400 dark:text-zinc-500 bg-white dark:bg-[#080808] dark:backdrop-blur-xl rounded-3xl border border-dashed border-zinc-200 dark:border-white/10 tabular-nums tracking-tight">
                 ${t('noPlayersFound')}
               </div>
             `
@@ -130,7 +130,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
               return html`
                 <div
                   key=${player.id}
-                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-4 sm:p-6 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between relative overflow-hidden"
+                  className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-3xl p-4 sm:p-6 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between relative overflow-hidden"
                 >
                   <!-- Top colour bar -->
                   <div className="absolute top-0 left-0 right-0 h-1.5 bg-emerald-500"></div>
@@ -146,7 +146,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
                   <div className="flex justify-between items-start mb-4 sm:mb-6 gap-2">
                     <div>
                       <div className="flex flex-wrap items-center gap-1.5 mt-1">
-                        <span className="text-[10px] font-black text-zinc-800 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700/60 px-2 py-0.5 rounded-lg uppercase tracking-wider tabular-nums tracking-tight">
+                        <span className="text-[10px] font-black text-zinc-800 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-white/20 px-2 py-0.5 rounded-lg uppercase tracking-wider tabular-nums tracking-tight">
                           ${player.class} Sinfi
                         </span>
                         ${isKeeper ? html`
@@ -174,12 +174,12 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
                   </div>
 
                   <!-- Stats row -->
-                  <div className="grid grid-cols-3 gap-2 bg-zinc-50 dark:bg-zinc-800/60 p-3 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60 text-center tabular-nums tracking-tight">
+                  <div className="grid grid-cols-3 gap-2 bg-zinc-50 dark:bg-zinc-800/60 p-3 rounded-2xl border border-zinc-200/60 dark:border-white/20 text-center tabular-nums tracking-tight">
                     <div>
                       <span className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider block">${t('matchesPlayed')}</span>
                       <span className="text-base font-extrabold text-zinc-900 dark:text-white">${player.matchesPlayed || 0}</span>
                     </div>
-                    <div className="border-x border-zinc-200 dark:border-zinc-700/60">
+                    <div className="border-x border-zinc-200 dark:border-white/20">
                       ${isKeeper
                         ? html`
                           <span className="text-[10px] text-zinc-400 font-semibold uppercase tracking-wider block">${lang === 'az' ? 'Qurtarış' : 'Saves'}</span>
