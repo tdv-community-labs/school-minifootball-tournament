@@ -229,22 +229,10 @@
   
   
   <!-- Premium Custom Cursor -->
-      <style id="tdv-premium-cursor-style">
+        <style id="tdv-premium-cursor-style">
     @media (pointer: fine) { body, a, button, input, select, textarea { cursor: none !important; } }
-    @keyframes cyber-spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+    @keyframes cyber-spin-clean { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     
-    #tdv-custom-cursor-ghost1 {
-      position: fixed; top: 0; left: 0; width: 20px; height: 20px; border-radius: 50%;
-      background-color: rgba(168, 85, 247, 0.4); filter: blur(3px);
-      pointer-events: none; z-index: 999997; transition: transform 0.1s linear, opacity 0.3s;
-      will-change: transform; transform: translate(-50%, -50%);
-    }
-    #tdv-custom-cursor-ghost2 {
-      position: fixed; top: 0; left: 0; width: 12px; height: 12px; border-radius: 50%;
-      background-color: rgba(236, 72, 153, 0.3); filter: blur(2px);
-      pointer-events: none; z-index: 999996; transition: transform 0.1s linear, opacity 0.3s;
-      will-change: transform; transform: translate(-50%, -50%);
-    }
     #tdv-custom-cursor-dot {
       position: fixed; top: 0; left: 0; width: 6px; height: 6px; background-color: #fff; border-radius: 50%;
       pointer-events: none; z-index: 999999; mix-blend-mode: difference;
@@ -262,27 +250,25 @@
       transform: translate(-50%, -50%);
     }
     #tdv-custom-cursor-dash {
-      position: absolute; width: 100%; height: 100%; border-radius: 50%;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
       border: 2px dashed rgba(236, 72, 153, 0.8);
       opacity: 0; pointer-events: none;
       transition: opacity 0.3s ease; transform-origin: center center;
     }
     #tdv-custom-cursor-shockwave {
-      position: absolute; width: 100%; height: 100%; border-radius: 50%;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
       border: 2px solid rgba(16, 185, 129, 0.8);
       opacity: 0; pointer-events: none; transform: scale(1);
     }
     
     body.cursor-hover #tdv-custom-cursor-dot { opacity: 0; width: 0; height: 0; }
-    body.cursor-hover #tdv-custom-cursor-ghost1 { transform: translate(-50%, -50%) scale(0.5); }
-    body.cursor-hover #tdv-custom-cursor-ghost2 { opacity: 0; }
     body.cursor-hover #tdv-custom-cursor-ring { 
       width: 72px; height: 72px; border-radius: 16px; 
       background-color: rgba(168, 85, 247, 0.15);
       border: 2px solid rgba(168, 85, 247, 0.9);
       box-shadow: 0 0 25px rgba(168, 85, 247, 0.4), inset 0 0 15px rgba(168, 85, 247, 0.3);
     }
-    body.cursor-hover #tdv-custom-cursor-dash { opacity: 1; animation: cyber-spin 4s linear infinite; }
+    body.cursor-hover #tdv-custom-cursor-dash { opacity: 1; animation: cyber-spin-clean 4s linear infinite; }
     
     body.cursor-clicking #tdv-custom-cursor-dot { transform: translate(-50%, -50%) scale(0.5); }
     body.cursor-clicking #tdv-custom-cursor-ring {
@@ -295,8 +281,6 @@
       transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.4s ease-out;
     }
   </style>
-  <div id="tdv-custom-cursor-ghost2"></div>
-  <div id="tdv-custom-cursor-ghost1"></div>
   <div id="tdv-custom-cursor-dot"></div>
   <div id="tdv-custom-cursor-ring">
     <div id="tdv-custom-cursor-dash"></div>
@@ -309,14 +293,10 @@
       
       const dot = document.getElementById('tdv-custom-cursor-dot');
       const ring = document.getElementById('tdv-custom-cursor-ring');
-      const g1 = document.getElementById('tdv-custom-cursor-ghost1');
-      const g2 = document.getElementById('tdv-custom-cursor-ghost2');
       const shockwave = document.getElementById('tdv-custom-cursor-shockwave');
       
       let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
       let ringX = mouseX, ringY = mouseY;
-      let g1X = mouseX, g1Y = mouseY;
-      let g2X = mouseX, g2Y = mouseY;
       let prevX = mouseX, prevY = mouseY;
       
       document.addEventListener('mousemove', (e) => {
@@ -326,26 +306,19 @@
       });
       
       function animate() {
-        // Velocity Squeeze
         const dx = mouseX - prevX;
         const dy = mouseY - prevY;
         const speed = Math.min(Math.sqrt(dx * dx + dy * dy) * 0.01, 0.25);
         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
         prevX = mouseX; prevY = mouseY;
         
-        // Spring physics
+        // Fast physics
         ringX += (mouseX - ringX) * 0.85;
         ringY += (mouseY - ringY) * 0.85;
-        g1X += (ringX - g1X) * 0.75;
-        g1Y += (ringY - g1Y) * 0.75;
-        g2X += (g1X - g2X) * 0.65;
-        g2Y += (g1Y - g2Y) * 0.65;
         
         const isClicking = document.body.classList.contains('cursor-clicking');
         
         ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%) rotate(${angle}deg) scale(${1 + speed}, ${1 - speed}) scale(${isClicking ? 0.85 : 1})`;
-        g1.style.transform = `translate(${g1X}px, ${g1Y}px) translate(-50%, -50%)`;
-        g2.style.transform = `translate(${g2X}px, ${g2Y}px) translate(-50%, -50%)`;
         
         requestAnimationFrame(animate);
       }
