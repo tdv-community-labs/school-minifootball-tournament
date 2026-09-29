@@ -96,15 +96,15 @@
       background-color: transparent; border-radius: 50%;
       box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
       pointer-events: none; z-index: 999998;
-      transition: transform 0.25s ease-out, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
+      transition: transform 0.25s ease-out, width 0.2s cubic-bezier(0.2, 0, 0, 1), height 0.2s cubic-bezier(0.2, 0, 0, 1), border-radius 0.2s cubic-bezier(0.2, 0, 0, 1), background-color 0.2s ease, box-shadow 0.2s ease;
       will-change: transform, width, height, border-radius;
       transform: translate(-50%, -50%);
     }
     
     body.cursor-hover #tdv-custom-cursor-dot { transform: translate(-50%, -50%) scale(0); }
     body.cursor-hover #tdv-custom-cursor-ring { 
-      width: 60px; height: 60px; border-radius: 12px; 
-      background-color: rgba(168, 85, 247, 0.15);
+      width: 48px; height: 48px; border-radius: 10px; 
+      background-color: rgba(168, 85, 247, 0.25); box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), inset 0 0 12px rgba(168, 85, 247, 0.3);
     }
   </style>
   <div id="tdv-custom-cursor-dot"></div>
