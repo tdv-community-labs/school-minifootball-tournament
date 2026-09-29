@@ -334,12 +334,12 @@
         prevX = mouseX; prevY = mouseY;
         
         // Spring physics
-        ringX += (mouseX - ringX) * 0.6;
-        ringY += (mouseY - ringY) * 0.6;
-        g1X += (ringX - g1X) * 0.4;
-        g1Y += (ringY - g1Y) * 0.4;
-        g2X += (g1X - g2X) * 0.3;
-        g2Y += (g1Y - g2Y) * 0.3;
+        ringX += (mouseX - ringX) * 0.85;
+        ringY += (mouseY - ringY) * 0.85;
+        g1X += (ringX - g1X) * 0.75;
+        g1Y += (ringY - g1Y) * 0.75;
+        g2X += (g1X - g2X) * 0.65;
+        g2Y += (g1Y - g2Y) * 0.65;
         
         const isClicking = document.body.classList.contains('cursor-clicking');
         
