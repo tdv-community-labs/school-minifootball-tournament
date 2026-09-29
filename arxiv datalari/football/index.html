@@ -81,63 +81,34 @@
   
   
   <!-- Premium Custom Cursor -->
-        <style id="tdv-premium-cursor-style">
+          <style id="tdv-premium-cursor-style">
     @media (pointer: fine) { body, a, button, input, select, textarea { cursor: none !important; } }
-    @keyframes cyber-spin-clean { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     
     #tdv-custom-cursor-dot {
       position: fixed; top: 0; left: 0; width: 6px; height: 6px; background-color: #fff; border-radius: 50%;
       pointer-events: none; z-index: 999999; mix-blend-mode: difference;
-      transition: width 0.15s cubic-bezier(0.25, 1, 0.5, 1), height 0.15s, opacity 0.2s, transform 0.15s;
-      will-change: transform, width, height; transform: translate(-50%, -50%);
+      transition: transform 0.1s ease-out, scale 0.2s;
+      will-change: transform; transform: translate(-50%, -50%);
     }
     #tdv-custom-cursor-ring {
-      position: fixed; top: 0; left: 0; width: 36px; height: 36px; border: 1.5px solid rgba(16, 185, 129, 0.7);
+      position: fixed; top: 0; left: 0; width: 36px; height: 36px; 
+      border: 2px solid rgba(168, 85, 247, 0.8);
       background-color: transparent; border-radius: 50%;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
       pointer-events: none; z-index: 999998;
-      display: flex; align-items: center; justify-content: center;
-      transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-radius 0.4s ease, background-color 0.4s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-      will-change: transform, width, height, border-radius, background-color, border, box-shadow;
+      transition: transform 0.25s ease-out, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
+      will-change: transform, width, height, border-radius;
       transform: translate(-50%, -50%);
     }
-    #tdv-custom-cursor-dash {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-      border: 2px dashed rgba(236, 72, 153, 0.8);
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease; transform-origin: center center;
-    }
-    #tdv-custom-cursor-shockwave {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-      border: 2px solid rgba(16, 185, 129, 0.8);
-      opacity: 0; pointer-events: none; transform: scale(1);
-    }
     
-    body.cursor-hover #tdv-custom-cursor-dot { opacity: 0; width: 0; height: 0; }
+    body.cursor-hover #tdv-custom-cursor-dot { transform: translate(-50%, -50%) scale(0); }
     body.cursor-hover #tdv-custom-cursor-ring { 
-      width: 72px; height: 72px; border-radius: 16px; 
+      width: 60px; height: 60px; border-radius: 12px; 
       background-color: rgba(168, 85, 247, 0.15);
-      border: 2px solid rgba(168, 85, 247, 0.9);
-      box-shadow: 0 0 25px rgba(168, 85, 247, 0.4), inset 0 0 15px rgba(168, 85, 247, 0.3);
-    }
-    body.cursor-hover #tdv-custom-cursor-dash { opacity: 1; animation: cyber-spin-clean 4s linear infinite; }
-    
-    body.cursor-clicking #tdv-custom-cursor-dot { transform: translate(-50%, -50%) scale(0.5); }
-    body.cursor-clicking #tdv-custom-cursor-ring {
-      border-color: rgba(236, 72, 153, 0.8);
-      box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
-      transform: translate(-50%, -50%) scale(0.85) !important; 
-    }
-    body.cursor-clicking #tdv-custom-cursor-shockwave {
-      opacity: 0.8; transform: scale(1.5);
-      transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.4s ease-out;
     }
   </style>
   <div id="tdv-custom-cursor-dot"></div>
-  <div id="tdv-custom-cursor-ring">
-    <div id="tdv-custom-cursor-dash"></div>
-    <div id="tdv-custom-cursor-shockwave"></div>
-  </div>
+  <div id="tdv-custom-cursor-ring"></div>
   
   <script id="tdv-premium-cursor-script">
     (function() {
@@ -145,36 +116,11 @@
       
       const dot = document.getElementById('tdv-custom-cursor-dot');
       const ring = document.getElementById('tdv-custom-cursor-ring');
-      const shockwave = document.getElementById('tdv-custom-cursor-shockwave');
-      
-      let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-      let ringX = mouseX, ringY = mouseY;
-      let prevX = mouseX, prevY = mouseY;
       
       document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+        dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+        ring.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
       });
-      
-      function animate() {
-        const dx = mouseX - prevX;
-        const dy = mouseY - prevY;
-        const speed = Math.min(Math.sqrt(dx * dx + dy * dy) * 0.01, 0.25);
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-        prevX = mouseX; prevY = mouseY;
-        
-        // Fast physics
-        ringX += (mouseX - ringX) * 0.85;
-        ringY += (mouseY - ringY) * 0.85;
-        
-        const isClicking = document.body.classList.contains('cursor-clicking');
-        
-        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%) rotate(${angle}deg) scale(${1 + speed}, ${1 - speed}) scale(${isClicking ? 0.85 : 1})`;
-        
-        requestAnimationFrame(animate);
-      }
-      requestAnimationFrame(animate);
       
       document.addEventListener('mouseover', (e) => {
         if (e.target.closest('a, button, input, textarea, select, [role="button"], .clickable')) {
@@ -185,20 +131,6 @@
         if (e.target.closest('a, button, input, textarea, select, [role="button"], .clickable')) {
           document.body.classList.remove('cursor-hover');
         }
-      });
-      document.addEventListener('mousedown', () => {
-        document.body.classList.add('cursor-clicking');
-        shockwave.style.transition = 'none';
-        shockwave.style.opacity = '0';
-        shockwave.style.transform = 'scale(1)';
-        setTimeout(() => {
-          shockwave.style.transition = 'transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.4s ease-out';
-          shockwave.style.opacity = '0.8';
-          shockwave.style.transform = 'scale(1.5)';
-        }, 10);
-      });
-      document.addEventListener('mouseup', () => {
-        document.body.classList.remove('cursor-clicking');
       });
     })();
   </script>
