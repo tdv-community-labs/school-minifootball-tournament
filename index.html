@@ -329,17 +329,17 @@
         // Velocity Squeeze
         const dx = mouseX - prevX;
         const dy = mouseY - prevY;
-        const speed = Math.min(Math.sqrt(dx * dx + dy * dy) * 0.02, 0.4);
+        const speed = Math.min(Math.sqrt(dx * dx + dy * dy) * 0.01, 0.25);
         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
         prevX = mouseX; prevY = mouseY;
         
         // Spring physics
-        ringX += (mouseX - ringX) * 0.25;
-        ringY += (mouseY - ringY) * 0.25;
-        g1X += (ringX - g1X) * 0.2;
-        g1Y += (ringY - g1Y) * 0.2;
-        g2X += (g1X - g2X) * 0.15;
-        g2Y += (g1Y - g2Y) * 0.15;
+        ringX += (mouseX - ringX) * 0.6;
+        ringY += (mouseY - ringY) * 0.6;
+        g1X += (ringX - g1X) * 0.4;
+        g1Y += (ringY - g1Y) * 0.4;
+        g2X += (g1X - g2X) * 0.3;
+        g2Y += (g1Y - g2Y) * 0.3;
         
         const isClicking = document.body.classList.contains('cursor-clicking');
         
