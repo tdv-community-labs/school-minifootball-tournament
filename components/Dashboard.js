@@ -110,7 +110,7 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
               </span>
-              <span className="font-black text-xs text-red-500 uppercase tracking-widest" style="text-shadow: 0 0 10px rgba(239,68,68,0.5)">CANLI</span>
+              <span className="font-black text-xs text-red-500 uppercase tracking-widest" style=${{ textShadow: '0 0 10px rgba(239,68,68,0.5)' }}>CANLI</span>
             </div>
           </div>
           
