@@ -101,6 +101,47 @@ export default function Dashboard({ setActiveTab, activeDivision, activeYear, la
 
   return html`
     <div className="space-y-8 animate-fadeIn">
+
+        <!-- Live Sports Ticker (News) -->
+        <div className="relative overflow-hidden rounded-xl bg-zinc-950/80 backdrop-blur border border-purple-500/20 py-2.5 flex items-center group cursor-default shadow-sm mb-4">
+          <div className="absolute left-0 top-0 bottom-0 z-10 w-28 bg-gradient-to-r from-zinc-950 via-zinc-950 to-transparent flex items-center px-4">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+              </span>
+              <span className="font-black text-xs text-red-500 uppercase tracking-widest" style="text-shadow: 0 0 10px rgba(239,68,68,0.5)">CANLI</span>
+            </div>
+          </div>
+          
+          <div className="flex whitespace-nowrap animate-marquee">
+            <span className="text-zinc-300 text-sm font-medium tracking-wide mx-4">
+              🔥 SON XƏBƏR: 11-A sinfi qrup mərhələsini məğlubiyyətsiz tamamladı! <span className="mx-4 text-zinc-600">|</span> 
+              ⚽ 10-C komandasının hücumçusu bombardirlər yarışında liderliyə yüksəldi! <span className="mx-4 text-zinc-600">|</span> 
+              🏆 TDV BTL Liqa Finalına sadəcə 2 həftə qaldı! <span className="mx-4 text-zinc-600">|</span> 
+              📈 Statistikalar süni zəka tərəfindən anında təhlil edilir!
+            </span>
+            <span className="text-zinc-300 text-sm font-medium tracking-wide mx-4">
+              🔥 SON XƏBƏR: 11-A sinfi qrup mərhələsini məğlubiyyətsiz tamamladı! <span className="mx-4 text-zinc-600">|</span> 
+              ⚽ 10-C komandasının hücumçusu bombardirlər yarışında liderliyə yüksəldi! <span className="mx-4 text-zinc-600">|</span> 
+              🏆 TDV BTL Liqa Finalına sadəcə 2 həftə qaldı! <span className="mx-4 text-zinc-600">|</span> 
+              📈 Statistikalar süni zəka tərəfindən anında təhlil edilir!
+            </span>
+          </div>
+          <style>
+            @keyframes marquee {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            .animate-marquee {
+              animation: marquee 25s linear infinite;
+            }
+            .group:hover .animate-marquee {
+              animation-play-state: paused;
+            }
+          </style>
+        </div>
+
       <!-- Welcome Banner: Royal Purple & TDV Sports Identity -->
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-950 via-purple-900 to-zinc-950 text-white p-6 sm:p-8 shadow-xl border border-purple-500/30 transition-colors duration-200">
         <div className="absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-purple-500 opacity-20 blur-3xl pointer-events-none"></div>
