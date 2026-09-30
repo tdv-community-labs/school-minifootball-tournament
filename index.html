@@ -523,5 +523,115 @@
       animate();
     })();
   </script>
+
+  <!-- TDV Ecosystem Nexus (Global App Switcher) -->
+  <style id="tdv-nexus-styles">
+    #tdv-nexus-btn {
+      position: fixed; bottom: 30px; right: 30px; z-index: 999990;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white; display: flex; align-items: center; justify-content: center;
+      cursor: none; /* Let custom cursor handle it */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    #tdv-nexus-btn:hover { transform: scale(1.1) rotate(90deg); box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); }
+    #tdv-nexus-btn svg { width: 24px; height: 24px; fill: currentColor; transition: 0.3s; }
+    
+    #tdv-nexus-menu {
+      position: fixed; bottom: 100px; right: 30px; z-index: 999989;
+      width: 260px; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px;
+      padding: 12px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: bottom right; display: flex; flex-direction: column; gap: 8px;
+    }
+    #tdv-nexus-menu.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+    
+    .tdv-nexus-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+      color: rgba(255, 255, 255, 0.7); text-decoration: none;
+      border-radius: 10px; transition: all 0.2s ease; cursor: none;
+      background: transparent; border: 1px solid transparent;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
+    }
+    .tdv-nexus-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white; transform: translateX(4px);
+    }
+    /* Dynamic Theme Overrides for Items */
+    .tdv-nexus-item.mafia:hover { border-color: rgba(168, 85, 247, 0.5); box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); color: #c084fc; }
+    .tdv-nexus-item.eschool:hover { border-color: rgba(14, 165, 233, 0.5); box-shadow: 0 0 15px rgba(14, 165, 233, 0.2); color: #38bdf8; }
+    .tdv-nexus-item.games:hover { border-color: rgba(236, 72, 153, 0.5); box-shadow: 0 0 15px rgba(236, 72, 153, 0.2); color: #f472b6; }
+    .tdv-nexus-item.football:hover { border-color: rgba(34, 197, 94, 0.5); box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); color: #4ade80; }
+    .tdv-nexus-item.hub:hover { border-color: rgba(139, 92, 246, 0.5); box-shadow: 0 0 15px rgba(139, 92, 246, 0.2); color: #a78bfa; }
+    
+    .tdv-nexus-header {
+      font-size: 11px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
+      letter-spacing: 2px; color: rgba(255, 255, 255, 0.4); padding: 8px 14px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 4px;
+    }
+  </style>
+
+  <div id="tdv-nexus-menu">
+    <div class="tdv-nexus-header">TDV EcosysT?M</div>
+    <a href="https://github.com/tdv-community-labs/tdv-hub" class="tdv-nexus-item hub">
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #8b5cf6; box-shadow: 0 0 8px #8b5cf6;"></div>
+      TDV Hub
+    </a>
+    <a href="https://github.com/tdv-community-labs/tdv-mafia" class="tdv-nexus-item mafia">
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #a855f7; box-shadow: 0 0 8px #a855f7;"></div>
+      TDV Mafia
+    </a>
+    <a href="https://github.com/tdv-community-labs/tdv-games" class="tdv-nexus-item games">
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #ec4899; box-shadow: 0 0 8px #ec4899;"></div>
+      TDV Games
+    </a>
+    <a href="https://github.com/tdv-community-labs/tdv-e-school" class="tdv-nexus-item eschool">
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #0ea5e9; box-shadow: 0 0 8px #0ea5e9;"></div>
+      TDV E-School
+    </a>
+    <a href="https://github.com/tdv-community-labs/school-minifootball-tournament" class="tdv-nexus-item football">
+      <div style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e;"></div>
+      MiniFootball
+    </a>
+  </div>
+
+  <button id="tdv-nexus-btn" aria-label="Open Ecosystem Nexus">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 12l10 10 10-10L12 2zm0 2.8L19.2 12 12 19.2 4.8 12 12 4.8zM12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+  </button>
+
+  <script id="tdv-nexus-script">
+    (function() {
+      const btn = document.getElementById('tdv-nexus-btn');
+      const menu = document.getElementById('tdv-nexus-menu');
+      let isOpen = false;
+      
+      if (!btn || !menu) return;
+      
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isOpen = !isOpen;
+        if (isOpen) {
+          menu.classList.add('active');
+          btn.style.transform = 'rotate(45deg) scale(0.9)';
+        } else {
+          menu.classList.remove('active');
+          btn.style.transform = 'none';
+        }
+      });
+      
+      document.addEventListener('click', (e) => {
+        if (isOpen && !menu.contains(e.target) && e.target !== btn) {
+          isOpen = false;
+          menu.classList.remove('active');
+          btn.style.transform = 'none';
+        }
+      });
+    })();
+  </script>
+
 </body>
 </html>
