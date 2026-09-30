@@ -872,5 +872,25 @@
     })();
   </script>
 
+
+  <!-- TDV Smart Tab Engine -->
+  <script id="tdv-smart-tab-engine">
+    (function() {
+      let originalTitle = document.title;
+      let timeout;
+      
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          timeout = setTimeout(() => {
+            document.title = "Sizi gözləyirik! 😭";
+          }, 1000);
+        } else {
+          clearTimeout(timeout);
+          document.title = originalTitle;
+        }
+      });
+    })();
+  </script>
+
 </body>
 </html>
