@@ -1312,5 +1312,74 @@
     })();
   </script>
 
+
+  <!-- TDV Global 3D Parallax Tilt Engine -->
+  <style id="tdv-3d-tilt-styles">
+    .tdv-3d-tilt-target {
+      transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.1s ease !important;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .tdv-3d-tilt-target:hover {
+      z-index: 50;
+    }
+    .tdv-3d-tilt-inner {
+      transform: translateZ(30px); /* Makes inner text pop out */
+    }
+  </style>
+  <script id="tdv-3d-tilt-engine">
+    (function() {
+      document.addEventListener('DOMContentLoaded', () => {
+        // Find all cards or interactive elements to apply 3D tilt
+        const selectors = [
+          '.glass-card', '.ui-card', '.feature-card', '.game-card', '.match-card', 
+          'a[href^="http"]', '.rounded-xl.bg-zinc-900', '.rounded-2xl', '.rounded-3xl'
+        ];
+        
+        let targets = [];
+        selectors.forEach(sel => {
+          document.querySelectorAll(sel).forEach(el => {
+            // Avoid adding to very small buttons or the entire root
+            if (el.clientWidth > 100 && el.clientHeight > 50 && el.tagName !== 'HEADER' && el.tagName !== 'NAV') {
+              if (!el.classList.contains('tdv-3d-tilt-target')) {
+                el.classList.add('tdv-3d-tilt-target');
+                targets.push(el);
+              }
+            }
+          });
+        });
+
+        targets.forEach(card => {
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -8; // Max 8 degrees
+            const rotateY = ((x - centerX) / centerX) * 8;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            
+            // Optional: Dynamic highlight based on cursor
+            const highlight = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.1) 0%, transparent 50%)`;
+            card.style.backgroundImage = highlight;
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            card.style.backgroundImage = '';
+            // Restore original background if inline style was modified (for simplicity, we assume classes handle default bg)
+            setTimeout(() => {
+                card.style.backgroundImage = '';
+            }, 300);
+          });
+        });
+      });
+    })();
+  </script>
+
 </body>
 </html>
