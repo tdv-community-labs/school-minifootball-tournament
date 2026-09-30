@@ -716,5 +716,62 @@
     })();
   </script>
 
+
+  <!-- TDV Page Transition Curtain -->
+  <style id="tdv-page-transition-styles">
+    #tdv-transition-curtain {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: #09090b;
+      z-index: 999999999;
+      pointer-events: none;
+      transform: translateY(-100%);
+      transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    #tdv-transition-curtain.slide-down {
+      transform: translateY(0%);
+    }
+    #tdv-transition-curtain.slide-up {
+      transform: translateY(100%);
+    }
+  </style>
+  <div id="tdv-transition-curtain"></div>
+  <script id="tdv-page-transition-script">
+    (function() {
+      // On Initial Load (Slide Up)
+      const curtain = document.getElementById('tdv-transition-curtain');
+      curtain.style.transform = 'translateY(0%)'; // start covered
+      
+      window.addEventListener('load', () => {
+        // Slide it up away after everything loads
+        setTimeout(() => {
+          curtain.classList.add('slide-up');
+        }, 100);
+      });
+
+      // Intercept Link Clicks (Slide Down)
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link && link.href && !link.target && link.hostname === window.location.hostname && !link.href.includes('#')) {
+          e.preventDefault();
+          curtain.classList.remove('slide-up');
+          curtain.classList.add('slide-down');
+          
+          setTimeout(() => {
+            window.location.href = link.href;
+          }, 450);
+        }
+      });
+      
+      // Fix for browsers caching the page state when using back button
+      window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+          curtain.classList.remove('slide-down');
+          curtain.classList.add('slide-up');
+        }
+      });
+    })();
+  </script>
+
 </body>
 </html>
