@@ -742,12 +742,22 @@
       const curtain = document.getElementById('tdv-transition-curtain');
       curtain.style.transform = 'translateY(0%)'; // start covered
       
-      window.addEventListener('load', () => {
-        // Slide it up away after everything loads
+      // Fallback: ALWAYS hide curtain after 300ms max
         setTimeout(() => {
-          curtain.style.transform = ''; curtain.classList.add('slide-up');
-        }, 100);
-      });
+          if(curtain && !curtain.classList.contains('slide-up')) {
+            curtain.style.transform = ''; 
+            curtain.classList.add('slide-up');
+          }
+        }, 300);
+
+        window.addEventListener('DOMContentLoaded', () => {
+          setTimeout(() => {
+            if(curtain) {
+              curtain.style.transform = ''; 
+              curtain.classList.add('slide-up');
+            }
+          }, 50);
+        });
 
       // Intercept Link Clicks (Slide Down)
       document.addEventListener('click', (e) => {
