@@ -922,5 +922,104 @@
     })();
   </script>
 
+
+  <!-- TDV Glassmorphic Tooltip Engine -->
+  <style id="tdv-tooltip-styles">
+    #tdv-global-tooltip {
+      position: fixed; z-index: 999999999;
+      background: rgba(9, 9, 11, 0.85);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.9);
+      padding: 6px 12px; border-radius: 8px;
+      font-size: 12px; font-family: 'Inter', sans-serif; font-weight: 500;
+      pointer-events: none; opacity: 0; transform: scale(0.95);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      white-space: nowrap; max-width: 300px; text-overflow: ellipsis; overflow: hidden;
+    }
+    #tdv-global-tooltip.active {
+      opacity: 1; transform: scale(1);
+    }
+  </style>
+  <div id="tdv-global-tooltip"></div>
+  <script id="tdv-tooltip-engine">
+    (function() {
+      document.addEventListener('DOMContentLoaded', () => {
+        const tooltip = document.getElementById('tdv-global-tooltip');
+        let currentTarget = null;
+        let originalTitle = '';
+
+        document.addEventListener('mouseover', (e) => {
+          const target = e.target.closest('[title], [data-tooltip]');
+          if (target) {
+            currentTarget = target;
+            originalTitle = target.getAttribute('title') || target.getAttribute('data-tooltip');
+            if (!originalTitle) return;
+
+            // Remove native title to prevent default browser tooltip
+            if (target.hasAttribute('title')) {
+              target.setAttribute('data-tooltip', originalTitle);
+              target.removeAttribute('title');
+            }
+
+            tooltip.textContent = originalTitle;
+            tooltip.classList.add('active');
+          }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+          if (currentTarget && tooltip.classList.contains('active')) {
+            let x = e.clientX + 15;
+            let y = e.clientY + 15;
+            
+            const rect = tooltip.getBoundingClientRect();
+            if (x + rect.width > window.innerWidth) x = e.clientX - rect.width - 10;
+            if (y + rect.height > window.innerHeight) y = e.clientY - rect.height - 10;
+            
+            tooltip.style.left = `${x}px`;
+            tooltip.style.top = `${y}px`;
+          }
+        });
+
+        document.addEventListener('mouseout', (e) => {
+          if (currentTarget) {
+            tooltip.classList.remove('active');
+            currentTarget = null;
+          }
+        });
+      });
+    })();
+  </script>
+
+
+  <!-- TDV Scroll Progress Bar -->
+  <style id="tdv-scroll-progress-styles">
+    #tdv-scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, #a855f7, #3b82f6, #10b981);
+      z-index: 9999999999; width: 0%;
+      transition: width 0.1s ease-out;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+      pointer-events: none;
+    }
+  </style>
+  <div id="tdv-scroll-progress"></div>
+  <script id="tdv-scroll-progress-engine">
+    (function() {
+      document.addEventListener('DOMContentLoaded', () => {
+        const bar = document.getElementById('tdv-scroll-progress');
+        window.addEventListener('scroll', () => {
+          const scrollTop = window.scrollY || document.documentElement.scrollTop;
+          const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          if (docHeight > 0) {
+            const scrolled = (scrollTop / docHeight) * 100;
+            bar.style.width = `${scrolled}%`;
+          }
+        });
+      });
+    })();
+  </script>
+
 </body>
 </html>
