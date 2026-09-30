@@ -192,6 +192,82 @@
 </style>
 </head>
 <body class="min-h-[100dvh] max-w-[100vw] overflow-x-clip bg-zinc-50 dark:bg-[#030303] text-zinc-900 dark:text-zinc-100 antialiased selection:bg-purple-600 selection:text-white transition-colors duration-200 font-sans">
+
+  <!-- TDV Core Boot Sequence -->
+  <style id="tdv-boot-styles">
+    #tdv-boot-screen {
+      position: fixed; inset: 0; z-index: 9999999;
+      background: #09090b; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      transition: opacity 0.8s ease-out, visibility 0.8s;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    #tdv-boot-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    
+    .tdv-boot-logo {
+      font-size: 3rem; font-weight: 900; letter-spacing: 0.2em;
+      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.1);
+      position: relative; margin-bottom: 20px;
+    }
+    .tdv-boot-logo::before {
+      content: 'TDV CORE'; position: absolute; left: 0; top: 0;
+      width: 0%; height: 100%; color: white; -webkit-text-stroke: 0px;
+      overflow: hidden; border-right: 2px solid white;
+      animation: fillText 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    .tdv-boot-log {
+      color: #10b981; font-size: 0.8rem; height: 1.2rem;
+      opacity: 0; animation: blinkLog 1.5s steps(1) forwards;
+    }
+
+    @keyframes fillText { 100% { width: 100%; } }
+    @keyframes blinkLog {
+      0% { opacity: 1; } 25% { opacity: 0; } 50% { opacity: 1; }
+      75% { opacity: 0; } 100% { opacity: 1; }
+    }
+  </style>
+
+  <div id="tdv-boot-screen">
+    <div class="tdv-boot-logo">TDV CORE</div>
+    <div class="tdv-boot-log" id="tdv-boot-text"></div>
+  </div>
+
+  <script id="tdv-boot-script">
+    (function() {
+      // Only run once per session
+      if (sessionStorage.getItem('tdv_booted')) {
+        const boot = document.getElementById('tdv-boot-screen');
+        if (boot) boot.style.display = 'none';
+        return;
+      }
+      
+      const logs = [
+        "INITIALIZING SECURE UPLINK...",
+        "DECRYPTING ECOSYSTEM PROTOCOLS...",
+        "CONNECTING TO TDV MAINFRAME...",
+        "ACCESS GRANTED."
+      ];
+      
+      const textEl = document.getElementById('tdv-boot-text');
+      let i = 0;
+      
+      const interval = setInterval(() => {
+        if (i < logs.length) {
+          textEl.innerText = "> " + logs[i];
+          i++;
+        } else {
+          clearInterval(interval);
+          setTimeout(() => {
+            const bootScreen = document.getElementById('tdv-boot-screen');
+            if (bootScreen) bootScreen.classList.add('hidden');
+            sessionStorage.setItem('tdv_booted', 'true');
+          }, 300);
+        }
+      }, 350);
+    })();
+  </script>
+
   <!-- TDV Community Labs Ecosystem Global Bar -->
   <aside id="tdv-ecosystem-topbar" aria-label="TDV Community Labs Ecosystem Bar" class="bg-white/95 dark:bg-[#030303]/95 border-b border-zinc-200 dark:border-white/10 py-1.5 px-3 sm:px-4 text-[11px] sticky top-0 z-50 transition-colors duration-200 shadow-sm" style="font-family: 'Inter', system-ui, sans-serif;">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
@@ -629,6 +705,43 @@
           menu.classList.remove('active');
           btn.style.transform = 'none';
         }
+      });
+    })();
+  </script>
+
+
+  <!-- TDV Premium Magnetic UX Engine -->
+  <script id="tdv-magnetic-ux">
+    (function() {
+      // Wait for DOM to be fully ready
+      document.addEventListener('DOMContentLoaded', () => {
+        const magneticElements = document.querySelectorAll('button, a.tdv-nexus-item, .glass-card, a.btn');
+        
+        magneticElements.forEach(elem => {
+          // Add smooth transition for the spring-back effect
+          elem.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+          
+          elem.addEventListener('mousemove', (e) => {
+            const rect = elem.getBoundingClientRect();
+            // Calculate mouse position relative to the center of the element
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            // Limit the movement to a max of 10px in any direction
+            const moveX = x * 0.15;
+            const moveY = y * 0.15;
+            
+            // Apply the transform, removing the transition temporarily so it tracks instantly
+            elem.style.transition = 'none';
+            elem.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          });
+          
+          elem.addEventListener('mouseleave', () => {
+            // Restore transition and snap back to origin
+            elem.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            elem.style.transform = 'translate(0px, 0px)';
+          });
+        });
       });
     })();
   </script>

@@ -560,5 +560,42 @@
     })();
   </script>
 
+
+  <!-- TDV Premium Magnetic UX Engine -->
+  <script id="tdv-magnetic-ux">
+    (function() {
+      // Wait for DOM to be fully ready
+      document.addEventListener('DOMContentLoaded', () => {
+        const magneticElements = document.querySelectorAll('button, a.tdv-nexus-item, .glass-card, a.btn');
+        
+        magneticElements.forEach(elem => {
+          // Add smooth transition for the spring-back effect
+          elem.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+          
+          elem.addEventListener('mousemove', (e) => {
+            const rect = elem.getBoundingClientRect();
+            // Calculate mouse position relative to the center of the element
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            // Limit the movement to a max of 10px in any direction
+            const moveX = x * 0.15;
+            const moveY = y * 0.15;
+            
+            // Apply the transform, removing the transition temporarily so it tracks instantly
+            elem.style.transition = 'none';
+            elem.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          });
+          
+          elem.addEventListener('mouseleave', () => {
+            // Restore transition and snap back to origin
+            elem.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            elem.style.transform = 'translate(0px, 0px)';
+          });
+        });
+      });
+    })();
+  </script>
+
 </body>
 </html>
