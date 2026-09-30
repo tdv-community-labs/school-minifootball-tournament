@@ -732,5 +732,100 @@
     })();
   </script>
 
+
+  <!-- TDV Custom Context Menu (OS Level) -->
+  <style id="tdv-context-styles">
+    #tdv-context-menu {
+      position: fixed; z-index: 99999999;
+      width: 220px; background: rgba(9, 9, 11, 0.7);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px; padding: 6px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
+      opacity: 0; transform: scale(0.95); pointer-events: none;
+      transition: opacity 0.15s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: top left;
+      font-family: 'Inter', sans-serif;
+    }
+    #tdv-context-menu.active {
+      opacity: 1; transform: scale(1); pointer-events: all;
+    }
+    .tdv-context-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px; margin: 2px 0;
+      color: rgba(255, 255, 255, 0.8); font-size: 13px; font-weight: 500;
+      border-radius: 8px; cursor: none;
+      transition: all 0.2s ease;
+      background: transparent; border: none; width: 100%; text-align: left;
+    }
+    .tdv-context-item:hover {
+      background: rgba(255, 255, 255, 0.1); color: white;
+      transform: translateX(4px);
+    }
+    .tdv-context-divider {
+      height: 1px; background: rgba(255, 255, 255, 0.1);
+      margin: 6px 4px;
+    }
+    .tdv-context-icon { width: 16px; height: 16px; opacity: 0.7; }
+    .tdv-context-item:hover .tdv-context-icon { opacity: 1; }
+  </style>
+
+  <div id="tdv-context-menu">
+    <button class="tdv-context-item" onclick="history.back()">
+      <svg class="tdv-context-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      Geri Qayıt
+    </button>
+    <button class="tdv-context-item" onclick="location.reload()">
+      <svg class="tdv-context-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+      Yenilə (Reload)
+    </button>
+    <div class="tdv-context-divider"></div>
+    <a href="https://github.com/tdv-community-labs/tdv-hub" class="tdv-context-item" style="text-decoration: none;">
+      <svg class="tdv-context-icon" style="color: #a855f7;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+      TDV Hub'a Keçid
+    </a>
+    <button class="tdv-context-item" onclick="navigator.clipboard.writeText(window.location.href); this.innerHTML='Kopyalandı! ✓'; setTimeout(()=>this.innerHTML='Linki Kopyala', 2000);">
+      <svg class="tdv-context-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+      Linki Kopyala
+    </button>
+  </div>
+
+  <script id="tdv-context-script">
+    (function() {
+      document.addEventListener('DOMContentLoaded', () => {
+        const menu = document.getElementById('tdv-context-menu');
+        
+        document.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          
+          let x = e.clientX;
+          let y = e.clientY;
+          
+          // Ensure menu doesn't go out of bounds
+          const menuWidth = 220;
+          const menuHeight = 180;
+          
+          if (x + menuWidth > window.innerWidth) x = window.innerWidth - menuWidth - 10;
+          if (y + menuHeight > window.innerHeight) y = window.innerHeight - menuHeight - 10;
+          
+          menu.style.left = `${x}px`;
+          menu.style.top = `${y}px`;
+          menu.classList.add('active');
+        });
+        
+        document.addEventListener('click', (e) => {
+          if (!menu.contains(e.target)) {
+            menu.classList.remove('active');
+          }
+        });
+        
+        // Let escape key close it
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') menu.classList.remove('active');
+        });
+      });
+    })();
+  </script>
+
 </body>
 </html>
