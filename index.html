@@ -1388,5 +1388,203 @@
       }, 2500);
     </script>
 
+
+  <!-- TDV Global Achievement System -->
+  <style id="tdv-achievement-styles">
+    #tdv-achievement-container {
+      position: fixed;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 99999999;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px 12px 12px;
+      background: rgba(9, 9, 11, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(168, 85, 247, 0.3);
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    #tdv-achievement-container.show {
+      top: 40px;
+      opacity: 1;
+    }
+    
+    #tdv-achievement-container.rarity-legendary {
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(234, 179, 8, 0.4), inset 0 0 0 1px rgba(234, 179, 8, 0.8);
+      background: linear-gradient(90deg, rgba(9, 9, 11, 0.95), rgba(66, 32, 6, 0.9));
+    }
+
+    .tdv-achievement-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at top left, #a855f7, #4c1d95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.3);
+    }
+    
+    .rarity-legendary .tdv-achievement-icon {
+      background: radial-gradient(circle at top left, #fde047, #a16207);
+    }
+
+    .tdv-achievement-text {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .tdv-achievement-header {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #a855f7;
+      margin-bottom: 2px;
+    }
+    
+    .rarity-legendary .tdv-achievement-header { color: #fde047; }
+    
+    .tdv-achievement-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+    }
+    
+    @keyframes shine {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+    
+    #tdv-achievement-container::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+    }
+    
+    #tdv-achievement-container.show::after {
+      animation: shine 1.5s ease-out 0.3s;
+    }
+  </style>
+
+  <div id="tdv-achievement-container">
+    <div class="tdv-achievement-icon" id="tdv-ach-icon">🏆</div>
+    <div class="tdv-achievement-text">
+      <div class="tdv-achievement-header" id="tdv-ach-header">NAİLİYYƏT AÇILDI</div>
+      <div class="tdv-achievement-title" id="tdv-ach-title">Sistemin Ruhu</div>
+    </div>
+  </div>
+
+  <script id="tdv-achievement-script">
+    (function() {
+      // Audio Context setup
+      let actx = null;
+      function playAchievementSound(isLegendary) {
+        if (!actx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if(AudioContextClass) actx = new AudioContextClass();
+        }
+        if (!actx) return;
+        if (actx.state === 'suspended') actx.resume();
+        
+        const osc = actx.createOscillator();
+        const gain = actx.createGain();
+        osc.connect(gain);
+        gain.connect(actx.destination);
+        
+        osc.type = 'sine';
+        
+        // PlayStation Trophy style sound
+        const now = actx.currentTime;
+        if (isLegendary) {
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.setValueAtTime(554.37, now + 0.1); // C#
+          osc.frequency.setValueAtTime(659.25, now + 0.2); // E
+          osc.frequency.setValueAtTime(880, now + 0.3); // A
+          
+          gain.gain.setValueAtTime(0, now);
+          gain.gain.linearRampToValueAtTime(0.5, now + 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 2.0);
+          osc.start(now);
+          osc.stop(now + 2.0);
+        } else {
+          osc.frequency.setValueAtTime(523.25, now); // C
+          osc.frequency.setValueAtTime(659.25, now + 0.15); // E
+          
+          gain.gain.setValueAtTime(0, now);
+          gain.gain.linearRampToValueAtTime(0.3, now + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 1.0);
+          osc.start(now);
+          osc.stop(now + 1.0);
+        }
+      }
+
+      window.unlockAchievement = function(id, title, icon = '🏆', rarity = 'common') {
+        // Check if already unlocked in this browser
+        const unlocked = JSON.parse(localStorage.getItem('tdv_achievements') || '{}');
+        if (unlocked[id]) return; // Already got it
+        
+        unlocked[id] = true;
+        localStorage.setItem('tdv_achievements', JSON.stringify(unlocked));
+        
+        const container = document.getElementById('tdv-achievement-container');
+        document.getElementById('tdv-ach-icon').innerText = icon;
+        document.getElementById('tdv-ach-title').innerText = title;
+        document.getElementById('tdv-ach-header').innerText = rarity === 'legendary' ? '✨ ƏFSANƏVİ NAİLİYYƏT AÇILDI' : '🏆 NAİLİYYƏT AÇILDI';
+        
+        if (rarity === 'legendary') {
+          container.classList.add('rarity-legendary');
+        } else {
+          container.classList.remove('rarity-legendary');
+        }
+        
+        // Show
+        container.classList.add('show');
+        playAchievementSound(rarity === 'legendary');
+        
+        // Hide after 4 seconds
+        setTimeout(() => {
+          container.classList.remove('show');
+        }, 4000);
+      };
+
+      // Built-in Triggers
+      document.addEventListener('DOMContentLoaded', () => {
+        
+        // Trigger 1: Cmd+K / Command Palette Usage
+        document.addEventListener('keydown', (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            setTimeout(() => {
+              window.unlockAchievement('first_cmdk', 'Sistemin Hakimi', '⌨️', 'common');
+            }, 500);
+          }
+        });
+        
+        // Trigger 2: Welcome to Ecosystem (First visit)
+        setTimeout(() => {
+          window.unlockAchievement('welcome_tdv', 'TDV Ekosisteminə Xoş Gəldin!', '🚀', 'legendary');
+        }, 3000);
+        
+        // Trigger 3: Night owl (Playing after 00:00)
+        const hour = new Date().getHours();
+        if (hour >= 0 && hour < 5) {
+          setTimeout(() => {
+            window.unlockAchievement('night_owl', 'Gecə Quşu (Saat 00:00+)', '🦉', 'common');
+          }, 8000);
+        }
+      });
+    })();
+  </script>
+
 </body>
 </html>
