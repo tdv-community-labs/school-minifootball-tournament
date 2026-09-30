@@ -745,7 +745,7 @@
       window.addEventListener('load', () => {
         // Slide it up away after everything loads
         setTimeout(() => {
-          curtain.classList.add('slide-up');
+          curtain.style.transform = ''; curtain.classList.add('slide-up');
         }, 100);
       });
 
@@ -767,7 +767,7 @@
       window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
           curtain.classList.remove('slide-down');
-          curtain.classList.add('slide-up');
+          curtain.style.transform = ''; curtain.classList.add('slide-up');
         }
       });
     })();
