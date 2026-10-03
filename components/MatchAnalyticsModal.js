@@ -106,7 +106,6 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
   const [commentaryFilter, setCommentaryFilter] = useState('all');
 
   const allShots = analytics?.shots || [];
-  const currentShot = filteredShots[selectedShotIndex] || filteredShots[0];
   const goalCount = allShots.filter(s => s.outcome === 'goal').length;
   const saveCount = allShots.filter(s => s.outcome === 'saved').length;
   const shotsACount = allShots.filter(s => s.team === match.teamA).length;
