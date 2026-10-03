@@ -106,11 +106,142 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
   const [commentaryFilter, setCommentaryFilter] = useState('all');
 
   const allShots = analytics?.shots || [];
-  const currentShot = allShots[selectedShotIndex];
+  // currentShot is calculated after filteredShots
   const goalCount = allShots.filter(s => s.outcome === 'goal').length;
   const saveCount = allShots.filter(s => s.outcome === 'saved').length;
   const shotsACount = allShots.filter(s => s.team === match.teamA).length;
   const shotsBCount = allShots.filter(s => s.team === match.teamB).length;
+  const filteredShots = useMemo(() => {
+    if (!match) return [];
+    if (shotFilter === 'goal') return allShots.filter(s => s.outcome === 'goal');
+    if (shotFilter === 'saved') return allShots.filter(s => s.outcome === 'saved');
+    if (shotFilter === 'teamA') return allShots.filter(s => s.team === match.teamA);
+    if (shotFilter === 'teamB') return allShots.filter(s => s.team === match.teamB);
+    return allShots;
+  }, [match, allShots, shotFilter]);
+  const currentShot = filteredShots[selectedShotIndex] || filteredShots[0];
+  ct, useMemo } from 'react';
+import htm from 'htm';
+import { getMatchAnalytics, loadAnalyticsData, YOUTUBE_CONFIG } from '../services/matchAnalyticsData.js?v=20260912_0120';
+import { getSofascoreBadgeStyle } from '../services/database.js';
+import MatchPlayerProfileModal from './MatchPlayerProfileModal.js';
+import { TeamBadge } from './ui.js';
+
+const html = htm.bind(React.createElement);
+
+const getGoalMinutesArray = (count, teamPrefix, playerName) => {
+  if (count <= 0) return [];
+  const hash = (teamPrefix + playerName).split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+  const mins = [];
+  let current = (hash % 14) + 2;
+  for(let i=0; i<count; i++) {
+    mins.push(current);
+    current += ((hash % 10) + 7);
+    if (current > 35) current = 35 - (hash % 3);
+  }
+  return mins.sort((a,b) => a-b);
+};
+
+const generateGoalMinutes = (count, teamPrefix, playerName) => {
+  if (count <= 0) return '';
+  const mins = getGoalMinutesArray(count, teamPrefix, playerName);
+  return `(${mins.map(m => m + "'").join(', ')})`;
+};
+
+const getAllGoalEvents = (analytics, match) => {
+  const events = [];
+  if (!analytics) return events;
+  (analytics.lineupA || []).forEach(p => {
+    if (p.goals > 0) {
+      getGoalMinutesArray(p.goals, match.teamA, p.name).forEach(m => events.push({ min: m, team: 'A', type: 'goal' }));
+    }
+  });
+  (analytics.lineupB || []).forEach(p => {
+    if (p.goals > 0) {
+      getGoalMinutesArray(p.goals, match.teamB, p.name).forEach(m => events.push({ min: m, team: 'B', type: 'goal' }));
+    }
+  });
+  return events;
+};
+
+const getDenseMomentum = (sparse, analytics, match) => {
+  if (!sparse || sparse.length < 2) return [];
+  const dense = [];
+  const STEPS = 105; 
+  const goalEvents = getAllGoalEvents(analytics, match);
+  
+  for (let i = 1; i <= STEPS; i++) {
+    let min = i / 3;
+    let prev = sparse.filter(s => s.min <= min).pop() || sparse[0];
+    let next = sparse.find(s => s.min > min) || sparse[sparse.length - 1];
+    let ratio = (next.min === prev.min) ? 0.5 : (min - prev.min) / (next.min - prev.min);
+    let noise = (Math.sin(i * 0.4) * 10) + (Math.cos(i * 0.15) * 15);
+    
+    let vA = prev.valA + (next.valA - prev.valA) * ratio + noise;
+    let vB = prev.valB + (next.valB - prev.valB) * ratio - noise;
+    
+    let eventObj = null;
+    let matchingEvent = goalEvents.find(e => e.min === Math.ceil(min));
+    if (matchingEvent && i % 3 === 1) { 
+      eventObj = matchingEvent;
+    }
+
+    dense.push({ 
+      step: i, 
+      min: min, 
+      valA: Math.max(5, Math.min(95, vA)), 
+      valB: Math.max(5, Math.min(95, vB)),
+      event: eventObj
+    });
+  }
+  return dense;
+};
+
+
+export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers = [], lang = 'az' }) {
+  const [dataVersion, setDataVersion] = useState(0);
+
+  useEffect(() => {
+    if (isOpen) {
+      loadAnalyticsData().then(() => setDataVersion(v => v + 1));
+    }
+  }, [isOpen, match]);
+
+  const analytics = useMemo(() => (match ? getMatchAnalytics(match, allPlayers) : null), [match, allPlayers, dataVersion]);
+  const [activeTab, setActiveTabState] = useState('lineup');
+  
+  const handleTabChange = (tabId) => {
+    if (!document.startViewTransition) {
+      setActiveTabState(tabId);
+      return;
+    }
+    document.startViewTransition(() => setActiveTabState(tabId));
+  }; // 'lineup' | 'momentum' | 'commentary' | 'stats' | 'shotmap' | 'heatmap' | 'video' | 'info'
+  const [selectedShotIndex, setSelectedShotIndex] = useState(0);
+  const [shotFilter, setShotFilter] = useState('all');
+  const [heatmapFilter, setHeatmapFilter] = useState('all');
+  const [selectedHeatmapPlayer, setSelectedHeatmapPlayer] = useState('Murad Abdullayev');
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [showSubstitutions, setShowSubstitutions] = useState(true);
+  const [showAvgPositions, setShowAvgPositions] = useState(true);
+  const [commentaryFilter, setCommentaryFilter] = useState('all');
+
+  const allShots = analytics?.shots || [];
+  // currentShot is calculated after filteredShots
+  const goalCount = allShots.filter(s => s.outcome === 'goal').length;
+  const saveCount = allShots.filter(s => s.outcome === 'saved').length;
+  const shotsACount = allShots.filter(s => s.team === match.teamA).length;
+  const shotsBCount = allShots.filter(s => s.team === match.teamB).length;
+  const filteredShots = useMemo(() => {
+    if (!match) return [];
+    if (shotFilter === 'goal') return allShots.filter(s => s.outcome === 'goal');
+    if (shotFilter === 'saved') return allShots.filter(s => s.outcome === 'saved');
+    if (shotFilter === 'teamA') return allShots.filter(s => s.team === match.teamA);
+    if (shotFilter === 'teamB') return allShots.filter(s => s.team === match.teamB);
+    return allShots;
+  }, [match, allShots, shotFilter]);
+  const currentShot = filteredShots[selectedShotIndex] || filteredShots[0];
   const filteredShots = useMemo(() => {
     if (!match) return [];
     if (shotFilter === 'goal') return allShots.filter(s => s.outcome === 'goal');
@@ -605,25 +736,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
           
             <!--  TAB: SHOTMAP (PROMAX FEATURE)  -->
             ${activeTab === 'shotmap' && html`
-              <div className="bg-transparent/90 border border-white/10 rounded-2xl p-5 space-y-6 overflow-hidden relative">
-                <!-- Glossy Background FX -->
-                <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-
-                <div className="flex items-center justify-between z-10 relative">
-                  <div>
-                    <h3 className="text-sm font-black uppercase tracking-wider text-purple-400 flex items-center gap-2 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">
-                      <i className="fas fa-crosshairs text-sky-400"></i> Zərbə Xəritəsi (Shotmap)
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1">Komandaların qapıya vurduğu zərbələrin (qol, seyv, xaric) 2D vizualizasiyası</p>
-                  </div>
-                  <div className="flex items-center gap-3 text-[10px] font-bold bg-[#0b0e14]/50 p-2 rounded-xl border border-white/5 backdrop-blur-md">
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span> Qol</span>
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.8)]"></span> Seyv / Dəqiq</span>
-                    <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]"></span> Xaric</span>
-                  </div>
-                </div>
-
-                <!-- MERGED 3D POV COMPONENT -->
+              
                 <!-- ================================================================= -->
 
             <div className="space-y-4 sm:space-y-5">
@@ -657,10 +770,6 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                           : 'bg-slate-800 text-slate-400 hover:text-white'
                       }`}
 
-                        <!-- ================================================================= -->
-            <!-- TAB 1: ZƏRBƏLƏR & BİRLƏŞDİRİLMİŞ 3D QAPI POV STADİONU -->
-          <!-- ================================================================= -->
-          
                     >
                       ${f.label}
                     </button>
