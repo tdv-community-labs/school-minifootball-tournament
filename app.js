@@ -22,6 +22,7 @@ import Matches from './components/Matches.js?v=20260912_0120';
 import Players from './components/Players.js?v=20260912_0120';
 import Compare from './components/Compare.js';
 import DreamTeam from './components/DreamTeam.js';
+import Market from './components/Market.js';
 import AdminDashboard from './components/AdminDashboard.js?v=20260912_0120';
 import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260912_0120';
 import TeamProfileModal from './components/TeamProfileModal.js';
@@ -335,6 +336,7 @@ export default function App() {
     { id: 'standings', label: t('navStandings', lang), icon: 'fas fa-list-ol' },
     { id: 'matches', label: t('navMatches', lang), icon: 'fas fa-futbol' },
     { id: 'players', label: t('navPlayers', lang), icon: 'fas fa-users' },
+    { id: 'market', label: 'Bazar & Liderlər', icon: 'fas fa-chart-line' },
     { id: 'compare', label: 'H2H', icon: 'fas fa-balance-scale' },
     { id: 'dreamteam', label: 'Xəyalındakı 5-lik', icon: 'fas fa-star' },
     ...(isAdminAuthorized ? [{ id: 'admin', label: t('navAdmin', lang), icon: 'fas fa-user-cog' }] : [])
