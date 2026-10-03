@@ -176,7 +176,7 @@ export default function MatchPlayerProfileModal({ player, match, onClose }) {
                       ${b.val < 50 && html`
                         <div 
                           className="h-full bg-orange-500/80 transition-all duration-1000 ease-out" 
-                          style=${{ width: \`\${(50 - b.val) * 2}%\`, transformOrigin: 'right', transform: \`scaleX(\${animTrigger ? 1 : 0})\` }}
+                          style=${{ width: ((50 - b.val) * 2) + '%', transformOrigin: 'right', transform: animTrigger ? 'scaleX(1)' : 'scaleX(0)' }}
                         ></div>
                       `}
                     </div>
@@ -187,7 +187,7 @@ export default function MatchPlayerProfileModal({ player, match, onClose }) {
                       ${b.val >= 50 && html`
                         <div 
                           className=${`h-full shadow-[0_0_8px_rgba(255,255,255,0.3)] ${b.color} transition-all duration-1000 ease-out`} 
-                          style=${{ width: \`\${Math.min(100, (b.val - 50) * 2)}%\`, transformOrigin: 'left', transform: \`scaleX(\${animTrigger ? 1 : 0})\` }}
+                          style=${{ width: Math.min(100, (b.val - 50) * 2) + '%', transformOrigin: 'left', transform: animTrigger ? 'scaleX(1)' : 'scaleX(0)' }}
                         ></div>
                       `}
                     </div>
@@ -221,9 +221,9 @@ export default function MatchPlayerProfileModal({ player, match, onClose }) {
                     
                     <!-- Procedural Heatmap glow blobs -->
                     <div className="absolute w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-red-500/60 blur-[20px] sm:blur-[30px] mix-blend-screen"
-                         style=${{ left: \`\${player.x - 10}%\`, top: \`\${player.y - 10}%\` }}></div>
+                         style=${{ left: (player.x - 10) + '%', top: (player.y - 10) + '%' }}></div>
                     <div className="absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-yellow-400/60 blur-[15px] sm:blur-[20px] mix-blend-screen"
-                         style=${{ left: \`\${player.x - 5}%\`, top: \`\${player.y - 5}%\` }}></div>
+                         style=${{ left: (player.x - 5) + '%', top: (player.y - 5) + '%' }}></div>
                  </div>
                </div>
             </div>
@@ -292,21 +292,21 @@ export default function MatchPlayerProfileModal({ player, match, onClose }) {
 
                 ${activeTab === 'pass' && stats.visuals.passes.map((p, i) => html`
                   <line 
-                    key=${i} x1=${\`\${p.px}%\`} y1=${\`\${p.py}%\`} x2=${\`\${p.tx}%\`} y2=${\`\${p.ty}%\`} 
+                    key=${i} x1=${p.px + '%'} y1=${p.py + '%'} x2=${p.tx + '%'} y2=${p.ty + '%'} 
                     stroke=${p.success ? '#4ade80' : '#f87171'} 
                     strokeWidth="1.5" 
                     markerEnd=${p.success ? 'url(#arrow-green)' : 'url(#arrow-red)'}
                     className="origin-left"
-                    style=${{ animation: \`drawArrow 0.5s ease-out \${i * 0.05}s both\` }}
+                    style=${{ animation: 'drawArrow 0.5s ease-out ' + (i * 0.05) + 's both' }}
                   />
                 `)}
                 
                 ${activeTab === 'drib' && stats.visuals.dribbles.map((p, i) => html`
                   <line 
-                    key=${i} x1=${\`\${p.px}%\`} y1=${\`\${p.py}%\`} x2=${\`\${p.tx}%\`} y2=${\`\${p.ty}%\`} 
+                    key=${i} x1=${p.px + '%'} y1=${p.py + '%'} x2=${p.tx + '%'} y2=${p.ty + '%'} 
                     stroke="white" strokeWidth="1.5" strokeDasharray="3 3"
                     markerEnd="url(#arrow-white)"
-                    style=${{ animation: \`drawArrow 0.5s ease-out \${i * 0.05}s both\` }}
+                    style=${{ animation: 'drawArrow 0.5s ease-out ' + (i * 0.05) + 's both' }}
                   />
                 `)}
               </svg>
@@ -317,7 +317,7 @@ export default function MatchPlayerProfileModal({ player, match, onClose }) {
                   <div 
                     key=${i} 
                     className="absolute w-4 h-4 sm:w-5 sm:h-5 bg-white rounded-full border-2 border-slate-900 flex items-center justify-center shadow-lg -translate-x-1/2 -translate-y-1/2 z-20"
-                    style=${{ left: \`\${p.px}%\`, top: \`\${p.py}%\`, animation: \`popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) \${i * 0.1}s both\` }}
+                    style=${{ left: p.px + '%', top: p.py + '%', animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) ' + (i * 0.1) + 's both' }}
                   >
                     <div className=${\`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full \${p.success ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-rose-500'}\`}></div>
                   </div>
@@ -327,7 +327,7 @@ export default function MatchPlayerProfileModal({ player, match, onClose }) {
                   <div 
                     key=${i} 
                     className=${\`absolute w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border-[1.5px] border-slate-900 shadow-md -translate-x-1/2 -translate-y-1/2 z-20 \${i % 2 === 0 ? 'bg-orange-500' : 'bg-pink-500'}\`}
-                    style=${{ left: \`\${p.px}%\`, top: \`\${p.py}%\`, animation: \`popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) \${i * 0.05}s both\` }}
+                    style=${{ left: p.px + '%', top: p.py + '%', animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) ' + (i * 0.05) + 's both' }}
                   ></div>
                 `)}
               </div>
