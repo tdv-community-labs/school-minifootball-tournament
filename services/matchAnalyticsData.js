@@ -20,20 +20,28 @@ let loadPromise = null;
 export const loadAnalyticsData = async () => {
   if (isLoaded) return cachedAnalyticsMap;
   if (!loadPromise) {
-    loadPromise = fetch('./data/match-analytics.json?v=20260912')
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
-        cachedAnalyticsMap = data || {};
-        isLoaded = true;
-        return cachedAnalyticsMap;
-      })
-      .catch(err => {
-        console.error("Error loading match analytics JSON:", err);
-        return {};
-      });
+    const paths = [
+      './data/match-analytics.json?v=20260912_0120',
+      './public/data/match-analytics.json?v=20260912_0120',
+      '/data/match-analytics.json?v=20260912_0120'
+    ];
+
+    loadPromise = (async () => {
+      for (const p of paths) {
+        try {
+          const res = await fetch(p);
+          if (res.ok) {
+            const data = await res.json();
+            cachedAnalyticsMap = data || {};
+            isLoaded = true;
+            return cachedAnalyticsMap;
+          }
+        } catch (e) {
+          // try next path
+        }
+      }
+      return {};
+    })();
   }
   return loadPromise;
 };
