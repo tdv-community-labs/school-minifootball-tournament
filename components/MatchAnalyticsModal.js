@@ -106,6 +106,11 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
   const [commentaryFilter, setCommentaryFilter] = useState('all');
 
   const allShots = analytics?.shots || [];
+  const currentShot = allShots[selectedShotIndex];
+  const goalCount = allShots.filter(s => s.outcome === 'goal').length;
+  const saveCount = allShots.filter(s => s.outcome === 'saved').length;
+  const shotsACount = allShots.filter(s => s.team === match.teamA).length;
+  const shotsBCount = allShots.filter(s => s.team === match.teamB).length;
   const filteredShots = useMemo(() => {
     if (!match) return [];
     if (shotFilter === 'goal') return allShots.filter(s => s.outcome === 'goal');
@@ -284,8 +289,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
             { id: 'momentum', label: 'Momentum', icon: 'fa-chart-line' },
             { id: 'commentary', label: 'Canlı Şərh', icon: 'fa-list-ul', badge: commentaryList.length },
             { id: 'stats', label: 'Statistika', icon: 'fa-chart-bar' },
-              { id: 'shotmap', label: 'Zərbə Xəritəsi (2D)', icon: 'fa-crosshairs' },
-              { id: 'pov', label: '3D Qapı POV', icon: 'fa-bullseye', badge: 'PRO' },
+              { id: 'shotmap', label: 'Zərbələr (2D & 3D)', icon: 'fa-crosshairs' },
               { id: 'heatmap', label: 'İstilik Xəritəsi', icon: 'fa-fire-flame-curved' },
             { id: 'video', label: 'Video & YouTube', icon: 'fa-play' },
             { id: 'info', label: 'Matç Haqqında', icon: 'fa-info-circle' }
@@ -691,12 +695,12 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   </div>
                 </div>
               </div>
-            `}
+            
 
-                        <!-- ================================================================= -->
-            <!-- TAB 1: ZƏRBƏLƏR & BİRLƏŞDİRİLMİŞ 3D QAPI POV STADİONU -->
-          <!-- ================================================================= -->
-          ${activeTab === 'pov' && html`
+                <!-- ================================================================= -->
+                <!-- MERGED 3D POV COMPONENT -->
+                <!-- ================================================================= -->
+
             <div className="space-y-4 sm:space-y-5">
               
               <!-- STADION BAŞLIĞI VƏ SÜRƏTLİ FİLTRLƏR -->
@@ -727,6 +731,11 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                           ? `${f.color} shadow-md ring-2 ring-emerald-400/50`
                           : 'bg-slate-800 text-slate-400 hover:text-white'
                       }`}
+
+                        <!-- ================================================================= -->
+            <!-- TAB 1: ZƏRBƏLƏR & BİRLƏŞDİRİLMİŞ 3D QAPI POV STADİONU -->
+          <!-- ================================================================= -->
+          
                     >
                       ${f.label}
                     </button>
