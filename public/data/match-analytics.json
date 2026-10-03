@@ -1,0 +1,5277 @@
+{
+  "m_22_17": {
+    "matchId": "m_22_17",
+    "teamA": "10A",
+    "teamB": "11H",
+    "scoreA": 5,
+    "scoreB": 4,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "01.06.2023 • 17:00",
+    "referee": {
+      "name": "Mohammad Al-Emara",
+      "country": "Azərbaycan",
+      "avgYellow": "0.14",
+      "avgRed": "3.60"
+    },
+    "coaches": {
+      "teamA": "Akis Mantzios",
+      "teamB": "Yeqhishe Melikyan"
+    },
+    "teamRatings": {
+      "teamA": 8.18,
+      "teamB": 7.06
+    },
+    "stats": {
+      "distanceCoveredA": "13.4 km",
+      "distanceCoveredB": "12.8 km",
+      "xgA": 3.99,
+      "xgB": 2.78,
+      "xgotA": 5.75,
+      "xgotB": 4.51,
+      "bigChancesA": 6,
+      "bigChancesB": 5,
+      "totalShotsA": 16,
+      "totalShotsB": 14,
+      "shotsOnTargetA": 11,
+      "shotsOnTargetB": 9,
+      "gkSavesA": 0,
+      "gkSavesB": 6,
+      "sprintsA": 54,
+      "sprintsB": 47,
+      "cornersA": 5,
+      "cornersB": 4,
+      "foulsA": 11,
+      "foulsB": 5,
+      "passesA": 215,
+      "passesB": 168,
+      "passAccuracyA": 82,
+      "passAccuracyB": 74,
+      "tacklesA": 14,
+      "tacklesB": 21,
+      "freeKicksA": 5,
+      "freeKicksB": 11,
+      "possessionA": 55,
+      "possessionB": 45
+    },
+    "lineupA": [
+      {
+        "id": "p1",
+        "name": "10A Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 6.8,
+        "isKeeper": true,
+        "avgVector": {
+          "dx": 2,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p2",
+        "name": "Amin İsmayılov",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam (Fix)",
+        "x": 26,
+        "y": 50,
+        "rating": 7.5,
+        "assists": 1,
+        "avgVector": {
+          "dx": 8,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p3",
+        "name": "Məmmədi",
+        "number": 3,
+        "pos": "MF",
+        "roleName": "Sol Cinah (Ala)",
+        "x": 37,
+        "y": 25,
+        "rating": 6.5,
+        "avgVector": {
+          "dx": 12,
+          "dy": 5
+        }
+      },
+      {
+        "id": "p4",
+        "name": "Fərid Əhmədli",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah / Pleymeyker",
+        "x": 37,
+        "y": 75,
+        "rating": 8.5,
+        "goals": 2,
+        "assists": 2,
+        "redCard": "17'",
+        "avgVector": {
+          "dx": 15,
+          "dy": -8
+        }
+      },
+      {
+        "id": "p5",
+        "name": "Murad Abdullayev",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Mərkəz Hücumçusu (Pivot)",
+        "x": 46,
+        "y": 50,
+        "rating": 9,
+        "goals": 3,
+        "assists": 1,
+        "isMvp": true,
+        "avgVector": {
+          "dx": 18,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [
+      {
+        "id": "p6",
+        "name": "Ağacan",
+        "number": 11,
+        "pos": "SUB",
+        "roleName": "Ehtiyat Yarımmüdafiə",
+        "rating": 7,
+        "subMin": "20'",
+        "outName": "Məmmədi"
+      }
+    ],
+    "lineupB": [
+      {
+        "id": "p7",
+        "name": "11H Qapıçısı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 8.5,
+        "isKeeper": true,
+        "saves": 6,
+        "avgVector": {
+          "dx": -3,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p8",
+        "name": "11H Müdafiəçi",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam (Fix)",
+        "x": 74,
+        "y": 50,
+        "rating": 6.5,
+        "avgVector": {
+          "dx": -6,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p9",
+        "name": "Murad Əhmədzadə",
+        "number": 17,
+        "pos": "MF",
+        "roleName": "Sol Cinah (Ala)",
+        "x": 63,
+        "y": 25,
+        "rating": 7.5,
+        "goals": 2,
+        "assists": 1,
+        "avgVector": {
+          "dx": -14,
+          "dy": 6
+        }
+      },
+      {
+        "id": "p10",
+        "name": "11H Yarımmüdafiə",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sağ Cinah (Ala)",
+        "x": 63,
+        "y": 75,
+        "rating": 6.8,
+        "avgVector": {
+          "dx": -10,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p11",
+        "name": "Şahbaz Şahbazlı",
+        "number": 13,
+        "pos": "FW",
+        "roleName": "Mərkəz Hücumçusu (Pivot)",
+        "x": 54,
+        "y": 50,
+        "rating": 7.8,
+        "goals": 2,
+        "assists": 1,
+        "avgVector": {
+          "dx": -16,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [
+      {
+        "id": "p12",
+        "name": "11H Ehtiyat",
+        "number": 5,
+        "pos": "SUB",
+        "roleName": "Ehtiyat Müdafiəçi",
+        "rating": 6.4,
+        "subMin": "22'",
+        "outName": "11H Müdafiəçi"
+      }
+    ],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Oyun Başa Çatdı",
+        "desc": "Hakim final fitini çaldı! 10A komandası dramatık matçda 5-4 hesabı ilə galib gəldi."
+      },
+      {
+        "min": 31,
+        "type": "shot",
+        "isKey": false,
+        "team": "10A",
+        "player": "Ahmadzada",
+        "desc": "Zərbə bloklandı. Ahmadzada sol ayağı ilə cərimə meydançasından zərbə endirdi."
+      },
+      {
+        "min": 28,
+        "type": "foul",
+        "isKey": false,
+        "team": "11H",
+        "player": "Şahbaz Şahbazlı",
+        "desc": "Şahbaz Şahbazlı mərkəz xəttində fol etdi."
+      },
+      {
+        "min": 22,
+        "type": "sub",
+        "isKey": true,
+        "team": "11H",
+        "player": "11H Ehtiyat",
+        "desc": "Əvəzetmə: 11H Müdafiəçi meydanı tərk edir, 11H Ehtiyat daxil olur."
+      },
+      {
+        "min": 20,
+        "type": "sub",
+        "isKey": true,
+        "team": "10A",
+        "player": "Ağacan",
+        "desc": "Əvəzetmə: Məmmədi meydanı tərk edir, Ağacan daxil olur."
+      },
+      {
+        "min": 17,
+        "type": "card_red",
+        "isKey": true,
+        "team": "10A",
+        "player": "Fərid Əhmədli",
+        "desc": "Qırmızı Vərəqə! Fərid Əhmədli təhlükəli müdaxiləyə görə birbaşa qırmızı vərəqə aldı."
+      },
+      {
+        "min": 11,
+        "type": "goal",
+        "isKey": true,
+        "team": "10A",
+        "player": "Murad Abdullayev",
+        "desc": "QOL! Het-trik! Murad Abdullayev 10A komandasını 5-4 önə çıxarır!"
+      },
+      {
+        "min": 10,
+        "type": "goal",
+        "isKey": true,
+        "team": "11H",
+        "player": "Murad Əhmədzadə",
+        "desc": "QOL! Murad Əhmədzadə hesabı bərabərləşdirir, 4-4!"
+      },
+      {
+        "min": 9,
+        "type": "goal",
+        "isKey": true,
+        "team": "10A",
+        "player": "Fərid Əhmədli",
+        "desc": "QOL! Fərid Əhmədli sağ ayaqla doxsanlıq zərbə verdı! (4-3)"
+      },
+      {
+        "min": 8,
+        "type": "goal",
+        "isKey": true,
+        "team": "10A",
+        "player": "Murad Abdullayev",
+        "desc": "QOL! Murad Abdullayev başla hesabı 3-3 bərabərləşdirdi."
+      },
+      {
+        "min": 7,
+        "type": "goal",
+        "isKey": true,
+        "team": "11H",
+        "player": "Şahbaz Şahbazlı",
+        "desc": "QOL! Şahbaz Şahbazlı penaltini dəqiq yerinə yetirdi! (2-3)"
+      },
+      {
+        "min": 6,
+        "type": "goal",
+        "isKey": true,
+        "team": "11H",
+        "player": "Murad Əhmədzadə",
+        "desc": "QOL! Murad Əhmədzadə yaxın bucaqdan hesabı 2-2 etdi."
+      },
+      {
+        "min": 5,
+        "type": "goal",
+        "isKey": true,
+        "team": "10A",
+        "player": "Fərid Əhmədli",
+        "desc": "QOL! Fərid Əhmədlinin uzaq məsafəli möhtəşəm doxsanlığa zərbəsi! (2-1)"
+      },
+      {
+        "min": 4,
+        "type": "goal",
+        "isKey": true,
+        "team": "11H",
+        "player": "Şahbaz Şahbazlı",
+        "desc": "QOL! Şahbaz Şahbazlı kontr-hücumdan hesabı bərabərləşdirdi (1-1)."
+      },
+      {
+        "min": 3,
+        "type": "goal",
+        "isKey": true,
+        "team": "10A",
+        "player": "Murad Abdullayev",
+        "desc": "QOL! Murad Abdullayev sol 90-a zərbə ilə hesabı açdı! (1-0)"
+      },
+      {
+        "min": 1,
+        "type": "save",
+        "isKey": false,
+        "team": "11H",
+        "player": "11H Qapıçısı",
+        "desc": "Qapıçı seyv etdi - aşağı küncə yönələn təhlükəli zərbə."
+      }
+    ],
+    "momentum": [
+      {
+        "min": 1,
+        "valA": 40,
+        "valB": 10
+      },
+      {
+        "min": 3,
+        "valA": 90,
+        "valB": 5,
+        "event": "goalA"
+      },
+      {
+        "min": 4,
+        "valA": 20,
+        "valB": 85,
+        "event": "goalB"
+      },
+      {
+        "min": 5,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 6,
+        "valA": 30,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 7,
+        "valA": 15,
+        "valB": 95,
+        "event": "goalB"
+      },
+      {
+        "min": 8,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 9,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 10,
+        "valA": 25,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 11,
+        "valA": 95,
+        "valB": 10,
+        "event": "goalA"
+      },
+      {
+        "min": 15,
+        "valA": 60,
+        "valB": 40
+      },
+      {
+        "min": 17,
+        "valA": 10,
+        "valB": 70,
+        "event": "redA"
+      },
+      {
+        "min": 20,
+        "valA": 45,
+        "valB": 55
+      },
+      {
+        "min": 25,
+        "valA": 50,
+        "valB": 50
+      },
+      {
+        "min": 30,
+        "valA": 65,
+        "valB": 35
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [
+        {
+          "x": 82,
+          "y": 48,
+          "intensity": 0.95,
+          "radius": 46
+        },
+        {
+          "x": 76,
+          "y": 32,
+          "intensity": 0.85,
+          "radius": 40
+        },
+        {
+          "x": 78,
+          "y": 70,
+          "intensity": 0.8,
+          "radius": 38
+        },
+        {
+          "x": 64,
+          "y": 50,
+          "intensity": 0.75,
+          "radius": 42
+        },
+        {
+          "x": 52,
+          "y": 30,
+          "intensity": 0.65,
+          "radius": 36
+        },
+        {
+          "x": 55,
+          "y": 72,
+          "intensity": 0.7,
+          "radius": 36
+        },
+        {
+          "x": 38,
+          "y": 50,
+          "intensity": 0.55,
+          "radius": 34
+        },
+        {
+          "x": 18,
+          "y": 50,
+          "intensity": 0.4,
+          "radius": 28
+        }
+      ],
+      "teamB": [
+        {
+          "x": 22,
+          "y": 48,
+          "intensity": 0.9,
+          "radius": 44
+        },
+        {
+          "x": 26,
+          "y": 68,
+          "intensity": 0.8,
+          "radius": 38
+        },
+        {
+          "x": 32,
+          "y": 32,
+          "intensity": 0.75,
+          "radius": 36
+        },
+        {
+          "x": 44,
+          "y": 50,
+          "intensity": 0.6,
+          "radius": 38
+        },
+        {
+          "x": 68,
+          "y": 48,
+          "intensity": 0.85,
+          "radius": 42
+        },
+        {
+          "x": 82,
+          "y": 50,
+          "intensity": 0.92,
+          "radius": 40
+        }
+      ],
+      "playerHeatmaps": {
+        "Murad Abdullayev": {
+          "role": "Mərkəz Hücumçusu (Pivot)",
+          "team": "10A",
+          "touches": 52,
+          "dominantZone": "Rəqib Cərimə Meydançası & Sol Qanad",
+          "duelsWon": "8/11 (73%)",
+          "maxSpeed": "27.4 km/s",
+          "passAcc": "79%",
+          "points": [
+            {
+              "x": 82,
+              "y": 45,
+              "intensity": 0.98,
+              "radius": 40
+            },
+            {
+              "x": 74,
+              "y": 35,
+              "intensity": 0.88,
+              "radius": 36
+            },
+            {
+              "x": 68,
+              "y": 55,
+              "intensity": 0.72,
+              "radius": 32
+            },
+            {
+              "x": 55,
+              "y": 40,
+              "intensity": 0.5,
+              "radius": 26
+            }
+          ]
+        },
+        "Fərid Əhmədli": {
+          "role": "Sağ Cinah / Pleymeyker",
+          "team": "10A",
+          "touches": 64,
+          "dominantZone": "Sağ Cinah & 90-a Zərbə Trayektoriyası",
+          "duelsWon": "7/9 (78%)",
+          "maxSpeed": "26.8 km/s",
+          "passAcc": "86%",
+          "points": [
+            {
+              "x": 76,
+              "y": 72,
+              "intensity": 0.94,
+              "radius": 38
+            },
+            {
+              "x": 62,
+              "y": 68,
+              "intensity": 0.85,
+              "radius": 36
+            },
+            {
+              "x": 52,
+              "y": 55,
+              "intensity": 0.75,
+              "radius": 34
+            },
+            {
+              "x": 42,
+              "y": 62,
+              "intensity": 0.6,
+              "radius": 30
+            }
+          ]
+        }
+      }
+    },
+    "shots": [
+      {
+        "id": "s1",
+        "minute": "00:15",
+        "team": "10A",
+        "player": "Murad Abdullayev",
+        "number": 9,
+        "outcome": "saved",
+        "xg": 0.12,
+        "xgot": 0.35,
+        "situation": "Açıq Oyun",
+        "shotType": "Sol Ayaq",
+        "goalZone": "Aşağı Sol",
+        "pitchX": 68,
+        "pitchY": 28,
+        "goalX": 22,
+        "goalY": 78,
+        "desc": "Cərimə meydançasının kənarından aşağı küncə kəsici zərbə, qapıçı seyv etdi."
+      },
+      {
+        "id": "s7",
+        "minute": "03:35",
+        "team": "10A",
+        "player": "Murad Abdullayev",
+        "number": 9,
+        "outcome": "goal",
+        "xg": 0.38,
+        "xgot": 0.95,
+        "situation": "Ötürmə ilə",
+        "shotType": "Sol Ayaq",
+        "goalZone": "Yuxarı Sol (90-a)",
+        "pitchX": 38,
+        "pitchY": 42,
+        "goalX": 20,
+        "goalY": 22,
+        "desc": "⚽ QOL! Murad Abdullayevin cərimə meydançasının solundan sol 90-a zərbəsi! (1-0)"
+      },
+      {
+        "id": "s9",
+        "minute": "04:40",
+        "team": "11H",
+        "player": "Şahbaz Şahbazlı",
+        "number": 13,
+        "outcome": "goal",
+        "xg": 0.45,
+        "xgot": 0.88,
+        "situation": "Əks-hücum",
+        "shotType": "Sağ Ayaq",
+        "goalZone": "Aşağı Sağ Künc",
+        "pitchX": 65,
+        "pitchY": 35,
+        "goalX": 84,
+        "goalY": 82,
+        "desc": "⚽ QOL! Şahbaz Şahbazlının sürətli əks-hücumdan bərabərlik qolu! (1-1)"
+      },
+      {
+        "id": "s10",
+        "minute": "05:15",
+        "team": "10A",
+        "player": "Fərid Əhmədli",
+        "number": 10,
+        "outcome": "goal",
+        "xg": 0.42,
+        "xgot": 0.92,
+        "situation": "Açıq Oyun",
+        "shotType": "Sağ Ayaq",
+        "goalZone": "Yuxarı Sağ (90-a)",
+        "pitchX": 58,
+        "pitchY": 48,
+        "goalX": 82,
+        "goalY": 24,
+        "desc": "⚽ QOL! Fərid Əhmədlinin mükəmməl uzaq məsafəli doxsanlığa zərbəsi! (2-1)"
+      },
+      {
+        "id": "s11",
+        "minute": "06:05",
+        "team": "11H",
+        "player": "Murad Əhmədzadə",
+        "number": 17,
+        "outcome": "goal",
+        "xg": 0.35,
+        "xgot": 0.85,
+        "situation": "Açıq Oyun",
+        "shotType": "Sol Ayaq",
+        "goalZone": "Aşağı Sol Künc",
+        "pitchX": 35,
+        "pitchY": 40,
+        "goalX": 22,
+        "goalY": 85,
+        "desc": "⚽ QOL! Murad Əhmədzadədən yaxın dirəyə kəsici zərbə! (2-2)"
+      },
+      {
+        "id": "s12",
+        "minute": "07:00",
+        "team": "11H",
+        "player": "Şahbaz Şahbazlı",
+        "number": 13,
+        "outcome": "goal",
+        "xg": 0.79,
+        "xgot": 0.96,
+        "situation": "Penalti",
+        "shotType": "Sağ Ayaq",
+        "goalZone": "Yuxarı Mərkəz",
+        "pitchX": 50,
+        "pitchY": 30,
+        "goalX": 50,
+        "goalY": 28,
+        "desc": "⚽ QOL! Dəqiq penalti zərbəsi qapının tavanına! (2-3)"
+      },
+      {
+        "id": "s13",
+        "minute": "08:20",
+        "team": "10A",
+        "player": "Murad Abdullayev",
+        "number": 9,
+        "outcome": "goal",
+        "xg": 0.52,
+        "xgot": 0.94,
+        "situation": "Ötürmə ilə",
+        "shotType": "Başla",
+        "goalZone": "Aşağı Sol Künc",
+        "pitchX": 45,
+        "pitchY": 22,
+        "goalX": 25,
+        "goalY": 82,
+        "desc": "⚽ QOL! Fəridin ötürməsindən sonra Murad başla qapıya göndərdi! (3-3)"
+      },
+      {
+        "id": "s14",
+        "minute": "09:45",
+        "team": "10A",
+        "player": "Fərid Əhmədli",
+        "number": 10,
+        "outcome": "goal",
+        "xg": 0.35,
+        "xgot": 0.89,
+        "situation": "Açıq Oyun",
+        "shotType": "Sağ Ayaq",
+        "goalZone": "Aşağı Sağ Künc",
+        "pitchX": 62,
+        "pitchY": 44,
+        "goalX": 80,
+        "goalY": 80,
+        "desc": "⚽ QOL! Fərid Əhmədli komandasını yenidən öne çıxarır! (4-3)"
+      },
+      {
+        "id": "s15",
+        "minute": "10:30",
+        "team": "11H",
+        "player": "Murad Əhmədzadə",
+        "number": 17,
+        "outcome": "goal",
+        "xg": 0.4,
+        "xgot": 0.87,
+        "situation": "Ötürmə ilə",
+        "shotType": "Sağ Ayaq",
+        "goalZone": "Aşağı Mərkəz",
+        "pitchX": 48,
+        "pitchY": 34,
+        "goalX": 46,
+        "goalY": 78,
+        "desc": "⚽ QOL! 11H heç-heçəni bərpa edir, 4-4!"
+      },
+      {
+        "id": "s16",
+        "minute": "11:00",
+        "team": "10A",
+        "player": "Murad Abdullayev",
+        "number": 9,
+        "outcome": "goal",
+        "xg": 0.65,
+        "xgot": 0.98,
+        "situation": "Açıq Oyun",
+        "shotType": "Sol Ayaq",
+        "goalZone": "Yuxarı Sağ (90-a)",
+        "pitchX": 44,
+        "pitchY": 28,
+        "goalX": 84,
+        "goalY": 20,
+        "desc": "⚽ QOL! Het-trik! Murad Abdullayevin qələbə gətirən muhtəşəm 5-ci qolu! (5-4)"
+      }
+    ]
+  },
+  "m_yt_2023_10b_10f_3_c_0": {
+    "matchId": "m_yt_2023_10b_10f_3_c_0",
+    "teamA": "10B",
+    "teamB": "10F",
+    "scoreA": 3,
+    "scoreB": 6,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024 • 15:30",
+    "referee": {
+      "name": "Kamran Bəy",
+      "country": "Azərbaycan",
+      "avgYellow": "0.20",
+      "avgRed": "1.10"
+    },
+    "coaches": {
+      "teamA": "10B Məşqçisi",
+      "teamB": "10F Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 6.8,
+      "teamB": 8.5
+    },
+    "stats": {
+      "distanceCoveredA": "11.2 km",
+      "distanceCoveredB": "14.1 km",
+      "xgA": 2.1,
+      "xgB": 4.8,
+      "xgotA": 2.5,
+      "xgotB": 5.9,
+      "bigChancesA": 3,
+      "bigChancesB": 8,
+      "totalShotsA": 10,
+      "totalShotsB": 22,
+      "shotsOnTargetA": 6,
+      "shotsOnTargetB": 14,
+      "gkSavesA": 8,
+      "gkSavesB": 3,
+      "sprintsA": 30,
+      "sprintsB": 55,
+      "cornersA": 2,
+      "cornersB": 7,
+      "foulsA": 9,
+      "foulsB": 4,
+      "passesA": 120,
+      "passesB": 210,
+      "passAccuracyA": 72,
+      "passAccuracyB": 86,
+      "tacklesA": 15,
+      "tacklesB": 18,
+      "freeKicksA": 4,
+      "freeKicksB": 9,
+      "possessionA": 38,
+      "possessionB": 62
+    },
+    "lineupA": [
+      {
+        "id": "p_10b_1",
+        "name": "10B Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 6.2,
+        "isKeeper": true,
+        "saves": 8,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_10b_2",
+        "name": "10B Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 6,
+        "avgVector": {
+          "dx": 5,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_10b_3",
+        "name": "10B Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 6.5,
+        "goals": 1,
+        "avgVector": {
+          "dx": 8,
+          "dy": 5
+        }
+      },
+      {
+        "id": "p_10b_4",
+        "name": "10B Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 6.8,
+        "assists": 1,
+        "avgVector": {
+          "dx": 10,
+          "dy": -5
+        }
+      },
+      {
+        "id": "p_10b_5",
+        "name": "10B Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Hücumçu",
+        "x": 46,
+        "y": 50,
+        "rating": 7.2,
+        "goals": 2,
+        "avgVector": {
+          "dx": 12,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_10f_1",
+        "name": "10F Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 7.5,
+        "isKeeper": true,
+        "saves": 3,
+        "avgVector": {
+          "dx": -1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_10f_2",
+        "name": "10F Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 7.8,
+        "assists": 1,
+        "avgVector": {
+          "dx": -5,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_10f_3",
+        "name": "10F Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 8.2,
+        "goals": 2,
+        "avgVector": {
+          "dx": -12,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p_10f_4",
+        "name": "10F Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 8.5,
+        "goals": 1,
+        "assists": 2,
+        "avgVector": {
+          "dx": -15,
+          "dy": 6
+        }
+      },
+      {
+        "id": "p_10f_5",
+        "name": "10F Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 9.4,
+        "goals": 3,
+        "assists": 1,
+        "isMvp": true,
+        "avgVector": {
+          "dx": -20,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "10F 6-3 hesabı ilə qələbə qazanaraq bürünc medalların sahibi oldu!"
+      },
+      {
+        "min": 28,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Hücumçu",
+        "desc": "QOL! Het-trik! 10F hesab fərqini artırır. (3-6)"
+      },
+      {
+        "min": 24,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Sol Cinah",
+        "desc": "QOL! 10F yenidən fərqi iki topa çıxarır. (3-5)"
+      },
+      {
+        "min": 20,
+        "type": "goal",
+        "isKey": true,
+        "team": "10B",
+        "player": "10B Hücumçu",
+        "desc": "QOL! 10B təslim olmur! Fərq yenidən 1 topa endi. (3-4)"
+      },
+      {
+        "min": 18,
+        "type": "goal",
+        "isKey": true,
+        "team": "10B",
+        "player": "10B Sol Cinah",
+        "desc": "QOL! 10B ikinci hissəyə sürətli başlayır. (2-4)"
+      },
+      {
+        "min": 14,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Sağ Cinah",
+        "desc": "QOL! Sağ cinahdan mükəmməl zərbə! (1-4)"
+      },
+      {
+        "min": 10,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Hücumçu",
+        "desc": "QOL! 10F hücumçusu dubl edir! (1-3)"
+      },
+      {
+        "min": 8,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Hücumçu",
+        "desc": "QOL! 10F hesabda önə keçir! (1-2)"
+      },
+      {
+        "min": 5,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Sol Cinah",
+        "desc": "QOL! 10F tezliklə cavab verir! Hesab bərabərdir. (1-1)"
+      },
+      {
+        "min": 2,
+        "type": "goal",
+        "isKey": true,
+        "team": "10B",
+        "player": "10B Hücumçu",
+        "desc": "QOL! 10B erkən qolla önə keçir! (1-0)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 2,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 5,
+        "valA": 30,
+        "valB": 70,
+        "event": "goalB"
+      },
+      {
+        "min": 8,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 10,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 14,
+        "valA": 25,
+        "valB": 75,
+        "event": "goalB"
+      },
+      {
+        "min": 18,
+        "valA": 70,
+        "valB": 30,
+        "event": "goalA"
+      },
+      {
+        "min": 20,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 24,
+        "valA": 40,
+        "valB": 60,
+        "event": "goalB"
+      },
+      {
+        "min": 28,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 32,
+        "valA": 40,
+        "valB": 60
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_10f_11a_qru_1": {
+    "matchId": "m_yt_2023_10f_11a_qru_1",
+    "teamA": "10F",
+    "teamB": "11A",
+    "scoreA": 5,
+    "scoreB": 4,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024 • 14:00",
+    "referee": {
+      "name": "Cavidan Bəy",
+      "country": "Azərbaycan",
+      "avgYellow": "0.15",
+      "avgRed": "2.10"
+    },
+    "coaches": {
+      "teamA": "10F Məşqçisi",
+      "teamB": "11A Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 7.8,
+      "teamB": 7.6
+    },
+    "stats": {
+      "distanceCoveredA": "12.8 km",
+      "distanceCoveredB": "13.0 km",
+      "xgA": 4.1,
+      "xgB": 3.8,
+      "xgotA": 4.5,
+      "xgotB": 4.2,
+      "bigChancesA": 6,
+      "bigChancesB": 5,
+      "totalShotsA": 18,
+      "totalShotsB": 16,
+      "shotsOnTargetA": 11,
+      "shotsOnTargetB": 10,
+      "gkSavesA": 6,
+      "gkSavesB": 6,
+      "sprintsA": 48,
+      "sprintsB": 50,
+      "cornersA": 5,
+      "cornersB": 4,
+      "foulsA": 6,
+      "foulsB": 7,
+      "passesA": 180,
+      "passesB": 175,
+      "passAccuracyA": 80,
+      "passAccuracyB": 78,
+      "tacklesA": 16,
+      "tacklesB": 14,
+      "freeKicksA": 6,
+      "freeKicksB": 5,
+      "possessionA": 52,
+      "possessionB": 48
+    },
+    "lineupA": [
+      {
+        "id": "p_10f_1",
+        "name": "10F Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 7.2,
+        "isKeeper": true,
+        "saves": 6,
+        "avgVector": {
+          "dx": 2,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_10f_2",
+        "name": "10F Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 7.5,
+        "avgVector": {
+          "dx": 6,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_10f_3",
+        "name": "10F Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 8,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": 10,
+          "dy": 4
+        }
+      },
+      {
+        "id": "p_10f_4",
+        "name": "10F Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 7.8,
+        "goals": 1,
+        "avgVector": {
+          "dx": 12,
+          "dy": -5
+        }
+      },
+      {
+        "id": "p_10f_5",
+        "name": "10F Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 8.8,
+        "goals": 3,
+        "isMvp": true,
+        "avgVector": {
+          "dx": 15,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_11a_1",
+        "name": "11A Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 7,
+        "isKeeper": true,
+        "saves": 6,
+        "avgVector": {
+          "dx": -2,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_11a_2",
+        "name": "11A Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 7.2,
+        "avgVector": {
+          "dx": -7,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p_11a_3",
+        "name": "11A Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 7.6,
+        "goals": 1,
+        "avgVector": {
+          "dx": -12,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_11a_4",
+        "name": "11A Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 7.9,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": -14,
+          "dy": -6
+        }
+      },
+      {
+        "id": "p_11a_5",
+        "name": "11A Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 8.4,
+        "goals": 2,
+        "assists": 1,
+        "avgVector": {
+          "dx": -18,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "10F qrupun ən çətin oyunlarından birində 5-4 hesabı ilə qələbə qazandı!"
+      },
+      {
+        "min": 30,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Hücumçu",
+        "desc": "QOL! Het-trik! 10F son dəqiqələrdə yenidən hesabda irəli çıxır! (5-4)"
+      },
+      {
+        "min": 25,
+        "type": "goal",
+        "isKey": true,
+        "team": "11A",
+        "player": "11A Hücumçu",
+        "desc": "QOL! 11A təslim olmur! Hesab bərabərləşir! (4-4)"
+      },
+      {
+        "min": 22,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Sağ Cinah",
+        "desc": "QOL! Gözəl hücumun məntiqi sonluğu! (4-3)"
+      },
+      {
+        "min": 18,
+        "type": "goal",
+        "isKey": true,
+        "team": "11A",
+        "player": "11A Sağ Cinah",
+        "desc": "QOL! 11A hesabı bərabərləşdirir. (3-3)"
+      },
+      {
+        "min": 15,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Hücumçu",
+        "desc": "QOL! 10F yenidən üstünlüyü ələ alır! (3-2)"
+      },
+      {
+        "min": 10,
+        "type": "goal",
+        "isKey": true,
+        "team": "11A",
+        "player": "11A Sol Cinah",
+        "desc": "QOL! Sürətli əks hücum qolla nəticələnir! (2-2)"
+      },
+      {
+        "min": 7,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Sol Cinah",
+        "desc": "QOL! 10F hesabda önə çıxır. (2-1)"
+      },
+      {
+        "min": 4,
+        "type": "goal",
+        "isKey": true,
+        "team": "11A",
+        "player": "11A Hücumçu",
+        "desc": "QOL! 11A tezliklə hesabı bərabərləşdirir! (1-1)"
+      },
+      {
+        "min": 2,
+        "type": "goal",
+        "isKey": true,
+        "team": "10F",
+        "player": "10F Hücumçu",
+        "desc": "QOL! 10F erkən qolla oyuna başlayır! (1-0)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 2,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 4,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 7,
+        "valA": 75,
+        "valB": 25,
+        "event": "goalA"
+      },
+      {
+        "min": 10,
+        "valA": 25,
+        "valB": 75,
+        "event": "goalB"
+      },
+      {
+        "min": 15,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 18,
+        "valA": 30,
+        "valB": 70,
+        "event": "goalB"
+      },
+      {
+        "min": 22,
+        "valA": 75,
+        "valB": 25,
+        "event": "goalA"
+      },
+      {
+        "min": 25,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 30,
+        "valA": 90,
+        "valB": 10,
+        "event": "goalA"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_11h_11b_qru_4": {
+    "matchId": "m_yt_2023_11h_11b_qru_4",
+    "teamA": "11H",
+    "teamB": "11B",
+    "scoreA": 0,
+    "scoreB": 10,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Tural Bəy",
+      "country": "Azərbaycan",
+      "avgYellow": "0.10",
+      "avgRed": "0.50"
+    },
+    "coaches": {
+      "teamA": "11H Məşqçisi",
+      "teamB": "11B Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 5.2,
+      "teamB": 9.8
+    },
+    "stats": {
+      "distanceCoveredA": "9.5 km",
+      "distanceCoveredB": "11.2 km",
+      "xgA": 0.4,
+      "xgB": 8.5,
+      "xgotA": 0.1,
+      "xgotB": 10.2,
+      "bigChancesA": 0,
+      "bigChancesB": 12,
+      "totalShotsA": 2,
+      "totalShotsB": 35,
+      "shotsOnTargetA": 0,
+      "shotsOnTargetB": 24,
+      "gkSavesA": 14,
+      "gkSavesB": 0,
+      "sprintsA": 20,
+      "sprintsB": 65,
+      "cornersA": 0,
+      "cornersB": 15,
+      "foulsA": 12,
+      "foulsB": 2,
+      "passesA": 65,
+      "passesB": 290,
+      "passAccuracyA": 55,
+      "passAccuracyB": 92,
+      "tacklesA": 22,
+      "tacklesB": 5,
+      "freeKicksA": 1,
+      "freeKicksB": 11,
+      "possessionA": 20,
+      "possessionB": 80
+    },
+    "lineupA": [
+      {
+        "id": "p_11h_1",
+        "name": "11H Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 5.5,
+        "isKeeper": true,
+        "saves": 14,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_11h_2",
+        "name": "11H Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 5,
+        "avgVector": {
+          "dx": 2,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_11h_3",
+        "name": "11H Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 5.2,
+        "avgVector": {
+          "dx": 3,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_11h_4",
+        "name": "11H Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 5.1,
+        "avgVector": {
+          "dx": 4,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p_11h_5",
+        "name": "11H Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 5.3,
+        "avgVector": {
+          "dx": 5,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_11b_1",
+        "name": "11B Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 8,
+        "isKeeper": true,
+        "saves": 0,
+        "avgVector": {
+          "dx": -5,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_11b_2",
+        "name": "11B Müdafiə",
+        "number": 5,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 8.5,
+        "assists": 3,
+        "avgVector": {
+          "dx": -15,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_11b_3",
+        "name": "11B Sol Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 9.2,
+        "goals": 4,
+        "assists": 2,
+        "isMvp": true,
+        "avgVector": {
+          "dx": -25,
+          "dy": -5
+        }
+      },
+      {
+        "id": "p_11b_4",
+        "name": "11B Sağ Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 8.8,
+        "goals": 2,
+        "assists": 3,
+        "avgVector": {
+          "dx": -22,
+          "dy": 5
+        }
+      },
+      {
+        "id": "p_11b_5",
+        "name": "11B Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 9,
+        "goals": 4,
+        "assists": 1,
+        "avgVector": {
+          "dx": -30,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "11B darmadağınla (10-0) qələbə qazandı!"
+      },
+      {
+        "min": 30,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Hücumçu",
+        "desc": "QOL! 11B-nin 10-cu qolu! Poker!"
+      },
+      {
+        "min": 27,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Sol Cinah",
+        "desc": "QOL! 11B Sol Cinah poker edir! (0-9)"
+      },
+      {
+        "min": 24,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Sağ Cinah",
+        "desc": "QOL! (0-8)"
+      },
+      {
+        "min": 20,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Hücumçu",
+        "desc": "QOL! (0-7)"
+      },
+      {
+        "min": 16,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Sol Cinah",
+        "desc": "QOL! (0-6)"
+      },
+      {
+        "min": 12,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Hücumçu",
+        "desc": "QOL! (0-5)"
+      },
+      {
+        "min": 9,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Sol Cinah",
+        "desc": "QOL! (0-4)"
+      },
+      {
+        "min": 7,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Sağ Cinah",
+        "desc": "QOL! (0-3)"
+      },
+      {
+        "min": 4,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Hücumçu",
+        "desc": "QOL! (0-2)"
+      },
+      {
+        "min": 2,
+        "type": "goal",
+        "isKey": true,
+        "team": "11B",
+        "player": "11B Sol Cinah",
+        "desc": "QOL! 11B darmadağına başlayır! (0-1)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 2,
+        "valA": 5,
+        "valB": 95,
+        "event": "goalB"
+      },
+      {
+        "min": 4,
+        "valA": 5,
+        "valB": 95,
+        "event": "goalB"
+      },
+      {
+        "min": 7,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 9,
+        "valA": 5,
+        "valB": 95,
+        "event": "goalB"
+      },
+      {
+        "min": 12,
+        "valA": 5,
+        "valB": 95,
+        "event": "goalB"
+      },
+      {
+        "min": 16,
+        "valA": 5,
+        "valB": 95,
+        "event": "goalB"
+      },
+      {
+        "min": 20,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 24,
+        "valA": 5,
+        "valB": 95,
+        "event": "goalB"
+      },
+      {
+        "min": 27,
+        "valA": 5,
+        "valB": 95,
+        "event": "goalB"
+      },
+      {
+        "min": 30,
+        "valA": 5,
+        "valB": 95,
+        "event": "goalB"
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_10a_10c_d_3_c_6": {
+    "matchId": "m_yt_2023_10a_10c_d_3_c_6",
+    "teamA": "10A",
+    "teamB": "10C/D",
+    "scoreA": 3,
+    "scoreB": 5,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Emin Bəy",
+      "country": "Azərbaycan",
+      "avgYellow": "0.20",
+      "avgRed": "1.00"
+    },
+    "coaches": {
+      "teamA": "10A Məşqçisi",
+      "teamB": "10C/D Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 7,
+      "teamB": 8.2
+    },
+    "stats": {
+      "distanceCoveredA": "12.0 km",
+      "distanceCoveredB": "12.5 km",
+      "xgA": 3.1,
+      "xgB": 4.5,
+      "xgotA": 3.5,
+      "xgotB": 5.1,
+      "bigChancesA": 4,
+      "bigChancesB": 7,
+      "totalShotsA": 14,
+      "totalShotsB": 19,
+      "shotsOnTargetA": 8,
+      "shotsOnTargetB": 12,
+      "gkSavesA": 7,
+      "gkSavesB": 5,
+      "sprintsA": 40,
+      "sprintsB": 45,
+      "cornersA": 3,
+      "cornersB": 6,
+      "foulsA": 8,
+      "foulsB": 7,
+      "passesA": 150,
+      "passesB": 180,
+      "passAccuracyA": 76,
+      "passAccuracyB": 82,
+      "tacklesA": 14,
+      "tacklesB": 16,
+      "freeKicksA": 6,
+      "freeKicksB": 7,
+      "possessionA": 45,
+      "possessionB": 55
+    },
+    "lineupA": [
+      {
+        "id": "p_10a_1",
+        "name": "10A Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 6.8,
+        "isKeeper": true,
+        "saves": 7,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_10a_2",
+        "name": "10A Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 6.5,
+        "avgVector": {
+          "dx": 5,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_10a_3",
+        "name": "10A Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 7.2,
+        "goals": 1,
+        "avgVector": {
+          "dx": 10,
+          "dy": 4
+        }
+      },
+      {
+        "id": "p_10a_4",
+        "name": "10A Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 7,
+        "assists": 1,
+        "avgVector": {
+          "dx": 12,
+          "dy": -5
+        }
+      },
+      {
+        "id": "p_10a_5",
+        "name": "10A Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 7.8,
+        "goals": 2,
+        "avgVector": {
+          "dx": 14,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_10cd_1",
+        "name": "10C/D Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 7.2,
+        "isKeeper": true,
+        "saves": 5,
+        "avgVector": {
+          "dx": -2,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_10cd_2",
+        "name": "10C/D Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 7.8,
+        "assists": 1,
+        "avgVector": {
+          "dx": -6,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_10cd_3",
+        "name": "10C/D Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 8,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": -12,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p_10cd_4",
+        "name": "10C/D Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 8.5,
+        "goals": 2,
+        "assists": 1,
+        "avgVector": {
+          "dx": -14,
+          "dy": 6
+        }
+      },
+      {
+        "id": "p_10cd_5",
+        "name": "10C/D Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 9,
+        "goals": 2,
+        "assists": 2,
+        "isMvp": true,
+        "avgVector": {
+          "dx": -18,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "10C/D gərgin matçda 10A-nı 5-3 hesabı ilə məğlub etdi!"
+      },
+      {
+        "min": 28,
+        "type": "goal",
+        "isKey": true,
+        "team": "10C/D",
+        "player": "10C/D Hücumçu",
+        "desc": "QOL! 10C/D son sözü deyir və fərqi yenidən 2 topa çıxarır! (3-5)"
+      },
+      {
+        "min": 25,
+        "type": "goal",
+        "isKey": true,
+        "team": "10A",
+        "player": "10A Hücumçu",
+        "desc": "QOL! 10A təslim olmur! Fərq 1-ə endi! (3-4)"
+      },
+      {
+        "min": 20,
+        "type": "goal",
+        "isKey": true,
+        "team": "10C/D",
+        "player": "10C/D Sağ Cinah",
+        "desc": "QOL! Gözəl kombinasiya. (2-4)"
+      },
+      {
+        "min": 16,
+        "type": "goal",
+        "isKey": true,
+        "team": "10A",
+        "player": "10A Hücumçu",
+        "desc": "QOL! 10A qol vurur! (2-3)"
+      },
+      {
+        "min": 12,
+        "type": "goal",
+        "isKey": true,
+        "team": "10C/D",
+        "player": "10C/D Sağ Cinah",
+        "desc": "QOL! 10C/D fərqi 2-yə çıxarır. (1-3)"
+      },
+      {
+        "min": 9,
+        "type": "goal",
+        "isKey": true,
+        "team": "10C/D",
+        "player": "10C/D Hücumçu",
+        "desc": "QOL! 10C/D önə keçir! (1-2)"
+      },
+      {
+        "min": 5,
+        "type": "goal",
+        "isKey": true,
+        "team": "10A",
+        "player": "10A Sol Cinah",
+        "desc": "QOL! 10A hesabı bərabərləşdirir! (1-1)"
+      },
+      {
+        "min": 2,
+        "type": "goal",
+        "isKey": true,
+        "team": "10C/D",
+        "player": "10C/D Sol Cinah",
+        "desc": "QOL! 10C/D oyuna sürətli başlayır! (0-1)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 2,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 5,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 9,
+        "valA": 30,
+        "valB": 70,
+        "event": "goalB"
+      },
+      {
+        "min": 12,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 16,
+        "valA": 75,
+        "valB": 25,
+        "event": "goalA"
+      },
+      {
+        "min": 20,
+        "valA": 35,
+        "valB": 65,
+        "event": "goalB"
+      },
+      {
+        "min": 25,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 28,
+        "valA": 25,
+        "valB": 75,
+        "event": "goalB"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_8f_8a_fin_8": {
+    "matchId": "m_yt_2023_8f_8a_fin_8",
+    "teamA": "8F",
+    "teamB": "8A",
+    "scoreA": 3,
+    "scoreB": 8,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Mohammad Al-Emara",
+      "country": "Azərbaycan",
+      "avgYellow": "0.14",
+      "avgRed": "3.60"
+    },
+    "coaches": {
+      "teamA": "8F Məşqçisi",
+      "teamB": "8A Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 6.2,
+      "teamB": 9.1
+    },
+    "stats": {
+      "distanceCoveredA": "10.5 km",
+      "distanceCoveredB": "12.0 km",
+      "xgA": 1.8,
+      "xgB": 6.5,
+      "xgotA": 2.1,
+      "xgotB": 7.8,
+      "bigChancesA": 2,
+      "bigChancesB": 10,
+      "totalShotsA": 8,
+      "totalShotsB": 28,
+      "shotsOnTargetA": 5,
+      "shotsOnTargetB": 18,
+      "gkSavesA": 10,
+      "gkSavesB": 2,
+      "sprintsA": 25,
+      "sprintsB": 50,
+      "cornersA": 1,
+      "cornersB": 8,
+      "foulsA": 11,
+      "foulsB": 5,
+      "passesA": 95,
+      "passesB": 240,
+      "passAccuracyA": 65,
+      "passAccuracyB": 88,
+      "tacklesA": 18,
+      "tacklesB": 12,
+      "freeKicksA": 3,
+      "freeKicksB": 8,
+      "possessionA": 30,
+      "possessionB": 70
+    },
+    "lineupA": [
+      {
+        "id": "p_8f_1",
+        "name": "8F Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 6,
+        "isKeeper": true,
+        "saves": 10,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_8f_2",
+        "name": "8F Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 5.5,
+        "avgVector": {
+          "dx": 4,
+          "dy": -1
+        }
+      },
+      {
+        "id": "p_8f_3",
+        "name": "8F Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 6.5,
+        "goals": 1,
+        "avgVector": {
+          "dx": 8,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_8f_4",
+        "name": "8F Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 6.2,
+        "assists": 1,
+        "avgVector": {
+          "dx": 9,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p_8f_5",
+        "name": "8F Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 7,
+        "goals": 2,
+        "avgVector": {
+          "dx": 12,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_8a_1",
+        "name": "8A Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 7.5,
+        "isKeeper": true,
+        "saves": 2,
+        "avgVector": {
+          "dx": -3,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_8a_2",
+        "name": "8A Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 8,
+        "assists": 2,
+        "avgVector": {
+          "dx": -8,
+          "dy": 1
+        }
+      },
+      {
+        "id": "p_8a_3",
+        "name": "8A Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 8.8,
+        "goals": 3,
+        "assists": 1,
+        "isMvp": true,
+        "avgVector": {
+          "dx": -15,
+          "dy": -3
+        }
+      },
+      {
+        "id": "p_8a_4",
+        "name": "8A Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 8.5,
+        "goals": 2,
+        "assists": 2,
+        "avgVector": {
+          "dx": -14,
+          "dy": 4
+        }
+      },
+      {
+        "id": "p_8a_5",
+        "name": "8A Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 9.2,
+        "goals": 3,
+        "assists": 1,
+        "avgVector": {
+          "dx": -20,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "8A inamlı qələbə (8-3) qazanaraq ÇEMPİON OLUR!"
+      },
+      {
+        "min": 30,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Hücumçu",
+        "desc": "QOL! Het-trik! 8A çempionluğu qeyd edir! (3-8)"
+      },
+      {
+        "min": 27,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Sol Cinah",
+        "desc": "QOL! 8A-nın sol cinahından het-trik! (3-7)"
+      },
+      {
+        "min": 24,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Hücumçu",
+        "desc": "QOL! 8F fərqi azaldır. (3-6)"
+      },
+      {
+        "min": 21,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Sağ Cinah",
+        "desc": "QOL! 8A qarşısıalınmazdır! (2-6)"
+      },
+      {
+        "min": 18,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Hücumçu",
+        "desc": "QOL! Gözəl qol! (2-5)"
+      },
+      {
+        "min": 15,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Hücumçu",
+        "desc": "QOL! 8F yenidən ümidlənir! (2-4)"
+      },
+      {
+        "min": 12,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Sol Cinah",
+        "desc": "QOL! Fərq artır. (1-4)"
+      },
+      {
+        "min": 9,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Sağ Cinah",
+        "desc": "QOL! (1-3)"
+      },
+      {
+        "min": 6,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Sol Cinah",
+        "desc": "QOL! 8F hesabı bərabərləşdirir! (1-1)"
+      },
+      {
+        "min": 4,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Sol Cinah",
+        "desc": "QOL! 8A finala qolla başlayır! (0-1)"
+      },
+      {
+        "min": 2,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Hücumçu",
+        "desc": "QOL! Finala sürətli start! (0-2) (Hakim qolu ləğv edib yenidən verir)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 2,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 4,
+        "valA": 15,
+        "valB": 85,
+        "event": "goalB"
+      },
+      {
+        "min": 6,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 9,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 12,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 15,
+        "valA": 70,
+        "valB": 30,
+        "event": "goalA"
+      },
+      {
+        "min": 18,
+        "valA": 15,
+        "valB": 85,
+        "event": "goalB"
+      },
+      {
+        "min": 21,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 24,
+        "valA": 60,
+        "valB": 40,
+        "event": "goalA"
+      },
+      {
+        "min": 27,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 30,
+        "valA": 5,
+        "valB": 95,
+        "event": "goalB"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_8e_8f_yar_10": {
+    "matchId": "m_yt_2023_8e_8f_yar_10",
+    "teamA": "8E",
+    "teamB": "8F",
+    "scoreA": 2,
+    "scoreB": 2,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Mohammad Al-Emara",
+      "country": "Azərbaycan",
+      "avgYellow": "0.14",
+      "avgRed": "3.60"
+    },
+    "coaches": {
+      "teamA": "8E Məşqçisi",
+      "teamB": "8F Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 7.5,
+      "teamB": 7.8
+    },
+    "stats": {
+      "distanceCoveredA": "13.5 km",
+      "distanceCoveredB": "13.2 km",
+      "xgA": 2.8,
+      "xgB": 2.5,
+      "xgotA": 3.1,
+      "xgotB": 2.9,
+      "bigChancesA": 5,
+      "bigChancesB": 4,
+      "totalShotsA": 14,
+      "totalShotsB": 12,
+      "shotsOnTargetA": 8,
+      "shotsOnTargetB": 7,
+      "gkSavesA": 5,
+      "gkSavesB": 6,
+      "sprintsA": 52,
+      "sprintsB": 48,
+      "cornersA": 4,
+      "cornersB": 3,
+      "foulsA": 12,
+      "foulsB": 10,
+      "passesA": 160,
+      "passesB": 155,
+      "passAccuracyA": 78,
+      "passAccuracyB": 76,
+      "tacklesA": 20,
+      "tacklesB": 22,
+      "freeKicksA": 9,
+      "freeKicksB": 11,
+      "possessionA": 51,
+      "possessionB": 49
+    },
+    "lineupA": [
+      {
+        "id": "p_8e_1",
+        "name": "8E Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 7.5,
+        "isKeeper": true,
+        "saves": 5,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_8e_2",
+        "name": "8E Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 7.2,
+        "avgVector": {
+          "dx": 5,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_8e_3",
+        "name": "8E Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 7.4,
+        "goals": 1,
+        "avgVector": {
+          "dx": 11,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_8e_4",
+        "name": "8E Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 7.1,
+        "assists": 1,
+        "avgVector": {
+          "dx": 9,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p_8e_5",
+        "name": "8E Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 7.8,
+        "goals": 1,
+        "avgVector": {
+          "dx": 15,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_8f_1",
+        "name": "8F Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 8.5,
+        "isKeeper": true,
+        "saves": 6,
+        "avgVector": {
+          "dx": -1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_8f_2",
+        "name": "8F Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 7.5,
+        "avgVector": {
+          "dx": -6,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p_8f_3",
+        "name": "8F Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 7.8,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": -12,
+          "dy": 4
+        }
+      },
+      {
+        "id": "p_8f_4",
+        "name": "8F Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 7.4,
+        "assists": 1,
+        "avgVector": {
+          "dx": -10,
+          "dy": -3
+        }
+      },
+      {
+        "id": "p_8f_5",
+        "name": "8F Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 8.2,
+        "goals": 1,
+        "isMvp": true,
+        "avgVector": {
+          "dx": -16,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "Penaltilər seriyasında 8F 4-3 qalib gələrək finala yüksəlir!"
+      },
+      {
+        "min": 32,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Hücumçu",
+        "desc": "PENALTİ QOLU! (Həlledici zərbə)"
+      },
+      {
+        "min": 29,
+        "type": "goal",
+        "isKey": true,
+        "team": "8E",
+        "player": "8E Hücumçu",
+        "desc": "QOL! 8E son dəqiqələrdə hesabı bərabərləşdirir və oyunu penaltilərə aparır! (2-2)"
+      },
+      {
+        "min": 20,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Hücumçu",
+        "desc": "QOL! 8F hesabda önə çıxır! (1-2)"
+      },
+      {
+        "min": 14,
+        "type": "goal",
+        "isKey": true,
+        "team": "8E",
+        "player": "8E Sol Cinah",
+        "desc": "QOL! 8E cavab verir! Hesab bərabərdir. (1-1)"
+      },
+      {
+        "min": 8,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Sol Cinah",
+        "desc": "QOL! 8F hesabı açır! (0-1)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 2,
+        "valA": 50,
+        "valB": 50
+      },
+      {
+        "min": 8,
+        "valA": 30,
+        "valB": 70,
+        "event": "goalB"
+      },
+      {
+        "min": 14,
+        "valA": 75,
+        "valB": 25,
+        "event": "goalA"
+      },
+      {
+        "min": 20,
+        "valA": 40,
+        "valB": 60,
+        "event": "goalB"
+      },
+      {
+        "min": 25,
+        "valA": 60,
+        "valB": 40
+      },
+      {
+        "min": 29,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_8a_8e_3_c_14": {
+    "matchId": "m_yt_2023_8a_8e_3_c_14",
+    "teamA": "8A",
+    "teamB": "8E",
+    "scoreA": 5,
+    "scoreB": 3,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Mohammad Al-Emara",
+      "country": "Azərbaycan",
+      "avgYellow": "0.14",
+      "avgRed": "3.60"
+    },
+    "coaches": {
+      "teamA": "8A Məşqçisi",
+      "teamB": "8E Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 8.2,
+      "teamB": 7
+    },
+    "stats": {
+      "distanceCoveredA": "11.8 km",
+      "distanceCoveredB": "10.5 km",
+      "xgA": 4.8,
+      "xgB": 2.2,
+      "xgotA": 5.2,
+      "xgotB": 2.8,
+      "bigChancesA": 6,
+      "bigChancesB": 3,
+      "totalShotsA": 18,
+      "totalShotsB": 11,
+      "shotsOnTargetA": 10,
+      "shotsOnTargetB": 5,
+      "gkSavesA": 2,
+      "gkSavesB": 5,
+      "sprintsA": 45,
+      "sprintsB": 35,
+      "cornersA": 6,
+      "cornersB": 2,
+      "foulsA": 7,
+      "foulsB": 9,
+      "passesA": 190,
+      "passesB": 140,
+      "passAccuracyA": 82,
+      "passAccuracyB": 71,
+      "tacklesA": 14,
+      "tacklesB": 18,
+      "freeKicksA": 6,
+      "freeKicksB": 5,
+      "possessionA": 58,
+      "possessionB": 42
+    },
+    "lineupA": [
+      {
+        "id": "p_8a_1_g",
+        "name": "8A Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 6.8,
+        "isKeeper": true,
+        "saves": 2,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_8a_2_g",
+        "name": "8A Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 7.2,
+        "avgVector": {
+          "dx": 5,
+          "dy": 1
+        }
+      },
+      {
+        "id": "p_8a_3_g",
+        "name": "8A Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 8.5,
+        "goals": 2,
+        "avgVector": {
+          "dx": 12,
+          "dy": 5
+        }
+      },
+      {
+        "id": "p_8a_4_g",
+        "name": "8A Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 8,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": 10,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p_8a_5_g",
+        "name": "8A Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 9,
+        "goals": 2,
+        "assists": 2,
+        "isMvp": true,
+        "avgVector": {
+          "dx": 15,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_8e_1_g",
+        "name": "8E Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 6.5,
+        "isKeeper": true,
+        "saves": 5,
+        "avgVector": {
+          "dx": -1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_8e_2_g",
+        "name": "8E Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 6.8,
+        "avgVector": {
+          "dx": -5,
+          "dy": -1
+        }
+      },
+      {
+        "id": "p_8e_3_g",
+        "name": "8E Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 7.2,
+        "goals": 1,
+        "avgVector": {
+          "dx": -10,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_8e_4_g",
+        "name": "8E Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 7.5,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": -12,
+          "dy": -5
+        }
+      },
+      {
+        "id": "p_8e_5_g",
+        "name": "8E Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 7.8,
+        "goals": 1,
+        "avgVector": {
+          "dx": -16,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "8A qrup oyununda inamlı qələbə (5-3) qazanır!"
+      },
+      {
+        "min": 28,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Sol Cinah",
+        "desc": "QOL! 8A fərqi yenidən artırır. (5-3)"
+      },
+      {
+        "min": 24,
+        "type": "goal",
+        "isKey": true,
+        "team": "8E",
+        "player": "8E Hücumçu",
+        "desc": "QOL! 8E ümidlərini qoruyur! (4-3)"
+      },
+      {
+        "min": 20,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Hücumçu",
+        "desc": "QOL! (4-2)"
+      },
+      {
+        "min": 16,
+        "type": "goal",
+        "isKey": true,
+        "team": "8E",
+        "player": "8E Sağ Cinah",
+        "desc": "QOL! (3-2)"
+      },
+      {
+        "min": 12,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Sol Cinah",
+        "desc": "QOL! (3-1)"
+      },
+      {
+        "min": 8,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Sağ Cinah",
+        "desc": "QOL! (2-1)"
+      },
+      {
+        "min": 5,
+        "type": "goal",
+        "isKey": true,
+        "team": "8E",
+        "player": "8E Sol Cinah",
+        "desc": "QOL! (1-1)"
+      },
+      {
+        "min": 2,
+        "type": "goal",
+        "isKey": true,
+        "team": "8A",
+        "player": "8A Hücumçu",
+        "desc": "QOL! Erkən qol! (1-0)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 2,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 5,
+        "valA": 30,
+        "valB": 70,
+        "event": "goalB"
+      },
+      {
+        "min": 8,
+        "valA": 75,
+        "valB": 25,
+        "event": "goalA"
+      },
+      {
+        "min": 12,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 16,
+        "valA": 40,
+        "valB": 60,
+        "event": "goalB"
+      },
+      {
+        "min": 20,
+        "valA": 70,
+        "valB": 30,
+        "event": "goalA"
+      },
+      {
+        "min": 24,
+        "valA": 35,
+        "valB": 65,
+        "event": "goalB"
+      },
+      {
+        "min": 28,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_7c_7e_qru_12": {
+    "matchId": "m_yt_2023_7c_7e_qru_12",
+    "teamA": "7C",
+    "teamB": "7E",
+    "scoreA": 1,
+    "scoreB": 4,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Tural Bəy",
+      "country": "Azərbaycan",
+      "avgYellow": "0.10",
+      "avgRed": "0.50"
+    },
+    "coaches": {
+      "teamA": "7C Məşqçisi",
+      "teamB": "7E Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 6.2,
+      "teamB": 7.8
+    },
+    "stats": {
+      "distanceCoveredA": "10.0 km",
+      "distanceCoveredB": "11.5 km",
+      "xgA": 1.2,
+      "xgB": 3.8,
+      "xgotA": 1,
+      "xgotB": 4.2,
+      "bigChancesA": 1,
+      "bigChancesB": 5,
+      "totalShotsA": 6,
+      "totalShotsB": 16,
+      "shotsOnTargetA": 2,
+      "shotsOnTargetB": 9,
+      "gkSavesA": 5,
+      "gkSavesB": 1,
+      "sprintsA": 25,
+      "sprintsB": 45,
+      "cornersA": 2,
+      "cornersB": 5,
+      "foulsA": 8,
+      "foulsB": 6,
+      "passesA": 110,
+      "passesB": 170,
+      "passAccuracyA": 68,
+      "passAccuracyB": 80,
+      "tacklesA": 15,
+      "tacklesB": 14,
+      "freeKicksA": 4,
+      "freeKicksB": 7,
+      "possessionA": 40,
+      "possessionB": 60
+    },
+    "lineupA": [
+      {
+        "id": "p_7c_1",
+        "name": "7C Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 6.5,
+        "isKeeper": true,
+        "saves": 5,
+        "avgVector": {
+          "dx": 2,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_7c_2",
+        "name": "7C Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 6,
+        "avgVector": {
+          "dx": 4,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_7c_3",
+        "name": "7C Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 6.2,
+        "avgVector": {
+          "dx": 8,
+          "dy": -3
+        }
+      },
+      {
+        "id": "p_7c_4",
+        "name": "7C Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 6.8,
+        "goals": 1,
+        "avgVector": {
+          "dx": 10,
+          "dy": 4
+        }
+      },
+      {
+        "id": "p_7c_5",
+        "name": "7C Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 6.1,
+        "avgVector": {
+          "dx": 12,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_7e_1",
+        "name": "7E Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 7,
+        "isKeeper": true,
+        "saves": 1,
+        "avgVector": {
+          "dx": -2,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_7e_2",
+        "name": "7E Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 7.5,
+        "avgVector": {
+          "dx": -5,
+          "dy": -1
+        }
+      },
+      {
+        "id": "p_7e_3",
+        "name": "7E Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 7.8,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": -10,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_7e_4",
+        "name": "7E Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 8.2,
+        "goals": 1,
+        "assists": 2,
+        "avgVector": {
+          "dx": -12,
+          "dy": -5
+        }
+      },
+      {
+        "id": "p_7e_5",
+        "name": "7E Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 8.5,
+        "goals": 2,
+        "isMvp": true,
+        "avgVector": {
+          "dx": -15,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "7E 4-1 hesablı qələbə ilə xalını artırır!"
+      },
+      {
+        "min": 25,
+        "type": "goal",
+        "isKey": true,
+        "team": "7E",
+        "player": "7E Hücumçu",
+        "desc": "QOL! 7E qələbəni təmin edir! (1-4)"
+      },
+      {
+        "min": 18,
+        "type": "goal",
+        "isKey": true,
+        "team": "7E",
+        "player": "7E Sol Cinah",
+        "desc": "QOL! (1-3)"
+      },
+      {
+        "min": 14,
+        "type": "goal",
+        "isKey": true,
+        "team": "7C",
+        "player": "7C Sağ Cinah",
+        "desc": "QOL! 7C fərqi azaldır! (1-2)"
+      },
+      {
+        "min": 8,
+        "type": "goal",
+        "isKey": true,
+        "team": "7E",
+        "player": "7E Sağ Cinah",
+        "desc": "QOL! (0-2)"
+      },
+      {
+        "min": 3,
+        "type": "goal",
+        "isKey": true,
+        "team": "7E",
+        "player": "7E Hücumçu",
+        "desc": "QOL! 7E hesabı erkən açır! (0-1)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 3,
+        "valA": 15,
+        "valB": 85,
+        "event": "goalB"
+      },
+      {
+        "min": 8,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 14,
+        "valA": 70,
+        "valB": 30,
+        "event": "goalA"
+      },
+      {
+        "min": 18,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 25,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_8f_7f_3_c_16": {
+    "matchId": "m_yt_2023_8f_7f_3_c_16",
+    "teamA": "8F",
+    "teamB": "7F",
+    "scoreA": 8,
+    "scoreB": 3,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Mohammad Al-Emara",
+      "country": "Azərbaycan",
+      "avgYellow": "0.14",
+      "avgRed": "3.60"
+    },
+    "coaches": {
+      "teamA": "8F Məşqçisi",
+      "teamB": "7F Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 8.8,
+      "teamB": 6.5
+    },
+    "stats": {
+      "distanceCoveredA": "11.5 km",
+      "distanceCoveredB": "10.0 km",
+      "xgA": 6.2,
+      "xgB": 1.8,
+      "xgotA": 7.5,
+      "xgotB": 2.2,
+      "bigChancesA": 9,
+      "bigChancesB": 2,
+      "totalShotsA": 24,
+      "totalShotsB": 9,
+      "shotsOnTargetA": 15,
+      "shotsOnTargetB": 5,
+      "gkSavesA": 2,
+      "gkSavesB": 7,
+      "sprintsA": 55,
+      "sprintsB": 30,
+      "cornersA": 7,
+      "cornersB": 2,
+      "foulsA": 6,
+      "foulsB": 10,
+      "passesA": 210,
+      "passesB": 120,
+      "passAccuracyA": 84,
+      "passAccuracyB": 65,
+      "tacklesA": 16,
+      "tacklesB": 12,
+      "freeKicksA": 8,
+      "freeKicksB": 4,
+      "possessionA": 65,
+      "possessionB": 35
+    },
+    "lineupA": [
+      {
+        "id": "p_8f_1_g",
+        "name": "8F Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 7,
+        "isKeeper": true,
+        "saves": 2,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_8f_2_g",
+        "name": "8F Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 7.5,
+        "assists": 1,
+        "avgVector": {
+          "dx": 6,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_8f_3_g",
+        "name": "8F Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 8.2,
+        "goals": 2,
+        "assists": 2,
+        "avgVector": {
+          "dx": 12,
+          "dy": 5
+        }
+      },
+      {
+        "id": "p_8f_4_g",
+        "name": "8F Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 8.5,
+        "goals": 2,
+        "assists": 1,
+        "avgVector": {
+          "dx": 10,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p_8f_5_g",
+        "name": "8F Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 9.5,
+        "goals": 4,
+        "assists": 1,
+        "isMvp": true,
+        "avgVector": {
+          "dx": 18,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_7f_1_g",
+        "name": "7F Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 6,
+        "isKeeper": true,
+        "saves": 7,
+        "avgVector": {
+          "dx": -1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_7f_2_g",
+        "name": "7F Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 5.8,
+        "avgVector": {
+          "dx": -4,
+          "dy": -1
+        }
+      },
+      {
+        "id": "p_7f_3_g",
+        "name": "7F Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 6.8,
+        "goals": 1,
+        "avgVector": {
+          "dx": -10,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_7f_4_g",
+        "name": "7F Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 6.5,
+        "goals": 1,
+        "avgVector": {
+          "dx": -8,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p_7f_5_g",
+        "name": "7F Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 7.2,
+        "goals": 1,
+        "avgVector": {
+          "dx": -12,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "8F darmadağınla (8-3) qalib gəlir!"
+      },
+      {
+        "min": 28,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Hücumçu",
+        "desc": "QOL! 8F Hücumçusu poker edir! (8-3)"
+      },
+      {
+        "min": 25,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Sol Cinah",
+        "desc": "QOL! (7-3)"
+      },
+      {
+        "min": 22,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Sağ Cinah",
+        "desc": "QOL! (6-3)"
+      },
+      {
+        "min": 18,
+        "type": "goal",
+        "isKey": true,
+        "team": "7F",
+        "player": "7F Hücumçu",
+        "desc": "QOL! 7F təsəlli qolunu vurur. (5-3)"
+      },
+      {
+        "min": 15,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Hücumçu",
+        "desc": "QOL! Het-trik! (5-2)"
+      },
+      {
+        "min": 12,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Sol Cinah",
+        "desc": "QOL! (4-2)"
+      },
+      {
+        "min": 9,
+        "type": "goal",
+        "isKey": true,
+        "team": "7F",
+        "player": "7F Sağ Cinah",
+        "desc": "QOL! (3-2)"
+      },
+      {
+        "min": 6,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Hücumçu",
+        "desc": "QOL! (3-1)"
+      },
+      {
+        "min": 4,
+        "type": "goal",
+        "isKey": true,
+        "team": "8F",
+        "player": "8F Sağ Cinah",
+        "desc": "QOL! (2-1)"
+      },
+      {
+        "min": 2,
+        "type": "goal",
+        "isKey": true,
+        "team": "7F",
+        "player": "7F Sol Cinah",
+        "desc": "QOL! 7F hesabı açır, lakin sevincləri qısa çəkir. (0-1)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 2,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 4,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 6,
+        "valA": 90,
+        "valB": 10,
+        "event": "goalA"
+      },
+      {
+        "min": 9,
+        "valA": 30,
+        "valB": 70,
+        "event": "goalB"
+      },
+      {
+        "min": 12,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 15,
+        "valA": 95,
+        "valB": 5,
+        "event": "goalA"
+      },
+      {
+        "min": 18,
+        "valA": 40,
+        "valB": 60,
+        "event": "goalB"
+      },
+      {
+        "min": 22,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 25,
+        "valA": 90,
+        "valB": 10,
+        "event": "goalA"
+      },
+      {
+        "min": 28,
+        "valA": 95,
+        "valB": 5,
+        "event": "goalA"
+      },
+      {
+        "min": 32,
+        "valA": 60,
+        "valB": 40
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_7b_8d_3_c_19": {
+    "matchId": "m_yt_2023_7b_8d_3_c_19",
+    "teamA": "7B",
+    "teamB": "8D",
+    "scoreA": 3,
+    "scoreB": 3,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Tural Bəy",
+      "country": "Azərbaycan",
+      "avgYellow": "0.10",
+      "avgRed": "0.50"
+    },
+    "coaches": {
+      "teamA": "7B Məşqçisi",
+      "teamB": "8D Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 7.2,
+      "teamB": 7
+    },
+    "stats": {
+      "distanceCoveredA": "12.5 km",
+      "distanceCoveredB": "12.2 km",
+      "xgA": 3.2,
+      "xgB": 3.5,
+      "xgotA": 3.4,
+      "xgotB": 3.8,
+      "bigChancesA": 4,
+      "bigChancesB": 5,
+      "totalShotsA": 15,
+      "totalShotsB": 16,
+      "shotsOnTargetA": 8,
+      "shotsOnTargetB": 9,
+      "gkSavesA": 6,
+      "gkSavesB": 5,
+      "sprintsA": 40,
+      "sprintsB": 38,
+      "cornersA": 4,
+      "cornersB": 5,
+      "foulsA": 10,
+      "foulsB": 8,
+      "passesA": 140,
+      "passesB": 150,
+      "passAccuracyA": 74,
+      "passAccuracyB": 76,
+      "tacklesA": 18,
+      "tacklesB": 15,
+      "freeKicksA": 7,
+      "freeKicksB": 9,
+      "possessionA": 48,
+      "possessionB": 52
+    },
+    "lineupA": [
+      {
+        "id": "p_7b_1_g",
+        "name": "7B Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 7.5,
+        "isKeeper": true,
+        "saves": 6,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_7b_2_g",
+        "name": "7B Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 6.8,
+        "avgVector": {
+          "dx": 4,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_7b_3_g",
+        "name": "7B Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 7.2,
+        "goals": 1,
+        "avgVector": {
+          "dx": 10,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_7b_4_g",
+        "name": "7B Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 7.4,
+        "assists": 1,
+        "avgVector": {
+          "dx": 12,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p_7b_5_g",
+        "name": "7B Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 7.8,
+        "goals": 2,
+        "isMvp": true,
+        "avgVector": {
+          "dx": 15,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_8d_1_g",
+        "name": "8D Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 7,
+        "isKeeper": true,
+        "saves": 5,
+        "avgVector": {
+          "dx": -2,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_8d_2_g",
+        "name": "8D Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 7.2,
+        "avgVector": {
+          "dx": -6,
+          "dy": -1
+        }
+      },
+      {
+        "id": "p_8d_3_g",
+        "name": "8D Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 7.5,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": -12,
+          "dy": 4
+        }
+      },
+      {
+        "id": "p_8d_4_g",
+        "name": "8D Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 7.1,
+        "assists": 1,
+        "avgVector": {
+          "dx": -10,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p_8d_5_g",
+        "name": "8D Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 7.6,
+        "goals": 2,
+        "avgVector": {
+          "dx": -14,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "Penaltilər seriyasında 7B 6-5 qalib gəlir!"
+      },
+      {
+        "min": 32,
+        "type": "goal",
+        "isKey": true,
+        "team": "7B",
+        "player": "7B Hücumçu",
+        "desc": "PENALTİ QOLU! 7B həlledici zərbəni vurur."
+      },
+      {
+        "min": 28,
+        "type": "goal",
+        "isKey": true,
+        "team": "7B",
+        "player": "7B Hücumçu",
+        "desc": "QOL! 7B son anda bərabərliyi təmin edir! (3-3)"
+      },
+      {
+        "min": 22,
+        "type": "goal",
+        "isKey": true,
+        "team": "8D",
+        "player": "8D Hücumçu",
+        "desc": "QOL! 8D önə keçir! (2-3)"
+      },
+      {
+        "min": 16,
+        "type": "goal",
+        "isKey": true,
+        "team": "8D",
+        "player": "8D Sol Cinah",
+        "desc": "QOL! Hesab yenidən bərabərləşir. (2-2)"
+      },
+      {
+        "min": 10,
+        "type": "goal",
+        "isKey": true,
+        "team": "7B",
+        "player": "7B Sol Cinah",
+        "desc": "QOL! 7B irəli çıxır. (2-1)"
+      },
+      {
+        "min": 6,
+        "type": "goal",
+        "isKey": true,
+        "team": "7B",
+        "player": "7B Hücumçu",
+        "desc": "QOL! 7B hesabı bərabərləşdirir. (1-1)"
+      },
+      {
+        "min": 2,
+        "type": "goal",
+        "isKey": true,
+        "team": "8D",
+        "player": "8D Hücumçu",
+        "desc": "QOL! 8D oyuna qolla başlayır! (0-1)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 2,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 6,
+        "valA": 75,
+        "valB": 25,
+        "event": "goalA"
+      },
+      {
+        "min": 10,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 16,
+        "valA": 30,
+        "valB": 70,
+        "event": "goalB"
+      },
+      {
+        "min": 22,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 28,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_8c_7c_3_c_20": {
+    "matchId": "m_yt_2023_8c_7c_3_c_20",
+    "teamA": "8C",
+    "teamB": "7C",
+    "scoreA": 3,
+    "scoreB": 4,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Cavidan Bəy",
+      "country": "Azərbaycan",
+      "avgYellow": "0.15",
+      "avgRed": "2.10"
+    },
+    "coaches": {
+      "teamA": "8C Məşqçisi",
+      "teamB": "7C Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 7.2,
+      "teamB": 7.8
+    },
+    "stats": {
+      "distanceCoveredA": "12.0 km",
+      "distanceCoveredB": "12.4 km",
+      "xgA": 3.5,
+      "xgB": 3.8,
+      "xgotA": 3.2,
+      "xgotB": 4.1,
+      "bigChancesA": 4,
+      "bigChancesB": 6,
+      "totalShotsA": 15,
+      "totalShotsB": 18,
+      "shotsOnTargetA": 7,
+      "shotsOnTargetB": 10,
+      "gkSavesA": 6,
+      "gkSavesB": 4,
+      "sprintsA": 42,
+      "sprintsB": 48,
+      "cornersA": 3,
+      "cornersB": 5,
+      "foulsA": 9,
+      "foulsB": 7,
+      "passesA": 135,
+      "passesB": 160,
+      "passAccuracyA": 72,
+      "passAccuracyB": 78,
+      "tacklesA": 16,
+      "tacklesB": 14,
+      "freeKicksA": 6,
+      "freeKicksB": 8,
+      "possessionA": 45,
+      "possessionB": 55
+    },
+    "lineupA": [
+      {
+        "id": "p_8c_1_g",
+        "name": "8C Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 6.8,
+        "isKeeper": true,
+        "saves": 6,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_8c_2_g",
+        "name": "8C Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 7,
+        "avgVector": {
+          "dx": 5,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_8c_3_g",
+        "name": "8C Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 7.5,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": 10,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_8c_4_g",
+        "name": "8C Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 7.2,
+        "goals": 1,
+        "avgVector": {
+          "dx": 8,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p_8c_5_g",
+        "name": "8C Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 7.8,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": 14,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_7c_1_g",
+        "name": "7C Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 7.2,
+        "isKeeper": true,
+        "saves": 4,
+        "avgVector": {
+          "dx": -2,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_7c_2_g",
+        "name": "7C Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 7.6,
+        "avgVector": {
+          "dx": -6,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p_7c_3_g",
+        "name": "7C Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 8,
+        "goals": 1,
+        "assists": 2,
+        "avgVector": {
+          "dx": -12,
+          "dy": 4
+        }
+      },
+      {
+        "id": "p_7c_4_g",
+        "name": "7C Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 7.8,
+        "goals": 1,
+        "assists": 1,
+        "avgVector": {
+          "dx": -10,
+          "dy": -5
+        }
+      },
+      {
+        "id": "p_7c_5_g",
+        "name": "7C Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 8.5,
+        "goals": 2,
+        "isMvp": true,
+        "avgVector": {
+          "dx": -16,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "Çox gərgin keçən oyunda 7C 4-3 hesabı ilə qalib gəldi!"
+      },
+      {
+        "min": 29,
+        "type": "goal",
+        "isKey": true,
+        "team": "7C",
+        "player": "7C Hücumçu",
+        "desc": "QOL! 7C son dəqiqələrdə yenidən hesabda irəli çıxır! Həlledici qol ola bilər. (3-4)"
+      },
+      {
+        "min": 25,
+        "type": "goal",
+        "isKey": true,
+        "team": "8C",
+        "player": "8C Hücumçu",
+        "desc": "QOL! 8C təslim olmur, hesab yenidən bərabərləşdi! (3-3)"
+      },
+      {
+        "min": 20,
+        "type": "goal",
+        "isKey": true,
+        "team": "7C",
+        "player": "7C Sağ Cinah",
+        "desc": "QOL! Gözəl hücumun nəticəsi olaraq 7C yenidən önə keçdi. (2-3)"
+      },
+      {
+        "min": 16,
+        "type": "goal",
+        "isKey": true,
+        "team": "8C",
+        "player": "8C Sağ Cinah",
+        "desc": "QOL! 8C bərabərlik qolunu vurur! (2-2)"
+      },
+      {
+        "min": 12,
+        "type": "goal",
+        "isKey": true,
+        "team": "7C",
+        "player": "7C Sol Cinah",
+        "desc": "QOL! 7C irəli çıxır! (1-2)"
+      },
+      {
+        "min": 7,
+        "type": "goal",
+        "isKey": true,
+        "team": "8C",
+        "player": "8C Sol Cinah",
+        "desc": "QOL! 8C hesabı bərabərləşdirdi. (1-1)"
+      },
+      {
+        "min": 3,
+        "type": "goal",
+        "isKey": true,
+        "team": "7C",
+        "player": "7C Hücumçu",
+        "desc": "QOL! 7C oyuna sürətli başlayır! (0-1)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 3,
+        "valA": 15,
+        "valB": 85,
+        "event": "goalB"
+      },
+      {
+        "min": 7,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 12,
+        "valA": 30,
+        "valB": 70,
+        "event": "goalB"
+      },
+      {
+        "min": 16,
+        "valA": 75,
+        "valB": 25,
+        "event": "goalA"
+      },
+      {
+        "min": 20,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 25,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 29,
+        "valA": 10,
+        "valB": 90,
+        "event": "goalB"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_6b_6a_fin_21": {
+    "matchId": "m_yt_2023_6b_6a_fin_21",
+    "teamA": "6B",
+    "teamB": "6A",
+    "scoreA": 1,
+    "scoreB": 2,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Emin Bəy",
+      "country": "Azərbaycan",
+      "avgYellow": "0.20",
+      "avgRed": "1.00"
+    },
+    "coaches": {
+      "teamA": "6B Məşqçisi",
+      "teamB": "6A Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 7,
+      "teamB": 7.5
+    },
+    "stats": {
+      "distanceCoveredA": "11.2 km",
+      "distanceCoveredB": "11.5 km",
+      "xgA": 1.5,
+      "xgB": 2.1,
+      "xgotA": 1.2,
+      "xgotB": 1.8,
+      "bigChancesA": 2,
+      "bigChancesB": 4,
+      "totalShotsA": 8,
+      "totalShotsB": 12,
+      "shotsOnTargetA": 4,
+      "shotsOnTargetB": 6,
+      "gkSavesA": 4,
+      "gkSavesB": 3,
+      "sprintsA": 35,
+      "sprintsB": 42,
+      "cornersA": 2,
+      "cornersB": 4,
+      "foulsA": 6,
+      "foulsB": 5,
+      "passesA": 115,
+      "passesB": 130,
+      "passAccuracyA": 70,
+      "passAccuracyB": 75,
+      "tacklesA": 12,
+      "tacklesB": 14,
+      "freeKicksA": 4,
+      "freeKicksB": 5,
+      "possessionA": 46,
+      "possessionB": 54
+    },
+    "lineupA": [
+      {
+        "id": "p_6b_1_g",
+        "name": "6B Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 6.8,
+        "isKeeper": true,
+        "saves": 4,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_6b_2_g",
+        "name": "6B Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 6.5,
+        "avgVector": {
+          "dx": 4,
+          "dy": 1
+        }
+      },
+      {
+        "id": "p_6b_3_g",
+        "name": "6B Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 7.2,
+        "goals": 1,
+        "avgVector": {
+          "dx": 10,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_6b_4_g",
+        "name": "6B Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 6.8,
+        "avgVector": {
+          "dx": 8,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p_6b_5_g",
+        "name": "6B Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 7,
+        "avgVector": {
+          "dx": 12,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_6a_1_g",
+        "name": "6A Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 7,
+        "isKeeper": true,
+        "saves": 3,
+        "avgVector": {
+          "dx": -1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_6a_2_g",
+        "name": "6A Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 7.5,
+        "avgVector": {
+          "dx": -5,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p_6a_3_g",
+        "name": "6A Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 7.8,
+        "assists": 1,
+        "avgVector": {
+          "dx": -10,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_6a_4_g",
+        "name": "6A Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 8,
+        "goals": 1,
+        "avgVector": {
+          "dx": -12,
+          "dy": -4
+        }
+      },
+      {
+        "id": "p_6a_5_g",
+        "name": "6A Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 8.5,
+        "goals": 1,
+        "assists": 1,
+        "isMvp": true,
+        "avgVector": {
+          "dx": -15,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "6A minimal hesablı qələbə (2-1) ilə 6-cı siniflərin ÇEMPİONU OLUR!"
+      },
+      {
+        "min": 25,
+        "type": "goal",
+        "isKey": true,
+        "team": "6A",
+        "player": "6A Hücumçu",
+        "desc": "QOL! 6A hücumçusu həlledici ola biləcək qolu vurur! (1-2)"
+      },
+      {
+        "min": 14,
+        "type": "goal",
+        "isKey": true,
+        "team": "6B",
+        "player": "6B Sol Cinah",
+        "desc": "QOL! 6B bərabərlik qolunu vurur! Final həyəcanı davam edir. (1-1)"
+      },
+      {
+        "min": 6,
+        "type": "goal",
+        "isKey": true,
+        "team": "6A",
+        "player": "6A Sağ Cinah",
+        "desc": "QOL! 6A finalda hesabı açır! (0-1)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 6,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 10,
+        "valA": 40,
+        "valB": 60
+      },
+      {
+        "min": 14,
+        "valA": 80,
+        "valB": 20,
+        "event": "goalA"
+      },
+      {
+        "min": 20,
+        "valA": 50,
+        "valB": 50
+      },
+      {
+        "min": 25,
+        "valA": 15,
+        "valB": 85,
+        "event": "goalB"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  },
+  "m_yt_2023_6d_6f_3_c_22": {
+    "matchId": "m_yt_2023_6d_6f_3_c_22",
+    "teamA": "6D",
+    "teamB": "6F",
+    "scoreA": 1,
+    "scoreB": 2,
+    "format": "5v5",
+    "pitchDimensions": "40m x 20m",
+    "stadium": "TDV BTL Minifutbol Arena",
+    "location": "Bakı, Azərbaycan",
+    "date": "15.05.2024",
+    "referee": {
+      "name": "Tural Bəy",
+      "country": "Azərbaycan",
+      "avgYellow": "0.10",
+      "avgRed": "0.50"
+    },
+    "coaches": {
+      "teamA": "6D Məşqçisi",
+      "teamB": "6F Məşqçisi"
+    },
+    "teamRatings": {
+      "teamA": 6.8,
+      "teamB": 7.2
+    },
+    "stats": {
+      "distanceCoveredA": "10.5 km",
+      "distanceCoveredB": "11.0 km",
+      "xgA": 1.1,
+      "xgB": 1.9,
+      "xgotA": 1,
+      "xgotB": 2.1,
+      "bigChancesA": 2,
+      "bigChancesB": 3,
+      "totalShotsA": 9,
+      "totalShotsB": 11,
+      "shotsOnTargetA": 4,
+      "shotsOnTargetB": 6,
+      "gkSavesA": 4,
+      "gkSavesB": 3,
+      "sprintsA": 30,
+      "sprintsB": 35,
+      "cornersA": 3,
+      "cornersB": 2,
+      "foulsA": 5,
+      "foulsB": 4,
+      "passesA": 110,
+      "passesB": 125,
+      "passAccuracyA": 68,
+      "passAccuracyB": 72,
+      "tacklesA": 10,
+      "tacklesB": 12,
+      "freeKicksA": 3,
+      "freeKicksB": 5,
+      "possessionA": 45,
+      "possessionB": 55
+    },
+    "lineupA": [
+      {
+        "id": "p_6d_1_g",
+        "name": "6D Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 14,
+        "y": 50,
+        "rating": 6.5,
+        "isKeeper": true,
+        "saves": 4,
+        "avgVector": {
+          "dx": 1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_6d_2_g",
+        "name": "6D Müdafiə",
+        "number": 4,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 26,
+        "y": 50,
+        "rating": 6.2,
+        "avgVector": {
+          "dx": 3,
+          "dy": -1
+        }
+      },
+      {
+        "id": "p_6d_3_g",
+        "name": "6D Sol Cinah",
+        "number": 7,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 37,
+        "y": 25,
+        "rating": 6.5,
+        "goals": 1,
+        "avgVector": {
+          "dx": 8,
+          "dy": 2
+        }
+      },
+      {
+        "id": "p_6d_4_g",
+        "name": "6D Sağ Cinah",
+        "number": 10,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 37,
+        "y": 75,
+        "rating": 6.8,
+        "assists": 1,
+        "avgVector": {
+          "dx": 9,
+          "dy": -3
+        }
+      },
+      {
+        "id": "p_6d_5_g",
+        "name": "6D Hücumçu",
+        "number": 9,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 46,
+        "y": 50,
+        "rating": 6.4,
+        "avgVector": {
+          "dx": 11,
+          "dy": 0
+        }
+      }
+    ],
+    "benchA": [],
+    "lineupB": [
+      {
+        "id": "p_6f_1_g",
+        "name": "6F Qapıçı",
+        "number": 1,
+        "pos": "GK",
+        "roleName": "Qapıçı",
+        "x": 86,
+        "y": 50,
+        "rating": 6.8,
+        "isKeeper": true,
+        "saves": 3,
+        "avgVector": {
+          "dx": -1,
+          "dy": 0
+        }
+      },
+      {
+        "id": "p_6f_2_g",
+        "name": "6F Müdafiə",
+        "number": 3,
+        "pos": "DF",
+        "roleName": "Son Adam",
+        "x": 74,
+        "y": 50,
+        "rating": 7,
+        "avgVector": {
+          "dx": -4,
+          "dy": -1
+        }
+      },
+      {
+        "id": "p_6f_3_g",
+        "name": "6F Sol Cinah",
+        "number": 8,
+        "pos": "MF",
+        "roleName": "Sol Cinah",
+        "x": 63,
+        "y": 25,
+        "rating": 7.2,
+        "goals": 1,
+        "avgVector": {
+          "dx": -8,
+          "dy": 3
+        }
+      },
+      {
+        "id": "p_6f_4_g",
+        "name": "6F Sağ Cinah",
+        "number": 11,
+        "pos": "MF",
+        "roleName": "Sağ Cinah",
+        "x": 63,
+        "y": 75,
+        "rating": 7.5,
+        "goals": 1,
+        "assists": 1,
+        "isMvp": true,
+        "avgVector": {
+          "dx": -10,
+          "dy": -2
+        }
+      },
+      {
+        "id": "p_6f_5_g",
+        "name": "6F Hücumçu",
+        "number": 10,
+        "pos": "FW",
+        "roleName": "Pivot",
+        "x": 54,
+        "y": 50,
+        "rating": 7.2,
+        "assists": 1,
+        "avgVector": {
+          "dx": -12,
+          "dy": 0
+        }
+      }
+    ],
+    "benchB": [],
+    "commentary": [
+      {
+        "min": 32,
+        "type": "whistle",
+        "isKey": true,
+        "team": "both",
+        "title": "Matç Bitdi",
+        "desc": "6F gərgin mübarizədə 2-1 qalib gələrək 3-cü yeri tutur!"
+      },
+      {
+        "min": 28,
+        "type": "goal",
+        "isKey": true,
+        "team": "6F",
+        "player": "6F Sağ Cinah",
+        "desc": "QOL! 6F sağ cinahdan möhtəşəm qolla yenidən önə keçir! (1-2)"
+      },
+      {
+        "min": 20,
+        "type": "goal",
+        "isKey": true,
+        "team": "6D",
+        "player": "6D Sol Cinah",
+        "desc": "QOL! 6D əks hücumla hesabı bərabərləşdirir! (1-1)"
+      },
+      {
+        "min": 10,
+        "type": "goal",
+        "isKey": true,
+        "team": "6F",
+        "player": "6F Sol Cinah",
+        "desc": "QOL! 6F qapı qarşısında yaranan qarışıqlıqdan istifadə edib hesabı açır. (0-1)"
+      }
+    ],
+    "momentum": [
+      {
+        "min": 5,
+        "valA": 40,
+        "valB": 60
+      },
+      {
+        "min": 10,
+        "valA": 20,
+        "valB": 80,
+        "event": "goalB"
+      },
+      {
+        "min": 15,
+        "valA": 60,
+        "valB": 40
+      },
+      {
+        "min": 20,
+        "valA": 85,
+        "valB": 15,
+        "event": "goalA"
+      },
+      {
+        "min": 25,
+        "valA": 30,
+        "valB": 70
+      },
+      {
+        "min": 28,
+        "valA": 15,
+        "valB": 85,
+        "event": "goalB"
+      },
+      {
+        "min": 32,
+        "valA": 50,
+        "valB": 50
+      }
+    ],
+    "heatmapData": {
+      "teamA": [],
+      "teamB": [],
+      "playerHeatmaps": {}
+    },
+    "shots": []
+  }
+}

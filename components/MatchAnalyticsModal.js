@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import htm from 'htm';
-import { getMatchAnalytics, YOUTUBE_CONFIG } from '../services/matchAnalyticsData.js?v=20260912_0120';
+import { getMatchAnalytics, loadAnalyticsData, YOUTUBE_CONFIG } from '../services/matchAnalyticsData.js?v=20260912_0120';
 import { getSofascoreBadgeStyle } from '../services/database.js?v=20260912_0120';
 
 const html = htm.bind(React.createElement);
 
 export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers = [], lang = 'az' }) {
-  const analytics = useMemo(() => (match ? getMatchAnalytics(match, allPlayers) : null), [match, allPlayers]);
+  const [dataVersion, setDataVersion] = useState(0);
+
+  useEffect(() => {
+    if (isOpen) {
+      loadAnalyticsData().then(() => setDataVersion(v => v + 1));
+    }
+  }, [isOpen, match]);
+
+  const analytics = useMemo(() => (match ? getMatchAnalytics(match, allPlayers) : null), [match, allPlayers, dataVersion]);
   const [activeTab, setActiveTab] = useState('lineup'); // 'lineup' | 'momentum' | 'commentary' | 'stats' | 'shotmap' | 'heatmap' | 'video' | 'info'
   const [selectedShotIndex, setSelectedShotIndex] = useState(0);
   const [shotFilter, setShotFilter] = useState('all');
