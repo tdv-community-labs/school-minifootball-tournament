@@ -96,7 +96,17 @@ export default function App() {
       return () => clearTimeout(timer);
     }
   }, [isCheckingAuth]);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTabState] = useState('dashboard');
+  
+  const handleTabChange = (tab) => {
+    if (!document.startViewTransition) {
+      setActiveTabState(tab);
+      return;
+    }
+    document.startViewTransition(() => {
+      setActiveTabState(tab);
+    });
+  };
   const [activeYear, setActiveYear] = useState(() => {
     return localStorage.getItem('btl_selected_year') || '2022-2023';
   });
@@ -237,20 +247,20 @@ export default function App() {
       
       // If already authorized, go straight to admin tab
       if (isSessionValid()) {
-        setActiveTab('admin');
+        handleTabChange('admin');
       } else {
         // Otherwise trigger password modal prompt
         setAuthError('');
         setShowPasswordPrompt(true);
       }
     } else if (hash && hash.startsWith('#match/')) {
-      setActiveTab('matches');
+      handleTabChange('matches');
     }
 
     const handleHashChange = () => {
       const currentHash = window.location.hash;
       if (currentHash && currentHash.startsWith('#match/')) {
-        setActiveTab('matches');
+        handleTabChange('matches');
       }
     };
     window.addEventListener('hashchange', handleHashChange);
@@ -276,13 +286,13 @@ export default function App() {
       setIsAdminAuthorized(true);
       setShowPasswordPrompt(false);
       setInputPassword('');
-      setActiveTab('admin');
+      handleTabChange('admin');
     } else {
       setAuthError(result.reason || 'Xəta: Yanlış şifrə!');
       if (result.isLocked) {
         setTimeout(() => {
           setShowPasswordPrompt(false);
-          setActiveTab('dashboard');
+          handleTabChange('dashboard');
         }, 3000);
       }
       setInputPassword('');
@@ -296,7 +306,7 @@ export default function App() {
   const handleAdminLogout = () => {
     logoutAdmin();
     setIsAdminAuthorized(false);
-    setActiveTab('dashboard');
+    handleTabChange('dashboard');
   };
 
   const renderContent = () => {
@@ -369,7 +379,7 @@ export default function App() {
             
             <!-- Left Logo Section: Dedicated Sports Product Logo -->
             <div className="flex items-center space-x-2.5 sm:space-x-3 shrink-0">
-              <div className="flex items-center space-x-2.5 cursor-pointer shrink-0 group" onClick=${() => setActiveTab('dashboard')}>
+              <div className="flex items-center space-x-2.5 cursor-pointer shrink-0 group" onClick=${() => handleTabChange('dashboard')}>
                 <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-700 via-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-purple-600/30 shrink-0 group-hover:scale-105 transition-transform">
                   <i className="fas fa-futbol text-lg text-white"></i>
                 </div>
@@ -396,7 +406,7 @@ export default function App() {
                 return html`
                   <button
                     key=${item.id}
-                    onClick=${() => setActiveTab(item.id)}
+                    onClick=${() => handleTabChange(item.id)}
                     className=${`px-3.5 py-1.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-150 flex items-center space-x-2 cursor-pointer ${
                       isActive 
                         ? 'bg-white dark:bg-zinc-800 text-purple-600 dark:text-purple-400 shadow-sm border border-purple-200/80 dark:border-purple-800/40' 
@@ -547,7 +557,7 @@ export default function App() {
                   <button
                     key=${item.id}
                     onClick=${() => {
-                      setActiveTab(item.id);
+                      handleTabChange(item.id);
                       setIsMobileMenuOpen(false);
                     }}
                     className=${`w-full text-left px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition flex items-center space-x-3 cursor-pointer ${
@@ -921,7 +931,7 @@ export default function App() {
                   onClick=${() => {
                     setShowPasswordPrompt(false);
                     setInputPassword('');
-                    setActiveTab('dashboard');
+                    handleTabChange('dashboard');
                   }}
                   className="bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-bold py-3 px-4 rounded-xl text-xs transition cursor-pointer"
                 >
@@ -945,13 +955,13 @@ export default function App() {
           setIsSearchOpen(false);
           if (yr) handleYearChange(yr);
           if (div) setActiveDivision(div);
-          setActiveTab('standings');
+          handleTabChange('standings');
         }}
         onSelectMatch=${(m) => {
           setIsSearchOpen(false);
           if (m.year) handleYearChange(m.year);
           if (m.division) setActiveDivision(m.division);
-          setActiveTab('matches');
+          handleTabChange('matches');
         }}
         lang=${lang}
       />
@@ -981,7 +991,7 @@ export default function App() {
             <button
               key=${item.id}
               onClick=${() => {
-                setActiveTab(item.id);
+                handleTabChange(item.id);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className=${`flex flex-col items-center justify-center py-1 px-3 rounded-2xl transition-all cursor-pointer ${

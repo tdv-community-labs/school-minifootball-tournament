@@ -403,3 +403,79 @@ html.dark table.standings-table tr.srow-other:hover {
     break-inside: avoid;
   }
 }
+
+
+/* ========================================================
+   UI/UX PROMAX ENHANCEMENTS (Glassmorphism & Motion)
+   ======================================================== */
+
+/* Advanced View Transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(root) {
+  animation-name: fade-out, slide-out;
+}
+::view-transition-new(root) {
+  animation-name: fade-in, slide-in;
+  mix-blend-mode: normal;
+}
+@keyframes fade-out { to { opacity: 0; filter: blur(4px); } }
+@keyframes fade-in { from { opacity: 0; filter: blur(4px); } }
+@keyframes slide-out { to { transform: translateY(-10px) scale(0.98); } }
+@keyframes slide-in { from { transform: translateY(10px) scale(0.98); } }
+
+/* Global Scrollbar Styling (Premium) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(168, 85, 247, 0.15); /* light purple */
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(168, 85, 247, 0.3);
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(168, 85, 247, 0.5);
+}
+
+/* Global Selection */
+::selection {
+  background-color: rgba(168, 85, 247, 0.3);
+  color: inherit;
+}
+
+/* Animated Glassmorphism Backgrounds for Modals */
+dialog::backdrop {
+  background: rgba(9, 10, 15, 0.6);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  animation: backdrop-fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes backdrop-fade-in {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to { opacity: 1; backdrop-filter: blur(12px); }
+}
+
+/* General Layout Tweaks for premium feel */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glow effects for cards */
+.hover-glow:hover {
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.4);
+}

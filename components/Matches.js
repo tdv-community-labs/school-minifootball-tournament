@@ -12,7 +12,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import htm from 'htm';
-import { Skeleton } from './ui.js?v=2026';
+import { Skeleton, TeamBadge } from './ui.js';
 import { db, getSofascoreBadgeStyle, calculateSofascoreRating } from '../services/database.js?v=20260912_0120';
 import { t as fallbackT, getDivisionLabel as fallbackGetDivisionLabel, getStageLabel as fallbackGetStageLabel, isMatchDivision } from '../services/i18n.js?v=20260912_0120';
 import { sanitizeEmbedUrl } from '../services/security.js?v=20260912_0120';
@@ -296,9 +296,11 @@ export default function Matches({ activeDivision, activeYear, lang = 'en', t = (
               <div 
                 key=${match.id}
                 onClick=${() => setSelectedMatch(match)}
-                className="bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 hover:border-purple-500/40 dark:hover:border-purple-500/40 rounded-3xl overflow-hidden shadow-xs hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex flex-col justify-between hover:dark:border-purple-500/50 hover:dark:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-300"
+                className="hover-glow bg-white dark:bg-[#080808] dark:backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-xs hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col justify-between relative"
               >
-                <!-- Match Card Top -->
+                <!-- Glow overlay -->
+<div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-purple-500/0 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"></div>
+<!-- Match Card Top -->
                 <div className="p-4 sm:p-6 bg-zinc-50/50 dark:bg-[#080808] dark:backdrop-blur-xl/60 border-b border-zinc-100 dark:border-white/10/60">
                   <div className="flex justify-between items-center mb-3 sm:mb-4 gap-2">
                     <div className="flex items-center gap-1.5 flex-wrap">
