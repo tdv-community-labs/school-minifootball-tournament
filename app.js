@@ -24,6 +24,7 @@ import Compare from './components/Compare.js';
 import DreamTeam from './components/DreamTeam.js';
 import AdminDashboard from './components/AdminDashboard.js?v=20260912_0120';
 import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260912_0120';
+import TeamProfileModal from './components/TeamProfileModal.js';
 import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260912_0120';
 import PublicAiChatbot from './components/PublicAiChatbot.js?v=20260912_0120';
 import { db } from './services/database.js?v=20260912_0120';

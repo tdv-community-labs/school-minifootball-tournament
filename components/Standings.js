@@ -33,7 +33,7 @@ const normalizeStage = (stage) => {
   return s;
 };
 
-export default function Standings({ activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang), onOpenPlayerProfile }) {
+export default function Standings({ activeDivision, activeYear, lang = 'en', t = (k) => fallbackT(k, lang), onOpenPlayerProfile, onOpenTeamProfile }) {
   const [table, setTable] = useState([]);
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
