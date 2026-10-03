@@ -135,7 +135,7 @@ export default function Players({ activeDivision, activeYear, lang = 'en', t = (
                   <div
                     key=${player.id}
                     onClick=${() => onOpenPlayerProfile?.(player.name)}
-                    className=\$\{\`group bg-white dark:bg-[#080808]/90 dark:backdrop-blur-2xl border border-zinc-200 dark:border-white/10 rounded-3xl p-4 sm:p-6 shadow-xs ${borderGlow} ${shadowGlow} hover:-translate-y-1.5 transition-all duration-500 flex flex-col justify-between relative overflow-hidden cursor-pointer\`\}
+                    className=${`group bg-white dark:bg-[#080808]/90 dark:backdrop-blur-2xl border border-zinc-200 dark:border-white/10 rounded-3xl p-4 sm:p-6 shadow-xs ${borderGlow} ${shadowGlow} hover:-translate-y-1.5 transition-all duration-500 flex flex-col justify-between relative overflow-hidden cursor-pointer`}
                   >
                     <!-- Top colour bar (Animated) -->
                     <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-sky-500 to-purple-500 opacity-80 group-hover:opacity-100 transition-opacity"></div>

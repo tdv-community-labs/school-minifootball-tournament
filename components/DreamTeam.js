@@ -83,31 +83,31 @@ export default function DreamTeam({ activeYear }) {
   // Renders a pitch slot
   const renderSlot = (slotId, label, x, y) => {
     const p = team[slotId];
-    return html\`
+    return html`
       <div 
         className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center group z-10"
-        style=\${{ left: x + '%', top: y + '%' }}
-        onClick=\${() => setActiveSlot(slotId)}
+        style=${{ left: x + '%', top: y + '%' }}
+        onClick=${() => setActiveSlot(slotId)}
       >
-        <div className=\${\`w-14 h-14 sm:w-16 sm:h-16 rounded-full border-[3px] flex items-center justify-center cursor-pointer transition-all transform hover:scale-110 shadow-xl relative overflow-hidden \${p ? 'border-emerald-400 bg-slate-900' : activeSlot === slotId ? 'border-yellow-400 bg-yellow-400/20 animate-pulse' : 'border-white/40 bg-black/40 hover:border-white'}\`}>
-          \${p ? html\`
+        <div className=${`w-14 h-14 sm:w-16 sm:h-16 rounded-full border-[3px] flex items-center justify-center cursor-pointer transition-all transform hover:scale-110 shadow-xl relative overflow-hidden ${p ? 'border-emerald-400 bg-slate-900' : activeSlot === slotId ? 'border-yellow-400 bg-yellow-400/20 animate-pulse' : 'border-white/40 bg-black/40 hover:border-white'}`}>
+          ${p ? html`
              <i className="fas fa-user text-2xl sm:text-3xl text-slate-300 opacity-50 absolute bottom-0 translate-y-1/4"></i>
              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-             \${p.rating && html\`
-               <div className=\${\`absolute bottom-0 w-full text-center text-[10px] font-black \${getSofascoreBadgeStyle(p.rating)}\`}>
-                 \${p.rating.toFixed(1)}
+             ${p.rating && html`
+               <div className=${`absolute bottom-0 w-full text-center text-[10px] font-black ${getSofascoreBadgeStyle(p.rating)}`}>
+                 ${p.rating.toFixed(1)}
                </div>
-             \`}
-             <button onClick=\${(e) => removePlayer(slotId, e)} className="absolute top-0 right-0 w-4 h-4 bg-rose-500 rounded-full text-[8px] flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"><i className="fas fa-times"></i></button>
-          \` : html\`
+             `}
+             <button onClick=${(e) => removePlayer(slotId, e)} className="absolute top-0 right-0 w-4 h-4 bg-rose-500 rounded-full text-[8px] flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"><i className="fas fa-times"></i></button>
+          ` : html`
              <i className="fas fa-plus text-white/50 text-xl"></i>
-          \`}
+          `}
         </div>
         <div className="mt-1 bg-black/80 px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-black uppercase text-white shadow-md border border-white/10 text-center min-w-[60px] truncate max-w-[80px]">
-          \${p ? p.name.split(' ')[0] : label}
+          ${p ? p.name.split(' ')[0] : label}
         </div>
       </div>
-    \`;
+    `;
   };
 
   const searchResults = useMemo(() => {
@@ -115,7 +115,7 @@ export default function DreamTeam({ activeYear }) {
     return players.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 8);
   }, [searchTerm, players]);
 
-  return html\`
+  return html`
     <div className="max-w-5xl mx-auto space-y-6 animate-fadeIn pb-20">
       
       <!-- HEADER -->
@@ -136,11 +136,11 @@ export default function DreamTeam({ activeYear }) {
         <div className="flex gap-4 relative z-10 w-full sm:w-auto">
           <div className="bg-black/50 border border-white/10 rounded-2xl p-3 flex-1 sm:flex-none text-center">
              <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Komanda Reytinqi</span>
-             <span className="block text-2xl font-black text-emerald-400 drop-shadow-md">\${teamRating}</span>
+             <span className="block text-2xl font-black text-emerald-400 drop-shadow-md">${teamRating}</span>
           </div>
           <div className="bg-black/50 border border-white/10 rounded-2xl p-3 flex-1 sm:flex-none text-center">
              <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest">Bazar Dəyəri</span>
-             <span className="block text-2xl font-black text-yellow-400 drop-shadow-md">\${teamValue}</span>
+             <span className="block text-2xl font-black text-yellow-400 drop-shadow-md">${teamValue}</span>
           </div>
         </div>
       </div>
@@ -152,8 +152,8 @@ export default function DreamTeam({ activeYear }) {
            <div className="flex justify-between items-center mb-4">
              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Taktiki Lövhə</h3>
              <select 
-               value=\${formation} 
-               onChange=\${(e) => setFormation(e.target.value)}
+               value=${formation} 
+               onChange=${(e) => setFormation(e.target.value)}
                className="bg-slate-900 border border-white/10 text-white text-xs font-bold rounded-lg px-3 py-1.5 focus:outline-none focus:border-emerald-500 cursor-pointer"
              >
                <option value="1-2-1">1-2-1 (Almaz)</option>
@@ -165,7 +165,7 @@ export default function DreamTeam({ activeYear }) {
            
            <div className="relative w-full aspect-[2/3] sm:aspect-square md:aspect-video bg-emerald-700 rounded-2xl overflow-hidden border-4 border-emerald-900 shadow-inner max-h-[600px] mx-auto flex-1">
              <!-- Grass Pattern -->
-             <div className="absolute inset-0 opacity-30" style=\${{ backgroundImage: 'repeating-linear-gradient(0deg, transparent 0%, transparent 10%, #000 10%, #000 20%)' }}></div>
+             <div className="absolute inset-0 opacity-30" style=${{ backgroundImage: 'repeating-linear-gradient(0deg, transparent 0%, transparent 10%, #000 10%, #000 20%)' }}></div>
              <!-- Lines -->
              <div className="absolute inset-0 border-[3px] border-white/60 m-4 rounded-sm"></div>
              <!-- Center Line -->
@@ -180,42 +180,42 @@ export default function DreamTeam({ activeYear }) {
              <div className="absolute bottom-4 left-1/2 w-40 sm:w-64 h-16 sm:h-24 border-t-[3px] border-x-[3px] border-white/60 -translate-x-1/2"></div>
 
              <!-- SLOTS based on Formation (Attacking upwards) -->
-             \${renderSlot('gk', 'QAP (GK)', 50, 90)}
+             ${renderSlot('gk', 'QAP (GK)', 50, 90)}
              
-             \${formation === '1-2-1' && html\`
-               \${renderSlot('p1', 'MÜD (CB)', 50, 70)}
-               \${renderSlot('p2', 'YRM (LM)', 25, 45)}
-               \${renderSlot('p3', 'YRM (RM)', 75, 45)}
-               \${renderSlot('p4', 'HÜC (ST)', 50, 20)}
-             \`}
-             \${formation === '2-2' && html\`
-               \${renderSlot('p1', 'MÜD (LB)', 30, 70)}
-               \${renderSlot('p2', 'MÜD (RB)', 70, 70)}
-               \${renderSlot('p3', 'HÜC (LF)', 30, 25)}
-               \${renderSlot('p4', 'HÜC (RF)', 70, 25)}
-             \`}
-             \${formation === '1-3' && html\`
-               \${renderSlot('p1', 'MÜD (CB)', 50, 75)}
-               \${renderSlot('p2', 'YRM (LW)', 20, 35)}
-               \${renderSlot('p3', 'YRM (CAM)', 50, 45)}
-               \${renderSlot('p4', 'YRM (RW)', 80, 35)}
-             \`}
-             \${formation === '3-1' && html\`
-               \${renderSlot('p1', 'MÜD (LB)', 20, 65)}
-               \${renderSlot('p2', 'MÜD (CB)', 50, 75)}
-               \${renderSlot('p3', 'MÜD (RB)', 80, 65)}
-               \${renderSlot('p4', 'HÜC (ST)', 50, 25)}
-             \`}
+             ${formation === '1-2-1' && html`
+               ${renderSlot('p1', 'MÜD (CB)', 50, 70)}
+               ${renderSlot('p2', 'YRM (LM)', 25, 45)}
+               ${renderSlot('p3', 'YRM (RM)', 75, 45)}
+               ${renderSlot('p4', 'HÜC (ST)', 50, 20)}
+             `}
+             ${formation === '2-2' && html`
+               ${renderSlot('p1', 'MÜD (LB)', 30, 70)}
+               ${renderSlot('p2', 'MÜD (RB)', 70, 70)}
+               ${renderSlot('p3', 'HÜC (LF)', 30, 25)}
+               ${renderSlot('p4', 'HÜC (RF)', 70, 25)}
+             `}
+             ${formation === '1-3' && html`
+               ${renderSlot('p1', 'MÜD (CB)', 50, 75)}
+               ${renderSlot('p2', 'YRM (LW)', 20, 35)}
+               ${renderSlot('p3', 'YRM (CAM)', 50, 45)}
+               ${renderSlot('p4', 'YRM (RW)', 80, 35)}
+             `}
+             ${formation === '3-1' && html`
+               ${renderSlot('p1', 'MÜD (LB)', 20, 65)}
+               ${renderSlot('p2', 'MÜD (CB)', 50, 75)}
+               ${renderSlot('p3', 'MÜD (RB)', 80, 65)}
+               ${renderSlot('p4', 'HÜC (ST)', 50, 25)}
+             `}
            </div>
         </div>
 
         <!-- SIDEBAR: PLAYER SELECTION -->
         <div className="lg:col-span-4 bg-[#161a25] border border-white/10 rounded-3xl p-6 shadow-xl flex flex-col h-[500px] lg:h-auto">
-          \${activeSlot ? html\`
+          ${activeSlot ? html`
              <div className="flex-1 flex flex-col animate-fadeIn">
                <div className="flex items-center justify-between mb-4">
                  <h3 className="text-sm font-black text-white">Oyunçu Seç</h3>
-                 <button onClick=\${() => setActiveSlot(null)} className="text-slate-400 hover:text-white"><i className="fas fa-times"></i></button>
+                 <button onClick=${() => setActiveSlot(null)} className="text-slate-400 hover:text-white"><i className="fas fa-times"></i></button>
                </div>
                
                <div className="relative mb-4">
@@ -223,39 +223,39 @@ export default function DreamTeam({ activeYear }) {
                  <input 
                    type="text" 
                    autoFocus
-                   value=\${searchTerm}
-                   onInput=\${e => setSearchTerm(e.target.value)}
+                   value=${searchTerm}
+                   onInput=${e => setSearchTerm(e.target.value)}
                    placeholder="Oyunçunun adını yazın..." 
                    className="w-full bg-[#1e2333] border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-emerald-500"
                  />
                </div>
                
                <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-2">
-                 \${searchTerm === '' ? html\`
+                 ${searchTerm === '' ? html`
                    <div className="h-full flex flex-col items-center justify-center text-slate-500">
                      <i className="fas fa-search text-3xl mb-2 opacity-50"></i>
                      <span className="text-xs">Axtarışa başlayın...</span>
                    </div>
-                 \` : searchResults.length === 0 ? html\`
+                 ` : searchResults.length === 0 ? html`
                    <div className="text-center text-slate-500 text-xs py-4">Oyunçu tapılmadı</div>
-                 \` : searchResults.map(p => html\`
+                 ` : searchResults.map(p => html`
                    <div 
-                     key=\${p.name}
-                     onClick=\${() => handleSelectPlayer(p)}
+                     key=${p.name}
+                     onClick=${() => handleSelectPlayer(p)}
                      className="bg-[#1e2333] border border-white/5 p-3 rounded-xl flex items-center justify-between cursor-pointer hover:bg-white/10 transition-colors group"
                    >
                      <div>
-                       <div className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">\${p.name}</div>
-                       <div className="text-[10px] text-slate-400 mt-0.5">\${p.className}</div>
+                       <div className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">${p.name}</div>
+                       <div className="text-[10px] text-slate-400 mt-0.5">${p.className}</div>
                      </div>
-                     \${p.rating && html\`
-                        <span className=\${\`text-[10px] font-black px-2 py-0.5 rounded shadow \${getSofascoreBadgeStyle(p.rating)}\`}>\${p.rating.toFixed(1)}</span>
-                     \`}
+                     ${p.rating && html`
+                        <span className=${`text-[10px] font-black px-2 py-0.5 rounded shadow ${getSofascoreBadgeStyle(p.rating)}`}>${p.rating.toFixed(1)}</span>
+                     `}
                    </div>
-                 \`)}
+                 `)}
                </div>
              </div>
-          \` : html\`
+          ` : html`
              <div className="flex-1 flex flex-col items-center justify-center text-center animate-fadeIn">
                <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center text-4xl text-slate-600 mb-4 shadow-inner">
                  <i className="fas fa-hand-pointer"></i>
@@ -263,16 +263,16 @@ export default function DreamTeam({ activeYear }) {
                <h3 className="text-lg font-black text-white mb-2">Taktikada Boşluğa Kliklə</h3>
                <p className="text-sm text-slate-400 max-w-[200px]">Meydançadakı "+" ikonlarına basaraq oyunçuları seçin və "Dream Team" qurun.</p>
                
-               \${selectedCount === 5 && html\`
+               ${selectedCount === 5 && html`
                  <button className="mt-8 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl font-black shadow-[0_0_15px_rgba(16,185,129,0.4)] transition-transform hover:scale-105 active:scale-95 flex items-center gap-2">
                    <i className="fas fa-share-alt"></i> Komandanı Paylaş
                  </button>
-               \`}
+               `}
              </div>
-          \`}
+          `}
         </div>
 
       </div>
     </div>
-  \`;
+  `;
 }

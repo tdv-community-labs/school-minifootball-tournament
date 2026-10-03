@@ -319,14 +319,14 @@ export default function MatchPlayerProfileModal({ player, match, onClose }) {
                     className="absolute w-4 h-4 sm:w-5 sm:h-5 bg-white rounded-full border-2 border-slate-900 flex items-center justify-center shadow-lg -translate-x-1/2 -translate-y-1/2 z-20"
                     style=${{ left: p.px + '%', top: p.py + '%', animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) ' + (i * 0.1) + 's both' }}
                   >
-                    <div className=${\`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full \${p.success ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-rose-500'}\`}></div>
+                    <div className=${'w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full ' + (p.success ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-rose-500')}></div>
                   </div>
                 `)}
                 
                 ${activeTab === 'def' && stats.visuals.defends.map((p, i) => html`
                   <div 
                     key=${i} 
-                    className=${\`absolute w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border-[1.5px] border-slate-900 shadow-md -translate-x-1/2 -translate-y-1/2 z-20 \${i % 2 === 0 ? 'bg-orange-500' : 'bg-pink-500'}\`}
+                    className=${'absolute w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border-[1.5px] border-slate-900 shadow-md -translate-x-1/2 -translate-y-1/2 z-20 ' + (i % 2 === 0 ? 'bg-orange-500' : 'bg-pink-500')}
                     style=${{ left: p.px + '%', top: p.py + '%', animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) ' + (i * 0.05) + 's both' }}
                   ></div>
                 `)}

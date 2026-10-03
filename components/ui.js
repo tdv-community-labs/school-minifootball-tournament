@@ -142,9 +142,9 @@ export const TeamBadge = ({ teamName, className = 'w-10 h-10 text-sm' }) => {
   const initials = String(safeName).substring(0, 3).toUpperCase();
   
   return html`
-    <div className=\`relative flex items-center justify-center shrink-0 group ${className}\` title=\`${safeName}\`>
-      <div className=\`absolute inset-0 bg-gradient-to-br ${bg} ${border} border-2 rounded-xl sm:rounded-2xl rounded-br-sm rotate-3 shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12 opacity-40\`></div>
-      <div className=\`absolute inset-0 bg-gradient-to-br ${bg} ${border} border-2 rounded-xl sm:rounded-2xl rounded-br-sm shadow-[0_4px_15px_rgba(0,0,0,0.5)] flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-105\`>
+    <div className=${'relative flex items-center justify-center shrink-0 group ' + className} title=${safeName}>
+      <div className=${'absolute inset-0 bg-gradient-to-br border-2 rounded-xl sm:rounded-2xl rounded-br-sm rotate-3 shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12 opacity-40 ' + bg + ' ' + border}></div>
+      <div className=${'absolute inset-0 bg-gradient-to-br border-2 rounded-xl sm:rounded-2xl rounded-br-sm shadow-[0_4px_15px_rgba(0,0,0,0.5)] flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-105 ' + bg + ' ' + border}>
          <div className="absolute top-0 left-0 w-[150%] h-[150%] bg-white/10 -rotate-45 translate-x-[-50%] translate-y-[-50%] pointer-events-none"></div>
          <span className="font-black text-white tracking-tighter drop-shadow-md relative z-10">${initials}</span>
       </div>
@@ -159,7 +159,7 @@ export const SiteLogo = ({ className = 'w-10 h-10' }) => {
   return html`
     <div className="relative group/logo inline-flex items-center justify-center shrink-0">
       <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-emerald-500 blur-md opacity-60 group-hover/logo:opacity-100 transition-opacity duration-500 animate-pulse"></div>
-      <div className=\`relative z-10 ${className} rounded-full border-[3px] border-[#090A0F] shadow-xl overflow-hidden bg-zinc-900 flex items-center justify-center\`>
+      <div className=${'relative z-10 rounded-full border-[3px] border-[#090A0F] shadow-xl overflow-hidden bg-zinc-900 flex items-center justify-center ' + className}>
         <img src="assets/tdv-logo.png" className="w-full h-full object-cover transform transition-transform duration-500 group-hover/logo:scale-110" alt="TDV BTL" />
       </div>
     </div>
