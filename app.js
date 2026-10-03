@@ -1,4 +1,5 @@
 import { authService } from './services/authService.js?v=20260912_0120';
+import { SiteLogo, TeamBadge } from './components/ui.js';
 import UnifiedAuthBarrier from './components/UnifiedAuthBarrier.js?v=20260912_0120';
 /**
  * ============================================================================

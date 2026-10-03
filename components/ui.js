@@ -118,8 +118,9 @@ export const Skeleton = ({ className = 'h-4 w-full' }) => { return React.createE
 /**
  * Professional Team Crest / Shield
  */
-export const TeamBadge = ({ teamName = '?', className = 'w-10 h-10 text-sm' }) => {
-  const nameToHash = teamName === '?' ? 'Unknown' : teamName;
+export const TeamBadge = ({ teamName, className = 'w-10 h-10 text-sm' }) => {
+  const safeName = teamName || '?';
+  const nameToHash = safeName === '?' ? 'Unknown' : String(safeName);
   const hash = nameToHash.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
   
   // Premium gradient combinations
@@ -134,14 +135,14 @@ export const TeamBadge = ({ teamName = '?', className = 'w-10 h-10 text-sm' }) =
     ['from-pink-600 to-rose-900', 'border-pink-400/50']
   ];
   
-  const [bg, border] = teamName === '?' 
+  const [bg, border] = safeName === '?' 
     ? ['from-zinc-700 to-zinc-900', 'border-zinc-500/50'] 
     : colors[hash % colors.length];
     
-  const initials = teamName.substring(0, 3).toUpperCase();
+  const initials = String(safeName).substring(0, 3).toUpperCase();
   
   return html`
-    <div className=\`relative flex items-center justify-center shrink-0 group ${className}\` title=\`${teamName}\`>
+    <div className=\`relative flex items-center justify-center shrink-0 group ${className}\` title=\`${safeName}\`>
       <div className=\`absolute inset-0 bg-gradient-to-br ${bg} ${border} border-2 rounded-xl sm:rounded-2xl rounded-br-sm rotate-3 shadow-[0_4px_15px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12 opacity-40\`></div>
       <div className=\`absolute inset-0 bg-gradient-to-br ${bg} ${border} border-2 rounded-xl sm:rounded-2xl rounded-br-sm shadow-[0_4px_15px_rgba(0,0,0,0.5)] flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-105\`>
          <div className="absolute top-0 left-0 w-[150%] h-[150%] bg-white/10 -rotate-45 translate-x-[-50%] translate-y-[-50%] pointer-events-none"></div>
