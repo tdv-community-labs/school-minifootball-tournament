@@ -691,9 +691,9 @@ export default function Standings({ activeDivision, activeYear, lang = 'en', t =
                               const isQualified = hasMultipleGroups ? (index < 2) : (index === 0);
 
                               const rowClass = isFirst
-                                ? 'srow-first'
+                                ? 'srow-first bg-gradient-to-r from-emerald-500/10 to-transparent border-l-4 border-emerald-500 shadow-[inset_0_1px_0_rgba(16,185,129,0.2)]'
                                 : (isSecond && hasMultipleGroups)
-                                ? 'srow-second'
+                                ? 'srow-second bg-gradient-to-r from-blue-500/10 to-transparent border-l-4 border-blue-500 shadow-[inset_0_1px_0_rgba(59,130,246,0.2)]'
                                 : 'srow-other';
 
                               return html`

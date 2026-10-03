@@ -479,3 +479,10 @@ body {
   box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
   border-color: rgba(168, 85, 247, 0.4);
 }
+
+@keyframes shine {
+  100% { left: 200%; }
+}
+.animate-shine {
+  animation: shine 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
