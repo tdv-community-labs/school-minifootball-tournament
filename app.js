@@ -344,9 +344,7 @@ export default function App() {
   if (isCheckingAuth && !userSession) {
     return html`
       <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center gap-3 text-white">
-        <div className="w-12 h-12 rounded-2xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center animate-pulse">
-          <img src="assets/tdv-logo.png" className="w-8 h-8 rounded-full" alt="TDV" />
-        </div>
+        <${SiteLogo} className="w-12 h-12" />
         <p className="text-xs text-zinc-400 font-medium">Vahid TDV Girişi yoxlanılır...</p>
       </div>
     `;
@@ -704,7 +702,7 @@ export default function App() {
       <footer className="bg-white/80 dark:bg-[#030303]/80 backdrop-blur-md text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-white/10/80 py-8 text-center text-xs font-semibold pb-24 sm:pb-8 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 pr-4 md:pr-48">
           <div className="flex items-center gap-2.5">
-            <img src="assets/tdv-logo.jpg" alt="TDV BTL" className="w-6 h-6 rounded-full object-cover border border-amber-500/60 shadow-xs" />
+            <${SiteLogo} className="w-6 h-6" />
             <p className="text-zinc-600 dark:text-zinc-300">© 2026 Türkiye Diyanet Vakfı Bakı Türk Liseyi • TDV Sports Liqası. ${t('allRightsReserved', lang)}</p>
           </div>
           <div className="flex items-center space-x-3">

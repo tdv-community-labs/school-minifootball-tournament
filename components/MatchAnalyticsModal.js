@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import htm from 'htm';
 import { getMatchAnalytics, loadAnalyticsData, YOUTUBE_CONFIG } from '../services/matchAnalyticsData.js?v=20260912_0120';
 import { getSofascoreBadgeStyle } from '../services/database.js?v=20260912_0120';
+import { TeamBadge } from './ui.js';
 
 const html = htm.bind(React.createElement);
 
@@ -218,9 +219,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
           <div className="flex items-center justify-between max-w-3xl mx-auto py-2 px-2">
             <div className="flex items-center gap-3 sm:gap-4 flex-1 justify-end">
               <span className="text-base sm:text-2xl font-black text-white text-right tracking-tight">${match.teamA}</span>
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-red-600 to-rose-700 text-white font-black text-lg sm:text-xl flex items-center justify-center border-2 border-white/20 shadow-lg shrink-0">
-                ${match.teamA.substring(0, 3)}
-              </div>
+              <${TeamBadge} teamName=${match.teamA} className="w-12 h-12 sm:w-14 sm:h-14 text-lg sm:text-xl" />
             </div>
 
             <div className="flex flex-col items-center justify-center px-4 sm:px-8">
@@ -236,9 +235,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
             </div>
 
             <div className="flex items-center gap-3 sm:gap-4 flex-1">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-sky-600 to-blue-700 text-white font-black text-lg sm:text-xl flex items-center justify-center border-2 border-white/20 shadow-lg shrink-0">
-                ${match.teamB.substring(0, 3)}
-              </div>
+              <${TeamBadge} teamName=${match.teamB} className="w-12 h-12 sm:w-14 sm:h-14 text-lg sm:text-xl" />
               <span className="text-base sm:text-2xl font-black text-white text-left tracking-tight">${match.teamB}</span>
             </div>
           </div>
