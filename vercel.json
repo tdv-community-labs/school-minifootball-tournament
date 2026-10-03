@@ -74,15 +74,7 @@
   ],
   "rewrites": [
     {
-      "source": "/data/(.*)",
-      "destination": "/data/$1"
-    },
-    {
       "source": "/admin-secret-gate",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
