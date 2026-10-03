@@ -131,13 +131,13 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
             <div className="flex items-center gap-2">
               <button
                 onClick=${handleBack}
-                className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition flex items-center gap-[2px].5 cursor-pointer"
+                className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition flex items-center gap-[1px].5 cursor-pointer"
               >
                 <i className="fas fa-arrow-left text-xs"></i>
                 <span className="hidden sm:inline">Geri</span>
               </button>
               <div className="flex items-center gap-2 text-slate-400 text-[11px]">
-                <span className="text-emerald-400 font-extrabold flex items-center gap-[2px]">
+                <span className="text-emerald-400 font-extrabold flex items-center gap-[1px]">
                   <i className="fas fa-trophy text-amber-400"></i> TDV BTL Liqa
                 </span>
                 <span>•</span>
@@ -152,7 +152,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                 href=${YOUTUBE_CONFIG.channelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 rounded-xl bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 text-red-400 font-black text-xs transition flex items-center gap-[2px].5 shadow-sm"
+                className="px-3 py-1.5 rounded-xl bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 text-red-400 font-black text-xs transition flex items-center gap-[1px].5 shadow-sm"
               >
                 <i className="fab fa-youtube text-red-500 text-sm"></i>
                 <span className="hidden sm:inline">TDV TV</span>
@@ -160,7 +160,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
               <button
                 onClick=${() => setIsFavorite(!isFavorite)}
-                className=${`px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-[2px].5 border cursor-pointer ${
+                className=${`px-3 py-1.5 rounded-xl font-bold text-xs transition flex items-center gap-[1px].5 border cursor-pointer ${
                   isFavorite 
                     ? 'bg-amber-400/20 border-amber-400/50 text-amber-300' 
                     : 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-white'
@@ -194,7 +194,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                 <span className="text-slate-600 text-2xl sm:text-4xl">-</span>
                 <span>${match.scoreB}</span>
               </div>
-              <div className="mt-1 px-3 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-extrabold text-[10px] sm:text-xs uppercase tracking-widest flex items-center gap-[2px].5">
+              <div className="mt-1 px-3 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 font-extrabold text-[10px] sm:text-xs uppercase tracking-widest flex items-center gap-[1px].5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span>BİTDİ (FT 32')</span>
               </div>
@@ -212,7 +212,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
           <div className="mt-3 pt-3 border-t border-slate-800/60 max-w-3xl mx-auto flex justify-between gap-4 text-[11px] text-slate-300 font-medium">
             <div className="flex-1 text-right space-y-0.5">
               ${analytics?.lineupA?.filter(p => p.goals).map(p => html`
-                <div key=${p.id} className="flex items-center justify-end gap-[2px].5">
+                <div key=${p.id} className="flex items-center justify-end gap-[1px].5">
                   <span className="text-slate-400 text-[10px] font-mono">
                     ${p.goals > 1 ? p.goals + "x" : ""} Qol ${generateGoalMinutes(p.goals, match.teamA, p.name)}
                   </span>
@@ -225,7 +225,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
 
             <div className="flex-1 text-left space-y-0.5">
               ${analytics?.lineupB?.filter(p => p.goals).map(p => html`
-                <div key=${p.id} className="flex items-center justify-start gap-[2px].5">
+                <div key=${p.id} className="flex items-center justify-start gap-[1px].5">
                   <span className="font-bold text-white">${p.name}</span>
                   <span className="text-slate-400 text-[10px] font-mono">
                     Qol ${generateGoalMinutes(p.goals, match.teamB, p.name)}
@@ -237,7 +237,7 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
         </header>
 
         <!--  SOFASCORE SUB-NAVIGATION TABS  -->
-        <nav className="bg-[#121722] border-b border-slate-800 px-4 flex items-center gap-[2px] overflow-x-auto no-scrollbar shrink-0">
+        <nav className="bg-[#121722] border-b border-slate-800 px-4 flex items-center gap-[1px] overflow-x-auto no-scrollbar shrink-0">
           ${[
             { id: 'lineup', label: 'Tərkiblər', icon: 'fa-users' },
             { id: 'momentum', label: 'Momentum', icon: 'fa-chart-line' },
@@ -439,17 +439,17 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   <p className="text-xs text-slate-400 mt-1">Komandaların 35 dəqiqə ərzində hücum təzyiqinin real-vaxt qrafiki</p>
                 </div>
                 <div className="flex items-center gap-4 text-xs font-bold">
-                  <span className="flex items-center gap-[2px].5 text-red-400"><span className="w-2.5 h-2.5 rounded-full bg-red-500"></span> ${match.teamA}</span>
-                  <span className="flex items-center gap-[2px].5 text-sky-400"><span className="w-2.5 h-2.5 rounded-full bg-sky-500"></span> ${match.teamB}</span>
+                  <span className="flex items-center gap-[1px].5 text-red-400"><span className="w-2.5 h-2.5 rounded-full bg-red-500"></span> ${match.teamA}</span>
+                  <span className="flex items-center gap-[1px].5 text-sky-400"><span className="w-2.5 h-2.5 rounded-full bg-sky-500"></span> ${match.teamB}</span>
                 </div>
               </div>
 
               <div className="w-full h-56 bg-slate-950 rounded-xl p-4 border border-slate-800 relative flex flex-col justify-between">
                 <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-800 z-0"></div>
 
-                <div className="flex items-center justify-between h-full relative z-10 gap-[2px]">
-                  ${getDenseMomentum(momentumData).map((m) => html`
-                    <div key=${m.min} className="flex-1 flex flex-col items-center h-full justify-center group relative">
+                <div className="flex items-center justify-between h-full relative z-10 gap-[1px]">
+                  ${getDenseMomentum(momentumData, analytics, match).map((m) => html`
+                    <div key=${m.step} className="flex-1 flex flex-col items-center h-full justify-center group relative">
                       <div className="w-full bg-transparent flex items-end justify-center h-1/2">
                         <div
                           style=${{ height: `${m.valA}%` }}
@@ -465,10 +465,10 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                       </div>
 
                       ${m.event ? html`
-                        <div className="absolute top-1/2 -translate-y-1/2 z-20 bg-amber-400 text-slate-950 w-4 h-4 text-[8px] rounded-full flex items-center justify-center text-[10px] font-black shadow-lg">
-                          ${m.event.includes('goal') ? 'Qol' : 'Sarı'}
-                        </div>
-                      ` : null}
+  <div className="absolute top-1/2 -translate-y-1/2 z-20 ${m.event.team === 'A' ? 'bg-red-500' : 'bg-sky-500'} text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-black shadow-[0_0_8px_rgba(0,0,0,0.8)] border border-white/20">
+    ⚽
+  </div>
+` : null}
                     </div>
                   `)}
                 </div>
