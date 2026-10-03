@@ -21,6 +21,7 @@ import Standings from './components/Standings.js?v=20260912_0120';
 import Matches from './components/Matches.js?v=20260912_0120';
 import Players from './components/Players.js?v=20260912_0120';
 import Compare from './components/Compare.js';
+import DreamTeam from './components/DreamTeam.js';
 import AdminDashboard from './components/AdminDashboard.js?v=20260912_0120';
 import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260912_0120';
 import GlobalSearchModal from './components/GlobalSearchModal.js?v=20260912_0120';
@@ -334,6 +335,7 @@ export default function App() {
     { id: 'matches', label: t('navMatches', lang), icon: 'fas fa-futbol' },
     { id: 'players', label: t('navPlayers', lang), icon: 'fas fa-users' },
     { id: 'compare', label: 'H2H', icon: 'fas fa-balance-scale' },
+    { id: 'dreamteam', label: 'Xəyalındakı 5-lik', icon: 'fas fa-star' },
     ...(isAdminAuthorized ? [{ id: 'admin', label: t('navAdmin', lang), icon: 'fas fa-user-cog' }] : [])
   ];
 
