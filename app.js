@@ -25,6 +25,8 @@ import DreamTeam from './components/DreamTeam.js';
 import Market from './components/Market.js';
 import Fanzone from './components/Fanzone.js';
 import Trophies from './components/Trophies.js';
+import Playoffs from './components/Playoffs.js';
+import Discipline from './components/Discipline.js';
 import AdminDashboard from './components/AdminDashboard.js?v=20260912_0120';
 import PlayerProfileModal from './components/PlayerProfileModal.js?v=20260912_0120';
 import TeamProfileModal from './components/TeamProfileModal.js';
@@ -341,6 +343,8 @@ export default function App() {
     { id: 'market', label: 'Bazar & Liderlər', icon: 'fas fa-chart-line' },
     { id: 'fanzone', label: 'Fanzona & Xəbərlər', icon: 'fas fa-newspaper' },
     { id: 'trophies', label: 'Trofey Zalı', icon: 'fas fa-trophy' },
+    { id: 'playoffs', label: 'Pley-off Ağacı', icon: 'fas fa-sitemap' },
+    { id: 'discipline', label: 'İntizam & Fair Play', icon: 'fas fa-gavel' },
     { id: 'compare', label: 'H2H', icon: 'fas fa-balance-scale' },
     { id: 'dreamteam', label: 'Xəyalındakı 5-lik', icon: 'fas fa-star' },
     ...(isAdminAuthorized ? [{ id: 'admin', label: t('navAdmin', lang), icon: 'fas fa-user-cog' }] : [])
