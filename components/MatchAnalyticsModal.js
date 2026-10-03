@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import htm from 'htm';
 import { getMatchAnalytics, loadAnalyticsData, YOUTUBE_CONFIG } from '../services/matchAnalyticsData.js?v=20260912_0120';
-import { getSofascoreBadgeStyle } from '../services/database.js?v=20260912_0120';
+import { getSofascoreBadgeStyle } from '../services/database.js';
+import MatchPlayerProfileModal from './MatchPlayerProfileModal.js';
 import { TeamBadge } from './ui.js';
 
 const html = htm.bind(React.createElement);
@@ -1532,6 +1533,14 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
         </footer>
 
       </div>
-    </div>
+    
+        ${selectedPlayer && html`
+          <MatchPlayerProfileModal
+            player=${selectedPlayer}
+            match=${match}
+            onClose=${() => setSelectedPlayer(null)}
+          />
+        `}
+      </div>
   `;
 }
