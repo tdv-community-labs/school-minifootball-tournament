@@ -5,35 +5,70 @@ import { getSofascoreBadgeStyle } from '../services/database.js?v=20260912_0120'
 
 const html = htm.bind(React.createElement);
 
-const generateGoalMinutes = (count, teamPrefix, playerName) => {
-  if (count <= 0) return '';
+const getGoalMinutesArray = (count, teamPrefix, playerName) => {
+  if (count <= 0) return [];
   const hash = (teamPrefix + playerName).split('').reduce((a, b) => a + b.charCodeAt(0), 0);
   const mins = [];
-  let current = (hash % 10) + 1;
+  let current = (hash % 14) + 2;
   for(let i=0; i<count; i++) {
     mins.push(current);
-    current += ((hash % 7) + 4);
-    if (current > 33) current = 33;
+    current += ((hash % 10) + 7);
+    if (current > 35) current = 35 - (hash % 3);
   }
+  return mins.sort((a,b) => a-b);
+};
+
+const generateGoalMinutes = (count, teamPrefix, playerName) => {
+  if (count <= 0) return '';
+  const mins = getGoalMinutesArray(count, teamPrefix, playerName);
   return `(${mins.map(m => m + "'").join(', ')})`;
 };
 
-const getDenseMomentum = (sparse) => {
+const getAllGoalEvents = (analytics, match) => {
+  const events = [];
+  if (!analytics) return events;
+  (analytics.lineupA || []).forEach(p => {
+    if (p.goals > 0) {
+      getGoalMinutesArray(p.goals, match.teamA, p.name).forEach(m => events.push({ min: m, team: 'A', type: 'goal' }));
+    }
+  });
+  (analytics.lineupB || []).forEach(p => {
+    if (p.goals > 0) {
+      getGoalMinutesArray(p.goals, match.teamB, p.name).forEach(m => events.push({ min: m, team: 'B', type: 'goal' }));
+    }
+  });
+  return events;
+};
+
+const getDenseMomentum = (sparse, analytics, match) => {
   if (!sparse || sparse.length < 2) return [];
   const dense = [];
-  for (let min = 1; min <= 35; min++) {
-    let exact = sparse.find(s => s.min === min);
-    if (exact) {
-      dense.push({...exact});
-    } else {
-      let prev = sparse.filter(s => s.min < min).pop() || sparse[0];
-      let next = sparse.find(s => s.min > min) || sparse[sparse.length - 1];
-      let ratio = (next.min === prev.min) ? 0.5 : (min - prev.min) / (next.min - prev.min);
-      let noise = (Math.sin(min * 2.5) * 15);
-      let vA = prev.valA + (next.valA - prev.valA) * ratio + noise;
-      let vB = prev.valB + (next.valB - prev.valB) * ratio - noise;
-      dense.push({ min, valA: Math.max(10, Math.min(90, vA)), valB: Math.max(10, Math.min(90, vB)) });
+  const STEPS = 105; 
+  const goalEvents = getAllGoalEvents(analytics, match);
+  
+  for (let i = 1; i <= STEPS; i++) {
+    let min = i / 3;
+    let prev = sparse.filter(s => s.min <= min).pop() || sparse[0];
+    let next = sparse.find(s => s.min > min) || sparse[sparse.length - 1];
+    let ratio = (next.min === prev.min) ? 0.5 : (min - prev.min) / (next.min - prev.min);
+    let noise = (Math.sin(i * 0.4) * 10) + (Math.cos(i * 0.15) * 15);
+    
+    let vA = prev.valA + (next.valA - prev.valA) * ratio + noise;
+    let vB = prev.valB + (next.valB - prev.valB) * ratio - noise;
+    
+    let eventObj = null;
+    let matchingEvent = goalEvents.find(e => e.min === Math.ceil(min));
+    if (matchingEvent && i % 3 === 1) { 
+      eventObj = matchingEvent;
     }
+
+    dense.push({ 
+      step: i, 
+      min: min, 
+      valA: Math.max(5, Math.min(95, vA)), 
+      valB: Math.max(5, Math.min(95, vB)),
+      event: eventObj
+    });
   }
   return dense;
 };
@@ -465,10 +500,8 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                       </div>
 
                       ${m.event ? html`
-  <div className="absolute top-1/2 -translate-y-1/2 z-20 ${m.event.team === 'A' ? 'bg-red-500' : 'bg-sky-500'} text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-black shadow-[0_0_8px_rgba(0,0,0,0.8)] border border-white/20">
-    ⚽
-  </div>
-` : null}
+    <div className="absolute top-1/2 -translate-y-1/2 z-20 ${m.event.team === 'A' ? 'bg-red-500' : 'bg-sky-500'} w-2.5 h-2.5 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.8)] border border-white/50"></div>
+  ` : null}
                     </div>
                   `)}
                 </div>
@@ -600,8 +633,8 @@ export default function MatchAnalyticsModal({ match, isOpen, onClose, allPlayers
                   <i className="fas fa-whistle text-amber-400"></i> Hakim Məlumatı (Referee)
                 </h4>
                 <div className="bg-slate-800/60 p-4 rounded-xl border border-slate-700/50 space-y-2">
-                  <div className="font-black text-white text-base">${analytics?.referee?.name || 'Mohammad Al-Emara'}</div>
-                  <div className="text-slate-400 text-xs">${analytics?.referee?.country || 'Azərbaycan'}</div>
+                  <div className="font-black text-white text-base">${analytics?.referee?.name || 'N/A'}</div>
+                  <div className="text-slate-400 text-xs">${analytics?.referee?.country || 'N/A'}</div>
                   <div className="pt-2 border-t border-slate-700/50 flex items-center gap-4">
                     <span className="text-amber-400 font-bold">Sarı Ort. Sarı: ${analytics?.referee?.avgYellow || '0.14'}</span>
                     <span className="text-red-400 font-bold">🟥 Ort. Qırmızı: ${analytics?.referee?.avgRed || '3.60'}</span>
