@@ -313,7 +313,7 @@ export default function App() {
     const curT = (k) => t(k, lang);
     switch (activeTab) {
       case 'dashboard':
-        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onOpenPlayerProfile=${(name) => setSelectedPlayerProfile(name)} />`;
+        return html`<${Dashboard} setActiveTab=${handleTabChange} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onOpenPlayerProfile=${(name) => setSelectedPlayerProfile(name)} />`;
       case 'standings':
         return html`<${Standings} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onOpenPlayerProfile=${(name) => setSelectedPlayerProfile(name)} />`;
       case 'matches':
@@ -323,7 +323,7 @@ export default function App() {
       case 'admin':
         return html`<${AdminDashboard} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onYearsChanged=${handleReloadYears} onLogout=${handleAdminLogout} />`;
       default:
-        return html`<${Dashboard} setActiveTab=${setActiveTab} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onOpenPlayerProfile=${(name) => setSelectedPlayerProfile(name)} />`;
+        return html`<${Dashboard} setActiveTab=${handleTabChange} activeDivision=${activeDivision} activeYear=${activeYear} lang=${lang} t=${curT} onOpenPlayerProfile=${(name) => setSelectedPlayerProfile(name)} />`;
     }
   };
 
