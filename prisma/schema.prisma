@@ -1,0 +1,74 @@
+// Prisma Schema for TDV Minifootball Tournament
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TournamentTeam {
+  id        String   @id @db.VarChar(50)
+  name      String
+  division  String   @db.VarChar(20)
+  year      String?  @default("2022-2023") @db.VarChar(20)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("tournament_teams")
+}
+
+model TournamentPlayer {
+  id          String   @id @db.VarChar(100)
+  name        String
+  className   String   @map("class_name")
+  division    String   @db.VarChar(20)
+  position    String
+  goals       Int      @default(0)
+  assists     Int      @default(0)
+  yellowCards Int      @default(0) @map("yellow_cards")
+  redCards    Int      @default(0) @map("red_cards")
+  cleanSheets Int      @default(0) @map("clean_sheets")
+  rating      Float    @default(7.0)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("tournament_players")
+}
+
+model TournamentMatch {
+  id             String   @id @db.VarChar(50)
+  year           String?  @default("2022-2023") @db.VarChar(20)
+  division       String   @db.VarChar(20)
+  stage          String
+  teamA          String   @map("team_a")
+  teamB          String   @map("team_b")
+  scoreA         Int      @default(0) @map("score_a")
+  scoreB         Int      @default(0) @map("score_b")
+  penaltyScoreA  Int?     @map("penalty_score_a")
+  penaltyScoreB  Int?     @map("penalty_score_b")
+  matchDate      String?  @map("match_date")
+  mom            String?
+  stats          Json?
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@map("tournament_matches")
+}
+
+model TournamentStanding {
+  id        String   @id @db.VarChar(100)
+  division  String   @db.VarChar(20)
+  team      String
+  played    Int      @default(0)
+  won       Int      @default(0)
+  drawn     Int      @default(0)
+  lost      Int      @default(0)
+  gf        Int      @default(0)
+  ga        Int      @default(0)
+  gd        Int      @default(0)
+  points    Int      @default(0)
+  form      Json?    @default("[]")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("tournament_standings")
+}
