@@ -1,7 +1,6 @@
 node_modules/
+.next/
 scratch/
-package.json
-package-lock.json
 .DS_Store
 
 # Environment & Secrets
