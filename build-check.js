@@ -86,10 +86,11 @@ if (indexHtml.includes('zinc-950') && indexHtml.includes('emerald')) {
 console.log('\n--- 4. TypeScript Types Verification ---');
 if (fs.existsSync('types.ts')) {
   try {
-    execSync('npx.cmd --yes typescript --noEmit types.ts');
+    const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+    execSync(`${npxCmd} -p typescript tsc --noEmit types.ts`, { stdio: 'pipe' });
     console.log('  ✓ types.ts exists and passed tsc --noEmit with 0 errors');
   } catch (e) {
-    console.error('  ✗ types.ts failed tsc check');
+    console.error(`  ✗ types.ts failed tsc check: ${e.stderr ? e.stderr.toString() : e.message}`);
     failed = true;
   }
 } else {
