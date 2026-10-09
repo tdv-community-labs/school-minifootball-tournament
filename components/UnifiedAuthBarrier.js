@@ -417,7 +417,7 @@ export default function UnifiedAuthBarrier({ onLogin, lang = 'az' }) {
         <!-- Back to Hub -->
         <div className="text-center pt-1">
           <a
-            href="https://tdv-community-hubs.vercel.app/"
+            href="https://tdv-community-labs.github.io/tdv-hub/"
             className="text-[11px] font-semibold text-zinc-400 hover:text-emerald-400 transition inline-flex items-center gap-1.5"
           >
             <i className="fas fa-arrow-left text-[10px]"></i>
