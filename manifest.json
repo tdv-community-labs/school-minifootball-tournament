@@ -1,0 +1,16 @@
+{
+  "name": "TDV Sports — Məktəb Minifutbol Liqası",
+  "short_name": "TDV Sports",
+  "description": "Canlı turnir cədvəli, matç nəticələri və oyunçu statistikası.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "assets/tdv-logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}
