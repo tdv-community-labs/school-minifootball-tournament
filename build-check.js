@@ -8,6 +8,7 @@ let failed = false;
 
 // 1. Check syntax of all JS files
 const filesToCheck = [
+  'sw.js',
   'app.js',
   'components/ui.js',
   'components/UnifiedAuthBarrier.js',
